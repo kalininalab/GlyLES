@@ -1,0 +1,7 @@
+.idea/
+glycowork/
+pysmiles/
+
+converter.py
+
+*.dot
