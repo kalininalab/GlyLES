@@ -6,7 +6,7 @@ branch:
     SAC CON
     | SAC CON branch
     | '[' branch ']'
-    | SAC CON branch SAC CON;
+    | SAC CON '[' branch ']' SAC CON;
 
 SAC:
     'Glc' | 'Glu' | 'Fru' | 'Man' | 'Gal';

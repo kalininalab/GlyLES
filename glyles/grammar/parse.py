@@ -38,10 +38,10 @@ class TreeWalker:
         elif len(children) == 3 and isinstance(children[1], GlycanParser.BranchContext):  # [ [ branch ] ]
             self.__walk(children[1], parent)
             return parent
-        elif len(children) == 5:
-            node_id = self.__add_node(children[3].symbol.text)
-            self.__add_edge(parent, node_id, children[4])
-            self.__walk(children[2], node_id)
+        elif len(children) == 7:
+            node_id = self.__add_node(children[5].symbol.text)
+            self.__add_edge(parent, node_id, children[6])
+            self.__walk(children[3], node_id)
             node_id2 = self.__add_node(children[0].symbol.text)
             self.__add_edge(node_id, node_id2, children[1])
             return node_id2

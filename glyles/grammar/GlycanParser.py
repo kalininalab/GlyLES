@@ -12,15 +12,15 @@ else:
 def serializedATN():
     with StringIO() as buf:
         buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\6")
-        buf.write("\32\4\2\t\2\4\3\t\3\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3")
-        buf.write("\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\30\n\3\3\3\2\2")
-        buf.write("\4\2\4\2\2\2\32\2\6\3\2\2\2\4\27\3\2\2\2\6\7\5\4\3\2\7")
-        buf.write("\3\3\2\2\2\b\t\7\5\2\2\t\30\7\6\2\2\n\13\7\5\2\2\13\f")
-        buf.write("\7\6\2\2\f\30\5\4\3\2\r\16\7\3\2\2\16\17\5\4\3\2\17\20")
-        buf.write("\7\4\2\2\20\30\3\2\2\2\21\22\7\5\2\2\22\23\7\6\2\2\23")
-        buf.write("\24\5\4\3\2\24\25\7\5\2\2\25\26\7\6\2\2\26\30\3\2\2\2")
-        buf.write("\27\b\3\2\2\2\27\n\3\2\2\2\27\r\3\2\2\2\27\21\3\2\2\2")
-        buf.write("\30\5\3\2\2\2\3\27")
+        buf.write("\34\4\2\t\2\4\3\t\3\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3")
+        buf.write("\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\32\n\3")
+        buf.write("\3\3\2\2\4\2\4\2\2\2\34\2\6\3\2\2\2\4\31\3\2\2\2\6\7\5")
+        buf.write("\4\3\2\7\3\3\2\2\2\b\t\7\5\2\2\t\32\7\6\2\2\n\13\7\5\2")
+        buf.write("\2\13\f\7\6\2\2\f\32\5\4\3\2\r\16\7\3\2\2\16\17\5\4\3")
+        buf.write("\2\17\20\7\4\2\2\20\32\3\2\2\2\21\22\7\5\2\2\22\23\7\6")
+        buf.write("\2\2\23\24\7\3\2\2\24\25\5\4\3\2\25\26\7\4\2\2\26\27\7")
+        buf.write("\5\2\2\27\30\7\6\2\2\30\32\3\2\2\2\31\b\3\2\2\2\31\n\3")
+        buf.write("\2\2\2\31\r\3\2\2\2\31\21\3\2\2\2\32\5\3\2\2\2\3\31")
         return buf.getvalue()
 
 
@@ -140,7 +140,7 @@ class GlycanParser ( Parser ):
         localctx = GlycanParser.BranchContext(self, self._ctx, self.state)
         self.enterRule(localctx, 2, self.RULE_branch)
         try:
-            self.state = 21
+            self.state = 23
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,0,self._ctx)
             if la_ == 1:
@@ -178,10 +178,14 @@ class GlycanParser ( Parser ):
                 self.state = 16
                 self.match(GlycanParser.CON)
                 self.state = 17
-                self.branch()
+                self.match(GlycanParser.T__0)
                 self.state = 18
-                self.match(GlycanParser.SAC)
+                self.branch()
                 self.state = 19
+                self.match(GlycanParser.T__1)
+                self.state = 20
+                self.match(GlycanParser.SAC)
+                self.state = 21
                 self.match(GlycanParser.CON)
                 pass
 
