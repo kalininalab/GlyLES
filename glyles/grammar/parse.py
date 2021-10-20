@@ -1,68 +1,125 @@
 import networkx as nx
 from antlr4 import *
-from antlr4.tree.Tree import ParseTree, TerminalNodeImpl
+from antlr4.tree.Tree import ParseTree
 
 from glyles.glycans import glycans
 from glyles.grammar.GlycanLexer import GlycanLexer
-from glyles.grammar.GlycanListener import GlycanListener
 from glyles.grammar.GlycanParser import GlycanParser
+
+'''
+This file is like an interaction with the Parsing of the IUPAC representation of the glycans. The grammar for glycans 
+is defined using ANTLR (https://www.antlr.org/). From this ANTLR is able to generate lexer and parser that fit the 
+defined grammar. Don't touch those files those are auto generated and therefore mostly uncommented.
+
+The defined grammar discards the last glycan which is used to define the root of the glycan tree. Therefore the 
+resulting abstract syntax trees (AST)s are not intuitive.
+'''
 
 
 class TreeWalker:
     def __init__(self):
+        """
+        Just initialize an empty tree
+        """
         self.g = nx.Graph()
         self.node_id = 0
 
-    def parse(self, t: ParseTree, init):
+    def parse(self, t: ParseTree, init: str):
+        """
+        Parse an parsed tree (AST) from ANTLR into this networkx graph
+        :param t: result of the parsing step from ANTLR
+        :param init: root monomer of the glycan encoded as string according to the definitions in glycans/glycans.py
+        """
+
+        # Initialize the tree wiht the root
         node_id = self.__add_node(init)
+
+        # add the parsed AST to the networkx graph
         self.__walk(next(t.getChildren()), node_id)
+
         return self.g
 
-    def __walk(self, t: ParseTree, parent):
+    def __walk(self, t: ParseTree, parent: int):
+        """
+        The heart of this class. This method recursively adds nodes to the graph and connects them according to the
+        connections in the input IUPAC.
+        :param t: subtree to parse in this recursive step.
+        :param parent: id of the parent node for this (subtree).
+        """
+
+        # security check for some nodes that should not occur, but noone known what ANTLR does (or does not) ;-)
         if isinstance(t, ErrorNode):
-            raise NotImplementedError("ErrorNodes not implemented yet!")
+            raise NotImplementedError("ErrorNodes not implemented yet! (Should also never occur!)")
         elif isinstance(t, TerminalNode):
             raise NotImplementedError("Terminal nodes should be unreachable!")
 
         children = list(t.getChildren())
 
-        if len(children) == 2:  # [sac con]
+        if len(children) == 2:  # {sac con}
+            # terminal element, add the node with the connection
             node_id = self.__add_node(children[0].symbol.text)
             self.__add_edge(parent, node_id, children[1])
             return node_id
-        elif len(children) == 3 and isinstance(children[2], GlycanParser.BranchContext):  # [sac con (sac con ...)]
+
+        elif len(children) == 3 and isinstance(children[2], GlycanParser.BranchContext):  # {sac con branch}
+            # chain without branching, the parent is the parent of the parsing of the back part
             parent = self.__walk(children[2], parent)
             node_id = self.__add_node(children[0].symbol.text)
             self.__add_edge(parent, node_id, children[1])
             return node_id
-        elif len(children) == 3 and isinstance(children[1], GlycanParser.BranchContext):  # [ [ branch ] ]
+
+        elif len(children) == 3 and isinstance(children[1], GlycanParser.BranchContext):  # {[ branch ]}
+            # branching, hand the parent on to the next level
             self.__walk(children[1], parent)
             return parent
-        elif len(children) == 7:
+
+        elif len(children) == 7:  # {sac con [ branch ] sac con}
+            # branching in a chain, append the end to the parent and hang both branches on that
             node_id = self.__add_node(children[5].symbol.text)
             self.__add_edge(parent, node_id, children[6])
             self.__walk(children[3], node_id)
             node_id2 = self.__add_node(children[0].symbol.text)
             self.__add_edge(node_id, node_id2, children[1])
             return node_id2
+
+        # there should be no case missing, but who knows...
         raise NotImplementedError("This should be unreachable")
 
     def __add_edge(self, parent, child, con):
-        # children = list(con.getChildren())
-        # self.g.add_edge(parent, child, attr={(children[1].symbol.text, children[2].symbol.text, children[4].symbol.text)})
-        self.g.add_edge(parent, child, attr={(con.symbol.text)})
+        """
+        Add an edge between the provided ids of the parent and the children in the glycan tree
+        :param parent: parent if of the connection from the glycan tree
+        :param child: child id of the connection from the glycan tree
+        :param con: Connection element from the ParseTree
+        """
+        self.g.add_edge(parent, child, attr={"type": con.symbol.text})
 
     def __add_node(self, name):
+        """
+        Add a new node to the network based on the name of the represented glycan
+        """
+        # get the id for the node and increase the id for the next node
         node_id = self.node_id
-        self.g.add_node(node_id, attr={"type": glycans.from_string(name)})
         self.node_id += 1
+
+        # add the node to the network and store the enum of the glycan as attribute
+        self.g.add_node(node_id, attr={"type": glycans.from_string(name)})
+
         return node_id
 
 
 def parse(smiles: str):
-    if "(" not in smiles:
-        raise NotImplementedError("Monosaccharides are not implemented yet!")
+    """
+    Adapter on the Lexer and Parser generated by ANTLR based on Grammar.g4.
+    """
 
+    # Check for monosaccharides and eventually return a single-node-graph
+    if "(" not in smiles:
+        g = nx.Graph()
+        g.add_node(0, attr={"type": smiles})
+        return g
+
+    # Cut off the last monosaccharide as its the root
     bracket_index = max(
         smiles.rindex(")") if ")" in smiles else -1,
         smiles.rindex("]") if "]" in smiles else -1,
@@ -70,14 +127,14 @@ def parse(smiles: str):
     init = smiles[bracket_index:]
     smiles = smiles[:bracket_index]
 
+    # parse the remaining structure description following the grammar.
     stream = InputStream(data=smiles)
-
     lexer = GlycanLexer(stream)
     token = CommonTokenStream(lexer)
     parser = GlycanParser(token)
     tree = parser.start()
 
-    if True:
-        walker = TreeWalker()
-        g = walker.parse(tree, init)
-        nx.drawing.nx_pydot.write_dot(g, f"./{smiles}{init}.dot")
+    # walk through the AST and parse the AST into a networkx representation of the glycan.
+    walker = TreeWalker()
+    g = walker.parse(tree, init)
+    nx.drawing.nx_pydot.write_dot(g, f"./{smiles}{init}.dot")
