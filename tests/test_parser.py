@@ -7,8 +7,8 @@ smiles = [
     "Man(a1-4)[Glc(a1-3)]Fru",
     "Man(a1-4)[Glc(a1-3)Fru(b1-4)]Gal",
     "Man(a1-4)Glc(a1-3)[Fru(b1-4)]Gal",
-    "Man(a1-4)Glc(a1-3)[Fru(b1-4)Gal(b1-3)]Xyl",
-    "Man(a1-4)[Glc(a1-3)Fru(b1-4)]Gal(b1-3)Xyl",
+    "Man(a1-4)Glc(a1-3)[Fru(b1-4)Gal(b1-3)]Tal",
+    "Man(a1-4)[Glc(a1-3)Fru(b1-4)]Gal(b1-3)Tal",
 ]
 
 
@@ -92,7 +92,7 @@ class TestParser:
     def test_parse_7(self):
         g = parse(smiles[6])
 
-        check_initial(g, "Xyl", 2)
+        check_initial(g, "Tal", 2)
         id_children_1 = [x[1] for x in list(g.edges(0))]
         id_child_1, id_child_2 = split_children(g, id_children_1, "Gal")
 
@@ -108,7 +108,7 @@ class TestParser:
     def test_parse_8(self):
         g = parse(smiles[7])
 
-        check_initial(g, "Xyl", 1)
+        check_initial(g, "Tal", 1)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Gal", "(b1-3)", 2)
 
