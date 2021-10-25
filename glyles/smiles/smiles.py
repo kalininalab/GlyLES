@@ -21,6 +21,8 @@ class DFS:
         for child in children:
             if child not in dfst.nodes:
                 self.__dfs(g, dfst, node, child)
+            elif child != parent and g.nodes[child]["ring"] and g.nodes[node]["ring"]:
+                nx.set_node_attributes(dfst, {child: True, node: True}, "ring")
 
 
 class SMILES:
@@ -29,12 +31,12 @@ class SMILES:
 
     def write(self, g, source):
         dfs_tree = DFS().dfs_tree(g, source)
-        return self.__construct(g, dfs_tree, source, first=True)
+        return self.__construct(g, dfs_tree, source)
 
     def read(self):
         pass
 
-    def __construct(self, g, tree, node, first=False):
+    def __construct(self, g, tree, node):
         """
         TODO: Test from non-circular starting points
         Args:
@@ -50,7 +52,7 @@ class SMILES:
         else:
             output = g.nodes[node]["type"].value
 
-        if (len(tree.edges(node)) + 1) != len(g.edges(node)) or first:  # and node in path:
+        if node in nx.get_node_attributes(tree, "ring"):
             output += "1"
 
         children = list(tree.edges(node))
@@ -113,7 +115,10 @@ class Merger:
         return me
 
 
-# print(SMILES().write(Glycan.GLC.structure(), 1))
+# print("Correct : ", Glycan.GLC.value["smiles"])
+# print("Start  1: ", SMILES().write(Glycan.GLC.structure(), 1))
+# print("Start 11: ", SMILES().write(Glycan.GLC.structure(), 11))
+
 g = parse("Man(a1-4)[Fru(a1-3)]Gal")
 s = Merger().merge(g)
 print(s)
