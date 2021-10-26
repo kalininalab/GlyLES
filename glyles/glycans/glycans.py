@@ -4,13 +4,19 @@ import networkx as nx
 
 
 class Chirality(Enum):
-    # relative to haworth notation
+    """
+    Representation of the chirality of certain atoms based on the Haworth notations of glycans.
+    """
     UP = 1
     DOWN = 2
     NONE = 3
 
 
 class Atom(Enum):
+    """
+    Different types of atoms in the glycans.
+    X, Y, Z are used to perform the concatenation of the glycans
+    """
     N = "N"
     C = "C"
     O = "O"
@@ -20,6 +26,10 @@ class Atom(Enum):
 
 
 class Glycan(Enum):
+    """
+    Different monosaccharides that can already be used in the library
+    They contain their name, one SMILES representation and a field to store the structure of the glycan once computed
+    """
     GLC = {"name": "Glc", "smiles": "C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O)O", "struct": None}
     FRU = {"name": "Fru", "smiles": "C([C@@H]1[C@H]([C@@H](C(O1)(CO)O)O)O)O", "struct": None}
     MAN = {"name": "Man", "smiles": "C([C@@H]1[C@H]([C@@H]([C@@H](C(O1)O)O)O)O)O", "struct": None}
@@ -27,8 +37,22 @@ class Glycan(Enum):
     TAL = {"name": "Tal", "smiles": "C([C@@H]1[C@@H]([C@@H]([C@@H](C(O1)O)O)O)O)O", "struct": None}
 
     def structure(self):
+        """
+        Compute and save the structure of this glycan. So far its hard coded on the 5 given types of glycans
+        # TODO: Implement a parser for SMILES -> smiles.smiles.SMILES.read()
+
+        The resulting graph must have some properties (that are especially important for the correct implementation of
+        the parser later on:
+          - The C atoms have IDs 1 to 6 according to their C1-C6 naming in an glycan.
+          - The O atom closing the ring has id 10, so that all other O-atoms have ID 10 higher than the C atom they are
+            connected to.
+          - The chirality is initial 0 and will only be set in the carbons with respect to the non-OH-group.
+          - Additionally, all members of the ring of the molecule have an according flag set to true.
+
+        Returns:
+            networkx graph representing the structure of the glycan as a graph of its non-hydrogen atoms.
+        """
         if self.value["struct"] is None:
-            # TODO: Implement a parser for SMILES -> smiles.smiles.SMILES.read()
             g = nx.Graph()
             g.add_nodes_from([
                 (1, {"type": Atom.C, "chiral": Chirality.NONE, "ring": True}),
@@ -86,14 +110,12 @@ class Glycan(Enum):
 
 def from_string(mono):
     """
+    Get an instance of a glycan according to the provided string representation of the glycan
 
     Args:
-        mono (str):
+        mono (str): string representation of the glycan of interest
 
     Returns:
         Glycan according to the monosaccharide provided via mono
     """
     return Glycan[mono.upper()]
-
-
-print(Glycan.GLC.structure())
