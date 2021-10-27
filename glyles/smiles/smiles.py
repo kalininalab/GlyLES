@@ -47,7 +47,8 @@ class DFS:
             dfst.add_edge(parent, node)
 
         # iterate over all children in a sorted way, sorted by the membership to the ring and the ID of the node
-        children = sorted([c for _, c in list(g.edges(node)) if c != parent], key=lambda c: (not g.nodes[c]["ring"], (c - node) % 10))
+        children = sorted([c for _, c in list(g.edges(node)) if c != parent],
+                          key=lambda c: (not g.nodes[c]["ring"], (c - node) % 10))
         for child in children:
             # if the node is new, explore it
             if child not in dfst.nodes:
@@ -64,7 +65,10 @@ class SMILES:
     from a SMILES representation.
     """
 
-    def write(self, g, source):
+    def __init__(self):
+        self.ring_index = 1
+
+    def write(self, g, source, ring_index=1):
         """
         Compute the SMILES string for the provided graph representing a molecule.
         This only works if called from an Oxygen atom, i.e. a non-chiral atom!
@@ -72,6 +76,7 @@ class SMILES:
         Args:
             g (networkx.Graph): Graph representation of a molecule
             source (int): Atom-ID to start the SMILES from
+            ring_index (int): index of the ring in this specific monosaccharide
 
         Returns:
             SMILES string of the molecule starting at the given atom
@@ -80,7 +85,7 @@ class SMILES:
         dfs_tree = DFS().dfs_tree(g, source)
 
         # based on that DFS tree construct the SMILES
-        return self.__construct(g, dfs_tree, source)
+        return self.__construct(g, dfs_tree, source, ring_index)
 
     def read(self):
         """
@@ -90,7 +95,7 @@ class SMILES:
         """
         pass
 
-    def __construct(self, g, tree, node):
+    def __construct(self, g, tree, node, ring_index=1):
         """
         Recursively compute the SMILES from the structure and the according DFS tree. The current step of the search
         has to start in the provided node.
@@ -103,6 +108,7 @@ class SMILES:
         Returns:
             SMILES representation of the subtree of the current node in tree
         """
+
         # check for chirality of the molecule. If its not chiral, just add the current atom type to the output
         # IMPORTANT: This method assumes that the chiral C-atoms have an hydrogen atom opposed to the OH group
         if g.nodes[node]["chiral"] != Chirality.NONE:
@@ -112,9 +118,9 @@ class SMILES:
 
         # check if the molecule is start or end of the ring, mark this, remember, there is only one ring in glycans
         if node in nx.get_node_attributes(tree, "ring"):
-            output += "1"
+            output += str(ring_index)
 
-        # recursively step down to the childen
+        # recursively step down to the children
         children = list(tree.edges(node))
         if len(children) == 0:  # leaf
             return output
@@ -128,6 +134,19 @@ class Merger:
     """
     Merge the tree of monomers into a SMILES representation of the complete molecule.
     """
+
+    def __init__(self):
+        self.ring_index = 1
+
+    def get_ring_index(self):
+        """
+        Get index for next ring in the polymer to have disjoint ring indexes in the final SMILES
+        
+        Returns:
+            index for next ring in SMILES
+        """
+        self.ring_index += 1
+        return self.ring_index - 1
 
     def merge(self, t):
         """
@@ -174,6 +193,7 @@ class Merger:
             # and find that oxygen atom that will react with an hydrogen when connecting the glycans' monomers
             for _, x in monomer.edges(int(binding[4])):
                 if monomer.nodes[x]["type"] == Atom.O and 11 <= x <= 15:
+                    print("Marking:", atom)
                     monomer.nodes[x]["type"] = atom
                     break
 
@@ -191,7 +211,7 @@ class Merger:
         """
         # get my children and compute my SMILES string
         children = [x[1] for x in t.edges(node)]
-        me = SMILES().write(t.nodes[node]["type"].structure(), start)
+        me = SMILES().write(t.nodes[node]["type"].structure(), start, self.get_ring_index())
 
         # check for validity of the tree, i.e. if its a leaf (return, nothing to do) or has too many children (Error)
         if len(children) == 0:  # leaf
