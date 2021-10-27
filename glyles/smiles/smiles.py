@@ -47,14 +47,14 @@ class DFS:
             dfst.add_edge(parent, node)
 
         # iterate over all children in a sorted way, sorted by the membership to the ring and the ID of the node
-        children = sorted([x[1] for x in list(g.edges(node))], key=lambda x: (not g.nodes[x]["ring"], x))
+        children = sorted([c for _, c in list(g.edges(node)) if c != parent], key=lambda c: (not g.nodes[c]["ring"], (c - node) % 10))
         for child in children:
             # if the node is new, explore it
             if child not in dfst.nodes:
                 self.__dfs(g, dfst, node, child)
 
             # if the child already has been seen and its not the parent, we found the ring-closing atoms and mark them
-            elif child != parent and g.nodes[child]["ring"] and g.nodes[node]["ring"]:
+            elif g.nodes[child]["ring"] and g.nodes[node]["ring"]:
                 nx.set_node_attributes(dfst, {child: True, node: True}, "ring")
 
 
@@ -67,6 +67,7 @@ class SMILES:
     def write(self, g, source):
         """
         Compute the SMILES string for the provided graph representing a molecule.
+        This only works if called from an Oxygen atom, i.e. a non-chiral atom!
 
         Args:
             g (networkx.Graph): Graph representation of a molecule
@@ -143,7 +144,7 @@ class Merger:
         self.__mark(t, 0)
 
         # return the string that can be computed from connecting the monomers as marked above
-        return self.__merge(t, 0, 1)
+        return self.__merge(t, 0, 10)
 
     def __mark(self, t, node):
         """

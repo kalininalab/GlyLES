@@ -27,8 +27,8 @@ class TestSMILESMono:
                             equal=False)
 
     @pytest.mark.parametrize("glycan", ["Glc", "Fru", "Man", "Gal", "Tal"])
-    @pytest.mark.parametrize("source", [1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14, 15])
-    def test_smiles_glc(self, glycan, source):
+    @pytest.mark.parametrize("source", [10, 11, 12, 13, 14, 15])
+    def test_smiles(self, glycan, source):
         monomer = Glycan.from_string(glycan)
         solution = monomer.value["smiles"]
         computed = SMILES().write(monomer.structure(), source)
