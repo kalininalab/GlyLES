@@ -23,10 +23,11 @@ class TestSMILESMono:
             assert c_rdkit != s_rdkit
 
     def test_sanity(self):
-        self.compare_smiles(Glycan.from_string("Man").structure(), Glycan.from_string("Glc"), equal=False)
+        self.compare_smiles(Glycan.from_string("Man").value["smiles"], Glycan.from_string("Glc").value["smiles"],
+                            equal=False)
 
-    @pytest.mark.parameterize("glycan", ["Gly", "Fru", "Man", "Gal", "Tal"])
-    @pytest.mark.parameterize("source", [1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14, 15])
+    @pytest.mark.parametrize("glycan", ["Glc", "Fru", "Man", "Gal", "Tal"])
+    @pytest.mark.parametrize("source", [1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14, 15])
     def test_smiles_glc(self, glycan, source):
         monomer = Glycan.from_string(glycan)
         solution = monomer.value["smiles"]

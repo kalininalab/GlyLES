@@ -107,15 +107,15 @@ class Glycan(Enum):
 
         return self.value["struct"]
 
+    @staticmethod
+    def from_string(mono):
+        """
+        Get an instance of a glycan according to the provided string representation of the glycan
 
-def from_string(mono):
-    """
-    Get an instance of a glycan according to the provided string representation of the glycan
+        Args:
+            mono (str): string representation of the glycan of interest
 
-    Args:
-        mono (str): string representation of the glycan of interest
-
-    Returns:
-        Glycan according to the monosaccharide provided via mono
-    """
-    return Glycan[mono.upper()]
+        Returns:
+            Glycan according to the monosaccharide provided via mono
+        """
+        return Glycan[mono.upper()]
