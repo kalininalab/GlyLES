@@ -94,7 +94,7 @@ class Glycan(Enum):
                     (10, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 10),
                     (1, 11), (2, 12), (3, 13), (4, 14), (5, 6), (6, 15),
                 ])
-                nx.set_node_attributes(g, {2: {"chiral": Chirality.DOWN}, 3: {"chiral": Chirality.UP},
+                nx.set_node_attributes(g, {1: {"chiral": Chirality.DOWN}, 2: {"chiral": Chirality.DOWN}, 3: {"chiral": Chirality.UP},
                                            4: {"chiral": Chirality.UP}, 5: {"chiral": Chirality.UP}})
             elif self == Glycan.TAL:
                 g.add_edges_from([
@@ -105,7 +105,7 @@ class Glycan(Enum):
                                            4: {"chiral": Chirality.UP}, 5: {"chiral": Chirality.UP}})
             self.value["struct"] = g
 
-        return self.value["struct"]
+        return self.value["struct"].copy()
 
     @staticmethod
     def from_string(mono):

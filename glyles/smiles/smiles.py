@@ -188,12 +188,11 @@ class Merger:
         # iterate over the children and the atoms used to mark binding atoms
         for child, atom in zip(children, [Atom.X, Atom.Y, Atom.Z]):
             binding = list(t.get_edge_data(node, child)["type"])
-            monomer = t.nodes[node]["type"].structure()
+            monomer = t.nodes[node]["structure"]
 
             # and find that oxygen atom that will react with an hydrogen when connecting the glycans' monomers
             for _, x in monomer.edges(int(binding[4])):
                 if monomer.nodes[x]["type"] == Atom.O and 11 <= x <= 15:
-                    print("Marking:", atom)
                     monomer.nodes[x]["type"] = atom
                     break
 
@@ -211,7 +210,7 @@ class Merger:
         """
         # get my children and compute my SMILES string
         children = [x[1] for x in t.edges(node)]
-        me = SMILES().write(t.nodes[node]["type"].structure(), start, self.get_ring_index())
+        me = SMILES().write(t.nodes[node]["structure"], start, self.get_ring_index())
 
         # check for validity of the tree, i.e. if its a leaf (return, nothing to do) or has too many children (Error)
         if len(children) == 0:  # leaf
@@ -222,7 +221,7 @@ class Merger:
         # iterate over the children and the atoms used to mark binding atoms
         for child, atom in zip(children, ["X", "Y", "Z"]):
             binding = list(t.get_edge_data(node, child)["type"])
-            monomer = t.nodes[node]["type"].structure()
+            monomer = t.nodes[node]["structure"]
             child_start = -1
 
             # find the ID of the oxygen atom to start the SMILES representation from

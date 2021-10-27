@@ -4,7 +4,7 @@ import networkx as nx
 from antlr4 import *
 from antlr4.tree.Tree import ParseTree
 
-from glyles.glycans import glycans
+from glyles.glycans.glycans import Glycan
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
 
@@ -38,7 +38,7 @@ class TreeWalker:
 
         """
 
-        # Initialize the tree wiht the root
+        # Initialize the tree with the root
         node_id = self.__add_node(init)
 
         # add the parsed AST to the networkx graph
@@ -126,7 +126,7 @@ class TreeWalker:
         self.node_id += 1
 
         # add the node to the network and store the enum of the glycan as attribute
-        self.g.add_node(node_id, type=glycans.from_string(name))
+        self.g.add_node(node_id, type=Glycan.from_string(name), structure=Glycan.from_string(name).structure())
 
         return node_id
 
@@ -147,7 +147,7 @@ def parse(smiles, **kwargs):
     # Check for monosaccharides and eventually return a single-node-graph
     if "(" not in smiles:
         g = nx.DiGraph()
-        g.add_node(0, type=glycans.from_string(smiles))
+        g.add_node(0, type=Glycan.from_string(smiles))
         return g
 
     # Cut off the last monosaccharide as its the root
