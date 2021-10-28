@@ -11,6 +11,21 @@ class Chirality(Enum):
     DOWN = 2
     NONE = 3
 
+    @staticmethod
+    def from_string(c):
+        if c.lower() == "a":
+            return Chirality.DOWN
+        if c.lower() == "b":
+            return Chirality.UP
+        return Chirality.NONE
+
+    def get_opposite(self):
+        if self == Chirality.DOWN:
+            return Chirality.UP
+        if self == Chirality.UP:
+            return Chirality.DOWN
+        return Chirality.NONE
+
 
 class Atom(Enum):
     """
@@ -40,6 +55,7 @@ class Glycan(Enum):
         """
         Compute and save the structure of this glycan. So far its hard coded on the 5 given types of glycans
         # TODO: Implement a parser for SMILES -> smiles.smiles.SMILES.read()
+        Chirality refers to the OH/CH2OH group of the chiral C atom
 
         The resulting graph must have some properties (that are especially important for the correct implementation of
         the parser later on:
@@ -94,7 +110,7 @@ class Glycan(Enum):
                     (10, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 10),
                     (1, 11), (2, 12), (3, 13), (4, 14), (5, 6), (6, 15),
                 ])
-                nx.set_node_attributes(g, {1: {"chiral": Chirality.DOWN}, 2: {"chiral": Chirality.DOWN}, 3: {"chiral": Chirality.UP},
+                nx.set_node_attributes(g, {2: {"chiral": Chirality.DOWN}, 3: {"chiral": Chirality.UP},
                                            4: {"chiral": Chirality.UP}, 5: {"chiral": Chirality.UP}})
             elif self == Glycan.TAL:
                 g.add_edges_from([

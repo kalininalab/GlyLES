@@ -112,6 +112,14 @@ class SMILES:
         # check for chirality of the molecule. If its not chiral, just add the current atom type to the output
         # IMPORTANT: This method assumes that the chiral C-atoms have an hydrogen atom opposed to the OH group
         if g.nodes[node]["chiral"] != Chirality.NONE:
+            """
+            parent = next(tree.predecessors(node))
+            if parent < 11:
+                output = "[C{value}H]".format(value=("@@" if g.nodes[node]["chiral"] == Chirality.DOWN else "@"))
+            else:
+                output = "[C{value}H]".format(value=("@@" if g.nodes[node]["chiral"] != Chirality.DOWN else "@"))
+            """
+            # Previously:
             output = "[C{value}H]".format(value=("@@" if g.nodes[node]["chiral"] == Chirality.DOWN else "@"))
         else:
             output = g.nodes[node]["type"].value
@@ -148,30 +156,32 @@ class Merger:
         self.ring_index += 1
         return self.ring_index - 1
 
-    def merge(self, t):
+    def merge(self, t, root_orientation="n"):
         """
         Merge the provided tree of monomers enriched with the glycans in the nodes and information on the bindings
         between two monomer-nodes in the edges.
 
         Args:
             t (networkx.DiGraph): Graph representing the glycan to compute the whole SMILES representation for.
+            root_orientation (str): Orientation of the root monomer in glycan (can be a (= alpha) or b (= beta))
 
         Returns:
             SMILES representation as string
         """
         # first mark the atoms that will be replaced in a binding of two monomers
-        self.__mark(t, 0)
+        self.__mark(t, 0, "({}1-?)".format(root_orientation))
 
         # return the string that can be computed from connecting the monomers as marked above
-        return self.__merge(t, 0, 10)
+        return self.__merge(t, 0, 11)
 
-    def __mark(self, t, node):
+    def __mark(self, t, node, p_edge):
         """
         Recursively mark in every node of the molecule which atoms are being replaced by bound monomers.
 
         Args:
             t (networkx.DiGraph): Graph representing the glycan to compute the whole SMILES representation for.
             node (int): ID of the node to work on in this method
+            p_edge (str): edge annotation to parent monomer
 
         Returns:
             Nothing
@@ -179,22 +189,27 @@ class Merger:
         # get children nodes
         children = [x[1] for x in t.edges(node)]
 
+        # set chirality of atom binding parent
+        if p_edge is not None and t.nodes[node]["structure"].nodes[int(p_edge[2])]["chiral"] == Chirality.NONE:
+            t.nodes[node]["structure"].nodes[int(p_edge[2])]["chiral"] = Chirality.from_string(p_edge[1])
+
         # check for validity of the tree, i.e. if its a leaf (return, nothing to do) or has too many children (Error)
         if len(children) == 0:  # leaf
             return
         if len(children) > 3:  # too many children
             raise NotImplementedError("Glycans with maximal branching 4 factor not implemented.")
 
-        # iterate over the children and the atoms used to mark binding atoms
+        # iterate over the children and the atoms used to mark binding atoms in my structure
         for child, atom in zip(children, [Atom.X, Atom.Y, Atom.Z]):
             binding = list(t.get_edge_data(node, child)["type"])
             monomer = t.nodes[node]["structure"]
 
-            # and find that oxygen atom that will react with an hydrogen when connecting the glycans' monomers
+            # and find that oxygen atom that will react with a hydrogen when connecting the glycans' monomers
             for _, x in monomer.edges(int(binding[4])):
                 if monomer.nodes[x]["type"] == Atom.O and 11 <= x <= 15:
                     monomer.nodes[x]["type"] = atom
                     break
+            self.__mark(t, child, "".join(binding))
 
     def __merge(self, t, node, start):
         """
