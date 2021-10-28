@@ -45,13 +45,13 @@ class TestSMILES:
          "OC[C@H]2O[C@@H](O[C@@H]1[C@@H](O)[C@@H](O)O[C@H](CO)[C@H]1O)[C@H](O)[C@@H](O)[C@@H]2O"),  # beta
 
         ("Gal(b1-4)Gal",
-         "OC[C@H]2O[C@@H](O[C@@H]1[C@H](O)[C@@H](O)C(O)O[C@@H]1CO)[C@H](O)[C@@H](O)[C@H]2O"
+         "OC[C@H]2O[C@@H](O[C@@H]1[C@H](O)[C@@H](O)C(O)O[C@@H]1CO)[C@H](O)[C@@H](O)[C@H]2O",
          "OC[C@H]1O[C@@H](O[C@H]2[C@@H](CO)O[C@@H](O)[C@H](O)[C@H]2O)[C@H](O)[C@@H](O)[C@H]1O",  # alpha
          "OC[C@H]2O[C@@H](O[C@@H]1[C@H](O)[C@@H](O)[C@@H](O)O[C@@H]1CO)[C@H](O)[C@@H](O)[C@H]2O"),  # beta
 
         ("Man(a1-4)Man",
          "OC[C@H]2O[C@H](O[C@H]1[C@H](O)[C@H](O)C(O)O[C@@H]1CO)[C@@H](O)[C@@H](O)[C@@H]2O",
-         "OC[C@H]1O[C@H](O[C@@H]2[C@@H](CO)O[C@@H](O)[C@@H](O)[C@H]2O)[C@@H](O)[C@@H](O)[C@@H]1O"  # alpha
+         "OC[C@H]1O[C@H](O[C@@H]2[C@@H](CO)O[C@@H](O)[C@@H](O)[C@H]2O)[C@@H](O)[C@@H](O)[C@@H]1O",  # alpha
          "OC[C@H]2O[C@H](O[C@H]1[C@H](O)[C@H](O)[C@@H](O)O[C@@H]1CO)[C@@H](O)[C@@H](O)[C@@H]2O"),  # beta
 
         ("Man(a1-3)Man",
@@ -63,13 +63,13 @@ class TestSMILES:
          "OC[C@H]3O[C@H](O[C@@H]2[C@H](O)[C@@H](O)[C@H](O[C@H]1[C@H](O)[C@@H](O)C(O)O[C@@H]1CO)O[C@@H]2CO)[C@H](O)"
          "[C@@H](O)[C@H]3O",
          "OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O[C@@H]1O[C@H](CO)[C@H](O[C@H]2O[C@H](CO)[C@H](O)[C@H](O)[C@H]2O)"
-         "[C@H](O)[C@H]1O"  # alpha
+         "[C@H](O)[C@H]1O",  # alpha
          "OC[C@H]3O[C@H](O[C@@H]2[C@H](O)[C@@H](O)[C@H](O[C@H]1[C@H](O)[C@@H](O)[C@H](O)O[C@@H]1CO)O[C@@H]2CO)[C@H](O)"
          "[C@@H](O)[C@H]3O"),  # beta
 
         ("Gal(a1-3)Gal",
          "OC[C@H]2O[C@H](O[C@@H]1[C@@H](O)C(O)O[C@H](CO)[C@@H]1O)[C@H](O)[C@@H](O)[C@H]2O",
-         "OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O[C@H]2O[C@H](CO)[C@H](O)[C@H](O)[C@H]2O)[C@H]1O"  # alpha
+         "OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O[C@H]2O[C@H](CO)[C@H](O)[C@H](O)[C@H]2O)[C@H]1O",  # alpha
          "OC[C@H]2O[C@H](O[C@@H]1[C@@H](O)[C@H](O)O[C@H](CO)[C@@H]1O)[C@H](O)[C@@H](O)[C@H]2O"),  # beta
 
         ("Glc(a1-3)Glc",
@@ -110,8 +110,16 @@ class TestSMILES:
 
         self.compare_smiles(computed, solution)
 
-    @pytest.mark.parametrize("iupac, smiles", smiles_samples_simple)
-    def test_smiles_poly(self, iupac, smiles, alpha, beta):
-        computed = Merger().merge(parse(iupac))
+    @pytest.mark.parametrize("iupac, plain, alpha, beta", smiles_samples_simple)
+    @pytest.mark.parametrize("root_orientation", ["n", "a", "b"])
+    def test_smiles_poly(self, iupac, plain, alpha, beta, root_orientation):
+        computed = Merger().merge(parse(iupac), root_orientation=root_orientation)
+
+        if root_orientation == "a":
+            smiles = alpha
+        elif root_orientation == "b":
+            smiles = beta
+        else:
+            smiles = plain
 
         self.compare_smiles(computed, smiles)
