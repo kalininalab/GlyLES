@@ -1,10 +1,8 @@
-from enum import Enum
-
 import networkx as nx
 
-from glyles.glycans.monomer import Monomer
+from glyles.glycans import glycans
 
-
+'''
 class Chirality(Enum):
     """
     Representation of the chirality of certain atoms based on the Haworth notations of glycans.
@@ -147,6 +145,7 @@ NXMonomer.__monomers = {
     "GAL": NXMonomer(name="Gal", smiles="C([C@@H]1[C@@H]([C@@H]([C@H](C(O1)O)O)O)O)O", struct=None),
     "TAL": NXMonomer(name="Tal", smiles="C([C@@H]1[C@@H]([C@@H]([C@@H](C(O1)O)O)O)O)O", struct=None),
 }
+'''
 
 
 class DFS:
@@ -257,7 +256,7 @@ class SMILES:
 
         # check for chirality of the molecule. If its not chiral, just add the current atom type to the output
         # IMPORTANT: This method assumes that the chiral C-atoms have an hydrogen atom opposed to the OH group
-        if g.nodes[node]["chiral"] != Chirality.NONE:
+        if g.nodes[node]["chiral"] != glycans.Chirality.NONE:
             """
             parent = next(tree.predecessors(node))
             if parent < 11:
@@ -266,7 +265,7 @@ class SMILES:
                 output = "[C{value}H]".format(value=("@@" if g.nodes[node]["chiral"] != Chirality.DOWN else "@"))
             """
             # Previously:
-            output = "[C{value}H]".format(value=("@@" if g.nodes[node]["chiral"] == Chirality.DOWN else "@"))
+            output = "[C{value}H]".format(value=("@@" if g.nodes[node]["chiral"] == glycans.Chirality.DOWN else "@"))
         else:
             output = g.nodes[node]["type"].value
 
