@@ -1,8 +1,11 @@
+from enum import Enum
+
 import networkx as nx
 
 from glyles.glycans import glycans
+from glyles.glycans.monomer import Monomer
 
-'''
+
 class Chirality(Enum):
     """
     Representation of the chirality of certain atoms based on the Haworth notations of glycans.
@@ -145,7 +148,6 @@ NXMonomer.__monomers = {
     "GAL": NXMonomer(name="Gal", smiles="C([C@@H]1[C@@H]([C@@H]([C@H](C(O1)O)O)O)O)O", struct=None),
     "TAL": NXMonomer(name="Tal", smiles="C([C@@H]1[C@@H]([C@@H]([C@@H](C(O1)O)O)O)O)O", struct=None),
 }
-'''
 
 
 class DFS:
