@@ -11,3 +11,8 @@ This implementation currently only works for glycans that fulfil certain propert
 * The single monomers may consist of only 1 ring.
 * The C1 atom of the root monomer might have the wrong representation of its chirality in SMILES (Suggestion: Leave the
   root monomer unspecified in its chirality)
+
+## Workflow
+
+Parse the iupac in the parser and put the result into the merger.
+> print(Merger().merge(parse("Gal(a1-4)Gal", mode="nx"), root_orientation='n'))
