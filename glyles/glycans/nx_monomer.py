@@ -2,45 +2,8 @@ from enum import Enum
 
 import networkx as nx
 
-from glyles.glycans import glycans
+from glyles.glycans import glycans  # remove this dependency
 from glyles.glycans.monomer import Monomer
-
-
-class Chirality(Enum):
-    """
-    Representation of the chirality of certain atoms based on the Haworth notations of glycans.
-    """
-    UP = 1
-    DOWN = 2
-    NONE = 3
-
-    @staticmethod
-    def from_string(c):
-        if c.lower() == "a":
-            return Chirality.DOWN
-        if c.lower() == "b":
-            return Chirality.UP
-        return Chirality.NONE
-
-    def get_opposite(self):
-        if self == Chirality.DOWN:
-            return Chirality.UP
-        if self == Chirality.UP:
-            return Chirality.DOWN
-        return Chirality.NONE
-
-
-class Atom(Enum):
-    """
-    Different types of atoms in the glycans.
-    X, Y, Z are used to perform the concatenation of the glycans
-    """
-    N = "N"
-    C = "C"
-    O = "O"
-    X = "X"
-    Y = "Y"
-    Z = "Z"
 
 
 class NXMonomer(Monomer):
@@ -49,11 +12,62 @@ class NXMonomer(Monomer):
     They contain their name, one SMILES representation and a field to store the structure of the glycan once computed
     """
 
+    class Chirality(Enum):
+        """
+        Representation of the chirality of certain atoms based on the Haworth notations of glycans.
+        """
+        UP = 1
+        DOWN = 2
+        NONE = 3
+
+        @staticmethod
+        def from_string(c):
+            if c.lower() == "a":
+                return NXMonomer.Chirality.DOWN
+            if c.lower() == "b":
+                return NXMonomer.Chirality.UP
+            return NXMonomer.Chirality.NONE
+
+        def get_opposite(self):
+            if self == NXMonomer.Chirality.DOWN:
+                return NXMonomer.Chirality.UP
+            if self == NXMonomer.Chirality.UP:
+                return NXMonomer.Chirality.DOWN
+            return NXMonomer.Chirality.NONE
+
+    class Atom(Enum):
+        """
+        Different types of atoms in the glycans.
+        X, Y, Z are used to perform the concatenation of the glycans
+        """
+        N = "N"
+        C = "C"
+        O = "O"
+        X = "X"
+        Y = "Y"
+        Z = "Z"
+
     def __init__(self, **kwargs):
         super().__init__()
         self.__name = kwargs["name"]
         self.__smiles = kwargs["smiles"]
-        self.__structure = kwargs["struct"]
+        self.__structure = kwargs.get("struct", None)
+        self.__config = kwargs.get("config", Monomer.Config.UNDEF)
+
+    def smiles(self):
+        pass
+
+    def alpha(self):
+        return NXMonomer.__monomers["A" + self.__name[-3:]]
+
+    def beta(self):
+        return NXMonomer.__monomers["B" + self.__name[-3:]]
+
+    def undefined(self):
+        return NXMonomer.__monomers[self.__name[-3:]]
+
+    def get_config(self):
+        return self.__config
 
     def structure(self):
         """
@@ -75,58 +89,68 @@ class NXMonomer(Monomer):
         if self.__structure is None:
             g = nx.Graph()
             g.add_nodes_from([
-                (1, {"type": Atom.C, "chiral": Chirality.NONE, "ring": True}),
-                (2, {"type": Atom.C, "chiral": Chirality.NONE, "ring": True}),
-                (3, {"type": Atom.C, "chiral": Chirality.NONE, "ring": True}),
-                (4, {"type": Atom.C, "chiral": Chirality.NONE, "ring": True}),
-                (5, {"type": Atom.C, "chiral": Chirality.NONE, "ring": True}),
-                (6, {"type": Atom.C, "chiral": Chirality.NONE, "ring": False}),
-                (10, {"type": Atom.O, "chiral": Chirality.NONE, "ring": True}),
-                (11, {"type": Atom.O, "chiral": Chirality.NONE, "ring": False}),
-                (12, {"type": Atom.O, "chiral": Chirality.NONE, "ring": False}),
-                (13, {"type": Atom.O, "chiral": Chirality.NONE, "ring": False}),
-                (14, {"type": Atom.O, "chiral": Chirality.NONE, "ring": False}),
-                (15, {"type": Atom.O, "chiral": Chirality.NONE, "ring": False}),
+                (1, {"type": NXMonomer.Atom.C, "chiral": NXMonomer.Chirality.NONE, "ring": True}),
+                (2, {"type": NXMonomer.Atom.C, "chiral": NXMonomer.Chirality.NONE, "ring": True}),
+                (3, {"type": NXMonomer.Atom.C, "chiral": NXMonomer.Chirality.NONE, "ring": True}),
+                (4, {"type": NXMonomer.Atom.C, "chiral": NXMonomer.Chirality.NONE, "ring": True}),
+                (5, {"type": NXMonomer.Atom.C, "chiral": NXMonomer.Chirality.NONE, "ring": True}),
+                (6, {"type": NXMonomer.Atom.C, "chiral": NXMonomer.Chirality.NONE, "ring": False}),
+                (10, {"type": NXMonomer.Atom.O, "chiral": NXMonomer.Chirality.NONE, "ring": True}),
+                (11, {"type": NXMonomer.Atom.O, "chiral": NXMonomer.Chirality.NONE, "ring": False}),
+                (12, {"type": NXMonomer.Atom.O, "chiral": NXMonomer.Chirality.NONE, "ring": False}),
+                (13, {"type": NXMonomer.Atom.O, "chiral": NXMonomer.Chirality.NONE, "ring": False}),
+                (14, {"type": NXMonomer.Atom.O, "chiral": NXMonomer.Chirality.NONE, "ring": False}),
+                (15, {"type": NXMonomer.Atom.O, "chiral": NXMonomer.Chirality.NONE, "ring": False}),
             ])
             if self.__name == "Glc":
                 g.add_edges_from([
                     (10, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 10),
                     (1, 11), (2, 12), (3, 13), (4, 14), (5, 6), (6, 15),
                 ])
-                nx.set_node_attributes(g, {2: {"chiral": Chirality.DOWN}, 3: {"chiral": Chirality.UP},
-                                           4: {"chiral": Chirality.DOWN}, 5: {"chiral": Chirality.UP}})
+                nx.set_node_attributes(g, {2: {"chiral": NXMonomer.Chirality.DOWN},
+                                           3: {"chiral": NXMonomer.Chirality.UP},
+                                           4: {"chiral": NXMonomer.Chirality.DOWN},
+                                           5: {"chiral": NXMonomer.Chirality.UP}})
             elif self.__name == "Fru":
                 g.add_edges_from([
                     (10, 2), (2, 3), (3, 4), (4, 5), (5, 10),
                     (1, 2), (1, 11), (2, 12), (3, 13), (4, 14), (5, 6), (6, 15),
                 ])
-                nx.set_node_attributes(g, {3: {"chiral": Chirality.UP}, 4: {"chiral": Chirality.DOWN},
-                                           5: {"chiral": Chirality.UP}})
+                nx.set_node_attributes(g, {3: {"chiral": NXMonomer.Chirality.UP},
+                                           4: {"chiral": NXMonomer.Chirality.DOWN},
+                                           5: {"chiral": NXMonomer.Chirality.UP}})
             elif self.__name == "Man":
                 g.add_edges_from([
                     (10, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 10),
                     (1, 11), (2, 12), (3, 13), (4, 14), (5, 6), (6, 15)
                 ])
-                nx.set_node_attributes(g, {2: {"chiral": Chirality.UP}, 3: {"chiral": Chirality.UP},
-                                           4: {"chiral": Chirality.DOWN}, 5: {"chiral": Chirality.UP}})
+                nx.set_node_attributes(g, {2: {"chiral": NXMonomer.Chirality.UP},
+                                           3: {"chiral": NXMonomer.Chirality.UP},
+                                           4: {"chiral": NXMonomer.Chirality.DOWN},
+                                           5: {"chiral": NXMonomer.Chirality.UP}})
             elif self.__name == "Gal":
                 g.add_edges_from([
                     (10, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 10),
                     (1, 11), (2, 12), (3, 13), (4, 14), (5, 6), (6, 15),
                 ])
-                nx.set_node_attributes(g, {2: {"chiral": Chirality.DOWN}, 3: {"chiral": Chirality.UP},
-                                           4: {"chiral": Chirality.UP}, 5: {"chiral": Chirality.UP}})
+                nx.set_node_attributes(g, {2: {"chiral": NXMonomer.Chirality.DOWN},
+                                           3: {"chiral": NXMonomer.Chirality.UP},
+                                           4: {"chiral": NXMonomer.Chirality.UP},
+                                           5: {"chiral": NXMonomer.Chirality.UP}})
             elif self.__name == "Tal":
                 g.add_edges_from([
                     (10, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 10),
                     (1, 11), (2, 12), (3, 13), (4, 14), (5, 6), (6, 15),
                 ])
-                nx.set_node_attributes(g, {2: {"chiral": Chirality.UP}, 3: {"chiral": Chirality.UP},
-                                           4: {"chiral": Chirality.UP}, 5: {"chiral": Chirality.UP}})
+                nx.set_node_attributes(g, {2: {"chiral": NXMonomer.Chirality.UP},
+                                           3: {"chiral": NXMonomer.Chirality.UP},
+                                           4: {"chiral": NXMonomer.Chirality.UP},
+                                           5: {"chiral": NXMonomer.Chirality.UP}})
             self.__structure = g
 
         return self.__structure.copy()
 
+    '''
     @staticmethod
     def from_string(mono):
         """
@@ -139,14 +163,30 @@ class NXMonomer(Monomer):
             Glycan according to the monosaccharide provided via mono
         """
         return NXMonomer.__monomers[mono.upper()]
+    '''
 
 
 NXMonomer.__monomers = {
-    "GLC": NXMonomer(name="Glc", smiles="C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O)O", struct=None),
-    "FRU": NXMonomer(name="Fru", smiles="C([C@@H]1[C@H]([C@@H](C(O1)(CO)O)O)O)O", struct=None),
-    "MAN": NXMonomer(name="Man", smiles="C([C@@H]1[C@H]([C@@H]([C@@H](C(O1)O)O)O)O)O", struct=None),
-    "GAL": NXMonomer(name="Gal", smiles="C([C@@H]1[C@@H]([C@@H]([C@H](C(O1)O)O)O)O)O", struct=None),
-    "TAL": NXMonomer(name="Tal", smiles="C([C@@H]1[C@@H]([C@@H]([C@@H](C(O1)O)O)O)O)O", struct=None),
+    "GLC": NXMonomer(name="Glc", smiles="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.UNDEF),
+    "AGLC": NXMonomer(name="Glc", smiles="OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.ALPHA),
+    "BGLC": NXMonomer(name="Glc", smiles="OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.BETA),
+
+    # fructose formulas not correct
+    "FRU": NXMonomer(name="Fru", smiles="OC[C@H]1OC(O)(CO)[C@@H](O)[C@@H]1O", config=Monomer.Config.UNDEF),
+    "AFRU": NXMonomer(name="Fru", smiles="C([C@@H]1[C@H]([C@@H](C(O1)(CO)O)O)O)O", config=Monomer.Config.ALPHA),
+    "BFRU": NXMonomer(name="Fru", smiles="C([C@@H]1[C@H]([C@@H](C(O1)(CO)O)O)O)O", config=Monomer.Config.BETA),
+
+    "MAN": NXMonomer(name="Man", smiles="OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.UNDEF),
+    "AMAN": NXMonomer(name="Man", smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.ALPHA),
+    "BMAN": NXMonomer(name="Man", smiles="OC[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.BETA),
+
+    "GAL": NXMonomer(name="Gal", smiles="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.UNDEF),
+    "AGAL": NXMonomer(name="Gal", smiles="OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.ALPHA),
+    "BGAL": NXMonomer(name="Gal", smiles="OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.BETA),
+
+    "TAL": NXMonomer(name="Tal", smiles="OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.UNDEF),
+    "ATAL": NXMonomer(name="Tal", smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.ALPHA),
+    "BTAL": NXMonomer(name="Tal", smiles="OC[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.BETA),
 }
 
 
