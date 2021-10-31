@@ -51,7 +51,11 @@ class Merger:
 
         # set chirality of atom binding parent
         if p_edge is not None and t.nodes[node]["type"].is_non_chiral():
+            print("Chirality-Type:", p_edge[1])
+            print(t.nodes[node]["type"].to_smiles())
             t.nodes[node]["type"] = t.nodes[node]["type"].to_chirality(p_edge[1])
+            print(t.nodes[node]["type"].to_smiles())
+            print(t.nodes[node]["type"].to_chirality(p_edge[1]).to_smiles())
 
         # check for validity of the tree, i.e. if its a leaf (return, nothing to do) or has too many children (Error)
         if len(children) == 0:  # leaf

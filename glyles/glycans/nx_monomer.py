@@ -107,14 +107,6 @@ class NXMonomer(Monomer):
                                            3: {"chiral": NXMonomer.Chirality.UP},
                                            4: {"chiral": NXMonomer.Chirality.DOWN},
                                            5: {"chiral": NXMonomer.Chirality.UP}})
-            elif self.__name == "Fru":
-                g.add_edges_from([
-                    (10, 2), (2, 3), (3, 4), (4, 5), (5, 10),
-                    (1, 2), (1, 11), (2, 12), (3, 13), (4, 14), (5, 6), (6, 15),
-                ])
-                nx.set_node_attributes(g, {3: {"chiral": NXMonomer.Chirality.UP},
-                                           4: {"chiral": NXMonomer.Chirality.DOWN},
-                                           5: {"chiral": NXMonomer.Chirality.UP}})
             elif self.__name == "Man":
                 g.add_edges_from([
                     (10, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 10),
@@ -142,9 +134,14 @@ class NXMonomer(Monomer):
                                            3: {"chiral": NXMonomer.Chirality.UP},
                                            4: {"chiral": NXMonomer.Chirality.UP},
                                            5: {"chiral": NXMonomer.Chirality.UP}})
-            self.__structure = g
 
-        return self.__structure.copy()
+            if self.__config == NXMonomer.Config.ALPHA:
+                nx.set_node_attributes(g, {1: {"chiral": NXMonomer.Chirality.DOWN}})
+            elif self.__config == NXMonomer.Config.BETA:
+                nx.set_node_attributes(g, {1: {"chiral": NXMonomer.Chirality.UP}})
+
+            self.__structure = g
+        return self.__structure
 
     def is_non_chiral(self):
         return self.__config == Monomer.Config.UNDEF
@@ -175,7 +172,7 @@ class NXMonomer(Monomer):
 
         return child_start
 
-    def to_smiles(self, root, ring_index):
+    def to_smiles(self, root=10, ring_index=1):
         return SMILES().write(self.structure(), root, ring_index)
 
     def mark(self, position, atom):
@@ -202,11 +199,6 @@ class NXMonomer(Monomer):
             "GLC": NXMonomer(name="Glc", smiles="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.UNDEF),
             "AGLC": NXMonomer(name="Glc", smiles="OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.ALPHA),
             "BGLC": NXMonomer(name="Glc", smiles="OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.BETA),
-
-            # fructose formulas not correct
-            "FRU": NXMonomer(name="Fru", smiles="OC[C@H]1OC(O)(CO)[C@@H](O)[C@@H]1O", config=Monomer.Config.UNDEF),
-            "AFRU": NXMonomer(name="Fru", smiles="C([C@@H]1[C@H]([C@@H](C(O1)(CO)O)O)O)O", config=Monomer.Config.ALPHA),
-            "BFRU": NXMonomer(name="Fru", smiles="C([C@@H]1[C@H]([C@@H](C(O1)(CO)O)O)O)O", config=Monomer.Config.BETA),
 
             "MAN": NXMonomer(name="Man", smiles="OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.UNDEF),
             "AMAN": NXMonomer(name="Man", smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.ALPHA),

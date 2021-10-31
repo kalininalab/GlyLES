@@ -101,8 +101,7 @@ class TestSMILES:
                             equal=False)
 
     @pytest.mark.parametrize("glycan", [
-        ("Glc", "<OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O>"),
-        ("Fru", "OC[C@H]1OC(O)(CO)[C@@H](O)[C@@H]1O"),
+        ("Glc", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"),
         ("Man", "OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O"),
         ("Gal", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O"),
         ("Tal", "OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@H]1O"),
@@ -118,6 +117,7 @@ class TestSMILES:
     # @pytest.mark.parametrize("root_orientation", ["n", "a", "b"])
     @pytest.mark.parametrize("iupac, plain, alpha, beta", smiles_samples_simple)
     def test_smiles_poly(self, iupac, plain, alpha, beta, root_orientation="n"):
+        print("\nOutput:")
         computed = Merger().merge(parse(iupac, mode="nx"), root_orientation=root_orientation)
 
         if root_orientation == "a":
@@ -127,4 +127,5 @@ class TestSMILES:
         else:
             smiles = plain
 
+        print(computed)
         self.compare_smiles(computed, smiles)

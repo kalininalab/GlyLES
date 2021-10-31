@@ -3,12 +3,12 @@ from glyles.grammar.parse import parse
 smiles = [
     "Man",
     "Man(a1-4)Glc",
-    "Man(a1-4)Glc(a1-3)Fru",
-    "Man(a1-4)[Glc(a1-3)]Fru",
-    "Man(a1-4)[Glc(a1-3)Fru(b1-4)]Gal",
-    "Man(a1-4)Glc(a1-3)[Fru(b1-4)]Gal",
-    "Man(a1-4)Glc(a1-3)[Fru(b1-4)Gal(b1-3)]Tal",
-    "Man(a1-4)[Glc(a1-3)Fru(b1-4)]Gal(b1-3)Tal",
+    "Man(a1-4)Glc(a1-3)Tal",
+    "Man(a1-4)[Glc(a1-3)]Tal",
+    "Man(a1-4)[Glc(a1-3)Tal(b1-4)]Gal",
+    "Man(a1-4)Glc(a1-3)[Tal(b1-4)]Gal",
+    "Man(a1-4)Glc(a1-3)[Tal(b1-4)Gal(b1-3)]Tal",
+    "Man(a1-4)[Glc(a1-3)Tal(b1-4)]Gal(b1-3)Tal",
 ]
 
 
@@ -47,7 +47,7 @@ class TestParser:
     def test_parse_3(self):
         g = parse(smiles[2])
 
-        check_initial(g, "Fru", 1)
+        check_initial(g, "Tal", 1)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Glc", "(a1-3)", 1)
         id_child_2 = list(g.edges(id_child_1))[0][1]
@@ -56,7 +56,7 @@ class TestParser:
     def test_parse_4(self):
         g = parse(smiles[3])
 
-        check_initial(g, "Fru", 2)
+        check_initial(g, "Tal", 2)
         id_children_1 = [x[1] for x in list(g.edges(0))]
         id_child_1, id_child_2 = split_children(g, id_children_1, "Glc")
 
@@ -68,9 +68,9 @@ class TestParser:
 
         check_initial(g, "Gal", 2)
         id_children_1 = [x[1] for x in list(g.edges(0))]
-        id_child_1, id_child_2 = split_children(g, id_children_1, "Fru")
+        id_child_1, id_child_2 = split_children(g, id_children_1, "Tal")
 
-        check_child(g, 0, id_child_1, "Fru", "(b1-4)", 1)
+        check_child(g, 0, id_child_1, "Tal", "(b1-4)", 1)
         check_child(g, 0, id_child_2, "Man", "(a1-4)", 0)
 
         id_child_11 = list(g.edges(id_child_1))[0][1]
@@ -81,9 +81,9 @@ class TestParser:
 
         check_initial(g, "Gal", 2)
         id_children_1 = [x[1] for x in list(g.edges(0))]
-        id_child_1, id_child_2 = split_children(g, id_children_1, "Fru")
+        id_child_1, id_child_2 = split_children(g, id_children_1, "Tal")
 
-        check_child(g, 0, id_child_1, "Fru", "(b1-4)", 0)
+        check_child(g, 0, id_child_1, "Tal", "(b1-4)", 0)
         check_child(g, 0, id_child_2, "Glc", "(a1-3)", 1)
 
         id_child_21 = list(g.edges(id_child_2))[0][1]
@@ -100,7 +100,7 @@ class TestParser:
         check_child(g, 0, id_child_2, "Glc", "(a1-3)", 1)
 
         id_child_11 = list(g.edges(id_child_1))[0][1]
-        check_child(g, id_child_1, id_child_11, "Fru", "(b1-4)", 0)
+        check_child(g, id_child_1, id_child_11, "Tal", "(b1-4)", 0)
 
         id_child_21 = list(g.edges(id_child_2))[0][1]
         check_child(g, id_child_2, id_child_21, "Man", "(a1-4)", 0)
@@ -113,9 +113,9 @@ class TestParser:
         check_child(g, 0, id_child_1, "Gal", "(b1-3)", 2)
 
         id_children_1 = [x[1] for x in list(g.edges(id_child_1))]
-        id_child_11, id_child_12 = split_children(g, id_children_1, "Fru")
+        id_child_11, id_child_12 = split_children(g, id_children_1, "Tal")
 
-        check_child(g, id_child_1, id_child_11, "Fru", "(b1-4)", 1)
+        check_child(g, id_child_1, id_child_11, "Tal", "(b1-4)", 1)
         check_child(g, id_child_1, id_child_12, "Man", "(a1-4)", 0)
 
         id_child_111 = list(g.edges(id_child_11))[0][1]
