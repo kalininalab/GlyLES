@@ -2,7 +2,6 @@ from enum import Enum
 
 import networkx as nx
 
-from glyles.glycans import glycans  # remove this dependency
 from glyles.glycans.monomer import Monomer
 
 
@@ -54,17 +53,14 @@ class NXMonomer(Monomer):
         self.__structure = kwargs.get("struct", None)
         self.__config = kwargs.get("config", Monomer.Config.UNDEF)
 
-    def smiles(self):
-        pass
-
     def alpha(self):
-        return NXMonomer.__monomers["A" + self.__name[-3:]]
+        return self.from_string("A" + self.__name[-3:])
 
     def beta(self):
-        return NXMonomer.__monomers["B" + self.__name[-3:]]
+        return self.from_string("B" + self.__name[-3:])
 
     def undefined(self):
-        return NXMonomer.__monomers[self.__name[-3:]]
+        return self.from_string(self.__name[-3:])
 
     def get_config(self):
         return self.__config
@@ -150,7 +146,47 @@ class NXMonomer(Monomer):
 
         return self.__structure.copy()
 
-    '''
+    def is_non_chiral(self):
+        return self.__config == Monomer.Config.UNDEF
+
+    def to_chirality(self, chirality):
+        chirality = chirality.lower()
+        if chirality == "a":
+            return self.alpha()
+        if chirality == "b":
+            return self.beta()
+        return self.undefined()
+
+    def get_dummy_atoms(self):
+        return [NXMonomer.Atom.X, NXMonomer.Atom.Y, NXMonomer.Atom.Z], ["X", "Y", "Z"]
+
+    def root_atom_id(self, binding_c_id):
+        child_start = -1
+
+        # find the ID of the oxygen atom to start the SMILES representation from
+        for _, x in self.structure().edges(binding_c_id):
+            if self.structure().nodes[x]["type"] == NXMonomer.Atom.O and 11 <= x <= 15:
+                child_start = x
+                break
+
+        # if the start-point couldn't be found, raise an error
+        if child_start == -1:
+            raise ValueError("SMILES cannot computed from atom -1!")
+
+        return child_start
+
+    def to_smiles(self, root, ring_index):
+        return SMILES().write(self.structure(), root, ring_index)
+
+    def mark(self, position, atom):
+        monomer = self.structure()
+
+        # and find that oxygen atom that will react with a hydrogen when connecting the glycans' monomers
+        for _, x in monomer.edges(position):
+            if monomer.nodes[x]["type"] == NXMonomer.Atom.O and 11 <= x <= 15:
+                monomer.nodes[x]["type"] = atom
+                break
+
     @staticmethod
     def from_string(mono):
         """
@@ -162,32 +198,28 @@ class NXMonomer(Monomer):
         Returns:
             Glycan according to the monosaccharide provided via mono
         """
-        return NXMonomer.__monomers[mono.upper()]
-    '''
+        return {
+            "GLC": NXMonomer(name="Glc", smiles="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.UNDEF),
+            "AGLC": NXMonomer(name="Glc", smiles="OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.ALPHA),
+            "BGLC": NXMonomer(name="Glc", smiles="OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.BETA),
 
+            # fructose formulas not correct
+            "FRU": NXMonomer(name="Fru", smiles="OC[C@H]1OC(O)(CO)[C@@H](O)[C@@H]1O", config=Monomer.Config.UNDEF),
+            "AFRU": NXMonomer(name="Fru", smiles="C([C@@H]1[C@H]([C@@H](C(O1)(CO)O)O)O)O", config=Monomer.Config.ALPHA),
+            "BFRU": NXMonomer(name="Fru", smiles="C([C@@H]1[C@H]([C@@H](C(O1)(CO)O)O)O)O", config=Monomer.Config.BETA),
 
-NXMonomer.__monomers = {
-    "GLC": NXMonomer(name="Glc", smiles="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.UNDEF),
-    "AGLC": NXMonomer(name="Glc", smiles="OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.ALPHA),
-    "BGLC": NXMonomer(name="Glc", smiles="OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.BETA),
+            "MAN": NXMonomer(name="Man", smiles="OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.UNDEF),
+            "AMAN": NXMonomer(name="Man", smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.ALPHA),
+            "BMAN": NXMonomer(name="Man", smiles="OC[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.BETA),
 
-    # fructose formulas not correct
-    "FRU": NXMonomer(name="Fru", smiles="OC[C@H]1OC(O)(CO)[C@@H](O)[C@@H]1O", config=Monomer.Config.UNDEF),
-    "AFRU": NXMonomer(name="Fru", smiles="C([C@@H]1[C@H]([C@@H](C(O1)(CO)O)O)O)O", config=Monomer.Config.ALPHA),
-    "BFRU": NXMonomer(name="Fru", smiles="C([C@@H]1[C@H]([C@@H](C(O1)(CO)O)O)O)O", config=Monomer.Config.BETA),
+            "GAL": NXMonomer(name="Gal", smiles="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.UNDEF),
+            "AGAL": NXMonomer(name="Gal", smiles="OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.ALPHA),
+            "BGAL": NXMonomer(name="Gal", smiles="OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.BETA),
 
-    "MAN": NXMonomer(name="Man", smiles="OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.UNDEF),
-    "AMAN": NXMonomer(name="Man", smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.ALPHA),
-    "BMAN": NXMonomer(name="Man", smiles="OC[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@@H]1O", config=Monomer.Config.BETA),
-
-    "GAL": NXMonomer(name="Gal", smiles="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.UNDEF),
-    "AGAL": NXMonomer(name="Gal", smiles="OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.ALPHA),
-    "BGAL": NXMonomer(name="Gal", smiles="OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.BETA),
-
-    "TAL": NXMonomer(name="Tal", smiles="OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.UNDEF),
-    "ATAL": NXMonomer(name="Tal", smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.ALPHA),
-    "BTAL": NXMonomer(name="Tal", smiles="OC[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.BETA),
-}
+            "TAL": NXMonomer(name="Tal", smiles="OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.UNDEF),
+            "ATAL": NXMonomer(name="Tal", smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.ALPHA),
+            "BTAL": NXMonomer(name="Tal", smiles="OC[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@H]1O", config=Monomer.Config.BETA),
+        }[mono.upper()]
 
 
 class DFS:
@@ -298,7 +330,7 @@ class SMILES:
 
         # check for chirality of the molecule. If its not chiral, just add the current atom type to the output
         # IMPORTANT: This method assumes that the chiral C-atoms have an hydrogen atom opposed to the OH group
-        if g.nodes[node]["chiral"] != glycans.Chirality.NONE:
+        if g.nodes[node]["chiral"] != NXMonomer.Chirality.NONE:
             """
             parent = next(tree.predecessors(node))
             if parent < 11:
@@ -307,7 +339,7 @@ class SMILES:
                 output = "[C{value}H]".format(value=("@@" if g.nodes[node]["chiral"] != Chirality.DOWN else "@"))
             """
             # Previously:
-            output = "[C{value}H]".format(value=("@@" if g.nodes[node]["chiral"] == glycans.Chirality.DOWN else "@"))
+            output = "[C{value}H]".format(value=("@@" if g.nodes[node]["chiral"] == NXMonomer.Chirality.DOWN else "@"))
         else:
             output = g.nodes[node]["type"].value
 

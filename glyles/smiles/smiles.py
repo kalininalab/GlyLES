@@ -1,8 +1,3 @@
-from glyles.glycans.glycans import Chirality, Atom  # remove these dependencies
-from glyles.glycans.monomer import Monomer
-from glyles.glycans.nx_monomer import SMILES  # remove this dependency
-
-
 class Merger:
     """
     Merge the tree of monomers into a SMILES representation of the complete molecule.
@@ -37,7 +32,7 @@ class Merger:
         self.__mark(t, 0, "({}1-?)".format(root_orientation))
 
         # return the string that can be computed from connecting the monomers as marked above
-        return self.__merge(t, 0, 11)
+        return self.__merge(t, 0, 10)
 
     def __mark(self, t, node, p_edge):
         """
@@ -54,10 +49,9 @@ class Merger:
         # get children nodes
         children = [x[1] for x in t.edges(node)]
 
-        # set chirality of atom binding parent  TODO
-        # if p_edge is not None and t.nodes[node].get_config() == Monomer.Config.UNDEF:
-        if p_edge is not None and t.nodes[node]["structure"].nodes[int(p_edge[2])]["chiral"] == Chirality.NONE:
-            t.nodes[node]["structure"].nodes[int(p_edge[2])]["chiral"] = Chirality.from_string(p_edge[1])
+        # set chirality of atom binding parent
+        if p_edge is not None and t.nodes[node]["type"].is_non_chiral():
+            t.nodes[node]["type"] = t.nodes[node]["type"].to_chirality(p_edge[1])
 
         # check for validity of the tree, i.e. if its a leaf (return, nothing to do) or has too many children (Error)
         if len(children) == 0:  # leaf
@@ -65,17 +59,12 @@ class Merger:
         if len(children) > 3:  # too many children
             raise NotImplementedError("Glycans with maximal branching 4 factor not implemented.")
 
-        # iterate over the children and the atoms used to mark binding atoms in my structure  TODO
-        for child, atom in zip(children, [Atom.X, Atom.Y, Atom.Z]):
-            binding = list(t.get_edge_data(node, child)["type"])
-            monomer = t.nodes[node]["structure"]
+        # iterate over the children and the atoms used to mark binding atoms in my structure
+        for child, atom in zip(children, t.nodes[node]["type"].get_dummy_atoms()[0]):
+            binding = t.get_edge_data(node, child)["type"]
 
-            # and find that oxygen atom that will react with a hydrogen when connecting the glycans' monomers
-            for _, x in monomer.edges(int(binding[4])):
-                if monomer.nodes[x]["type"] == Atom.O and 11 <= x <= 15:
-                    monomer.nodes[x]["type"] = atom
-                    break
-            self.__mark(t, child, "".join(binding))
+            t.nodes[node]["type"].mark(int(binding[4]), atom)
+            self.__mark(t, child, binding)
 
     def __merge(self, t, node, start):
         """
@@ -91,7 +80,7 @@ class Merger:
         """
         # get my children and compute my SMILES string
         children = [x[1] for x in t.edges(node)]
-        me = SMILES().write(t.nodes[node]["structure"], start, self.get_ring_index())
+        me = t.nodes[node]["type"].to_smiles(start, self.get_ring_index())
 
         # check for validity of the tree, i.e. if its a leaf (return, nothing to do) or has too many children (Error)
         if len(children) == 0:  # leaf
@@ -100,21 +89,10 @@ class Merger:
             raise NotImplementedError("Glycans with maximal branching factor 4 not implemented.")
 
         # iterate over the children and the atoms used to mark binding atoms
-        for child, atom in zip(children, ["X", "Y", "Z"]):
+        for child, atom in zip(children, t.nodes[node]["type"].get_dummy_atoms()[1]):
             binding = list(t.get_edge_data(node, child)["type"])
-            monomer = t.nodes[node]["structure"]
-            child_start = -1
 
-            # find the ID of the oxygen atom to start the SMILES representation from
-            for _, x in monomer.edges(int(binding[2])):
-                if monomer.nodes[x]["type"] == Atom.O and 11 <= x <= 15:
-                    child_start = x
-                    break
-
-            # if the start-point couldn't be found, raise an error
-            if child_start == -1:
-                raise ValueError("SMILES cannot computed from atom -1!")
-
+            child_start = t.nodes[node]["type"].root_atom_id(int(binding[2]))
             # get the SMILES of this child and plug it in in the current own SMILES
             child_smiles = self.__merge(t, child, child_start)
             me = me.replace(atom, child_smiles)

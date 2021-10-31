@@ -1,9 +1,7 @@
 import pytest
 from rdkit import Chem
 
-from glyles.glycans.glycans import Glycan  # remove this dependency
-from glyles.glycans.nx_monomer import SMILES  # remove this dependency
-from glyles.grammar.parse import parse
+from glyles.grammar.parse import parse, monomer_from_string
 from glyles.smiles.smiles import Merger
 
 
@@ -99,15 +97,21 @@ class TestSMILES:
             assert c_rdkit != s_rdkit
 
     def test_sanity(self):
-        self.compare_smiles(Glycan.from_string("Man").value["smiles"], Glycan.from_string("Glc").value["smiles"],
+        self.compare_smiles("OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O",
                             equal=False)
 
-    @pytest.mark.parametrize("glycan", ["Glc", "Fru", "Man", "Gal", "Tal"])
+    @pytest.mark.parametrize("glycan", [
+        ("Glc", "<OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O>"),
+        ("Fru", "OC[C@H]1OC(O)(CO)[C@@H](O)[C@@H]1O"),
+        ("Man", "OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O"),
+        ("Gal", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O"),
+        ("Tal", "OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@H]1O"),
+    ])
     @pytest.mark.parametrize("source", [10, 11, 12, 13, 14, 15])
     def test_smiles_mono(self, glycan, source):
-        monomer = Glycan.from_string(glycan)
-        solution = monomer.value["smiles"]
-        computed = SMILES().write(monomer.structure(), source)
+        monomer = monomer_from_string(glycan[0])
+        solution = glycan[1]
+        computed = monomer.to_smiles(10, 1)
 
         self.compare_smiles(computed, solution)
 

@@ -17,7 +17,7 @@ class Monomer:
         pass
     '''
 
-    def smiles(self):
+    def to_smiles(self, root, ring_index):
         pass
 
     def alpha(self):
@@ -32,5 +32,11 @@ class Monomer:
     def get_config(self):
         pass
 
-    def mark(self, children):
+    def mark(self, position, atom):
+        pass
+
+    def get_dummy_atoms(self):
+        pass
+
+    def is_non_chiral(self):
         pass
