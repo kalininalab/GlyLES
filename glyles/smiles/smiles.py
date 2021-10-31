@@ -1,5 +1,6 @@
-from glyles.glycans.glycans import Chirality, Atom
-from glyles.glycans.nx_monomer import SMILES
+from glyles.glycans.glycans import Chirality, Atom  # remove these dependencies
+from glyles.glycans.monomer import Monomer
+from glyles.glycans.nx_monomer import SMILES  # remove this dependency
 
 
 class Merger:
@@ -43,7 +44,7 @@ class Merger:
         Recursively mark in every node of the molecule which atoms are being replaced by bound monomers.
 
         Args:
-            t (networkx.DiGraph): Graph representing the glycan to compute the whole SMILES representation for.
+            t (networkx.DiGraph): Tree representing the glycan to compute the whole SMILES representation for.
             node (int): ID of the node to work on in this method
             p_edge (str): edge annotation to parent monomer
 
@@ -53,7 +54,8 @@ class Merger:
         # get children nodes
         children = [x[1] for x in t.edges(node)]
 
-        # set chirality of atom binding parent
+        # set chirality of atom binding parent  TODO
+        # if p_edge is not None and t.nodes[node].get_config() == Monomer.Config.UNDEF:
         if p_edge is not None and t.nodes[node]["structure"].nodes[int(p_edge[2])]["chiral"] == Chirality.NONE:
             t.nodes[node]["structure"].nodes[int(p_edge[2])]["chiral"] = Chirality.from_string(p_edge[1])
 
@@ -63,7 +65,7 @@ class Merger:
         if len(children) > 3:  # too many children
             raise NotImplementedError("Glycans with maximal branching 4 factor not implemented.")
 
-        # iterate over the children and the atoms used to mark binding atoms in my structure
+        # iterate over the children and the atoms used to mark binding atoms in my structure  TODO
         for child, atom in zip(children, [Atom.X, Atom.Y, Atom.Z]):
             binding = list(t.get_edge_data(node, child)["type"])
             monomer = t.nodes[node]["structure"]

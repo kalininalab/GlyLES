@@ -1,9 +1,10 @@
 import pytest
 from rdkit import Chem
 
-from glyles.glycans.glycans import Glycan
+from glyles.glycans.glycans import Glycan  # remove this dependency
+from glyles.glycans.nx_monomer import SMILES  # remove this dependency
 from glyles.grammar.parse import parse
-from glyles.smiles.smiles import SMILES, Merger
+from glyles.smiles.smiles import Merger
 
 
 class TestSMILES:
