@@ -5,6 +5,21 @@ from glyles.grammar.parse import parse, monomer_from_string
 from glyles.smiles.smiles import Merger
 
 
+def compare_smiles(computed, solution, equal=True):
+    c = Chem.MolFromSmiles(computed)
+    Chem.Kekulize(c)
+    c_rdkit = Chem.MolToSmiles(c, kekuleSmiles=True)
+
+    s = Chem.MolFromSmiles(solution)
+    Chem.Kekulize(s)
+    s_rdkit = Chem.MolToSmiles(s, kekuleSmiles=True)
+
+    if equal:
+        assert c_rdkit == s_rdkit
+    else:
+        assert c_rdkit != s_rdkit
+
+
 class TestSMILES:
     smiles_samples_simple = [
         ("Gal(a1-4)Gal",
@@ -82,23 +97,9 @@ class TestSMILES:
          "OC[C@H]2O[C@H](O)[C@@H](O[C@H]1O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]1O)[C@@H](O)[C@@H]2O"),  # beta
     ]
 
-    def compare_smiles(self, computed, solution, equal=True):
-        c = Chem.MolFromSmiles(computed)
-        Chem.Kekulize(c)
-        c_rdkit = Chem.MolToSmiles(c, kekuleSmiles=True)
-
-        s = Chem.MolFromSmiles(solution)
-        Chem.Kekulize(s)
-        s_rdkit = Chem.MolToSmiles(s, kekuleSmiles=True)
-
-        if equal:
-            assert c_rdkit == s_rdkit
-        else:
-            assert c_rdkit != s_rdkit
-
     def test_sanity(self):
-        self.compare_smiles("OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O",
-                            equal=False)
+        compare_smiles("OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O",
+                       equal=False)
 
     @pytest.mark.parametrize("glycan", [
         ("Glc", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"),
@@ -112,7 +113,7 @@ class TestSMILES:
         solution = glycan[1]
         computed = monomer.to_smiles(10, 1)
 
-        self.compare_smiles(computed, solution)
+        compare_smiles(computed, solution)
 
     # @pytest.mark.parametrize("root_orientation", ["n", "a", "b"])
     @pytest.mark.parametrize("iupac, plain, alpha, beta", smiles_samples_simple)
@@ -128,4 +129,4 @@ class TestSMILES:
             smiles = plain
 
         print(computed)
-        self.compare_smiles(computed, smiles)
+        compare_smiles(computed, smiles)

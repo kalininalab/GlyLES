@@ -4,7 +4,6 @@ import networkx as nx
 from antlr4 import *
 from antlr4.tree.Tree import ParseTree
 
-from glyles.glycans.glycans import Glycan
 from glyles.glycans.nx_monomer import NXMonomer
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
@@ -19,14 +18,11 @@ resulting abstract syntax trees (AST)s are not intuitive.
 '''
 
 DEFAULT_MODE = "nx"
-OLD_MODE = "old"
 NETWORKX_MODE = "nx"
 RDKIT_MODE = "rdkit"
 
 
 def monomer_from_string(mono, **kwargs):
-    if kwargs.get("mode", DEFAULT_MODE) == OLD_MODE:
-        return Glycan.from_string(mono)
     if kwargs.get("mode", DEFAULT_MODE) == NETWORKX_MODE:
         return NXMonomer.from_string(mono)
     elif kwargs.get("mode", DEFAULT_MODE) == RDKIT_MODE:
@@ -146,11 +142,7 @@ class TreeWalker:
         self.g.add_node(
             node_id,
             type=monomer_from_string(name, **kwargs),
-            # type=Glycan.from_string(name),
-            # structure=monomer_from_string(name, **kwargs).structure(),
-            # structure=Glycan.from_string(name).structure(),
         )
-        # self.g.add_node(node_id, type=Glycan.from_string(name), structure=Glycan.from_string(name).structure())
 
         return node_id
 
