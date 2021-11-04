@@ -47,75 +47,9 @@ class NXMonomer(Monomer):
         Y = "Y"
         Z = "Z"
 
-    def __init__(self, **kwargs):
-        super().__init__()
-        self.__name = kwargs["name"]
-        self.__smiles = kwargs["smiles"]
-        self.__structure = kwargs.get("struct", None)
-        self.__config = kwargs.get("config", Monomer.Config.UNDEF)
-
-    def alpha(self):
-        """
-        Return this monosaccharide in its alpha conformation.
-
-        Returns:
-            Monomer in alpha conformation
-        """
-        return self.from_string("A" + self.__name[-3:])
-
-    def beta(self):
-        """
-        Return this monosaccharide in its beta conformation.
-
-        Returns:
-            Monomer in beta conformation
-        """
-
-        return self.from_string("B" + self.__name[-3:])
-
-    def undefined(self):
-        """
-        Return this monosaccharide in undefined conformation, the first carbon ring-atom will have unspecified.
-        chirality.
-
-        Returns:
-            Monomer in undefined conformation
-        """
-        return self.from_string(self.__name[-3:])
-
-    def to_chirality(self, chirality):
-        """
-        Return this monomer in the queried chirality.
-        Args:
-            chirality (str): char representing the chiral conformation of the first carbon ring atom
-
-        Returns:
-            This monomer with the given (or not given) chirality at the first carbon ring atom
-        """
-        chirality = chirality.lower()
-        if chirality == "a":
-            return self.alpha()
-        if chirality == "b":
-            return self.beta()
-        return self.undefined()
-
-    def get_config(self):
-        """
-        The current conformation relative to the first carbon ring-atom, i.e. alpha, beta or unspecified.
-
-        Returns:
-            Config-Tag according to the conformation this monomer represents
-        """
-        return self.__config
-
-    def is_non_chiral(self):
-        """
-       Check if this monomer represents a non-chiral molecule
-
-       Returns:
-           boolean indicating chirality of this monomer
-       """
-        return self.__config == Monomer.Config.UNDEF
+    def __init__(self, origin=None, **kwargs):
+        super(NXMonomer, self).__init__(origin, **kwargs)
+        print(self._structure)
 
     def get_dummy_atoms(self):
         """
@@ -145,8 +79,8 @@ class NXMonomer(Monomer):
         child_start = -1
 
         # find the ID of the oxygen atom to start the SMILES representation from
-        for _, x in self.__structure().edges(binding_c_id):
-            if self.__structure().nodes[x]["type"] == NXMonomer.Atom.O and 11 <= x <= 15:
+        for _, x in self.__get_structure().edges(binding_c_id):
+            if self.__get_structure().nodes[x]["type"] == NXMonomer.Atom.O and 11 <= x <= 15:
                 child_start = x
                 break
 
@@ -169,7 +103,7 @@ class NXMonomer(Monomer):
         Returns:
             Nothing
         """
-        monomer = self.__structure()
+        monomer = self.__get_structure()
 
         # and find that oxygen atom that will react with a hydrogen when connecting the glycans' monomers
         for _, x in monomer.edges(position):
@@ -189,9 +123,9 @@ class NXMonomer(Monomer):
         Returns:
             SMILES string representation of this molecule
         """
-        return SMILES().write(self.__structure(), root, ring_index)
+        return SMILES().write(self.__get_structure(), root, ring_index)
 
-    def __structure(self):
+    def __get_structure(self):
         """
         Compute and save the structure of this glycan. So far its hard coded on the 4 given types of glycans
         # TODO: Implement a parser for SMILES -> smiles.smiles.SMILES.read()
@@ -200,7 +134,7 @@ class NXMonomer(Monomer):
         Returns:
             networkx graph representing the structure of the glycan as a graph of its non-hydrogen atoms.
         """
-        if self.__structure is None:
+        if self._structure is None:
             g = nx.Graph()
             g.add_nodes_from([
                 (1, {"type": NXMonomer.Atom.C, "chiral": NXMonomer.Chirality.NONE, "ring": True}),
@@ -216,7 +150,7 @@ class NXMonomer(Monomer):
                 (14, {"type": NXMonomer.Atom.O, "chiral": NXMonomer.Chirality.NONE, "ring": False}),
                 (15, {"type": NXMonomer.Atom.O, "chiral": NXMonomer.Chirality.NONE, "ring": False}),
             ])
-            if self.__name == "Glc":
+            if self._name == "Glc":
                 g.add_edges_from([
                     (10, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 10),
                     (1, 11), (2, 12), (3, 13), (4, 14), (5, 6), (6, 15),
@@ -225,7 +159,7 @@ class NXMonomer(Monomer):
                                            3: {"chiral": NXMonomer.Chirality.UP},
                                            4: {"chiral": NXMonomer.Chirality.DOWN},
                                            5: {"chiral": NXMonomer.Chirality.UP}})
-            elif self.__name == "Man":
+            elif self._name == "Man":
                 g.add_edges_from([
                     (10, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 10),
                     (1, 11), (2, 12), (3, 13), (4, 14), (5, 6), (6, 15)
@@ -234,7 +168,7 @@ class NXMonomer(Monomer):
                                            3: {"chiral": NXMonomer.Chirality.UP},
                                            4: {"chiral": NXMonomer.Chirality.DOWN},
                                            5: {"chiral": NXMonomer.Chirality.UP}})
-            elif self.__name == "Gal":
+            elif self._name == "Gal":
                 g.add_edges_from([
                     (10, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 10),
                     (1, 11), (2, 12), (3, 13), (4, 14), (5, 6), (6, 15),
@@ -243,7 +177,7 @@ class NXMonomer(Monomer):
                                            3: {"chiral": NXMonomer.Chirality.UP},
                                            4: {"chiral": NXMonomer.Chirality.UP},
                                            5: {"chiral": NXMonomer.Chirality.UP}})
-            elif self.__name == "Tal":
+            elif self._name == "Tal":
                 g.add_edges_from([
                     (10, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 10),
                     (1, 11), (2, 12), (3, 13), (4, 14), (5, 6), (6, 15),
@@ -253,54 +187,17 @@ class NXMonomer(Monomer):
                                            4: {"chiral": NXMonomer.Chirality.UP},
                                            5: {"chiral": NXMonomer.Chirality.UP}})
 
-            if self.__config == NXMonomer.Config.ALPHA:
+            if self._config == NXMonomer.Config.ALPHA:
                 nx.set_node_attributes(g, {1: {"chiral": NXMonomer.Chirality.DOWN}})
-            elif self.__config == NXMonomer.Config.BETA:
+            elif self._config == NXMonomer.Config.BETA:
                 nx.set_node_attributes(g, {1: {"chiral": NXMonomer.Chirality.UP}})
 
-            self.__structure = g
-        return self.__structure
+            self._structure = g
+        return self._structure
 
     @staticmethod
     def from_string(mono):
-        """
-        Get an instance of a glycan according to the provided string representation of the glycan.
-
-        Args:
-            mono (str): string representation of the glycan of interest
-
-        Returns:
-            Glycan according to the monosaccharide provided via mono
-        """
-        return {
-            "GLC": NXMonomer(name="Glc", smiles="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O",
-                             config=Monomer.Config.UNDEF),
-            "AGLC": NXMonomer(name="Glc", smiles="OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@@H]1O",
-                              config=Monomer.Config.ALPHA),
-            "BGLC": NXMonomer(name="Glc", smiles="OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O",
-                              config=Monomer.Config.BETA),
-
-            "MAN": NXMonomer(name="Man", smiles="OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O",
-                             config=Monomer.Config.UNDEF),
-            "AMAN": NXMonomer(name="Man", smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@@H]1O",
-                              config=Monomer.Config.ALPHA),
-            "BMAN": NXMonomer(name="Man", smiles="OC[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@@H]1O",
-                              config=Monomer.Config.BETA),
-
-            "GAL": NXMonomer(name="Gal", smiles="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O",
-                             config=Monomer.Config.UNDEF),
-            "AGAL": NXMonomer(name="Gal", smiles="OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@H]1O",
-                              config=Monomer.Config.ALPHA),
-            "BGAL": NXMonomer(name="Gal", smiles="OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@H]1O",
-                              config=Monomer.Config.BETA),
-
-            "TAL": NXMonomer(name="Tal", smiles="OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@H]1O",
-                             config=Monomer.Config.UNDEF),
-            "ATAL": NXMonomer(name="Tal", smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@H]1O",
-                              config=Monomer.Config.ALPHA),
-            "BTAL": NXMonomer(name="Tal", smiles="OC[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@H]1O",
-                              config=Monomer.Config.BETA),
-        }[mono.upper()]
+        return NXMonomer(origin=Monomer.from_string(mono))
 
 
 class DFS:

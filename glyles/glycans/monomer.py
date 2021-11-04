@@ -25,47 +25,62 @@ class Monomer:
         ALPHA = 1
         BETA = 2
 
-    def __init__(self):
-        pass
+    def __init__(self, origin=None, **kwargs):
+        if origin is None:
+            self._name = kwargs["name"]
+            self._smiles = kwargs["smiles"]
+            self._structure = kwargs.get("struct", None)
+            self._config = kwargs.get("config", Monomer.Config.UNDEF)
+        else:
+            self._name = origin._name
+            self._smiles = origin._smiles
+            self._structure = origin._structure
+            self._config = origin._config
 
     def alpha(self):
         """
-        Return this monosaccharide in its alpha conformation
+        Return this monosaccharide in its alpha conformation.
 
         Returns:
             Monomer in alpha conformation
         """
-        pass
+        return self.from_string("A" + self._name[-3:])
 
     def beta(self):
         """
-        Return this monosaccharide in its beta conformation
+        Return this monosaccharide in its beta conformation.
 
         Returns:
             Monomer in beta conformation
         """
-        pass
+
+        return self.from_string("B" + self._name[-3:])
 
     def undefined(self):
         """
-        Return this monosaccharide in undefined conformation, the first carbon ring-atom will have unspecified
+        Return this monosaccharide in undefined conformation, the first carbon ring-atom will have unspecified.
         chirality.
 
         Returns:
             Monomer in undefined conformation
         """
-        pass
+        return self.from_string(self._name[-3:])
 
     def to_chirality(self, chirality):
         """
         Return this monomer in the queried chirality.
-
         Args:
             chirality (str): char representing the chiral conformation of the first carbon ring atom
 
         Returns:
             This monomer with the given (or not given) chirality at the first carbon ring atom
         """
+        chirality = chirality.lower()
+        if chirality == "a":
+            return self.alpha()
+        if chirality == "b":
+            return self.beta()
+        return self.undefined()
 
     def get_config(self):
         """
@@ -74,16 +89,16 @@ class Monomer:
         Returns:
             Config-Tag according to the conformation this monomer represents
         """
-        pass
+        return self._config
 
     def is_non_chiral(self):
         """
-        Check if this monomer represents a non-chiral molecule
+       Check if this monomer represents a non-chiral molecule
 
-        Returns:
-            boolean indicating chirality of this monomer
-        """
-        pass
+       Returns:
+           boolean indicating chirality of this monomer
+       """
+        return self._config == Monomer.Config.UNDEF
 
     def get_dummy_atoms(self):
         """
@@ -95,7 +110,7 @@ class Monomer:
                 * the string representation of the atoms from above, i.e. how the atoms above will be represented in a
                   SMILES string
         """
-        pass
+        raise NotImplementedError
 
     def root_atom_id(self, binding_c_id):
         """
@@ -108,7 +123,7 @@ class Monomer:
         Returns:
             id of the atom that binds to the parent
         """
-        pass
+        raise NotImplementedError
 
     def mark(self, position, atom):
         """
@@ -121,7 +136,7 @@ class Monomer:
         Returns:
             Nothing
         """
-        pass
+        raise NotImplementedError
 
     def to_smiles(self, root, ring_index):
         """
@@ -134,17 +149,54 @@ class Monomer:
         Returns:
             SMILES string representation of this molecule
         """
-        pass
+        raise NotImplementedError
+
+    def __get_structure(self):
+        """
+        Compute and save the structure of this glycan.
+
+        Returns:
+            Representation the structure of the glycan as a graph.
+        """
+        raise NotImplementedError
 
     @staticmethod
     def from_string(mono):
         """
-        Get a monomer from the string representation of the monomer.
+        Get an instance of a glycan according to the provided string representation of the glycan.
 
         Args:
-            mono: name of the monomer to get the object from
+            mono (str): string representation of the glycan of interest
 
         Returns:
-            An instance of this class to be used to build up the complete polysaccharide
+            Glycan according to the monosaccharide provided via mono
         """
-        pass
+        return {
+            "GLC": Monomer(name="Glc", smiles="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O",
+                           config=Monomer.Config.UNDEF),
+            "AGLC": Monomer(name="Glc", smiles="OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@@H]1O",
+                            config=Monomer.Config.ALPHA),
+            "BGLC": Monomer(name="Glc", smiles="OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O",
+                            config=Monomer.Config.BETA),
+
+            "MAN": Monomer(name="Man", smiles="OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O",
+                           config=Monomer.Config.UNDEF),
+            "AMAN": Monomer(name="Man", smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@@H]1O",
+                            config=Monomer.Config.ALPHA),
+            "BMAN": Monomer(name="Man", smiles="OC[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@@H]1O",
+                            config=Monomer.Config.BETA),
+
+            "GAL": Monomer(name="Gal", smiles="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O",
+                           config=Monomer.Config.UNDEF),
+            "AGAL": Monomer(name="Gal", smiles="OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@H]1O",
+                            config=Monomer.Config.ALPHA),
+            "BGAL": Monomer(name="Gal", smiles="OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@H]1O",
+                            config=Monomer.Config.BETA),
+
+            "TAL": Monomer(name="Tal", smiles="OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@H]1O",
+                           config=Monomer.Config.UNDEF),
+            "ATAL": Monomer(name="Tal", smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@H]1O",
+                            config=Monomer.Config.ALPHA),
+            "BTAL": Monomer(name="Tal", smiles="OC[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@H]1O",
+                            config=Monomer.Config.BETA),
+        }[mono.upper()]
