@@ -4,12 +4,11 @@ import networkx as nx
 from antlr4 import *
 from antlr4.tree.Tree import ParseTree
 
-from glyles.glycans.monomer import Monomer
 from glyles.glycans.nx_monomer import NXMonomer
 from glyles.glycans.rdkit_monomer import RDKitMonomer
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
-from glyles.smiles.merge import Merger
+from glyles.utils.merge import Merger
 
 '''
 This file is like an interaction with the Parsing of the IUPAC representation of the glycans. The grammar for glycans 
