@@ -9,7 +9,7 @@ from glyles.glycans.nx_monomer import NXMonomer
 from glyles.glycans.rdkit_monomer import RDKitMonomer
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
-from glyles.smiles.smiles import Merger
+from glyles.smiles.merge import Merger
 
 '''
 This file is like an interaction with the Parsing of the IUPAC representation of the glycans. The grammar for glycans 
@@ -167,16 +167,24 @@ def parse(iupac, **kwargs):
     # Check for monosaccharides and eventually return a single-node-graph
     if "(" not in iupac:
         g = nx.DiGraph()
-        g.add_node(0, type=monomer_from_string(iupac, **kwargs))
-        # g.add_node(0, type=Glycan.from_string(smiles))
+        if len(iupac.split(" ")) == 2:
+            g.add_node(0, type=monomer_from_string(iupac[-1] + iupac[:-2], **kwargs))
+        else:
+            g.add_node(0, type=monomer_from_string(iupac, **kwargs))
         return g
+
+    if iupac[-2] == " ":
+        root_orientation = iupac[-1]
+        iupac = iupac[:-2]
+    else:
+        root_orientation = ""
 
     # Cut off the last monosaccharide as its the root
     bracket_index = max(
         iupac.rindex(")") if ")" in iupac else -1,
         iupac.rindex("]") if "]" in iupac else -1,
     ) + 1
-    init = iupac[bracket_index:]
+    init = root_orientation + iupac[bracket_index:]
     iupac = iupac[:bracket_index]
 
     # parse the remaining structure description following the grammar.

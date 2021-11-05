@@ -2,7 +2,7 @@ import pytest
 from rdkit import Chem
 
 from glyles.grammar.parse import parse, monomer_from_string
-from glyles.smiles.smiles import Merger
+from glyles.smiles.merge import Merger
 
 
 def compare_smiles(computed, solution, equal=True):
