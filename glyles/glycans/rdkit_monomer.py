@@ -4,6 +4,10 @@ from rdkit.Chem import MolFromSmiles, MolToSmiles, Draw, GetAdjacencyMatrix
 from glyles.glycans.monomer import Monomer
 
 
+# TODO: Extract structure generation and annotation into script and save a file for each structure
+# reduce time for preprocessing
+
+
 class RDKitMonomer(Monomer):
     def __init__(self, origin=None, **kwargs):
         super(RDKitMonomer, self).__init__(origin, **kwargs)
@@ -47,10 +51,17 @@ class RDKitMonomer(Monomer):
                 if self.x[i, 2] == 1 and self.x[i, 0] == 8:
                     self.x[i, 1] = 10
 
+            # TODO: This only works if the C1 atom is part of the ring! (i.e. not for fructose)
             o_index = mainring.index(np.argwhere((self.x[:, 0] == 8) & (self.x[:, 2] == 1)))
             for r in self.ringinfo[0]:
                 if self.x[r, 0] != 8:
                     self.x[r, 1] = mainring.index(r, o_index) - o_index
+
+            highest_index = np.max(self.x[:, 1][np.argwhere(self.x[:, 0] == 6)])
+            remaining_cs = np.argwhere((self.x[:, 0] == 6) & (self.x[:, 2] == 0))[0]
+            for rc in remaining_cs:
+                highest_index += 1
+                self.x[rc, 1] = highest_index
 
         return self._structure
 
@@ -59,7 +70,8 @@ class RDKitMonomer(Monomer):
 
     def __find_oxygen(self, binding_c_id):
         position = np.argwhere(self.x[:, 1] == binding_c_id).squeeze()
-        return int(np.argwhere((self.adjacency[position, :] == 1) & (self.x[:, 0] == 8) & (self.x[:, 2] != 1)).squeeze())
+        candidates = np.argwhere((self.adjacency[position, :] == 1) & (self.x[:, 0] == 8) & (self.x[:, 2] != 1)).squeeze()
+        return int(candidates)
 
     @staticmethod
     def from_string(mono):

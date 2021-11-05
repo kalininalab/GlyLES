@@ -181,22 +181,22 @@ class Monomer:
 
             "MAN": Monomer(name="Man", smiles="OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O",
                            config=Monomer.Config.UNDEF),
-            "AMAN": Monomer(name="Man", smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@@H]1O",
+            "AMAN": Monomer(name="Man", smiles="OC[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@@H]1O",
                             config=Monomer.Config.ALPHA),
-            "BMAN": Monomer(name="Man", smiles="OC[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@@H]1O",
+            "BMAN": Monomer(name="Man", smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@@H]1O",
                             config=Monomer.Config.BETA),
 
             "GAL": Monomer(name="Gal", smiles="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O",
                            config=Monomer.Config.UNDEF),
-            "AGAL": Monomer(name="Gal", smiles="OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@H]1O",
+            "AGAL": Monomer(name="Gal", smiles="OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@H]1O",
                             config=Monomer.Config.ALPHA),
-            "BGAL": Monomer(name="Gal", smiles="OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@H]1O",
+            "BGAL": Monomer(name="Gal", smiles="OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@H]1O",
                             config=Monomer.Config.BETA),
 
             "TAL": Monomer(name="Tal", smiles="OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@H]1O",
                            config=Monomer.Config.UNDEF),
-            "ATAL": Monomer(name="Tal", smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@H]1O",
+            "ATAL": Monomer(name="Tal", smiles="OC[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@H]1O",
                             config=Monomer.Config.ALPHA),
-            "BTAL": Monomer(name="Tal", smiles="OC[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@H]1O",
+            "BTAL": Monomer(name="Tal", smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@H]1O",
                             config=Monomer.Config.BETA),
         }[mono.upper()]
