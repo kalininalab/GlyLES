@@ -6,8 +6,10 @@ from antlr4.tree.Tree import ParseTree
 
 from glyles.glycans.monomer import Monomer
 from glyles.glycans.nx_monomer import NXMonomer
+from glyles.glycans.rdkit_monomer import RDKitMonomer
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
+from glyles.smiles.smiles import Merger
 
 '''
 This file is like an interaction with the Parsing of the IUPAC representation of the glycans. The grammar for glycans 
@@ -27,7 +29,7 @@ def monomer_from_string(mono, **kwargs):
     if kwargs.get("mode", DEFAULT_MODE) == NETWORKX_MODE:
         return NXMonomer.from_string(mono)
     elif kwargs.get("mode", DEFAULT_MODE) == RDKIT_MODE:
-        raise NotImplementedError("This functionality is planned but not yet implemented!")
+        return RDKitMonomer.from_string(mono)
     else:
         raise ValueError("Unknown representation mode for monomers! Please, choose from \"nx\" or \"rdkit\".")
 
@@ -195,4 +197,10 @@ def parse(iupac, **kwargs):
 
 
 if __name__ == '__main__':  # testing proposes
-    parse("Man(a1-2)Man")
+    i = 1
+    if i == 0:
+        print(RDKitMonomer.from_string("glc").to_smiles(-1, 0))
+    elif i == 1:
+        parsed = parse("Man(a1-2)Man", mode=RDKIT_MODE)
+        print(Merger().merge(parsed))
+    print("Done")
