@@ -49,7 +49,6 @@ class NXMonomer(Monomer):
 
     def __init__(self, origin=None, **kwargs):
         super(NXMonomer, self).__init__(origin, **kwargs)
-        print(self._structure)
 
     def get_dummy_atoms(self):
         """

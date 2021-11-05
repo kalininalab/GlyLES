@@ -3,19 +3,6 @@ class Merger:
     Merge the tree of monomers into a SMILES representation of the complete molecule.
     """
 
-    def __init__(self):
-        self.ring_index = 1
-
-    def get_ring_index(self):
-        """
-        Get index for next ring in the polymer to have disjoint ring indexes in the final SMILES
-        
-        Returns:
-            index for next ring in SMILES
-        """
-        self.ring_index += 1
-        return self.ring_index - 1
-
     def merge(self, t, root_orientation="n"):
         """
         Merge the provided tree of monomers enriched with the glycans in the nodes and information on the bindings
@@ -32,7 +19,7 @@ class Merger:
         self.__mark(t, 0, "({}1-?)".format(root_orientation))
 
         # return the string that can be computed from connecting the monomers as marked above
-        return self.__merge(t, 0, 10)
+        return self.__merge(t, 0, 10, 1)
 
     def __mark(self, t, node, p_edge):
         """
@@ -51,11 +38,7 @@ class Merger:
 
         # set chirality of atom binding parent
         if p_edge is not None and t.nodes[node]["type"].is_non_chiral():
-            print("Chirality-Type:", p_edge[1])
-            print(t.nodes[node]["type"].to_smiles())
             t.nodes[node]["type"] = t.nodes[node]["type"].to_chirality(p_edge[1])
-            print(t.nodes[node]["type"].to_smiles())
-            print(t.nodes[node]["type"].to_chirality(p_edge[1]).to_smiles())
 
         # check for validity of the tree, i.e. if its a leaf (return, nothing to do) or has too many children (Error)
         if len(children) == 0:  # leaf
@@ -70,7 +53,7 @@ class Merger:
             t.nodes[node]["type"].mark(int(binding[4]), atom)
             self.__mark(t, child, binding)
 
-    def __merge(self, t, node, start):
+    def __merge(self, t, node, start, ring_index):
         """
         Recursively merge every node of the molecule with its children and get the SMILES representation of the subtree.
 
@@ -84,8 +67,7 @@ class Merger:
         """
         # get my children and compute my SMILES string
         children = [x[1] for x in t.edges(node)]
-        me = t.nodes[node]["type"].to_smiles(start, self.get_ring_index())
-
+        me = t.nodes[node]["type"].to_smiles(start, ring_index)
         # check for validity of the tree, i.e. if its a leaf (return, nothing to do) or has too many children (Error)
         if len(children) == 0:  # leaf
             return me
@@ -97,8 +79,10 @@ class Merger:
             binding = list(t.get_edge_data(node, child)["type"])
 
             child_start = t.nodes[node]["type"].root_atom_id(int(binding[2]))
-            # get the SMILES of this child and plug it in in the current own SMILES
-            child_smiles = self.__merge(t, child, child_start)
-            me = me.replace(atom, child_smiles)
+            if child_start == -1:
+                raise ValueError("No child start found.")
 
+            # get the SMILES of this child and plug it in in the current own SMILES
+            child_smiles = self.__merge(t, child, child_start, ring_index + 1)
+            me = me.replace("[{}H]".format(atom), child_smiles)
         return me

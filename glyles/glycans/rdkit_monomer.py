@@ -52,37 +52,6 @@ class RDKitMonomer(Monomer):
                 if self.x[r, 0] != 8:
                     self.x[r, 1] = mainring.index(r, o_index) - o_index
 
-            print("Molecule created")
-
-            '''
-            clockwise = False
-            for i in ringinfo[0]:
-                if self._structure.GetAtomWithIdx(i).GetAtomicNum() == 8:
-                    atom = self._structure.GetAtomWithIdx(i)
-                    bonds = [bond for bond in atom.GetBonds()]
-                    c1 = bonds[0].GetEndAtom()
-                    if any([a.GetEndAtom().GetAtomicNum() == 8 for a in c1.GetBonds()]):
-                        if ringinfo[0].index(c1.GetIdx()) > ringinfo[0].index(i):
-                            clockwise = True
-                            break
-
-            ring = list(ringinfo[0]) + list(ringinfo[0])
-            if not clockwise:
-                ring = list(reversed(ring))
-
-            counter = -1
-            for i in ring:
-                atom = self._structure.GetAtomWithIdx(i)
-                if atom.GetAtomicNum() == 8:
-                    if counter != -1:
-                        break
-                    counter += 1
-                    atom.SetIntProp("ID", 10)
-                elif counter != -1:
-                    counter += 1
-                    atom.SetIntProp("ID", counter)
-            '''
-
         return self._structure
 
     def test(self):

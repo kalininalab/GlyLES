@@ -118,7 +118,6 @@ class TestSMILES:
     # @pytest.mark.parametrize("root_orientation", ["n", "a", "b"])
     @pytest.mark.parametrize("iupac, plain, alpha, beta", smiles_samples_simple)
     def test_smiles_poly(self, iupac, plain, alpha, beta, root_orientation="n"):
-        print("\nOutput:")
         computed = Merger().merge(parse(iupac, mode="rdkit"), root_orientation=root_orientation)
 
         if root_orientation == "a":
@@ -128,5 +127,4 @@ class TestSMILES:
         else:
             smiles = plain
 
-        print(computed)
         compare_smiles(computed, smiles)
