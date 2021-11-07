@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class Monomer:
-    r"""
+    """
     General interface to represent the sugar monomers in the tree.
 
     The resulting molecule must have some properties that are especially important for the correct implementation of
@@ -18,7 +18,7 @@ class Monomer:
     """
 
     class Config(Enum):
-        r"""
+        """
         Configuration enum to represent if the monomer is in alpha, beta, or undefined configuration.
         """
         UNDEF = 0
@@ -26,16 +26,55 @@ class Monomer:
         BETA = 2
 
     def __init__(self, origin=None, **kwargs):
+        """
+        Initialize the Monomer with the provided arguments or from another monomer
+
+        Args:
+            origin (Monomer): Other monomer to use to initialize this object
+            **kwargs: arguments to initialize monomer if object is None. Must include name, smiles, and config
+        """
         if origin is None:
             self._name = kwargs["name"]
             self._smiles = kwargs["smiles"]
             self._structure = kwargs.get("struct", None)
             self._config = kwargs.get("config", Monomer.Config.UNDEF)
         else:
-            self._name = origin._name
-            self._smiles = origin._smiles
-            self._structure = origin._structure
-            self._config = origin._config
+            self._name = origin.get_name()
+            self._smiles = origin.get_smiles()
+            self._structure = origin.get_structure()
+            self._config = origin.get_config()
+
+    def get_name(self):
+        """
+        Returns the name of this monomer as three letter code (eventually longer for more fancy monosaccharides with
+        more complex side chains).
+
+        Returns:
+            The name of this monomer
+        """
+        return self._name
+
+    def get_smiles(self):
+        """
+        Returns the smiles representation of this monomer. Attention: This methods returns the SMILES that is used to
+        initialize this monomer. This is different from the to_smiles method of this class that returns the SMILES
+        string with added place-holders that is used for the generation of the smiles representation of the complete
+        glycan
+
+        Returns:
+            The SMILES string that was used for initialization of this monomer
+        """
+        return self._smiles
+
+    def get_structure(self):
+        """
+        Returns the structure of this monomer. This might be Null in case the structure wasn't inferred from the
+        SMILES so far
+
+        Returns:
+            Structure depending on the methods chosen to represent the structure of this monomer, might be Null
+        """
+        return self._structure
 
     def alpha(self):
         """
@@ -53,7 +92,6 @@ class Monomer:
         Returns:
             Monomer in beta conformation
         """
-
         return self.from_string("B" + self._name[-3:])
 
     def undefined(self):
@@ -93,11 +131,11 @@ class Monomer:
 
     def is_non_chiral(self):
         """
-       Check if this monomer represents a non-chiral molecule
+        Check if this monomer represents a non-chiral molecule
 
-       Returns:
-           boolean indicating chirality of this monomer
-       """
+        Returns:
+            boolean indicating chirality of this monomer
+        """
         return self._config == Monomer.Config.UNDEF
 
     def get_dummy_atoms(self):
@@ -130,8 +168,8 @@ class Monomer:
         Mark the oxygen atom linked to the carbon atom at the given position ready to participate in the bounding.
 
         Args:
-            position: id of the carbon atom whose oxygen atom will from the binding
-            atom: atom to replace the binding oxygen with
+            position (int): id of the carbon atom whose oxygen atom will from the binding
+            atom (object): atom to replace the binding oxygen with
 
         Returns:
             Nothing
@@ -144,7 +182,7 @@ class Monomer:
 
         Args:
             root (int): index of the root atom
-            ring_index: index of the rings in the atom
+            ring_index (int): index of the rings in the atom
 
         Returns:
             SMILES string representation of this molecule

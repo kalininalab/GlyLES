@@ -84,5 +84,5 @@ class Merger:
 
             # get the SMILES of this child and plug it in in the current own SMILES
             child_smiles = self.__merge(t, child, child_start, ring_index + 1)
-            me = me.replace("[{}H]".format(atom), child_smiles)
+            me = me.replace(atom, child_smiles)
         return me

@@ -6,7 +6,7 @@ from glyles.glycans.monomer import Monomer
 
 
 class NXMonomer(Monomer):
-    r"""
+    """
     Different monosaccharides that can already be used in the library.
     They contain their name, one SMILES representation and a field to store the structure of the glycan once computed
     """
@@ -24,7 +24,7 @@ class NXMonomer(Monomer):
             """
             Get a conformation flag from a string representation
             Args:
-                c: name of the conformation in alpha or beta
+                c (str): name of the conformation in alpha or beta
 
             Returns:
                 Conformation flag according to the char
@@ -48,6 +48,13 @@ class NXMonomer(Monomer):
         Z = "Z"
 
     def __init__(self, origin=None, **kwargs):
+        """
+        Initialize this class from parent class
+
+        Args:
+            origin (Monomer): other instance of Monomers to copy to this instance
+            **kwargs: arguments to alternative initialize the monomer if origin is None
+        """
         super(NXMonomer, self).__init__(origin, **kwargs)
 
     def get_dummy_atoms(self):
@@ -73,7 +80,7 @@ class NXMonomer(Monomer):
             binding_c_id (int): Integer at which c-position this monomer binds its parent
 
         Returns:
-            id of the atom that binds to the parent
+            id of the atom that binds to the parent, -1 if the root cannot be found
         """
         child_start = -1
 
@@ -96,8 +103,8 @@ class NXMonomer(Monomer):
         atom enum instance also provided in the arguments.
 
         Args:
-            position: id of the carbon atom whose oxygen atom will from the binding
-            atom: atom to replace the binding oxygen with
+            position (int): id of the carbon atom whose oxygen atom will from the binding
+            atom (object): atom to replace the binding oxygen with
 
         Returns:
             Nothing
@@ -117,7 +124,7 @@ class NXMonomer(Monomer):
 
         Args:
             root (int): index of the root atom
-            ring_index: index of the rings in the atom
+            ring_index (int): index of the rings in the atom
 
         Returns:
             SMILES string representation of this molecule
@@ -196,6 +203,15 @@ class NXMonomer(Monomer):
 
     @staticmethod
     def from_string(mono):
+        """
+        Convert the string representation of the monomer into an instance.
+
+        Args:
+            mono (str): string encoding of a monomer
+
+        Returns:
+            NXMonomer instance according to the string
+        """
         return NXMonomer(origin=Monomer.from_string(mono))
 
 
