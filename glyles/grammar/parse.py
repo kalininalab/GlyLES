@@ -40,7 +40,7 @@ class Glycan:
                 mode (Glycan.Mode):
 
             Returns:
-
+                Tree of parsed glycan with monomers in nodes
             """
 
             # Initialize the tree with the root
@@ -146,7 +146,7 @@ class Glycan:
         NETWORKX_MODE = "nx"
         RDKIT_MODE = "rdkit"
 
-    def __init__(self, iupac, mode=Mode.DEFAULT_MODE):
+    def __init__(self, iupac, mode=Mode.DEFAULT_MODE, root_orientation="n", start=10):
         """
         Initialize the glycan from the IUPAC string.
 
@@ -158,6 +158,8 @@ class Glycan:
         self.mode = mode
         self.parse_tree = None
         self.glycan_smiles = None
+        self.root_orientation = root_orientation
+        self.start = start
         self.parse()
 
     def get_smiles(self):
@@ -168,6 +170,15 @@ class Glycan:
             Generated SMILES string
         """
         return self.glycan_smiles
+
+    def get_tree(self):
+        """
+        Request the tree parsed from the IUPAC in this instance.
+
+        Returns:
+            The parsed tree with the single monomers in the nodes
+        """
+        return self.parse_tree
 
     def to_pdb(self, output):
         """
@@ -209,7 +220,9 @@ class Glycan:
                 g.add_node(0, type=self.monomer_from_string(self.iupac[-1] + self.iupac[:-2], self.mode))
             else:
                 g.add_node(0, type=self.monomer_from_string(self.iupac, self.mode))
-            return g
+            self.parse_tree = g
+            self.glycan_smiles = g.nodes[0]["type"].get_smiles()
+            return
 
         if self.iupac[-2] == " ":
             root_orientation = self.iupac[-1]
@@ -236,7 +249,7 @@ class Glycan:
         # walk through the AST and parse the AST into a networkx representation of the glycan.
         self.parse_tree = Glycan.TreeWalker().parse(tree, init, self.mode)
 
-        self.glycan_smiles = Merger().merge(self.parse_tree)
+        self.glycan_smiles = Merger().merge(self.parse_tree, self.root_orientation, start=self.start)
 
     @staticmethod
     def monomer_from_string(mono, mode):

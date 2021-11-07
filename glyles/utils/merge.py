@@ -3,7 +3,7 @@ class Merger:
     Merge the tree of monomers into a SMILES representation of the complete molecule.
     """
 
-    def merge(self, t, root_orientation="n"):
+    def merge(self, t, root_orientation="n", start=10):
         """
         Merge the provided tree of monomers enriched with the glycans in the nodes and information on the bindings
         between two monomer-nodes in the edges.
@@ -11,6 +11,7 @@ class Merger:
         Args:
             t (networkx.DiGraph): Graph representing the glycan to compute the whole SMILES representation for.
             root_orientation (str): Orientation of the root monomer in glycan (can be a (= alpha) or b (= beta))
+            start (int): index of the atom to start the smiles generation from
 
         Returns:
             SMILES representation as string
@@ -19,7 +20,7 @@ class Merger:
         self.__mark(t, 0, "({}1-?)".format(root_orientation))
 
         # return the string that can be computed from connecting the monomers as marked above
-        return self.__merge(t, 0, 10, 1)
+        return self.__merge(t, 0, start, 1)
 
     def __mark(self, t, node, p_edge):
         """

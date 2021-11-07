@@ -1,4 +1,4 @@
-from glyles.grammar.parse import parse
+from glyles.grammar.parse import Glycan
 
 smiles = [
     "Man",
@@ -33,19 +33,19 @@ def split_children(g, id_children, child_1):
 
 class TestParser:
     def test_parse_1(self):
-        g = parse(smiles[0])
+        g = Glycan(smiles[0]).get_tree()
 
         check_initial(g, "Man", 0)
 
     def test_parse_2(self):
-        g = parse(smiles[1])
+        g = Glycan(smiles[1]).get_tree()
 
         check_initial(g, "Glc", 1)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Man", "(a1-4)", 0)
 
     def test_parse_3(self):
-        g = parse(smiles[2])
+        g = Glycan(smiles[2]).get_tree()
 
         check_initial(g, "Tal", 1)
         id_child_1 = list(g.edges(0))[0][1]
@@ -54,7 +54,7 @@ class TestParser:
         check_child(g, id_child_1, id_child_2, "Man", "(a1-4)", 0)
 
     def test_parse_4(self):
-        g = parse(smiles[3])
+        g = Glycan(smiles[3]).get_tree()
 
         check_initial(g, "Tal", 2)
         id_children_1 = [x[1] for x in list(g.edges(0))]
@@ -64,7 +64,7 @@ class TestParser:
         check_child(g, 0, id_child_2, "Man", "(a1-4)", 0)
 
     def test_parse_5(self):
-        g = parse(smiles[4])
+        g = Glycan(smiles[4]).get_tree()
 
         check_initial(g, "Gal", 2)
         id_children_1 = [x[1] for x in list(g.edges(0))]
@@ -77,7 +77,7 @@ class TestParser:
         check_child(g, id_child_1, id_child_11, "Glc", "(a1-3)", 0)
 
     def test_parse_6(self):
-        g = parse(smiles[5])
+        g = Glycan(smiles[5]).get_tree()
 
         check_initial(g, "Gal", 2)
         id_children_1 = [x[1] for x in list(g.edges(0))]
@@ -90,7 +90,7 @@ class TestParser:
         check_child(g, id_child_2, id_child_21, "Man", "(a1-4)", 0)
 
     def test_parse_7(self):
-        g = parse(smiles[6])
+        g = Glycan(smiles[6]).get_tree()
 
         check_initial(g, "Tal", 2)
         id_children_1 = [x[1] for x in list(g.edges(0))]
@@ -106,7 +106,7 @@ class TestParser:
         check_child(g, id_child_2, id_child_21, "Man", "(a1-4)", 0)
 
     def test_parse_8(self):
-        g = parse(smiles[7])
+        g = Glycan(smiles[7]).get_tree()
 
         check_initial(g, "Tal", 1)
         id_child_1 = list(g.edges(0))[0][1]

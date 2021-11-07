@@ -1,8 +1,7 @@
 import pytest
 from rdkit import Chem
 
-from glyles.grammar.parse import parse, monomer_from_string
-from glyles.utils.merge import Merger
+from glyles.grammar.parse import Glycan
 
 
 def compare_smiles(computed, solution, equal=True):
@@ -109,16 +108,15 @@ class TestSMILES:
     ])
     @pytest.mark.parametrize("source", [10, 11, 12, 13, 14, 15])
     def test_smiles_mono(self, glycan, source):
-        monomer = monomer_from_string(glycan[0])
+        computed = Glycan(glycan[0], start=10).get_smiles()
         solution = glycan[1]
-        computed = monomer.to_smiles(10, 1)
 
         compare_smiles(computed, solution)
 
     @pytest.mark.parametrize("root_orientation", ["n", "a", "b"])
     @pytest.mark.parametrize("iupac, plain, alpha, beta", smiles_samples_simple)
     def test_smiles_poly(self, iupac, plain, alpha, beta, root_orientation):
-        computed = Merger().merge(parse(iupac, mode="rdkit"), root_orientation=root_orientation)
+        computed = Glycan(iupac, mode=Glycan.Mode.RDKIT_MODE, root_orientation=root_orientation).get_smiles()
 
         if root_orientation == "a":
             smiles = alpha
