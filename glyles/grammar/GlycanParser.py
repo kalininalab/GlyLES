@@ -11,7 +11,7 @@ else:
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\6")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\b")
         buf.write("\34\4\2\t\2\4\3\t\3\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\3")
         buf.write("\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\32\n\3")
         buf.write("\3\3\2\2\4\2\4\2\2\2\34\2\6\3\2\2\2\4\31\3\2\2\2\6\7\5")
@@ -36,7 +36,8 @@ class GlycanParser ( Parser ):
 
     literalNames = [ "<INVALID>", "'['", "']'" ]
 
-    symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "SAC", "CON" ]
+    symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "SAC", "CON", 
+                      "TYPE", "NUM" ]
 
     RULE_start = 0
     RULE_branch = 1
@@ -48,6 +49,8 @@ class GlycanParser ( Parser ):
     T__1=2
     SAC=3
     CON=4
+    TYPE=5
+    NUM=6
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
