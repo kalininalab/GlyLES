@@ -9,7 +9,12 @@ branch:
     | SAC CON '[' branch ']' SAC CON;
 
 SAC:
-    'Glc' | 'Glu' | 'Fru' | 'Man' | 'Gal';
+    'Fuc'
+    | 'Gal' | 'Gal3S' | 'Gal6S' | 'GalNAc' | 'GalNAc4S' | 'GalNAc6S'
+    | 'Glc' | 'GlcA' | 'GlcNAc' | 'GlcNAc6S'
+    | 'Man'
+    | 'Neu5Ac' | 'Neu5Gc'
+    | 'Tal';
 CON:
     '(a1-1)' | '(a1-2)' | '(a1-3)' | '(a1-4)' | '(a1-5)' | '(a1-6)' | '(a1-7)' | '(a1-8)' | '(a1-9)'
 	| '(a2-1)' | '(a2-2)' | '(a2-3)' | '(a2-4)' | '(a2-5)' | '(a2-6)' | '(a2-7)' | '(a2-8)' | '(a2-9)'
