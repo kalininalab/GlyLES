@@ -71,7 +71,6 @@ class Glycan:
                 raise NotImplementedError("Terminal nodes should be unreachable!")
 
             children = list(t.getChildren())
-
             if len(children) == 2:  # {sac con}
                 # terminal element, add the node with the connection
                 node_id = self.__add_node(children[0].symbol.text, mode)
@@ -114,7 +113,7 @@ class Glycan:
             Returns:
                 Nothing
             """
-            self.g.add_edge(parent, child, type=con.symbol.text)
+            self.g.add_edge(parent, child, type=str(con))
 
         def __add_node(self, name, mode):
             """
@@ -146,7 +145,7 @@ class Glycan:
         NETWORKX_MODE = "nx"
         RDKIT_MODE = "rdkit"
 
-    def __init__(self, iupac, mode=Mode.DEFAULT_MODE, root_orientation="n", start=10):
+    def __init__(self, iupac, mode=Mode.DEFAULT_MODE, root_orientation="n", start=10, parse=True):
         """
         Initialize the glycan from the IUPAC string.
 
@@ -160,6 +159,7 @@ class Glycan:
         self.glycan_smiles = None
         self.root_orientation = root_orientation
         self.start = start
+        self.parse_smiles = parse
         self.parse()
 
     def get_smiles(self):
@@ -169,6 +169,9 @@ class Glycan:
         Returns:
             Generated SMILES string
         """
+        if self.glycan_smiles is None:
+            self.glycan_smiles = Merger().merge(self.parse_tree, self.root_orientation, start=self.start)
+
         return self.glycan_smiles
 
     def get_tree(self):
@@ -249,7 +252,8 @@ class Glycan:
         # walk through the AST and parse the AST into a networkx representation of the glycan.
         self.parse_tree = Glycan.TreeWalker().parse(tree, init, self.mode)
 
-        self.glycan_smiles = Merger().merge(self.parse_tree, self.root_orientation, start=self.start)
+        if self.parse_smiles:
+            self.glycan_smiles = Merger().merge(self.parse_tree, self.root_orientation, start=self.start)
 
     @staticmethod
     def monomer_from_string(mono, mode):
