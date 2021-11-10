@@ -87,7 +87,7 @@ class TestParser:
         check_child(g, 0, id_child_2, "Glc", "(a1-3)", 1)
 
         id_child_21 = list(g.edges(id_child_2))[0][1]
-        check_child(g, id_child_2, id_child_21, "Man", "(a1-4)", 0)
+        check_child(g, id_child_2, id_child_21, "Man", "(a1-2)", 0)
 
     def test_parse_7(self):
         g = Glycan(smiles[6]).get_tree()
