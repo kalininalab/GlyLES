@@ -1,3 +1,4 @@
+from glyles.glycans.monomer import Monomer
 from glyles.grammar.parse import Glycan
 
 smiles = [
@@ -8,13 +9,20 @@ smiles = [
     "Man(a1-2)[Glc(a1-3)Tal(b1-4)]Gal",
     "Man(a1-2)Glc(a1-3)[Tal(b1-4)]Gal",
     "Man(a1-4)Glc(a1-2)[Tal(b1-4)Gal(b1-3)]Tal",
-    "Man(a1-2)[Glc(a1-3)Tal(b1-4)]Gal(b1-3)Tal",  # !
+    "Man(a1-2)[Glc(a1-3)Tal(b1-4)]Gal(b1-3)Tal",
+    "Man a",
+    "Man b",
+    "Man(a1-4)Glc a",
+    "Man(a1-4)Glc b",
 ]
 
 
-def check_initial(g, name, num_children):
+def check_initial(g, name, num_children, config=None):
     assert g.nodes[0]["type"].get_name() == name
     assert len(g.edges(0)) == num_children
+
+    if config is not None:
+        assert g.nodes[0]["type"].get_config() == config
 
 
 def check_child(g, id_parent, id_child, name, edge, num_children):
@@ -35,7 +43,7 @@ class TestParser:
     def test_parse_1(self):
         g = Glycan(smiles[0]).get_tree()
 
-        check_initial(g, "Man", 0)
+        check_initial(g, "Man", 0, Monomer.Config.UNDEF)
 
     def test_parse_2(self):
         g = Glycan(smiles[1]).get_tree()

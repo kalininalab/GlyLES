@@ -1,7 +1,7 @@
 grammar Glycan;
 
 start:
-    branch;
+    branch SAC | SAC;
 branch:
     SAC CON
     | SAC CON branch
@@ -19,6 +19,7 @@ CON:
     '(' TYPE NUM '-' NUM ')';
 TYPE:
     'a' | 'b';
-NUM: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+NUM:
+    '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
 
 // antlr -DLanguage=Python3 Glycan.g4

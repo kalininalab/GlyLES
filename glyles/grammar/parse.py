@@ -30,7 +30,7 @@ class Glycan:
             self.g = nx.DiGraph()
             self.node_id = 0
 
-        def parse(self, t, init, mode):
+        def parse(self, t, mode):
             """
             Parse an parsed tree (AST) from ANTLR into this networkx graph
 
@@ -44,12 +44,29 @@ class Glycan:
             """
 
             # Initialize the tree with the root
-            node_id = self.__add_node(init, mode)
+            children = list(t.getChildren())
+            if len(children) == 1:
+                self.__add_node(children[0].symbol.text, mode)
+                return self.g
+            elif len(children) == 2 and isinstance(children[0], GlycanParser.BranchContext):
+                node_id = self.__add_node(children[1].symbol.text, mode)
+                self.__walk(children[0], node_id, mode)
+                return self.g
+            elif len(children) == 2:
+                self.__add_node(children[1].symbol.text + children[0].symbol.text, mode)
+                return self.g
+            elif len(children) == 3:
+                node_id = self.__add_node(children[2].symbol.text + children[1].symbol.text, mode)
+                self.__walk(children[0], node_id, mode)
+                return self.g
+            else:
+                raise RuntimeError("This branch of the if-statement should be unreachable!")
+            # node_id = self.__add_node(?, mode)
 
             # add the parsed AST to the networkx graph
-            self.__walk(next(t.getChildren()), node_id, mode)
+            # self.__walk(next(t.getChildren()), 1, mode)
 
-            return self.g
+            # return self.g
 
         def __walk(self, t, parent, mode):
             """
@@ -215,7 +232,7 @@ class Glycan:
         Returns:
             Nothing
         """
-
+        '''
         # Check for monosaccharides and eventually return a single-node-graph
         if "(" not in self.iupac:
             g = nx.DiGraph()
@@ -241,16 +258,17 @@ class Glycan:
         ) + 1
         init = root_orientation + iupac[bracket_index:]
         iupac = iupac[:bracket_index]
-
+        '''
         # parse the remaining structure description following the grammar.
-        stream = InputStream(data=iupac)
+        # stream = InputStream(data=self.iupac.replace(" ", "="))
+        stream = InputStream(data=self.iupac)
         lexer = GlycanLexer(stream)
         token = CommonTokenStream(lexer)
         parser = GlycanParser(token)
         tree = parser.start()
 
         # walk through the AST and parse the AST into a networkx representation of the glycan.
-        self.parse_tree = Glycan.TreeWalker().parse(tree, init, self.mode)
+        self.parse_tree = Glycan.TreeWalker().parse(tree, self.mode)
 
         if self.parse_smiles:
             self.glycan_smiles = Merger().merge(self.parse_tree, self.root_orientation, start=self.start)
