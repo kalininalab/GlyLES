@@ -42,20 +42,19 @@ class Glycan:
             Returns:
                 Tree of parsed glycan with monomers in nodes
             """
-
-            # Initialize the tree with the root
             children = list(t.getChildren())
             if len(children) == 1:
-                orientation = ""
-            else:
-                orientation = children[1].symbol.text
-
-            children = list(children[0].getChildren())
-            if len(children) == 1:
-                self.__add_node(orientation + children[0].symbol.text, mode)
+                self.__add_node(children[0].symbol.text, mode)
                 return self.g
             elif len(children) == 2:
-                node_id = self.__add_node(orientation + children[1].symbol.text, mode)
+                node_id = self.__add_node(children[1].symbol.text, mode)
+                self.__walk(children[0], node_id, mode)
+                return self.g
+            elif len(children) == 3:
+                self.__add_node(children[2].symbol.text + children[0].symbol.text, mode)
+                return self.g
+            elif len(children) == 4:
+                node_id = self.__add_node(children[3].symbol.text + children[1].symbol.text, mode)
                 self.__walk(children[0], node_id, mode)
                 return self.g
             else:

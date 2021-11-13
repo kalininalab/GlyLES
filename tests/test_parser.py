@@ -140,14 +140,14 @@ class TestParser:
         check_initial(g, "Man", 0, Monomer.Config.BETA)
     
     def test_parse_11(self):
-        g = Glycan(smiles[1]).get_tree()
+        g = Glycan(smiles[10]).get_tree()
     
         check_initial(g, "Glc", 1, Monomer.Config.ALPHA)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Man", "(a1-4)", 0)
     
     def test_parse_12(self):
-        g = Glycan(smiles[1]).get_tree()
+        g = Glycan(smiles[11]).get_tree()
     
         check_initial(g, "Glc", 1, Monomer.Config.BETA)
         id_child_1 = list(g.edges(0))[0][1]
