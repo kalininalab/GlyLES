@@ -128,3 +128,27 @@ class TestParser:
 
         id_child_111 = list(g.edges(id_child_11))[0][1]
         check_child(g, id_child_11, id_child_111, "Glc", "(a1-3)", 0)
+
+    def test_parse_9(self):
+        g = Glycan(smiles[8]).get_tree()
+
+        check_initial(g, "Man", 0, Monomer.Config.ALPHA)
+
+    def test_parse_10(self):
+        g = Glycan(smiles[9]).get_tree()
+    
+        check_initial(g, "Man", 0, Monomer.Config.BETA)
+    
+    def test_parse_11(self):
+        g = Glycan(smiles[1]).get_tree()
+    
+        check_initial(g, "Glc", 1, Monomer.Config.ALPHA)
+        id_child_1 = list(g.edges(0))[0][1]
+        check_child(g, 0, id_child_1, "Man", "(a1-4)", 0)
+    
+    def test_parse_12(self):
+        g = Glycan(smiles[1]).get_tree()
+    
+        check_initial(g, "Glc", 1, Monomer.Config.BETA)
+        id_child_1 = list(g.edges(0))[0][1]
+        check_child(g, 0, id_child_1, "Man", "(a1-4)", 0)

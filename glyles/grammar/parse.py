@@ -46,27 +46,20 @@ class Glycan:
             # Initialize the tree with the root
             children = list(t.getChildren())
             if len(children) == 1:
-                self.__add_node(children[0].symbol.text, mode)
-                return self.g
-            elif len(children) == 2 and isinstance(children[0], GlycanParser.BranchContext):
-                node_id = self.__add_node(children[1].symbol.text, mode)
-                self.__walk(children[0], node_id, mode)
+                orientation = ""
+            else:
+                orientation = children[1].symbol.text
+
+            children = list(children[0].getChildren())
+            if len(children) == 1:
+                self.__add_node(orientation + children[0].symbol.text, mode)
                 return self.g
             elif len(children) == 2:
-                self.__add_node(children[1].symbol.text + children[0].symbol.text, mode)
-                return self.g
-            elif len(children) == 3:
-                node_id = self.__add_node(children[2].symbol.text + children[1].symbol.text, mode)
+                node_id = self.__add_node(orientation + children[1].symbol.text, mode)
                 self.__walk(children[0], node_id, mode)
                 return self.g
             else:
                 raise RuntimeError("This branch of the if-statement should be unreachable!")
-            # node_id = self.__add_node(?, mode)
-
-            # add the parsed AST to the networkx graph
-            # self.__walk(next(t.getChildren()), 1, mode)
-
-            # return self.g
 
         def __walk(self, t, parent, mode):
             """
