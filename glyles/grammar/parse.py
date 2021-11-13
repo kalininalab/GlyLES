@@ -36,24 +36,25 @@ class Glycan:
 
             Args:
                 t (antlr.ParseTree): result of the parsing step from ANTLR
-                init (str): root monomer of the glycan encoded as string according to the definitions in glycans/glycans.py
                 mode (Glycan.Mode):
 
             Returns:
                 Tree of parsed glycan with monomers in nodes
             """
+
+            # parse the initial monomer and the orientation of the root monomer
             children = list(t.getChildren())
-            if len(children) == 1:
+            if len(children) == 1:  # SAC
                 self.__add_node(children[0].symbol.text, mode)
                 return self.g
-            elif len(children) == 2:
+            elif len(children) == 2:  # branch SAC
                 node_id = self.__add_node(children[1].symbol.text, mode)
                 self.__walk(children[0], node_id, mode)
                 return self.g
-            elif len(children) == 3:
+            elif len(children) == 3:  # SAC ' ' TYPE
                 self.__add_node(children[2].symbol.text + children[0].symbol.text, mode)
                 return self.g
-            elif len(children) == 4:
+            elif len(children) == 4:  # branch SAC ' ' TYPE
                 node_id = self.__add_node(children[3].symbol.text + children[1].symbol.text, mode)
                 self.__walk(children[0], node_id, mode)
                 return self.g
@@ -224,35 +225,7 @@ class Glycan:
         Returns:
             Nothing
         """
-        '''
-        # Check for monosaccharides and eventually return a single-node-graph
-        if "(" not in self.iupac:
-            g = nx.DiGraph()
-            if len(self.iupac.split(" ")) == 2:
-                g.add_node(0, type=self.monomer_from_string(self.iupac[-1] + self.iupac[:-2], self.mode))
-            else:
-                g.add_node(0, type=self.monomer_from_string(self.iupac, self.mode))
-            self.parse_tree = g
-            self.glycan_smiles = g.nodes[0]["type"].get_smiles()
-            return
-
-        if self.iupac[-2] == " ":
-            root_orientation = self.iupac[-1]
-            iupac = self.iupac[:-2]
-        else:
-            root_orientation = ""
-            iupac = self.iupac
-
-        # Cut off the last monosaccharide as its the root
-        bracket_index = max(
-            iupac.rindex(")") if ")" in iupac else -1,
-            iupac.rindex("]") if "]" in iupac else -1,
-        ) + 1
-        init = root_orientation + iupac[bracket_index:]
-        iupac = iupac[:bracket_index]
-        '''
         # parse the remaining structure description following the grammar.
-        # stream = InputStream(data=self.iupac.replace(" ", "="))
         stream = InputStream(data=self.iupac)
         lexer = GlycanLexer(stream)
         token = CommonTokenStream(lexer)

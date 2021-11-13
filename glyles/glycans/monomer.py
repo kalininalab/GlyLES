@@ -213,7 +213,7 @@ class Monomer:
             "FUC": Monomer(name="Fuc", config=Monomer.Config.UNDEF,
                            smiles="C[C@@H]1OC(O)[C@@H](O)[C@H](O)[C@@H]1O"),
             "AFUC": Monomer(name="Fuc", config=Monomer.Config.ALPHA,
-                            smiles="C[C@@H]1O[C@@H](O)[C@@H](O)[C@H](O)[C@@H]1O",),
+                            smiles="C[C@@H]1O[C@@H](O)[C@@H](O)[C@H](O)[C@@H]1O", ),
             "BFUC": Monomer(name="Fuc", config=Monomer.Config.BETA,
                             smiles="C[C@@H]1O[C@H](O)[C@@H](O)[C@H](O)[C@@H]1O"),
 
