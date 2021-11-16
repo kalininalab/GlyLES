@@ -212,7 +212,7 @@ class Glycan:
             if p_edge is not None and t.nodes[node]["type"].is_non_chiral():
                 t.nodes[node]["type"] = t.nodes[node]["type"].to_chirality(p_edge[1])
 
-            # check for validity of the tree, i.e. if its a leaf (return, nothing to do) or has too many children (Error)
+            # check for validity of the tree, ie if its a leaf (return, nothing to do) or has too many children (Error)
             if len(children) == 0:  # leaf
                 return
             if len(children) > 3:  # too many children
@@ -240,11 +240,10 @@ class Glycan:
             # get my children and compute my SMILES string
             children = [x[1] for x in t.edges(node)]
             me = t.nodes[node]["type"].to_smiles(start, ring_index)
-            # check for validity of the tree, i.e. if its a leaf (return, nothing to do) or has too many children (Error)
+
+            # check for validity of the tree, ie if its a leaf
             if len(children) == 0:  # leaf
                 return me
-            if len(children) > 3:  # too many children
-                raise NotImplementedError("Glycans with maximal branching factor 4 not implemented.")
 
             # iterate over the children and the atoms used to mark binding atoms
             for child, atom in zip(children, t.nodes[node]["type"].get_dummy_atoms()[1]):

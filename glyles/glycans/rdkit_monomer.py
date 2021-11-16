@@ -148,6 +148,7 @@ class RDKitMonomer(Monomer):
                 if self._x[i, 2] == 1 and self._x[i, 0] == 8:
                     self._x[i, 1] = 10
 
+            # check in which order the ring has to be trversed to find C1 as first carbon atom behind the ring-oxygen
             main_ring = list(self._ring_info[0]) + list(self._ring_info[0])
             if not self.__clockwise():
                 main_ring = list(reversed(main_ring))
@@ -155,27 +156,30 @@ class RDKitMonomer(Monomer):
             # TODO: This only works if the C1 atom is part of the ring! (i.e. not for fructose)
             # for all carbon atoms in the main ring, set its id according to the distance to the oxygen atom
             # iterate clockwise, i.e. from ring-O to C1/C2 and so on ...
+            carbon_count = 1
+            # Insert code for c1-atoms outside of the ring here
             o_index = main_ring.index(np.argwhere((self._x[:, 0] == 8) & (self._x[:, 2] == 1)))
             for r in self._ring_info[0]:
                 if self._x[r, 0] != 8:
-                    self._x[r, 1] = main_ring.index(r, o_index) - o_index
+                    self._x[r, 1] = carbon_count + main_ring.index(r, o_index) - o_index - 1
 
             # assign ids to the remaining carbon atoms
             highest_index = np.max(self._x[:, 1][np.argwhere(self._x[:, 0] == 6)])
-            c6_candidates = np.argwhere((self._x[:, 1] == 6) & (self._x[:, 2] == 0))
+            # c6_candidates = np.argwhere((self._x[:, 1] == 6) & (self._x[:, 2] == 0))
 
             c5 = np.argwhere((self._x[:, 1] == 5).squeeze())
             c6 = np.argwhere(((self._x[:, 0] == 6) & (self._x[:, 2] == 0) & (self._adjacency[c5, :] == 1)).squeeze())
-            self._x[c6, 1] = 6
-            '''
-            remaining_cs = np.argwhere((self._x[:, 0] == 6) & (self._x[:, 2] == 0))[0]
-            for rc in remaining_cs:
-                highest_index += 1
-                self._x[rc, 1] = highest_index
-            '''
+            self._x[c6, 1] = highest_index + 1
         return self._structure
 
     def __clockwise(self):
+        """
+        Check if the main ring in the monomer is iterated in clockwise manner. RDKit assigns the atom_ids in the order
+        it is read in during parsing the monomer SMILES strings.
+
+        Returns:
+            True if the main ring is traversed clockwise when iterating over all ring member in order of their RDKit-ID
+        """
         position = np.argwhere(self._x[:, 1] == 10)
 
         # then find the candidates. There should be exactly one element in the resulting array
@@ -183,6 +187,7 @@ class RDKitMonomer(Monomer):
         if len(candidates) != 2:
             raise ValueError("Parsing exception")
 
+        # check if the candidate with the lower id fulfills the criteria to be the C1 atom
         first_c_cons = np.argwhere((self._adjacency[candidates[0], :] == 1).squeeze())
         if np.sum(self._x[first_c_cons, 0] == 6) == 1:
             o_index = self._ring_info[0].index(np.argwhere((self._x[:, 0] == 8) & (self._x[:, 2] == 1)))

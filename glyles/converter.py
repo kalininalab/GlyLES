@@ -16,6 +16,7 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, output_file=None, g
         glycan_file (str): File to read the glycans from
         output_file (str): File to save the conversions in
         generator (bool): Flag indicating the use of this method as generator
+        silent (bool): Flag indicating to have no output from this method
 
     Returns:
         Nothing
@@ -69,7 +70,7 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, output_file=None, g
             if generator:
                 yield ""
 
-    output.close()  # not sure if this works for stdout
+    output.close()
 
 
 if __name__ == '__main__':  # testing
