@@ -132,9 +132,6 @@ class RDKitMonomer(Monomer):
             self._ring_info = self._structure.GetRingInfo().AtomRings()
             self._x = np.zeros((self._adjacency.shape[0], 3))
 
-            # TODO: Find a way to properly define which orientation the ring has!
-            main_ring = list(reversed(list(self._ring_info[0]) + list(self._ring_info[0])))
-
             # extract some information form the molecule
             for i in range(self._adjacency.shape[0]):
                 atom = self._structure.GetAtomWithIdx(i)
@@ -151,8 +148,13 @@ class RDKitMonomer(Monomer):
                 if self._x[i, 2] == 1 and self._x[i, 0] == 8:
                     self._x[i, 1] = 10
 
+            main_ring = list(self._ring_info[0]) + list(self._ring_info[0])
+            if not self.__clockwise():
+                main_ring = list(reversed(main_ring))
+
             # TODO: This only works if the C1 atom is part of the ring! (i.e. not for fructose)
             # for all carbon atoms in the main ring, set its id according to the distance to the oxygen atom
+            # iterate clockwise, i.e. from ring-O to C1/C2 and so on ...
             o_index = main_ring.index(np.argwhere((self._x[:, 0] == 8) & (self._x[:, 2] == 1)))
             for r in self._ring_info[0]:
                 if self._x[r, 0] != 8:
@@ -166,6 +168,22 @@ class RDKitMonomer(Monomer):
                 self._x[rc, 1] = highest_index
 
         return self._structure
+
+    def __clockwise(self):
+        position = np.argwhere(self._x[:, 1] == 10)
+
+        # then find the candidates. There should be exactly one element in the resulting array
+        candidates = np.argwhere((self._adjacency[position, :] == 1).squeeze())
+        if len(candidates) != 2:
+            raise ValueError("Parsing exception")
+
+        first_c_cons = np.argwhere((self._adjacency[candidates[0], :] == 1).squeeze())
+        if np.sum(self._x[first_c_cons, 0] == 6) == 1:
+            o_index = self._ring_info[0].index(np.argwhere((self._x[:, 0] == 8) & (self._x[:, 2] == 1)))
+            c_index = self._ring_info[0].index(candidates[0])
+            if o_index < c_index:
+                return True
+        return False
 
     def __find_oxygen(self, binding_c_id):
         """
