@@ -83,7 +83,7 @@ class Monomer:
         Returns:
             Monomer in alpha conformation
         """
-        return self.from_string("A" + self._name[-3:])
+        return self.from_string("A" + self._name)
 
     def beta(self):
         """
@@ -92,7 +92,7 @@ class Monomer:
         Returns:
             Monomer in beta conformation
         """
-        return self.from_string("B" + self._name[-3:])
+        return self.from_string("B" + self._name)
 
     def undefined(self):
         """
@@ -102,7 +102,7 @@ class Monomer:
         Returns:
             Monomer in undefined conformation
         """
-        return self.from_string(self._name[-3:])
+        return self.from_string(self._name)
 
     def to_chirality(self, chirality):
         """
