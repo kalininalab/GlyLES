@@ -1,4 +1,6 @@
 import os
+import sys
+from contextlib import contextmanager
 from enum import Enum
 
 import networkx as nx
@@ -9,6 +11,28 @@ from glyles.glycans.nx_monomer import NXMonomer
 from glyles.glycans.rdkit_monomer import RDKitMonomer
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
+
+
+@contextmanager
+def suppress_stdout():
+    """
+    Source: https://thesmithfam.org/blog/2012/10/25/temporarily-suppress-console-output-in-python/
+    Suppress the output of a part of the programm
+    Use:
+    with suppress_stdout():
+        // Put code here
+    continue with normal code and output
+    """
+    with open(os.devnull, "w") as devnull:
+        old_stdout = sys.stdout
+        old_stderr = sys.stderr
+        sys.stdout = devnull
+        sys.stderr = devnull
+        try:
+            yield
+        finally:
+            sys.stdout = old_stdout
+            sys.stderr = old_stderr
 
 
 class Glycan:
@@ -315,11 +339,12 @@ class Glycan:
             Nothing
         """
         # parse the remaining structure description following the grammar.
-        stream = InputStream(data=self.iupac)
-        lexer = GlycanLexer(stream)
-        token = CommonTokenStream(lexer)
-        parser = GlycanParser(token)
-        tree = parser.start()
+        with suppress_stdout():
+            stream = InputStream(data=self.iupac)
+            lexer = GlycanLexer(stream)
+            token = CommonTokenStream(lexer)
+            parser = GlycanParser(token)
+            tree = parser.start()
 
         # walk through the AST and parse the AST into a networkx representation of the glycan.
         self.parse_tree = Glycan.__TreeWalker().parse(tree, self.mode)

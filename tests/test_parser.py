@@ -168,7 +168,7 @@ class TestParser:
     def test_parse_14(self):
         g = Glycan(smiles[13]).get_tree()
 
-        check_initial(g, "GalNAc6S", 1)
+        check_initial(g, "GlcNAc6S", 1)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Gal", "(b1-3)", 1)
         id_child_2 = list(g.edges(id_child_1))[0][1]
@@ -177,7 +177,7 @@ class TestParser:
     def test_parse_15(self):
         g = Glycan(smiles[14]).get_tree()
 
-        check_initial(g, "Gal6S", 1)
+        check_initial(g, "Glc6S", 1)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Gal", "(b1-4)", 1)
         id_child_2 = list(g.edges(id_child_1))[0][1]
