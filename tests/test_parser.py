@@ -194,7 +194,7 @@ class TestParser:
         id_child_1, id_child_2 = split_children(g, id_children_1, "GlcNAc")
 
         check_child(g, 0, id_child_1, "GlcNAc", "(b1-4)", 1)
-        check_child(g, 0, id_child_2, "Fuc", "(a1-6)", 1)
+        check_child(g, 0, id_child_2, "Fuc", "(a1-6)", 0)
 
         id_child_2 = list(g.edges(id_child_1))[0][1]
-        check_child(g, id_child_1, id_child_2, "Man", "(b1-4)", 1)
+        check_child(g, id_child_1, id_child_2, "Man", "(b1-4)", 2)

@@ -162,11 +162,17 @@ class RDKitMonomer(Monomer):
 
             # assign ids to the remaining carbon atoms
             highest_index = np.max(self._x[:, 1][np.argwhere(self._x[:, 0] == 6)])
+            c6_candidates = np.argwhere((self._x[:, 1] == 6) & (self._x[:, 2] == 0))
+
+            c5 = np.argwhere((self._x[:, 1] == 5).squeeze())
+            c6 = np.argwhere(((self._x[:, 0] == 6) & (self._x[:, 2] == 0) & (self._adjacency[c5, :] == 1)).squeeze())
+            self._x[c6, 1] = 6
+            '''
             remaining_cs = np.argwhere((self._x[:, 0] == 6) & (self._x[:, 2] == 0))[0]
             for rc in remaining_cs:
                 highest_index += 1
                 self._x[rc, 1] = highest_index
-
+            '''
         return self._structure
 
     def __clockwise(self):
