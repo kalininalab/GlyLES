@@ -9,7 +9,7 @@ branch:
     SAC CON
     | SAC CON branch
     | '[' branch ']'
-    | SAC CON '[' branch ']' SAC CON;
+    | SAC CON '[' branch ']' branch;
 
 SAC:
     'Fuc'

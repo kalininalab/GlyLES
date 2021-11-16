@@ -122,10 +122,9 @@ class Glycan:
                 self.__walk(children[1], parent, mode)
                 return parent
 
-            elif len(children) == 7:  # {sac con [ branch ] sac con}
+            elif len(children) == 6:  # {sac con [ branch ] branch}
                 # branching in a chain, append the end to the parent and hang both branches on that
-                node_id = self.__add_node(children[5].symbol.text, mode)
-                self.__add_edge(parent, node_id, children[6])
+                node_id = self.__walk(children[5], parent, mode)
                 self.__walk(children[3], node_id, mode)
                 node_id2 = self.__add_node(children[0].symbol.text, mode)
                 self.__add_edge(node_id, node_id2, children[1])
