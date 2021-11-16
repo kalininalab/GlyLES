@@ -14,6 +14,9 @@ smiles = [
     "Man b",
     "Man(a1-4)Glc a",
     "Man(a1-4)Glc b",
+    "Fuc(a1-2)Gal(b1-3)GalNAc",
+    "Fuc(a1-2)Gal(b1-3)GlcNAc6S",
+    "Fuc(a1-2)Gal(b1-4)Glc6S",
 ]
 
 
@@ -152,3 +155,37 @@ class TestParser:
         check_initial(g, "Glc", 1, Monomer.Config.BETA)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Man", "(a1-4)", 0)
+
+    def test_parse_13(self):
+        g = Glycan(smiles[12]).get_tree()
+
+        check_initial(g, "GalNAc", 1)
+        id_child_1 = list(g.edges(0))[0][1]
+        check_child(g, 0, id_child_1, "Gal", "(b1-3)", 1)
+        id_child_2 = list(g.edges(id_child_1))[0][1]
+        check_child(g, id_child_1, id_child_2, "Fuc", "(a1-2)", 0)
+
+    def test_parse_14(self):
+        g = Glycan(smiles[13]).get_tree()
+
+        check_initial(g, "GalNAc6S", 1)
+        id_child_1 = list(g.edges(0))[0][1]
+        check_child(g, 0, id_child_1, "Gal", "(b1-3)", 1)
+        id_child_2 = list(g.edges(id_child_1))[0][1]
+        check_child(g, id_child_1, id_child_2, "Fuc", "(a1-2)", 0)
+
+    def test_parse_15(self):
+        g = Glycan(smiles[14]).get_tree()
+
+        check_initial(g, "Gal6S", 1)
+        id_child_1 = list(g.edges(0))[0][1]
+        check_child(g, 0, id_child_1, "Gal", "(b1-4)", 1)
+        id_child_2 = list(g.edges(id_child_1))[0][1]
+        check_child(g, id_child_1, id_child_2, "Fuc", "(a1-2)", 0)
+
+'''
+Man(a1-4)Glc(a1-3)Tal
+Fuc(a1-2)Gal(b1-3)GalNAc
+Fuc(a1-2)Gal(b1-3)GlcNAc6S
+Fuc(a1-2)Gal(b1-4)Glc6S
+'''
