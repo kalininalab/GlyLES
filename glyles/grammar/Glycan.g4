@@ -16,7 +16,7 @@ SAC:
     | 'Gal' | 'Gal3S' | 'Gal6S' | 'GalNAc' | 'GalNAc4S' | 'GalNAc6S'
     | 'Glc' | 'GlcA' | 'GlcNAc' | 'GlcNAc6S'
     | 'Man'
-    | 'Neu5Ac' | 'Neu5Gc'
+//    | 'Neu5Ac' | 'Neu5Gc'
     | 'Tal';
 CON:
     '(' TYPE NUM '-' NUM ')';
