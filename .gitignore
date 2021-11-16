@@ -2,3 +2,4 @@
 
 *.dot
 generator.py
+/generate_oracle.py
