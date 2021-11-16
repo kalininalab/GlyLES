@@ -1,15 +1,17 @@
 # GlyLES
 
-Tool to convert IUPAC representation of Glycans into SMILES representation.
+---
+Tool to convert IUPAC representation of Glycans into SMILES representation. This repo is still in the development phase;
+so, feel free to report any errors in the issues section.
 
 ## Limitations
 
 This implementation currently only works for glycans that fulfil certain properties:
 
-* The structure of the gylcan is represented as tree of the monomers with maximal branching factor 3.
+* The structure of the glycan is represented as tree of the monomers with maximal branching factor 3.
 * Only the 15 implemented monomers may participate in the glycan (see below)
 
-For an overview of the implemented monomers, please look at the README in the grammar folder.
+For an overview of the implemented monomers, please look at the [README](glyles/grammar/README.md) in the grammar folder.
 
 ## Workflow
 

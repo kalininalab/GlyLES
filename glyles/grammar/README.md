@@ -1,9 +1,6 @@
 # Implemented Grammar in GlyLES
 
-## General structure
-
-TODO
-
+---
 ## Implemented Monomers
 
 All following monomers are implemented in alpha, beta and undefined conformation of the C1 atom.
@@ -19,6 +16,6 @@ All following monomers are implemented in alpha, beta and undefined conformation
 * GlcNAc
 * GlcNAc6S
 * Man
-* Neu5Ac
-* Neu5Gc
+* Neu5Ac (currently not working)
+* Neu5Gc (currently not working)
 * Tal
