@@ -41,3 +41,7 @@ The output also can be manifold for `convert`. For `convert_generator` there is 
 * writing to an `output_file`, e.g. `convert(glycan="Man(a1-2)Man", output_file="./out.txt")`. Here each line of the output will state the input IUPAC and the output SMILES separated with a comma.
 
 In case of `convert_generator` the outputs only contain the SMILES strings in the order of the arguments (first `glycan`, then `glycan_list`, `glycan_file`, and `glycan_generator`).
+
+## Poetry
+
+To develop this package I used the poetry package manager (see [here](https://python-poetry.org/) for a detailed instruction). It has basically the same functionality as conda but supports the package management i/m.m.o. better and also gives to opportunity to distinguish packages into those that are needed to use the package and those that are needed in the development of the package. In order to enable others to work on this repository, I also published the exact specifications of my poetry environment.
