@@ -1,6 +1,5 @@
 # GlyLES
 
----
 Tool to convert IUPAC representation of Glycans into SMILES representation. This repo is still in the development phase;
 so, feel free to report any errors in the issues section.
 
@@ -22,23 +21,23 @@ import glyles
 glyles.convert(glycan="Man(a1-2)Man", output_file="./blbabl/out.txt")
 ```
 
-You can also use the `convert` method as a generator
+You can also use the `convert_generator` method to get generator over all SMILES:
 
 ```python
-for smiles in glyles.convert(glycan_list=["Man(a1-2)Man a", "Man(a1-2)Man b"], output_generator=True):
+for smiles in glyles.convert_generator(glycan_list=["Man(a1-2)Man a", "Man(a1-2)Man b"]):
         print(smiles)
 ```
 
-In general, the `convert` method supports three different kinds of input.
+In general, the `convert` and `convert_generator` methods supports the same for types of input. The samples are shown for `convert` but its the same for `convert_generator`.
+
 * single glycan, e.g. `convert(glycan="Man(a1-2)Man)"`,
 * a list of glycans, e.g. `convert(glycan_list=["Man(a1-2)Man a", "Man(a1-2)Man b"])`, and
-* a file of glycans, e.g. `convert(glycan_file="./glycans.txt")`.<br>Here its important that the file many only 
-contain one IUPAC per line.
+* a file of glycans, e.g. `convert(glycan_file="./glycans.txt")`.Here its important that the file many only contain one IUPAC per line.
+* for better runtime one can also provide a generator as input, e.g. `convert(glycan_generator=some_generator)`
 
-The output can also be manifold. Supported are 
+The output also can be manifold for `convert`. For `convert_generator` there is one one output. `convert` supports
+
 * `stdout` when specifying no output-related argument, or
-* in an `output file`, e.g. `convert(glycan="Man(a1-2)Man", output_file="./out.txt")`.<br>Here each line of the 
-output will state the input IUPAC and the output SMILES separated with a comma. Or
-* as a `generator`, e.g. `convert(glycan_list=["Man(a1-2)Man a", "Man(a1-2)Man b"], generator=True)`. <br> Then the 
-generator will yield the SMILES individually. It is important to note that the `generator` argument overrides the other 
-outputs. So, there is always exactly one output method used.</p>
+* writing to an `output_file`, e.g. `convert(glycan="Man(a1-2)Man", output_file="./out.txt")`. Here each line of the output will state the input IUPAC and the output SMILES separated with a comma.
+
+In case of `convert_generator` the outputs only contain the SMILES strings in the order of the arguments (first `glycan`, then `glycan_list`, `glycan_file`, and `glycan_generator`).

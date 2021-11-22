@@ -1,9 +1,9 @@
 # Implemented Grammar in GlyLES
 
----
 ## Implemented Monomers
 
 All following monomers are implemented in alpha, beta and undefined conformation of the C1 atom.
+
 * Fuc
 * Gal
 * Gal3S

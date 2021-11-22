@@ -1,5 +1,8 @@
 .idea/
+.venv/
+.pytest_cache/
+*/__pycache__/
 
 *.dot
 generator.py
-/generate_oracle.py
+generate_oracle.py
