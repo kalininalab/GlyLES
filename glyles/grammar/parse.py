@@ -337,12 +337,12 @@ class Glycan:
             Nothing
         """
         # parse the remaining structure description following the grammar.
-        with suppress_stdout():
-            stream = InputStream(data=self.iupac)
-            lexer = GlycanLexer(stream)
-            token = CommonTokenStream(lexer)
-            parser = GlycanParser(token)
-            tree = parser.start()
+        # with suppress_stdout():
+        stream = InputStream(data=self.iupac)
+        lexer = GlycanLexer(stream)
+        token = CommonTokenStream(lexer)
+        parser = GlycanParser(token)
+        tree = parser.start()
 
         # walk through the AST and parse the AST into a networkx representation of the glycan.
         self.parse_tree = Glycan.__TreeWalker().parse(tree, self.mode)

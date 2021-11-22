@@ -23,9 +23,10 @@ glyles.convert(glycan="Man(a1-2)Man", output_file="./blbabl/out.txt")
 ```
 
 You can also use the `convert` method as a generator
+
 ```python
-for smiles in glyles.convert(glycan_list=["Man(a1-2)Man a", "Man(a1-2)Man b"], generator=True):\
-    print(smiles)
+for smiles in glyles.convert(glycan_list=["Man(a1-2)Man a", "Man(a1-2)Man b"], output_generator=True):
+        print(smiles)
 ```
 
 In general, the `convert` method supports three different kinds of input.
