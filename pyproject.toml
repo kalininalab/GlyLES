@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "glyles"
+version = "0.0.1"
+description = "A tool to convert IUPAC representation of glycans into SMILES strings"
+authors = ["Roman Joeres <Roman.Joeres@helmholtz-hzi.de>"]
+
+[tool.poetry.dependencies]
+python = ">=3.7,<3.11"
+numpy = "^1.21.4"
+rdkit-pypi = "^2021.9.2"
+antlr4-python3-runtime = "^4.9.3"
+networkx = "^2.6.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
