@@ -2,6 +2,7 @@ import os
 import sys
 from contextlib import contextmanager
 from enum import Enum
+import pydot
 
 import networkx as nx
 from antlr4 import *
@@ -281,7 +282,9 @@ class Glycan:
         self.root_orientation = root_orientation
         self.start = start
         self.parse_smiles = parse
-        self.__parse()
+        if parse:
+            self.__parse()
+            self.save_dot(self.iupac)
 
     def get_smiles(self):
         """
@@ -327,7 +330,12 @@ class Glycan:
         Returns:
             Nothing
         """
-        nx.drawing.nx_pydot.write_dot(self.parse_tree, os.path.join(output, f"{self.iupac}.dot"))
+        graph = pydot.Dot("iupac_tree")
+        for node in range(len(self.parse_tree.nodes)):
+            graph.add_node(pydot.Node(node, label=self.parse_tree.nodes[node]["type"].get_name()))
+        for edge in self.parse_tree.edges():
+            graph.add_edge(pydot.Edge(*edge, label=self.parse_tree.get_edge_data(*edge)["type"]))
+        graph.write(output + ".dot")
 
     def __parse(self):
         """
