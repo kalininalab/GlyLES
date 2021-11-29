@@ -1,4 +1,5 @@
 from glyles.glycans.monomer import Monomer
+from glyles.glycans.utils import Config
 from glyles.grammar.parse import Glycan
 
 
@@ -28,7 +29,7 @@ class TestParser:
     def test_parse_1(self):
         g = Glycan("Man").get_tree()
 
-        check_initial(g, "Man", 0, Monomer.Config.UNDEF)
+        check_initial(g, "Man", 0, Config.UNDEF)
 
     def test_parse_2(self):
         g = Glycan("Man(a1-4)Glc").get_tree()
@@ -117,24 +118,24 @@ class TestParser:
     def test_parse_9(self):
         g = Glycan("Man a").get_tree()
 
-        check_initial(g, "Man", 0, Monomer.Config.ALPHA)
+        check_initial(g, "Man", 0, Config.ALPHA)
 
     def test_parse_10(self):
         g = Glycan("Man b").get_tree()
 
-        check_initial(g, "Man", 0, Monomer.Config.BETA)
+        check_initial(g, "Man", 0, Config.BETA)
 
     def test_parse_11(self):
         g = Glycan("Man(a1-4)Glc a").get_tree()
 
-        check_initial(g, "Glc", 1, Monomer.Config.ALPHA)
+        check_initial(g, "Glc", 1, Config.ALPHA)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Man", "(a1-4)", 0)
 
     def test_parse_12(self):
         g = Glycan("Man(a1-4)Glc b").get_tree()
 
-        check_initial(g, "Glc", 1, Monomer.Config.BETA)
+        check_initial(g, "Glc", 1, Config.BETA)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Man", "(a1-4)", 0)
 

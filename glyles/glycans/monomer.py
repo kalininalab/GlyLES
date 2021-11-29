@@ -1,4 +1,5 @@
-from enum import Enum
+from glyles.glycans.factory import MonomerFactory
+from glyles.glycans.utils import Config
 
 
 class Monomer:
@@ -17,21 +18,6 @@ class Monomer:
     use the atom ids as specified here. So, an alternative naming must internally be converted to this specification.
     """
 
-    class Config(Enum):
-        """
-        Configuration enum to represent if the monomer is in alpha, beta, or undefined configuration.
-        """
-        UNDEF = 0
-        ALPHA = 1
-        BETA = 2
-
-    class Enantiomer(Enum):
-        """
-        Configuration of the whole monomer regarding L and D forms in term of enantiomerism.
-        """
-        D = 0
-        L = 1
-
     def __init__(self, origin=None, **kwargs):
         """
         Initialize the Monomer with the provided arguments or from another monomer
@@ -44,7 +30,7 @@ class Monomer:
             self._name = kwargs["name"]
             self._smiles = kwargs["smiles"]
             self._structure = kwargs.get("struct", None)
-            self._config = kwargs.get("config", Monomer.Config.UNDEF)
+            self._config = kwargs.get("config", Config.UNDEF)
         else:
             self._name = origin.get_name()
             self._smiles = origin.get_smiles()
@@ -143,7 +129,7 @@ class Monomer:
         Returns:
             boolean indicating chirality of this monomer
         """
-        return self._config == Monomer.Config.UNDEF
+        return self._config == Config.UNDEF
 
     def get_dummy_atoms(self):
         """
@@ -209,7 +195,6 @@ class Monomer:
     def from_string(mono):
         """
         Get an instance of a glycan according to the provided string representation of the glycan.
-        Checked with http://www.cheminfo.org/flavor/malaria/Utilities/SMILES_generator___checker/index.html
 
         Args:
             mono (str): string representation of the glycan of interest
@@ -217,123 +202,6 @@ class Monomer:
         Returns:
             Glycan according to the monosaccharide provided via mono
         """
-        return {
-            "FUC": Monomer(name="Fuc", config=Monomer.Config.UNDEF, isomer=Monomer.Enantiomer.L,
-                           smiles="C[C@@H]1OC(O)[C@@H](O)[C@H](O)[C@@H]1O"),
-            "AFUC": Monomer(name="Fuc", config=Monomer.Config.ALPHA, isomer=Monomer.Enantiomer.L,
-                            smiles="C[C@@H]1O[C@@H](O)[C@@H](O)[C@H](O)[C@@H]1O", ),
-            "BFUC": Monomer(name="Fuc", config=Monomer.Config.BETA, isomer=Monomer.Enantiomer.L,
-                            smiles="C[C@@H]1O[C@H](O)[C@@H](O)[C@H](O)[C@@H]1O"),
-
-            "GAL": Monomer(name="Gal", config=Monomer.Config.UNDEF, isomer=Monomer.Enantiomer.D,
-                           smiles="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O"),
-            "AGAL": Monomer(name="Gal", config=Monomer.Config.ALPHA, isomer=Monomer.Enantiomer.D,
-                            smiles="OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@H]1O"),
-            "BGAL": Monomer(name="Gal", config=Monomer.Config.BETA, isomer=Monomer.Enantiomer.D,
-                            smiles="OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@H]1O"),
-
-            "GAL3S": Monomer(name="Gal3S", config=Monomer.Config.UNDEF, isomer=Monomer.Enantiomer.D,
-                             smiles="O=S(=O)([O-])O[C@@H]1[C@@H](O)C(O)O[C@H](CO)[C@@H]1O"),
-            "AGAL3S": Monomer(name="Gal3S", config=Monomer.Config.ALPHA, isomer=Monomer.Enantiomer.D,
-                              smiles="O=S(=O)([O-])O[C@@H]1[C@@H](O)[C@@H](O)O[C@H](CO)[C@@H]1O"),
-            "BGAL3S": Monomer(name="Gal3S", config=Monomer.Config.BETA, isomer=Monomer.Enantiomer.D,
-                              smiles="O=S(=O)([O-])O[C@@H]1[C@@H](O)[C@H](O)O[C@H](CO)[C@@H]1O"),
-
-            "GAL4S": Monomer(name="Gal4S", config=Monomer.Config.UNDEF, isomer=Monomer.Enantiomer.D,
-                             smiles="O=S(=O)([O-])O[C@@H]1[C@H](O)[C@@H](O)C(O)O[C@@H]1CO"),
-            "AGAL4S": Monomer(name="Gal4S", config=Monomer.Config.ALPHA, isomer=Monomer.Enantiomer.D,
-                              smiles="O=S(=O)([O-])O[C@@H]1[C@H](O)[C@@H](O)[C@@H](O)O[C@@H]1CO"),
-            "BGAL4S": Monomer(name="Gal4S", config=Monomer.Config.BETA, isomer=Monomer.Enantiomer.D,
-                              smiles="O=S(=O)([O-])O[C@@H]1[C@H](O)[C@@H](O)[C@H](O)O[C@@H]1CO"),
-
-            "GAL6S": Monomer(name="Gal6S", config=Monomer.Config.UNDEF, isomer=Monomer.Enantiomer.D,
-                             smiles="O=S(=O)([O-])OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O"),
-            "AGAL6S": Monomer(name="Gal6S", config=Monomer.Config.ALPHA, isomer=Monomer.Enantiomer.D,
-                              smiles="O=S(=O)([O-])OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@H]1O"),
-            "BGAL6S": Monomer(name="Gal6S", config=Monomer.Config.BETA, isomer=Monomer.Enantiomer.D,
-                              smiles="O=S(=O)([O-])OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@H]1O"),
-
-            "GALNAC": Monomer(name="GalNAc", config=Monomer.Config.UNDEF,
-                              smiles="CC(=O)N[C@H]1C(O)O[C@H](CO)[C@H](O)[C@@H]1O"),
-            "AGALNAC": Monomer(name="GalNAc", config=Monomer.Config.ALPHA,
-                               smiles="CC(=O)N[C@H]1[C@@H](O)O[C@H](CO)[C@H](O)[C@@H]1O"),
-            "BGALNAC": Monomer(name="GalNAc", config=Monomer.Config.BETA,
-                               smiles="CC(=O)N[C@H]1[C@H](O)O[C@H](CO)[C@H](O)[C@@H]1O"),
-
-            "GALNAC4S": Monomer(name="GalNAc4S", config=Monomer.Config.UNDEF,
-                                smiles="CC(=O)N[C@H]1C(O)O[C@H](CO)[C@H](OS(=O)(=O)O)[C@@H]1O"),
-            "AGALNAC4S": Monomer(name="GalNAc4S", config=Monomer.Config.ALPHA,
-                                 smiles="CC(=O)N[C@H]1[C@@H](O)O[C@H](CO)[C@H](OS(=O)(=O)O)[C@@H]1O"),
-            "BGALNAC4S": Monomer(name="GalNAc4S", config=Monomer.Config.BETA,
-                                 smiles="CC(=O)N[C@H]1[C@H](O)O[C@H](CO)[C@H](OS(=O)(=O)O)[C@@H]1O"),
-
-            "GALNAC6S": Monomer(name="GalNAc6S", config=Monomer.Config.UNDEF,
-                                smiles="CC(=O)N[C@H]1C(O)O[C@H](COS(=O)(=O)[O-])[C@H](O)[C@@H]1O"),
-            "AGALNAC6S": Monomer(name="GalNAc6S", config=Monomer.Config.ALPHA,
-                                 smiles="CC(=O)N[C@H]1[C@@H](O)O[C@H](COS(=O)(=O)[O-])[C@H](O)[C@@H]1O"),
-            "BGALNAC6S": Monomer(name="GalNAc6S", config=Monomer.Config.BETA,
-                                 smiles="CC(=O)N[C@H]1[C@H](O)O[C@H](COS(=O)(=O)[O-])[C@H](O)[C@@H]1O"),
-
-            "GLC": Monomer(name="Glc", config=Monomer.Config.UNDEF,
-                           smiles="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"),
-            "AGLC": Monomer(name="Glc", config=Monomer.Config.ALPHA,
-                            smiles="OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@@H]1O"),
-            "BGLC": Monomer(name="Glc", config=Monomer.Config.BETA,
-                            smiles="OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O"),
-
-            "GLCA": Monomer(name="GlcA", config=Monomer.Config.UNDEF,
-                            smiles="O=C(O)[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"),
-            "AGLCA": Monomer(name="GlcA", config=Monomer.Config.ALPHA,
-                             smiles="O=C(O)[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@@H]1O"),
-            "BGLCA": Monomer(name="GlcA", config=Monomer.Config.BETA,
-                             smiles="O=C(O)[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O"),
-
-            "GLCNAC": Monomer(name="GlcNAc", config=Monomer.Config.UNDEF,
-                              smiles="CC(=O)N[C@H]1C(O)O[C@H](CO)[C@@H](O)[C@@H]1O"),
-            "AGLCNAC": Monomer(name="GlcNAc", config=Monomer.Config.UNDEF,
-                               smiles="CC(=O)N[C@H]1[C@@H](O)O[C@H](CO)[C@@H](O)[C@@H]1O"),
-            "BGLCNAC": Monomer(name="GlcNAc", config=Monomer.Config.UNDEF,
-                               smiles="CC(=O)N[C@H]1[C@H](O)O[C@H](CO)[C@@H](O)[C@@H]1O"),
-
-            "GLCNAC6S": Monomer(name="GlcNAc6S", config=Monomer.Config.UNDEF,
-                                smiles="CC(=O)N[C@H]1C(O)O[C@H](COS(=O)(=O)[O-])[C@@H](O)[C@@H]1O"),
-            "AGLCNAC6S": Monomer(name="GlcNAc6S", config=Monomer.Config.UNDEF,
-                                 smiles="CC(=O)N[C@H]1[C@@H](O)O[C@H](COS(=O)(=O)[O-])[C@@H](O)[C@@H]1O"),
-            "BGLCNAC6S": Monomer(name="GlcNAc6S", config=Monomer.Config.UNDEF,
-                                 smiles="CC(=O)N[C@H]1[C@H](O)O[C@H](COS(=O)(=O)[O-])[C@@H](O)[C@@H]1O"),
-
-            "KDN": Monomer(name="Kdn", config=Monomer.Config.UNDEF,
-                           smiles="O=C(O)C1(O)C[C@H](O)[C@@H](O)C([C@H](O)[C@H](O)CO)O1"),
-            "AKDN": Monomer(name="Kdn", config=Monomer.Config.UNDEF,
-                            smiles="O=C(O)[C@@]1(O)C[C@H](O)[C@@H](O)C([C@H](O)[C@H](O)CO)O1"),
-            "BKDN": Monomer(name="Kdn", config=Monomer.Config.UNDEF,
-                            smiles="O=C(O)[C@]1(O)C[C@H](O)[C@@H](O)C([C@H](O)[C@H](O)CO)O1"),
-
-            "MAN": Monomer(name="Man", config=Monomer.Config.UNDEF,
-                           smiles="OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O"),
-            "AMAN": Monomer(name="Man", config=Monomer.Config.ALPHA,
-                            smiles="OC[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@@H]1O"),
-            "BMAN": Monomer(name="Man", config=Monomer.Config.BETA,
-                            smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@@H]1O"),
-
-            "NEU5AC": Monomer(name="Neu5Ac", config=Monomer.Config.UNDEF,
-                              smiles="CC(=O)N[C@@H]1[C@@H](O)CC(O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"),
-            "ANEU5AC": Monomer(name="Neu5Ac", config=Monomer.Config.ALPHA,
-                               smiles="CC(=O)N[C@@H]1[C@@H](O)C[C@@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"),
-            "BNEU5AC": Monomer(name="Neu5Ac", config=Monomer.Config.BETA,
-                               smiles="CC(=O)N[C@@H]1[C@@H](O)C[C@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"),
-
-            "NEU5GC": Monomer(name="Neu5Ac", config=Monomer.Config.UNDEF,
-                              smiles="O=C(CO)N[C@@H]1[C@@H](O)CC(O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"),
-            "ANEU5GC": Monomer(name="Neu5Ac", config=Monomer.Config.ALPHA,
-                               smiles="O=C(CO)N[C@@H]1[C@@H](O)C[C@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"),
-            "BNEU5GC": Monomer(name="Neu5Ac", config=Monomer.Config.BETA,
-                               smiles="O=C(CO)N[C@@H]1[C@@H](O)C[C@@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"),
-
-            "TAL": Monomer(name="Tal", config=Monomer.Config.UNDEF,
-                           smiles="OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@H]1O"),
-            "ATAL": Monomer(name="Tal", config=Monomer.Config.ALPHA,
-                            smiles="OC[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@H]1O"),
-            "BTAL": Monomer(name="Tal", config=Monomer.Config.BETA,
-                            smiles="OC[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@H]1O"),
-        }[mono.upper()]
+        factory = MonomerFactory()
+        args = factory[mono.upper()]
+        return Monomer(**args)

@@ -228,7 +228,8 @@ class Glycan:
 
         def __merge(self, t, node, start, ring_index):
             """
-            Recursively merge every node of the molecule with its children and get the SMILES representation of the subtree.
+            Recursively merge every node of the molecule with its children and get the SMILES representation of the
+            subtree.
 
             Args:
                 t (networkx.DiGraph): Graph representing the glycan to compute the whole SMILES representation for.
@@ -284,7 +285,6 @@ class Glycan:
         self.parse_smiles = parse
         if parse:
             self.__parse()
-            self.save_dot(self.iupac)
 
     def get_smiles(self):
         """

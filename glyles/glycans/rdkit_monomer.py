@@ -226,4 +226,5 @@ class RDKitMonomer(Monomer):
         Returns:
             RDKit instance according to the string
         """
-        return RDKitMonomer(origin=Monomer.from_string(mono))
+        tmp = Monomer.from_string(mono)
+        return RDKitMonomer(origin=tmp)
