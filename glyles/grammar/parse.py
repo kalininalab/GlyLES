@@ -18,7 +18,7 @@ from glyles.grammar.GlycanParser import GlycanParser
 def suppress_stdout():
     """
     Source: https://thesmithfam.org/blog/2012/10/25/temporarily-suppress-console-output-in-python/
-    Suppress the output of a part of the programm
+    Suppress the output of a part of the program
     Use:
     with suppress_stdout():
         // Put code here

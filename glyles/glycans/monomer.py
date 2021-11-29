@@ -25,6 +25,13 @@ class Monomer:
         ALPHA = 1
         BETA = 2
 
+    class Enantiomer(Enum):
+        """
+        Configuration of the whole monomer regarding L and D forms in term of enantiomerism.
+        """
+        D = 0
+        L = 1
+
     def __init__(self, origin=None, **kwargs):
         """
         Initialize the Monomer with the provided arguments or from another monomer
@@ -202,6 +209,7 @@ class Monomer:
     def from_string(mono):
         """
         Get an instance of a glycan according to the provided string representation of the glycan.
+        Checked with http://www.cheminfo.org/flavor/malaria/Utilities/SMILES_generator___checker/index.html
 
         Args:
             mono (str): string representation of the glycan of interest
@@ -210,33 +218,40 @@ class Monomer:
             Glycan according to the monosaccharide provided via mono
         """
         return {
-            "FUC": Monomer(name="Fuc", config=Monomer.Config.UNDEF,
+            "FUC": Monomer(name="Fuc", config=Monomer.Config.UNDEF, isomer=Monomer.Enantiomer.L,
                            smiles="C[C@@H]1OC(O)[C@@H](O)[C@H](O)[C@@H]1O"),
-            "AFUC": Monomer(name="Fuc", config=Monomer.Config.ALPHA,
+            "AFUC": Monomer(name="Fuc", config=Monomer.Config.ALPHA, isomer=Monomer.Enantiomer.L,
                             smiles="C[C@@H]1O[C@@H](O)[C@@H](O)[C@H](O)[C@@H]1O", ),
-            "BFUC": Monomer(name="Fuc", config=Monomer.Config.BETA,
+            "BFUC": Monomer(name="Fuc", config=Monomer.Config.BETA, isomer=Monomer.Enantiomer.L,
                             smiles="C[C@@H]1O[C@H](O)[C@@H](O)[C@H](O)[C@@H]1O"),
 
-            "GAL": Monomer(name="Gal", config=Monomer.Config.UNDEF,
+            "GAL": Monomer(name="Gal", config=Monomer.Config.UNDEF, isomer=Monomer.Enantiomer.D,
                            smiles="OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O"),
-            "AGAL": Monomer(name="Gal", config=Monomer.Config.ALPHA,
+            "AGAL": Monomer(name="Gal", config=Monomer.Config.ALPHA, isomer=Monomer.Enantiomer.D,
                             smiles="OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@H]1O"),
-            "BGAL": Monomer(name="Gal", config=Monomer.Config.BETA,
+            "BGAL": Monomer(name="Gal", config=Monomer.Config.BETA, isomer=Monomer.Enantiomer.D,
                             smiles="OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@H]1O"),
 
-            "GAL3S": Monomer(name="Gal6S", config=Monomer.Config.UNDEF,
+            "GAL3S": Monomer(name="Gal3S", config=Monomer.Config.UNDEF, isomer=Monomer.Enantiomer.D,
                              smiles="O=S(=O)([O-])O[C@@H]1[C@@H](O)C(O)O[C@H](CO)[C@@H]1O"),
-            "AGAL3S": Monomer(name="Gal6S", config=Monomer.Config.ALPHA,
+            "AGAL3S": Monomer(name="Gal3S", config=Monomer.Config.ALPHA, isomer=Monomer.Enantiomer.D,
                               smiles="O=S(=O)([O-])O[C@@H]1[C@@H](O)[C@@H](O)O[C@H](CO)[C@@H]1O"),
-            "BGAL3S": Monomer(name="Gal6S", config=Monomer.Config.BETA,
+            "BGAL3S": Monomer(name="Gal3S", config=Monomer.Config.BETA, isomer=Monomer.Enantiomer.D,
                               smiles="O=S(=O)([O-])O[C@@H]1[C@@H](O)[C@H](O)O[C@H](CO)[C@@H]1O"),
 
-            "GAL6S": Monomer(name="Gal6S", config=Monomer.Config.UNDEF,
+            "GAL4S": Monomer(name="Gal4S", config=Monomer.Config.UNDEF, isomer=Monomer.Enantiomer.D,
+                             smiles="O=S(=O)([O-])O[C@@H]1[C@H](O)[C@@H](O)C(O)O[C@@H]1CO"),
+            "AGAL4S": Monomer(name="Gal4S", config=Monomer.Config.ALPHA, isomer=Monomer.Enantiomer.D,
+                              smiles="O=S(=O)([O-])O[C@@H]1[C@H](O)[C@@H](O)[C@@H](O)O[C@@H]1CO"),
+            "BGAL4S": Monomer(name="Gal4S", config=Monomer.Config.BETA, isomer=Monomer.Enantiomer.D,
+                              smiles="O=S(=O)([O-])O[C@@H]1[C@H](O)[C@@H](O)[C@H](O)O[C@@H]1CO"),
+
+            "GAL6S": Monomer(name="Gal6S", config=Monomer.Config.UNDEF, isomer=Monomer.Enantiomer.D,
                              smiles="O=S(=O)([O-])OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O"),
-            "AGAL6S": Monomer(name="Gal6S", config=Monomer.Config.ALPHA,
+            "AGAL6S": Monomer(name="Gal6S", config=Monomer.Config.ALPHA, isomer=Monomer.Enantiomer.D,
                               smiles="O=S(=O)([O-])OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@H]1O"),
-            "BGAL6S": Monomer(name="Gal6S", config=Monomer.Config.BETA,
-                              smiles="O=S(=O)([O-])OC[C@@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@H]1O"),
+            "BGAL6S": Monomer(name="Gal6S", config=Monomer.Config.BETA, isomer=Monomer.Enantiomer.D,
+                              smiles="O=S(=O)([O-])OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@H]1O"),
 
             "GALNAC": Monomer(name="GalNAc", config=Monomer.Config.UNDEF,
                               smiles="CC(=O)N[C@H]1C(O)O[C@H](CO)[C@H](O)[C@@H]1O"),
