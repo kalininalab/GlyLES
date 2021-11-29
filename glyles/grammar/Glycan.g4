@@ -13,8 +13,10 @@ branch:
 
 SAC:
     'Fuc'
-    | 'Gal' | 'Gal3S' | 'Gal4S' | 'Gal6S' | 'GalNAc' | 'GalNAc4S' | 'GalNAc6S'
-    | 'Glc' | 'GlcA' | 'GlcNAc' | 'GlcNAc6S'
+    | 'Gal' | 'Gal3S' | 'Gal3S4S' | 'Gal3S6S' | 'Gal4S' | 'Gal4S6S' | 'Gal6S' | 'GalNAc' | 'GalNAc3S' | 'GalNAc4S'
+    | 'GalNAc4S6S' | 'GalNAc6S'
+    | 'Glc' | 'Glc4S' | 'Glc6S' | 'GlcA' | 'GlcN' | 'GlcNAc' | 'GlcNAc3S' | 'GlcNAc6S'
+//    | 'Kdn'
     | 'Man'
 //    | 'Neu5Ac' | 'Neu5Gc'
     | 'Tal';
