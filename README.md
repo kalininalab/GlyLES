@@ -8,9 +8,9 @@ so, feel free to report any errors in the issues section.
 So far, this package can only be downloaded from the python package index. So the installation with `pip` is very easy.
 Just type
 
-```shell
+``````shell
 pip install glyles
-```
+``````
 
 and you're ready to use it as described below.
 
@@ -18,18 +18,20 @@ and you're ready to use it as described below.
 
 Convert the IUPAC into a SMILES representation using the handy `convert` method
 
-```python
-import glyles
+``````python
+from glyles.converter import convert
 
-glyles.convert(glycan="Man(a1-2)Man", output_file="./blbabl/out.txt")
-```
+convert(glycan="Man(a1-2)Man", output_file="./test.txt")
+``````
 
 You can also use the `convert_generator` method to get generator over all SMILES:
 
-```python
-for smiles in glyles.convert_generator(glycan_list=["Man(a1-2)Man a", "Man(a1-2)Man b"]):
+``````python
+from glyles.converter import convert_generator
+
+for smiles in convert_generator(glycan_list=["Man(a1-2)Man a", "Man(a1-2)Man b"]):
     print(smiles)
-```
+``````
 
 In general, the `convert` and `convert_generator` methods supports the same for types of input. The samples are shown
 for `convert` but it's the same for `convert_generator`.
@@ -54,10 +56,16 @@ In case of `convert_generator` the outputs only contain the SMILES strings in th
 This implementation currently only works for glycans that fulfil certain properties:
 
 * The structure of the glycan is represented as tree of the monomers with maximal branching factor 3.
-* Only the 15 implemented monomers may participate in the glycan (see below)
+* Only the 23 implemented monomers may participate in the glycan (see below)
 
 For an overview of the implemented monomers, please look at the [README](glyles/grammar/README.md) in the grammar
-folder.
+folder. You can get a python-readable list of the currently included monomers with the following code
+
+`````python
+from glyles.glycans.factory import MonomerFactory
+
+MonomerFactory.monomers()
+`````
 
 ## Poetry
 
