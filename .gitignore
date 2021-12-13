@@ -7,3 +7,4 @@ __pycache__/
 *.dot
 generator.py
 generate_oracle.py
+/.vscode/settings.json

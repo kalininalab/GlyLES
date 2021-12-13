@@ -94,7 +94,6 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
                 print("No output-file specified, results will be printed on stdout.")
             output = sys.stdout
 
-    print(len(glycans))
     if len(glycans) != 0:
         for glycan, smiles in convert_generator(glycan_list=glycans):
             if returning:
@@ -111,7 +110,6 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
                 # ... and return them as intended
                 print(glycan, smiles, file=output, sep=",")
 
-    print(len(output))
     if returning:
         return output
     else:
