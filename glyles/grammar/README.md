@@ -29,4 +29,4 @@ All following monomers are implemented in alpha, beta and undefined conformation
 * Man 
 * Neu5Ac (currently disabled)
 * Neu5Gc (currently disables)
-* Tal'
+* Tal
