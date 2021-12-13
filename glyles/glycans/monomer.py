@@ -8,7 +8,7 @@ class Monomer:
 
     The resulting molecule must have some properties that are especially important for the correct implementation of
         the parser later on:
-          - The C atoms have IDs 1 to 6 according to their C1-C6 naming in an glycan.
+          - The C atoms have IDs 1 to 6 according to their C1-C6 naming in a glycan.
           - The O atom closing the ring has id 10, so that all other O-atoms have ID 10 higher than the C atom they are
             connected to.
           - The chirality is initial 0 and will only be set in the carbons with respect to the non-OH-group.
@@ -24,7 +24,7 @@ class Monomer:
 
         Args:
             origin (Monomer): Other monomer to use to initialize this object
-            **kwargs: arguments to initialize monomer if object is None. Must include name, smiles, and config
+            **kwargs: arguments to initialize monomer if object is None. Must include name, SMILES, and config
         """
         if origin is None:
             self._name = kwargs["name"]
@@ -145,7 +145,7 @@ class Monomer:
 
     def root_atom_id(self, binding_c_id):
         """
-        Get ID of atom atom that will bind the parent monomer in the glycan. This ID will be given as root argument to
+        Get ID of atom that will bind the parent monomer in the glycan. This ID will be given as root argument to
         the to_smiles method.
 
         Args:
@@ -171,7 +171,7 @@ class Monomer:
 
     def to_smiles(self, root, ring_index):
         """
-        Convert the this monomer into a SMILES string representation.
+        Convert this monomer into a SMILES string representation.
 
         Args:
             root (int): index of the root atom

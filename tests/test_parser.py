@@ -1,4 +1,3 @@
-from glyles.glycans.monomer import Monomer
 from glyles.glycans.utils import Config
 from glyles.grammar.parse import Glycan
 

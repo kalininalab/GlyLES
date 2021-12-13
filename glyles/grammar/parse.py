@@ -2,9 +2,9 @@ import os
 import sys
 from contextlib import contextmanager
 from enum import Enum
-import pydot
 
 import networkx as nx
+import pydot
 from antlr4 import *
 from rdkit.Chem import MolFromSmiles
 
@@ -42,7 +42,7 @@ class Glycan:
     glycans is defined using ANTLR (https://www.antlr.org/). From this ANTLR is able to generate lexer and parser that
     fit the defined grammar. Don't touch those files those are auto generated and therefore mostly uncommented.
 
-    The defined grammar discards the last glycan which is used to define the root of the glycan tree. Therefore the
+    The defined grammar discards the last glycan which is used to define the root of the glycan tree. Therefore, the
     resulting abstract syntax trees (AST)s are not intuitive.
     """
 
@@ -56,7 +56,7 @@ class Glycan:
 
         def parse(self, t, mode):
             """
-            Parse an parsed tree (AST) from ANTLR into this networkx graph
+            Parse a parsed tree (AST) from ANTLR into this networkx graph
 
             Args:
                 t (antlr.ParseTree): result of the parsing step from ANTLR
@@ -183,7 +183,7 @@ class Glycan:
             Args:
                 t (networkx.DiGraph): Graph representing the glycan to compute the whole SMILES representation for.
                 root_orientation (str): Orientation of the root monomer in glycan (can be a (= alpha) or b (= beta))
-                start (int): index of the atom to start the smiles generation from
+                start (int): index of the atom to start the SMILES generation from
 
             Returns:
                 SMILES representation as string
@@ -213,7 +213,7 @@ class Glycan:
             if p_edge is not None and t.nodes[node]["type"].is_non_chiral():
                 t.nodes[node]["type"] = t.nodes[node]["type"].to_chirality(p_edge[1])
 
-            # check for validity of the tree, ie if its a leaf (return, nothing to do) or has too many children (Error)
+            # check for validity of the tree, ie if it's a leaf (return, nothing to do) or has too many children (Error)
             if len(children) == 0:  # leaf
                 return
             if len(children) > 3:  # too many children
@@ -243,7 +243,7 @@ class Glycan:
             children = [x[1] for x in t.edges(node)]
             me = t.nodes[node]["type"].to_smiles(start, ring_index)
 
-            # check for validity of the tree, ie if its a leaf
+            # check for validity of the tree, ie if it's a leaf
             if len(children) == 0:  # leaf
                 return me
 
@@ -255,7 +255,7 @@ class Glycan:
                 if child_start == -1:
                     raise ValueError("No child start found.")
 
-                # get the SMILES of this child and plug it in in the current own SMILES
+                # get the SMILES of this child and plug it in the current own SMILES
                 child_smiles = self.__merge(t, child, child_start, ring_index + 1)
                 me = me.replace(atom, child_smiles)
             return me

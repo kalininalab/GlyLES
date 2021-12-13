@@ -12,7 +12,7 @@ class Config(Enum):
 
 class Enantiomer(Enum):
     """
-    Configuration of the whole monomer regarding L and D forms in term of enantiomerism.
+    Configuration of the whole monomer regarding L and D forms in terms of enantiomerism.
     """
     D = 0
     L = 1

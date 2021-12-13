@@ -73,7 +73,7 @@ class NXMonomer(Monomer):
 
     def root_atom_id(self, binding_c_id):
         """
-        Get ID of atom atom that will bind the parent monomer in the glycan. This ID will be given as root argument to
+        Get ID of atom that will bind the parent monomer in the glycan. This ID will be given as root argument to
         the to_smiles method.
 
         Args:
@@ -119,7 +119,7 @@ class NXMonomer(Monomer):
 
     def to_smiles(self, root=10, ring_index=1):
         """
-        Convert the this monomer into a SMILES string representation.
+        Convert this monomer into a SMILES string representation.
         Use the implementation of the SMILES algorithm fitted to the needs of glycans.
 
         Args:
@@ -134,7 +134,6 @@ class NXMonomer(Monomer):
     def __get_structure(self):
         """
         Compute and save the structure of this glycan. So far its hard coded on the 4 given types of glycans
-        # TODO: Implement a parser for SMILES -> smiles.smiles.SMILES.read()
         Chirality refers to the OH/CH2OH group of the chiral C atom
 
         Returns:
@@ -266,7 +265,7 @@ class DFS:
             if child not in dfst.nodes:
                 self.__dfs(g, dfst, node, child)
 
-            # if the child already has been seen and its not the parent, we found the ring-closing atoms and mark them
+            # if the child already has been seen, and it's not the parent, we found the ring-closing atoms and mark them
             elif g.nodes[child]["ring"] and g.nodes[node]["ring"]:
                 nx.set_node_attributes(dfst, {child: True, node: True}, "ring")
 
@@ -322,8 +321,8 @@ class SMILES:
             SMILES representation of the subtree of the current node in tree
         """
 
-        # check for chirality of the molecule. If its not chiral, just add the current atom type to the output
-        # IMPORTANT: This method assumes that the chiral C-atoms have an hydrogen atom opposed to the OH group
+        # check for chirality of the molecule. If it's not chiral, just add the current atom type to the output
+        # IMPORTANT: This method assumes that the chiral C-atoms have a hydrogen atom opposed to the OH group
         if g.nodes[node]["chiral"] != NXMonomer.Chirality.NONE:
             output = "[C{value}H]".format(value=("@@" if g.nodes[node]["chiral"] == NXMonomer.Chirality.DOWN else "@"))
         else:

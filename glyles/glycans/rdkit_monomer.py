@@ -4,10 +4,6 @@ from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
 from glyles.glycans.monomer import Monomer
 
 
-# TODO: Extract structure generation and annotation into script and save a file for each structure
-# reduce time for preprocessing
-
-
 class RDKitMonomer(Monomer):
     def __init__(self, origin=None, **kwargs):
         """
@@ -16,7 +12,7 @@ class RDKitMonomer(Monomer):
 
         Args:
             origin (Monomer): Other monomer to use to initialize this object
-            **kwargs: arguments to initialize monomer if object is None. Must include name, smiles, and config
+            **kwargs: arguments to initialize monomer if object is None. Must include name, SMILES, and config
         """
         super(RDKitMonomer, self).__init__(origin, **kwargs)
         if isinstance(origin, RDKitMonomer):
@@ -73,7 +69,7 @@ class RDKitMonomer(Monomer):
 
     def root_atom_id(self, binding_c_id):
         """
-        Get ID of atom atom that will bind the parent monomer in the glycan. This ID will be given as root argument to
+        Get ID of atom that will bind the parent monomer in the glycan. This ID will be given as root argument to
         the to_smiles method.
 
         Args:
@@ -103,7 +99,7 @@ class RDKitMonomer(Monomer):
 
     def to_smiles(self, root, ring_index):
         """
-        Convert the this monomer into a SMILES string representation.
+        Convert this monomer into a SMILES string representation.
         Use the implementation of the SMILES algorithm fitted to the needs of glycans.
 
         Args:
@@ -124,7 +120,7 @@ class RDKitMonomer(Monomer):
             rdkit molecule representing the structure of the glycan as a graph of its non-hydrogen atoms.
         """
         if self._structure is None:
-            # read the structure from the smiles string
+            # read the structure from the SMILES string
             self._structure = MolFromSmiles(self._smiles)
 
             # extract some further information from the molecule to not operate always on the molecule
@@ -148,7 +144,7 @@ class RDKitMonomer(Monomer):
                 if self._x[i, 2] == 1 and self._x[i, 0] == 8:
                     self._x[i, 1] = 10
 
-            # check in which order the ring has to be trversed to find C1 as first carbon atom behind the ring-oxygen
+            # check in which order the ring has to be traversed to find C1 as first carbon atom behind the ring-oxygen
             main_ring = list(self._ring_info[0]) + list(self._ring_info[0])
             if not self.__clockwise():
                 main_ring = list(reversed(main_ring))
@@ -157,7 +153,7 @@ class RDKitMonomer(Monomer):
             # for all carbon atoms in the main ring, set its id according to the distance to the oxygen atom
             # iterate clockwise, i.e. from ring-O to C1/C2 and so on ...
             carbon_count = 1
-            # Insert code for c1-atoms outside of the ring here
+            # Insert code for c1-atoms outside the ring here
             o_index = main_ring.index(np.argwhere((self._x[:, 0] == 8) & (self._x[:, 2] == 1)))
             for r in self._ring_info[0]:
                 if self._x[r, 0] != 8:
@@ -202,7 +198,8 @@ class RDKitMonomer(Monomer):
         oxygen atom in the ring of the monomer as this cannot bind anything.
 
         Args:
-            binding_c_id (int): id of the carbon atom that participates in a binding and we need the oxygen from
+            binding_c_id (int): id of the carbon atom that participates in a binding, and we need to find the oxygen
+            from
 
         Returns:
             id referring to the oxygen binding the provided carbon atom and may participate in a glycan-binding.
