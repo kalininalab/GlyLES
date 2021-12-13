@@ -112,8 +112,8 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
 
     if returning:
         return output
-    else:
-        output.close()  # for stdout ?!
+    elif output_file is not None:
+        output.close()
 
 
 def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=None, silent=True):
