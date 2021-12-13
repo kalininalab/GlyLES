@@ -76,10 +76,10 @@ class Glycan:
                 self.__walk(children[0], node_id, mode)
                 return self.g
             elif len(children) == 3:  # SAC ' ' TYPE
-                self.__add_node(children[2].symbol.text + children[0].symbol.text, mode)
+                self.__add_node(children[2].symbol.text + "_" + children[0].symbol.text, mode)
                 return self.g
             elif len(children) == 4:  # branch SAC ' ' TYPE
-                node_id = self.__add_node(children[3].symbol.text + children[1].symbol.text, mode)
+                node_id = self.__add_node(children[3].symbol.text + "_" + children[1].symbol.text, mode)
                 self.__walk(children[0], node_id, mode)
                 return self.g
             else:
