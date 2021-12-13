@@ -39,7 +39,7 @@ class Monomer:
 
     def get_name(self):
         """
-        Returns the name of this monomer as three letter code (eventually longer for more fancy monosaccharides with
+        Returns the name of this monomer as three-letter code (eventually longer for more fancy monosaccharides with
         more complex side chains).
 
         Returns:
@@ -49,9 +49,9 @@ class Monomer:
 
     def get_smiles(self):
         """
-        Returns the smiles representation of this monomer. Attention: This methods returns the SMILES that is used to
+        Returns the SMILES representation of this monomer. Attention: These methods return the SMILES that is used to
         initialize this monomer. This is different from the to_smiles method of this class that returns the SMILES
-        string with added place-holders that is used for the generation of the smiles representation of the complete
+        string with added place-holders that is used for the generation of the SMILES representation of the complete
         glycan
 
         Returns:
@@ -76,7 +76,7 @@ class Monomer:
         Returns:
             Monomer in alpha conformation
         """
-        return self.from_string("A" + self._name)
+        return self.from_string("A_" + self._name)
 
     def beta(self):
         """
@@ -85,7 +85,7 @@ class Monomer:
         Returns:
             Monomer in beta conformation
         """
-        return self.from_string("B" + self._name)
+        return self.from_string("B_" + self._name)
 
     def undefined(self):
         """
