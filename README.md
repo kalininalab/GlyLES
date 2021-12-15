@@ -68,11 +68,12 @@ for `convert` but it's the same for `convert_generator`.
 The output for `convert` can be manifold as well. For `convert_generator` there is one output. `convert` supports
 
 * `stdout` when specifying no output-related argument, or
-* writing to an `output_file`, e.g. `convert(glycan="Man(a1-2)Man", output_file="./out.csv")`. Here each line of the
-  output will state the input IUPAC and the output SMILES separated with a comma.
+* returned as list of tuples if `returning=true` is set, or
+* writing to an `output_file`, e.g. `convert(glycan="Man(a1-2)Man", output_file="./out.csv")`.
 
-In case of `convert_generator` the outputs only contain the SMILES strings in the order of the arguments (first `glycan`
-, then `glycan_list`, `glycan_file`, and `glycan_generator`).
+Here each line of the output will state the input IUPAC and the output SMILES. In case of written output separated with 
+a comma.
+
 
 ## Poetry
 
