@@ -1,5 +1,5 @@
 import numpy as np
-from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
+from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix, GetShortestPath
 
 from glyles.glycans.monomer import Monomer
 
@@ -128,12 +128,15 @@ class RDKitMonomer(Monomer):
             self._ring_info = self._structure.GetRingInfo().AtomRings()
             self._x = np.zeros((self._adjacency.shape[0], 3))
 
+            c_atoms, ringo = [], -1
             # extract some information form the molecule
             for i in range(self._adjacency.shape[0]):
                 atom = self._structure.GetAtomWithIdx(i)
 
                 # store the atom type
                 self._x[i, 0] = atom.GetAtomicNum()
+                if self._x[i, 0] == 6 and i in self._ring_info[0]:
+                    c_atoms.append(int(i))
 
                 # if the atom is part of any ring, store the number of that ring
                 for r in range(len(self._ring_info)):
@@ -143,54 +146,137 @@ class RDKitMonomer(Monomer):
                 # identify the oxygen atom in the main ring and set its id to 10
                 if self._x[i, 2] == 1 and self._x[i, 0] == 8:
                     self._x[i, 1] = 10
+                    ringo = i
 
-            # check in which order the ring has to be traversed to find C1 as first carbon atom behind the ring-oxygen
-            main_ring = list(self._ring_info[0]) + list(self._ring_info[0])
-            if not self.__clockwise():
-                main_ring = list(reversed(main_ring))
-
-            # TODO: This only works if the C1 atom is part of the ring! (i.e. not for fructose)
-            # for all carbon atoms in the main ring, set its id according to the distance to the oxygen atom
-            # iterate clockwise, i.e. from ring-O to C1/C2 and so on ...
-            carbon_count = 1
-            # Insert code for c1-atoms outside the ring here
-            o_index = main_ring.index(np.argwhere((self._x[:, 0] == 8) & (self._x[:, 2] == 1)))
-            for r in self._ring_info[0]:
-                if self._x[r, 0] != 8:
-                    self._x[r, 1] = carbon_count + main_ring.index(r, o_index) - o_index - 1
-
-            # assign ids to the remaining carbon atoms
-            highest_index = np.max(self._x[:, 1][np.argwhere(self._x[:, 0] == 6)])
-            # c6_candidates = np.argwhere((self._x[:, 1] == 6) & (self._x[:, 2] == 0))
-
-            c5 = np.argwhere((self._x[:, 1] == 5).squeeze())
-            c6 = np.argwhere(((self._x[:, 0] == 6) & (self._x[:, 2] == 0) & (self._adjacency[c5, :] == 1)).squeeze())
-            self._x[c6, 1] = highest_index + 1
+            self.__enumerate_c_atoms2(c_atoms, ringo)
         return self._structure
 
-    def __clockwise(self):
-        """
-        Check if the main ring in the monomer is iterated in clockwise manner. RDKit assigns the atom_ids in the order
-        it is read in during parsing the monomer SMILES strings.
+    class Tree:
+        class Node:
+            def __init__(self, node_id, parent_id, depth, tree):
+                self.children = []
+                self.node_id = node_id
+                self.parent_id = parent_id
+                self.depth = depth
+                self.tree = tree
 
-        Returns:
-            True if the main ring is traversed clockwise when iterating over all ring member in order of their RDKit-ID
-        """
-        position = np.argwhere(self._x[:, 1] == 10)
+            def add_child(self, child_id):
+                self.children.append(child_id)
 
-        # then find the candidates. There should be exactly one element in the resulting array
-        candidates = np.argwhere((self._adjacency[position, :] == 1).squeeze())
-        if len(candidates) != 2:
-            raise ValueError("Parsing exception")
+            def is_leaf(self):
+                return len(self.children) == 0
 
-        # check if the candidate with the lower id fulfills the criteria to be the C1 atom
-        first_c_cons = np.argwhere((self._adjacency[candidates[0], :] == 1).squeeze())
-        if np.sum(self._x[first_c_cons, 0] == 6) == 1:
-            o_index = self._ring_info[0].index(np.argwhere((self._x[:, 0] == 8) & (self._x[:, 2] == 1)))
-            c_index = self._ring_info[0].index(candidates[0])
-            if o_index < c_index:
-                return True
+            def __str__(self):
+                return "(" + str(self.node_id) + " [" + ",".join([str(self.tree.nodes[child]) for child in self.children]) + "])"
+
+        def __init__(self):
+            self.nodes = {}
+            self.root = None
+
+        def __str__(self):
+            return str(self.nodes[self.root])
+
+        def add_node(self, node_id, parent_id=-1):
+            if parent_id == -1 and self.root is not None:
+                raise ValueError("Tree cannot have two roots")
+            if parent_id == -1:
+                self.root = node_id
+                self.nodes[node_id] = RDKitMonomer.Tree.Node(node_id, parent_id, 0, self)
+            else:
+                self.nodes[node_id] = RDKitMonomer.Tree.Node(node_id, parent_id, self.nodes[parent_id].depth + 1, self)
+            if parent_id != -1:
+                self.nodes[parent_id].add_child(node_id)
+
+        def deepest_node(self):
+            deepest_id, deepest_depth = 0, 0
+            for n_id, node in self.nodes.items():
+                if node.depth > deepest_depth:
+                    deepest_depth = node.depth
+                    deepest_id = n_id
+            return deepest_id, deepest_depth
+
+        def rehang_tree(self, node_id):
+            tree = RDKitMonomer.Tree()
+            stack = [(-1, node_id)]
+            while len(stack) != 0:
+                p_id, c_id = stack[-1]
+                stack = stack[:-1]
+                tree.add_node(c_id, p_id)
+
+                children = self.nodes[c_id].children + [self.nodes[c_id].parent_id]
+                for c in children:
+                    if c not in tree.nodes and c != -1:
+                        stack.append((c_id, c))
+
+            return tree
+
+        def longest_chain(self, node_id=None):
+            if node_id is None:
+                node_id = self.root
+
+            if self.nodes[node_id].is_leaf():
+                return [node_id]
+
+            longest_chain = []
+            for child in self.nodes[node_id].children:
+                tmp = self.longest_chain(child)
+                if len(tmp) > len(longest_chain):
+                    longest_chain = tmp
+
+            return [node_id] + longest_chain
+
+    def __equidistant(self, start, end, ringo):
+        pass
+
+    def __evaluate_distance(self, start, end, ringo):
+        adj = self._adjacency.copy()
+
+        while adj[start, ringo] == 0 and adj[end, ringo] == 0:
+            adj *= self._adjacency
+
+        if adj[start, ringo] > 0 and adj[end, ringo] > 0:
+            return self.__equidistant(start, end, ringo)
+        elif adj[start, ringo] > 0:
+            return True
         return False
+
+    def __enumerate_c_atoms2(self, c_atoms, ringo):
+        # find longest c-chain
+        c_tree = RDKitMonomer.Tree()
+        stack = [(-1, c_atoms[0])]
+        while len(stack) != 0:
+            p_id, c_id = stack[-1]
+            stack = stack[:-1]
+            c_tree.add_node(c_id, p_id)
+
+            children = np.argwhere(self._adjacency[c_id] & (self._x[:, 0] == 6))
+            for c in children:
+                if int(c) not in c_tree.nodes:
+                    stack.append((c_id, int(c)))
+
+        deepest_id, _ = c_tree.deepest_node()
+        c_tree = c_tree.rehang_tree(deepest_id)
+        longest_c_chain = c_tree.longest_chain()
+
+        # find ends
+        start, end = longest_c_chain[0], longest_c_chain[-1]
+
+        # check conditions
+        start_o_conn = any(self._x[np.where(self._adjacency[start, :]), 0].flatten() == 6)
+        end_o_conn = any(self._x[np.where(self._adjacency[end, :]), 0].flatten() == 6)
+
+        # decide on c1
+        if start_o_conn and end_o_conn:
+            if not self.__evaluate_distance(start, end, ringo):
+                longest_c_chain = reversed(longest_c_chain)
+        elif end_o_conn:
+            longest_c_chain = reversed(longest_c_chain)
+
+        # enumerate along chain
+        c_count = 0
+        for c in longest_c_chain:
+            c_count += 1
+            self._x[c, 1] = c_count
 
     def __find_oxygen(self, binding_c_id):
         """
@@ -199,7 +285,7 @@ class RDKitMonomer(Monomer):
 
         Args:
             binding_c_id (int): id of the carbon atom that participates in a binding, and we need to find the oxygen
-            from
+                from
 
         Returns:
             id referring to the oxygen binding the provided carbon atom and may participate in a glycan-binding.

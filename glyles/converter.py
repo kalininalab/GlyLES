@@ -171,3 +171,7 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
                 print(f"An exception occurred with {glycan}:", e.__class__, file=sys.stderr)
                 print("Error message:", e.__str__(), file=sys.stderr)
                 yield glycan, ""
+
+
+if __name__ == '__main__':
+    Glycan("Man")
