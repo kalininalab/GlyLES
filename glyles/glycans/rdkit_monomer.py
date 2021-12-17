@@ -5,6 +5,81 @@ from glyles.glycans.monomer import Monomer
 
 
 class RDKitMonomer(Monomer):
+
+    class Tree:
+        class Node:
+            def __init__(self, node_id, parent_id, depth, tree):
+                self.children = []
+                self.node_id = node_id
+                self.parent_id = parent_id
+                self.depth = depth
+                self.tree = tree
+
+            def add_child(self, child_id):
+                self.children.append(child_id)
+
+            def is_leaf(self):
+                return len(self.children) == 0
+
+            def __str__(self):
+                return "(" + str(self.node_id) + " [" + ",".join([str(self.tree.nodes[child]) for child in self.children]) + "])"
+
+        def __init__(self):
+            self.nodes = {}
+            self.root = None
+
+        def __str__(self):
+            return str(self.nodes[self.root])
+
+        def add_node(self, node_id, parent_id=-1):
+            if parent_id == -1 and self.root is not None:
+                raise ValueError("Tree cannot have two roots")
+            if parent_id == -1:
+                self.root = node_id
+                self.nodes[node_id] = RDKitMonomer.Tree.Node(node_id, parent_id, 0, self)
+            else:
+                self.nodes[node_id] = RDKitMonomer.Tree.Node(node_id, parent_id, self.nodes[parent_id].depth + 1, self)
+            if parent_id != -1:
+                self.nodes[parent_id].add_child(node_id)
+
+        def deepest_node(self):
+            deepest_id, deepest_depth = 0, 0
+            for n_id, node in self.nodes.items():
+                if node.depth > deepest_depth:
+                    deepest_depth = node.depth
+                    deepest_id = n_id
+            return deepest_id, deepest_depth
+
+        def rehang_tree(self, node_id):
+            tree = RDKitMonomer.Tree()
+            stack = [(-1, node_id)]
+            while len(stack) != 0:
+                p_id, c_id = stack[-1]
+                stack = stack[:-1]
+                tree.add_node(c_id, p_id)
+
+                children = self.nodes[c_id].children + [self.nodes[c_id].parent_id]
+                for c in children:
+                    if c not in tree.nodes and c != -1:
+                        stack.append((c_id, c))
+
+            return tree
+
+        def longest_chain(self, node_id=None):
+            if node_id is None:
+                node_id = self.root
+
+            if self.nodes[node_id].is_leaf():
+                return [node_id]
+
+            longest_chain = []
+            for child in self.nodes[node_id].children:
+                tmp = self.longest_chain(child)
+                if len(tmp) > len(longest_chain):
+                    longest_chain = tmp
+
+            return [node_id] + longest_chain
+
     def __init__(self, origin=None, **kwargs):
         """
         Initialize the monomer using the super method. Additionally, some fields are initialized to describe the
@@ -148,82 +223,8 @@ class RDKitMonomer(Monomer):
                     self._x[i, 1] = 10
                     ringo = i
 
-            self.__enumerate_c_atoms2(c_atoms, ringo)
+            self.__enumerate_c_atoms(c_atoms, ringo)
         return self._structure
-
-    class Tree:
-        class Node:
-            def __init__(self, node_id, parent_id, depth, tree):
-                self.children = []
-                self.node_id = node_id
-                self.parent_id = parent_id
-                self.depth = depth
-                self.tree = tree
-
-            def add_child(self, child_id):
-                self.children.append(child_id)
-
-            def is_leaf(self):
-                return len(self.children) == 0
-
-            def __str__(self):
-                return "(" + str(self.node_id) + " [" + ",".join([str(self.tree.nodes[child]) for child in self.children]) + "])"
-
-        def __init__(self):
-            self.nodes = {}
-            self.root = None
-
-        def __str__(self):
-            return str(self.nodes[self.root])
-
-        def add_node(self, node_id, parent_id=-1):
-            if parent_id == -1 and self.root is not None:
-                raise ValueError("Tree cannot have two roots")
-            if parent_id == -1:
-                self.root = node_id
-                self.nodes[node_id] = RDKitMonomer.Tree.Node(node_id, parent_id, 0, self)
-            else:
-                self.nodes[node_id] = RDKitMonomer.Tree.Node(node_id, parent_id, self.nodes[parent_id].depth + 1, self)
-            if parent_id != -1:
-                self.nodes[parent_id].add_child(node_id)
-
-        def deepest_node(self):
-            deepest_id, deepest_depth = 0, 0
-            for n_id, node in self.nodes.items():
-                if node.depth > deepest_depth:
-                    deepest_depth = node.depth
-                    deepest_id = n_id
-            return deepest_id, deepest_depth
-
-        def rehang_tree(self, node_id):
-            tree = RDKitMonomer.Tree()
-            stack = [(-1, node_id)]
-            while len(stack) != 0:
-                p_id, c_id = stack[-1]
-                stack = stack[:-1]
-                tree.add_node(c_id, p_id)
-
-                children = self.nodes[c_id].children + [self.nodes[c_id].parent_id]
-                for c in children:
-                    if c not in tree.nodes and c != -1:
-                        stack.append((c_id, c))
-
-            return tree
-
-        def longest_chain(self, node_id=None):
-            if node_id is None:
-                node_id = self.root
-
-            if self.nodes[node_id].is_leaf():
-                return [node_id]
-
-            longest_chain = []
-            for child in self.nodes[node_id].children:
-                tmp = self.longest_chain(child)
-                if len(tmp) > len(longest_chain):
-                    longest_chain = tmp
-
-            return [node_id] + longest_chain
 
     def __equidistant(self, start, end, ringo):
         pass
@@ -240,7 +241,7 @@ class RDKitMonomer(Monomer):
             return True
         return False
 
-    def __enumerate_c_atoms2(self, c_atoms, ringo):
+    def __enumerate_c_atoms(self, c_atoms, ringo):
         # find longest c-chain
         c_tree = RDKitMonomer.Tree()
         stack = [(-1, c_atoms[0])]

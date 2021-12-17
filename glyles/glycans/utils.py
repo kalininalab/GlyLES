@@ -16,3 +16,11 @@ class Enantiomer(Enum):
     """
     D = 0
     L = 1
+
+
+class Lactole(Enum):
+    """
+    Specification if a monomer is a pyranose (6-ring) or a furanose (5-ring)
+    """
+    FURANOSE = 5
+    PYRANOSE = 6
