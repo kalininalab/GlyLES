@@ -31,10 +31,7 @@ def check_results(output):
         assert o_glycan == TestConverter.smiles_samples[i][0]
         compare_smiles(o_smiles, s_smiles)
     assert i == 12
-    clear_test()
 
-
-def clear_test():
     if os.path.exists("./test.txt"):
         os.remove("./test.txt")
     if os.path.exists("./output.txt"):
@@ -94,3 +91,17 @@ class TestConverter:
 
         output = convert_generator(args["glycan"], args["glycan_list"], args["glycan_file"], args["glycan_generator"])
         check_results(output)
+
+    def test_orientation_1(self):
+        output = convert("Glc a", returning=True)
+
+        assert len(output) == 1
+        assert output[0][0] == "Glc a"
+        compare_smiles(output[0][1], "OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O")
+
+    def test_orientation_2(self):
+        output = convert("Glc b", returning=True)
+
+        assert len(output) == 1
+        assert output[0][0] == "Glc b"
+        compare_smiles(output[0][1], "OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@@H]1O")

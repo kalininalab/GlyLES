@@ -46,6 +46,11 @@ def parsable_glycan(glycan):
     Returns:
         True if the glycan can be parsed in the parser
     """
+
+    # remove orientation of root monomer
+    if glycan[-2] == " ":
+        glycan = glycan[:-2]
+
     glycan = re.sub("[\(].*?[\)]", "", glycan)
     glycan = glycan.replace("[", "").replace("]", "").upper()
     for monomer in MonomerFactory.monomers():
