@@ -2,7 +2,7 @@ import os
 import re
 import sys
 
-from glyles.glycans.factory import MonomerFactory
+from glyles.glycans.factory.factory import MonomerFactory
 from glyles.grammar.parse import Glycan
 
 
@@ -34,7 +34,7 @@ def preprocess_glycans(glycan, glycan_list, glycan_file):
     return glycans
 
 
-def parsable_glycan(glycan):
+def parsable_glycan(glycan, factory):
     """
     Check if the glycan string is parsable by removing all connections and brackets. Then remove all known monomers
     from the remaining string. What remains are the unknown monomers that cannot be parsed or an empty string if the
@@ -42,6 +42,7 @@ def parsable_glycan(glycan):
 
     Args:
         glycan (str): IUPAC representation of a glycan
+        factory (MonomerFactory): MonomerFactory object holding all the monomers currently available
 
     Returns:
         True if the glycan can be parsed in the parser
@@ -53,7 +54,7 @@ def parsable_glycan(glycan):
 
     glycan = re.sub("[\(].*?[\)]", "", glycan)
     glycan = glycan.replace("[", "").replace("]", "").upper()
-    for monomer in MonomerFactory.monomers():
+    for monomer in factory:
         glycan = glycan.replace(monomer, " ")
     return len(glycan.replace(" ", "")) == 0
 
@@ -136,7 +137,7 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
     Returns:
         Nothing
     """
-
+    factory = MonomerFactory()
     glycans = preprocess_glycans(glycan, glycan_list, glycan_file)
     if len(glycans) == 0 and glycan_generator is None:
         if not silent:
@@ -148,8 +149,8 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
         for glycan in glycans:
             try:
                 # ... by passing them to the glycan class to parse them and return them as intended
-                if parsable_glycan(glycan):
-                    yield glycan, Glycan(glycan).get_smiles()
+                if parsable_glycan(glycan, factory):
+                    yield glycan, Glycan(glycan, factory).get_smiles()
                 else:
                     print(f"Glycan {glycan} is not parsable due to unknown monomers.", file=sys.stderr)
                     yield glycan, ""
@@ -165,8 +166,8 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
         for glycan in glycan_generator:
             try:
                 # ... by passing them to the glycan class to parse them and return them as intended
-                if parsable_glycan(glycan):
-                    yield glycan, Glycan(glycan).get_smiles()
+                if parsable_glycan(glycan, factory):
+                    yield glycan, Glycan(glycan, factory).get_smiles()
                 else:
                     print(f"Glycan {glycan} is not parsable due to unknown monomers.", file=sys.stderr)
                     yield glycan, ""

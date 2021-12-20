@@ -200,19 +200,6 @@ class NXMonomer(Monomer):
             self._structure = g
         return self._structure
 
-    @staticmethod
-    def from_string(mono):
-        """
-        Convert the string representation of the monomer into an instance.
-
-        Args:
-            mono (str): string encoding of a monomer
-
-        Returns:
-            NXMonomer instance according to the string
-        """
-        return NXMonomer(origin=Monomer.from_string(mono))
-
 
 class DFS:
     """

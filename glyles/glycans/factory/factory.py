@@ -9,16 +9,16 @@ class MonomerFactory:
         self.furanoses = FuranoseFactory()
         self.derivatives = DerivativesFactory()
 
-        self.keys = self.pyranoses.keys() + self.derivatives.keys()
+        self.keys = set(self.pyranoses.keys()).union(set(self.derivatives.keys()))
 
     def __contains__(self, item):
         return item.upper() in self.keys
 
     def keys(self):
-        return self.keys()
+        return self.keys
 
     def monomers(self):
-        return set(x.split("_")[-1] for x in self.keys())
+        return set(x.split("_")[-1] for x in self.keys)
 
     def __getitem__(self, item):
         furanose = False

@@ -69,49 +69,60 @@ class Monomer:
         """
         return self._structure
 
-    def alpha(self):
+    def alpha(self, factory):
         """
         Return this monosaccharide in its alpha conformation.
+
+        Args:
+            factory (MonomerFactory): factory instance to be used to generate the monomers
 
         Returns:
             Monomer in alpha conformation
         """
-        return self.from_string("A_" + self._name)
+        return Monomer(factory["A_" + self._name])
 
-    def beta(self):
+    def beta(self, factory):
         """
         Return this monosaccharide in its beta conformation.
+
+        Args:
+            factory (MonomerFactory): factory instance to be used to generate the monomers
 
         Returns:
             Monomer in beta conformation
         """
-        return self.from_string("B_" + self._name)
+        return Monomer(factory["B_" + self._name])
 
-    def undefined(self):
+    def undefined(self, factory):
         """
         Return this monosaccharide in undefined conformation, the first carbon ring-atom will have unspecified.
         chirality.
 
+        Args:
+            factory (MonomerFactory): factory instance to be used to generate the monomers
+
         Returns:
             Monomer in undefined conformation
         """
-        return self.from_string(self._name)
+        return Monomer(factory[self._name])
 
-    def to_chirality(self, chirality):
+    def to_chirality(self, chirality, factory):
         """
         Return this monomer in the queried chirality.
+
         Args:
             chirality (str): char representing the chiral conformation of the first carbon ring atom
+            factory (MonomerFactory): factory instance to be used to generate the monomers
 
         Returns:
             This monomer with the given (or not given) chirality at the first carbon ring atom
         """
         chirality = chirality.lower()
         if chirality == "a":
-            return self.alpha()
+            return self.alpha(factory)
         if chirality == "b":
-            return self.beta()
-        return self.undefined()
+            return self.beta(factory)
+        return self.undefined(factory)
 
     def get_config(self):
         """
@@ -190,18 +201,3 @@ class Monomer:
             Representation the structure of the glycan as a graph.
         """
         raise NotImplementedError
-
-    @staticmethod
-    def from_string(mono):
-        """
-        Get an instance of a glycan according to the provided string representation of the glycan.
-
-        Args:
-            mono (str): string representation of the glycan of interest
-
-        Returns:
-            Glycan according to the monosaccharide provided via mono
-        """
-        factory = MonomerFactory()
-        args = factory[mono.upper()]
-        return Monomer(**args)

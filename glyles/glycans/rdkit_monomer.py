@@ -100,6 +100,43 @@ class RDKitMonomer(Monomer):
             self._x = None
             self.__get_structure()
 
+    def alpha(self, factory):
+        """
+        Return this monosaccharide in its alpha conformation.
+
+        Args:
+            factory (MonomerFactory): factory instance to be used to generate the monomers
+
+        Returns:
+            Monomer in alpha conformation
+        """
+        return RDKitMonomer(**factory["A_" + self._name])
+
+    def beta(self, factory):
+        """
+        Return this monosaccharide in its beta conformation.
+
+        Args:
+            factory (MonomerFactory): factory instance to be used to generate the monomers
+
+        Returns:
+            Monomer in beta conformation
+        """
+        return RDKitMonomer(**factory["B_" + self._name])
+
+    def undefined(self, factory):
+        """
+        Return this monosaccharide in undefined conformation, the first carbon ring-atom will have unspecified.
+        chirality.
+
+        Args:
+            factory (MonomerFactory): factory instance to be used to generate the monomers
+
+        Returns:
+            Monomer in undefined conformation
+        """
+        return RDKitMonomer(**factory[self._name])
+
     def get_adjacency(self):
         """
         Get the adjacency matrix of the atoms in this monomer.
@@ -298,17 +335,3 @@ class RDKitMonomer(Monomer):
         candidates = np.argwhere((self._adjacency[position, :] == 1) &
                                  (self._x[:, 0] == 8) & (self._x[:, 2] != 1)).squeeze()
         return int(candidates)
-
-    @staticmethod
-    def from_string(mono):
-        """
-        Convert the string representation of the monomer into an instance.
-
-        Args:
-            mono (str): string encoding of a monomer
-
-        Returns:
-            RDKit instance according to the string
-        """
-        tmp = Monomer.from_string(mono)
-        return RDKitMonomer(origin=tmp)

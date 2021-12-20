@@ -8,6 +8,7 @@ import pydot
 from antlr4 import *
 from rdkit.Chem import MolFromSmiles
 
+from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.nx_monomer import NXMonomer
 from glyles.glycans.rdkit_monomer import RDKitMonomer
 from glyles.grammar.GlycanLexer import GlycanLexer
@@ -47,11 +48,12 @@ class Glycan:
     """
 
     class __TreeWalker:
-        def __init__(self):
+        def __init__(self, factory):
             """
             Just initialize an empty tree
             """
             self.g = nx.DiGraph()
+            self.factory = factory
             self.node_id = 0
 
         def parse(self, t, mode):
@@ -165,15 +167,36 @@ class Glycan:
             # add the node to the network and store the enum of the glycan as attribute
             self.g.add_node(
                 node_id,
-                type=Glycan.monomer_from_string(name, mode),
+                type=self.monomer_from_string(name, mode),
             )
 
             return node_id
+
+        def monomer_from_string(self, mono, mode):
+            """
+            Get a monomer representation from its short name.
+
+            Args:
+                mono (str): monomer in three (or more) letter representation, i.e. Glc = Glucose, Gal = Galactose, etc.
+                mode (Glycan.Mode): mode determining which monomer-mode to use
+
+            Returns:
+                An instance of a monomer representation for this graph
+            """
+            if mode == Glycan.Mode.NETWORKX_MODE:
+                return NXMonomer(**self.factory[mono])
+            elif mode == Glycan.Mode.RDKIT_MODE:
+                return RDKitMonomer(**self.factory[mono])
+            else:
+                raise ValueError("Unknown representation mode for monomers!")
 
     class __Merger:
         """
         Merge the tree of monomers into a SMILES representation of the complete molecule.
         """
+
+        def __init__(self, factory):
+            self.factory = factory
 
         def merge(self, t, root_orientation="n", start=10):
             """
@@ -192,7 +215,7 @@ class Glycan:
             self.__mark(t, 0, "({}1-?)".format(root_orientation))
 
             # return the string that can be computed from connecting the monomers as marked above
-            return self.__merge(t, 0, start, 1)
+            return self.__merge(t, 0, start, 0)
 
         def __mark(self, t, node, p_edge):
             """
@@ -211,7 +234,7 @@ class Glycan:
 
             # set chirality of atom binding parent
             if p_edge is not None and t.nodes[node]["type"].is_non_chiral():
-                t.nodes[node]["type"] = t.nodes[node]["type"].to_chirality(p_edge[1])
+                t.nodes[node]["type"] = t.nodes[node]["type"].to_chirality(p_edge[1], self.factory)
 
             # check for validity of the tree, ie if it's a leaf (return, nothing to do) or has too many children (Error)
             if len(children) == 0:  # leaf
@@ -268,7 +291,7 @@ class Glycan:
         NETWORKX_MODE = "nx"
         RDKIT_MODE = "rdkit"
 
-    def __init__(self, iupac, mode=Mode.DEFAULT_MODE, root_orientation="n", start=10, parse=True):
+    def __init__(self, iupac, factory, mode=Mode.DEFAULT_MODE, root_orientation="n", start=10, parse=True):
         """
         Initialize the glycan from the IUPAC string.
 
@@ -283,6 +306,7 @@ class Glycan:
         self.root_orientation = root_orientation
         self.start = start
         self.parse_smiles = parse
+        self.factory = factory
         if parse:
             self.__parse()
 
@@ -353,36 +377,7 @@ class Glycan:
         tree = parser.start()
 
         # walk through the AST and parse the AST into a networkx representation of the glycan.
-        self.parse_tree = Glycan.__TreeWalker().parse(tree, self.mode)
+        self.parse_tree = Glycan.__TreeWalker(self.factory).parse(tree, self.mode)
 
         if self.parse_smiles:
-            self.glycan_smiles = Glycan.__Merger().merge(self.parse_tree, self.root_orientation, start=self.start)
-
-    @staticmethod
-    def monomer_from_string(mono, mode):
-        """
-        Get a monomer representation from its short name.
-
-        Args:
-            mono (str): monomer in three (or more) letter representation, i.e. Glc = Glucose, Gal = Galactose, etc.
-            mode (Glycan.Mode): mode determining which monomer-mode to use
-
-        Returns:
-            An instance of a monomer representation for this graph
-        """
-        if mode == Glycan.Mode.NETWORKX_MODE:
-            return NXMonomer.from_string(mono)
-        elif mode == Glycan.Mode.RDKIT_MODE:
-            return RDKitMonomer.from_string(mono)
-        else:
-            raise ValueError("Unknown representation mode for monomers!")
-
-
-if __name__ == '__main__':  # testing proposes
-    i = 1
-    if i == 0:
-        print(RDKitMonomer.from_string("glc").to_smiles(-1, 0))
-    elif i == 1:
-        glycan = Glycan("Man(a1-2)Man", mode=Glycan.Mode.RDKIT_MODE)
-        print(glycan.get_smiles())
-    print("Done")
+            self.glycan_smiles = Glycan.__Merger(self.factory).merge(self.parse_tree, self.root_orientation, start=self.start)
