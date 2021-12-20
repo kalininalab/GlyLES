@@ -1,4 +1,4 @@
-from glyles.glycans.factory import MonomerFactory
+from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import Config
 
 
