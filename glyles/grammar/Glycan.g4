@@ -12,14 +12,15 @@ branch:
     | SAC CON '[' branch ']' branch;
 
 SAC:
-    'Fuc'
+    'Glc' | 'Glc4S' | 'Glc6S' | 'GlcA' | 'GlcN' | 'GlcNAc' | 'GlcNAc3S' | 'GlcNAc6S'
+    | 'Man'
     | 'Gal' | 'Gal3S' | 'Gal3S4S' | 'Gal3S6S' | 'Gal4S' | 'Gal4S6S' | 'Gal6S' | 'GalNAc' | 'GalNAc3S' | 'GalNAc4S'
     | 'GalNAc4S6S' | 'GalNAc6S'
-    | 'Glc' | 'Glc4S' | 'Glc6S' | 'GlcA' | 'GlcN' | 'GlcNAc' | 'GlcNAc3S' | 'GlcNAc6S'
+    | 'Gul' | 'Alt' | 'All' | 'Tal' | 'Ido' | 'Qui' | 'Rha' | 'Fuc' | 'Oli' | 'Tyv' | 'Abe' | 'Par' | 'Dig' | 'Col'
+    | 'Ara' | 'Lyx' | 'Xyl' | 'Rib' | 'Kdn' | 'Neu' | 'Pse' | 'Leg' | 'Aci' | 'Bac' | 'LDmanHep' | 'Kdo' | 'Dha'
+    | 'DDmanHep' | 'Mur' | 'Api' | 'Fru' | 'Tag' | 'Sor' | 'Psi';
 //    | 'Kdn'
-    | 'Man'
 //    | 'Neu5Ac' | 'Neu5Gc'
-    | 'Tal';
 CON:
     '(' TYPE NUM '-' NUM ')';
 TYPE:
