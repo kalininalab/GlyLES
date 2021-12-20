@@ -77,6 +77,7 @@ class TestConverter:
         convert(args["glycan"], args["glycan_list"], args["glycan_file"], args["glycan_generator"],
                 output_file="./output.txt")
         output = [line.split(",") for line in open("./output.txt", "r").readlines()]
+        print(output)
         check_results(output)
 
     def test_return_output(self):
@@ -97,11 +98,11 @@ class TestConverter:
 
         assert len(output) == 1
         assert output[0][0] == "Glc a"
-        compare_smiles(output[0][1], "OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O")
+        compare_smiles(output[0][1], "OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@@H]1O")
 
     def test_orientation_2(self):
         output = convert("Glc b", returning=True)
 
         assert len(output) == 1
         assert output[0][0] == "Glc b"
-        compare_smiles(output[0][1], "OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@@H]1O")
+        compare_smiles(output[0][1], "OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O")

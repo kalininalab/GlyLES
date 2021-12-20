@@ -54,7 +54,7 @@ def parsable_glycan(glycan, factory):
 
     glycan = re.sub("[\(].*?[\)]", "", glycan)
     glycan = glycan.replace("[", "").replace("]", "").upper()
-    for monomer in factory:
+    for monomer in factory.monomers():
         glycan = glycan.replace(monomer, " ")
     return len(glycan.replace(" ", "")) == 0
 

@@ -1,6 +1,7 @@
 import pytest
 from rdkit import Chem
 
+from glyles.glycans.factory.factory import MonomerFactory
 from glyles.grammar.parse import Glycan
 
 
@@ -44,8 +45,8 @@ class TestSMILES:
 
         ("Gal(b1-4)Glc",
          "OC[C@H]2O[C@@H](O[C@H]1[C@H](O)[C@@H](O)C(O)O[C@@H]1CO)[C@H](O)[C@@H](O)[C@H]2O",
-         "OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O[C@@H]1O[C@H](CO)[C@H](O)[C@H](O)[C@H]1O",  # alpha
-         "OC[C@H]2O[C@@H](O[C@H]1[C@H](O)[C@@H](O)[C@@H](O)O[C@@H]1CO)[C@H](O)[C@@H](O)[C@H]2O"),  # beta
+         "OC[C@H]2O[C@@H](O[C@H]1[C@H](O)[C@@H](O)[C@@H](O)O[C@@H]1CO)[C@H](O)[C@@H](O)[C@H]2O",  # alpha
+         "OC[C@H]2O[C@@H](O[C@H]1[C@H](O)[C@@H](O)[C@H](O)O[C@@H]1CO)[C@H](O)[C@@H](O)[C@H]2O"),  # beta
 
         ("Gal(b1-3)Glc",
          "OC[C@H]2O[C@@H](O[C@@H]1[C@@H](O)C(O)O[C@H](CO)[C@H]1O)[C@H](O)[C@@H](O)[C@H]2O",
@@ -108,7 +109,7 @@ class TestSMILES:
     ])
     @pytest.mark.parametrize("source", [10, 11, 12, 13, 14, 15])
     def test_smiles_mono(self, glycan, source):
-        computed = Glycan(glycan[0], start=10).get_smiles()
+        computed = Glycan(glycan[0], factory=MonomerFactory(), start=10).get_smiles()
         solution = glycan[1]
 
         compare_smiles(computed, solution)
@@ -116,7 +117,8 @@ class TestSMILES:
     @pytest.mark.parametrize("root_orientation", ["n", "a", "b"])
     @pytest.mark.parametrize("iupac, plain, alpha, beta", smiles_samples_simple)
     def test_smiles_poly(self, iupac, plain, alpha, beta, root_orientation):
-        computed = Glycan(iupac, mode=Glycan.Mode.RDKIT_MODE, root_orientation=root_orientation).get_smiles()
+        computed = Glycan(iupac, factory=MonomerFactory(), mode=Glycan.Mode.RDKIT_MODE,
+                          root_orientation=root_orientation).get_smiles()
 
         if root_orientation == "a":
             smiles = alpha
