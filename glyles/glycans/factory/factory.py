@@ -20,9 +20,18 @@ class MonomerFactory:
     def monomers(self):
         return set(x.split("_")[-1] for x in self.keys)
 
+    def monomers2(self):
+        output = set()
+        for item in self.monomers():
+            if item in self.pyranoses:
+                output.add(self.pyranoses[item]["name"])
+            elif item in self.derivatives:
+                output.add(self.derivatives[item]["name"])
+        return output
+
     def __getitem__(self, item):
         furanose = False
-        if item[-1] == "p":
+        if item[-1] == "p" and not item.endswith("manHep"):
             item = item[:-1]
         if item[-1] == "f":
             item = item[:-1]

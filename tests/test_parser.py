@@ -1,3 +1,6 @@
+import pytest
+import numpy as np
+
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import Config
 from glyles.grammar.parse import Glycan
@@ -30,6 +33,12 @@ class TestParser:
         g = Glycan("Man", MonomerFactory()).get_tree()
 
         check_initial(g, "Man", 0, Config.UNDEF)
+
+    @pytest.mark.parametrize("mono", list(MonomerFactory().monomers2()))
+    def test_parse_1_multi(self, mono):
+        g = Glycan(mono, MonomerFactory(), parse=False).get_tree()
+
+        check_initial(g, mono, 0, Config.UNDEF)
 
     def test_parse_2(self):
         g = Glycan("Man(a1-4)Glc", MonomerFactory()).get_tree()
@@ -200,3 +209,74 @@ class TestParser:
 
         id_child_2 = list(g.edges(id_child_1))[0][1]
         check_child(g, id_child_1, id_child_2, "Man", "(b1-4)", 2)
+
+    @pytest.mark.parametrize("monomers", np.random.choice(list(MonomerFactory().monomers2()), size=500).reshape(100, 5))
+    @pytest.mark.parametrize("orientation", [Config.ALPHA, Config.BETA, Config.UNDEF])
+    def test_parse_fuzzy(self, monomers, orientation):
+        c = ["a1-4", "a1-4", "a1-3", "a1-4"]
+
+        iupac = f"{monomers[0]}({c[0]})[{monomers[1]}({c[1]}){monomers[2]}({c[2]})]{monomers[3]}({c[3]}){monomers[4]}"
+        if orientation == Config.ALPHA:
+            iupac += " a"
+        elif orientation == Config.BETA:
+            iupac += " b"
+
+        g = Glycan(iupac, MonomerFactory(), parse=False).get_tree()
+
+        check_initial(g, monomers[4], 1, orientation)
+        id_child_1 = list(g.edges(0))[0][1]
+        check_child(g, 0, id_child_1, monomers[3], f"({c[3]})", 2)
+
+        id_children_1 = [x[1] for x in list(g.edges(id_child_1))]
+        id_child_11, id_child_12 = split_children(g, id_children_1, monomers[2])
+
+        check_child(g, id_child_1, id_child_11, monomers[2], f"({c[2]})", 1)
+        check_child(g, id_child_1, id_child_12, monomers[0], f"({c[0]})", 0)
+
+        id_child_111 = list(g.edges(id_child_11))[0][1]
+        check_child(g, id_child_11, id_child_111, monomers[1], f"({c[1]})", 0)
+
+    def test_parse_fuzzy_detail(self, monomers=None, orientation=Config.ALPHA):
+        if monomers is None:
+            monomers = ['Fru', 'Man', 'GalNAc6S', 'GalNAc6S', 'GlcNAc6S']
+        c = ["a1-4", "a1-4", "a1-3", "a1-4"]
+
+        iupac = f"{monomers[0]}({c[0]})[{monomers[1]}({c[1]}){monomers[2]}({c[2]})]{monomers[3]}({c[3]}){monomers[4]}"
+        if orientation == Config.ALPHA:
+            iupac += " a"
+        elif orientation == Config.BETA:
+            iupac += " b"
+
+        g = Glycan(iupac, MonomerFactory(), parse=False).get_tree()
+
+        check_initial(g, monomers[4], 1, orientation)
+        id_child_1 = list(g.edges(0))[0][1]
+        check_child(g, 0, id_child_1, monomers[3], f"({c[3]})", 2)
+
+        id_children_1 = [x[1] for x in list(g.edges(id_child_1))]
+        id_child_11, id_child_12 = split_children(g, id_children_1, monomers[2])
+
+        check_child(g, id_child_1, id_child_11, monomers[2], f"({c[2]})", 1)
+        check_child(g, id_child_1, id_child_12, monomers[0], f"({c[0]})", 0)
+
+        id_child_111 = list(g.edges(id_child_11))[0][1]
+        check_child(g, id_child_11, id_child_111, monomers[1], f"({c[1]})", 0)
+
+    @pytest.mark.parametrize("orientation", [Config.ALPHA, Config.BETA])
+    @pytest.mark.parametrize("pos_man", [1, 2, 3, 4, 6])
+    @pytest.mark.parametrize("pos_glc", [2, 3, 4, 6])
+    @pytest.mark.parametrize("conf_glc", [Config.ALPHA, Config.BETA, Config.UNDEF])
+    def test_parse_connections(self, orientation, pos_man, pos_glc, conf_glc):
+        config = "a" if orientation == Config.ALPHA else "b"
+        iupac = f"Man({config}{pos_man}-{pos_glc})Glc"
+        if conf_glc == Config.ALPHA:
+            iupac += " a"
+        elif conf_glc == Config.BETA:
+            iupac += " b"
+
+        print(iupac)
+        g = Glycan(iupac, MonomerFactory()).get_tree()
+
+        check_initial(g, "Glc", 1, conf_glc)
+        id_child_1 = list(g.edges(0))[0][1]
+        check_child(g, 0, id_child_1, "Man", f"({config}{pos_man}-{pos_glc})", 0)

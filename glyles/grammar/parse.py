@@ -274,7 +274,8 @@ class Glycan:
             for child, atom in zip(children, t.nodes[node]["type"].get_dummy_atoms()[1]):
                 binding = list(t.get_edge_data(node, child)["type"])
 
-                child_start = t.nodes[node]["type"].root_atom_id(int(binding[2]))
+                # child_start = t.nodes[node]["type"].root_atom_id(int(binding[2]))
+                child_start = t.nodes[child]["type"].root_atom_id(int(binding[2]))
                 if child_start == -1:
                     raise ValueError("No child start found.")
 
@@ -307,8 +308,7 @@ class Glycan:
         self.start = start
         self.parse_smiles = parse
         self.factory = factory
-        if parse:
-            self.__parse()
+        self.__parse()
 
     def get_smiles(self):
         """
@@ -318,7 +318,8 @@ class Glycan:
             Generated SMILES string
         """
         if self.glycan_smiles is None:
-            self.glycan_smiles = Glycan.__Merger().merge(self.parse_tree, self.root_orientation, start=self.start)
+            self.glycan_smiles = Glycan.__Merger(self.factory).merge(self.parse_tree, self.root_orientation,
+                                                                     start=self.start)
 
         return self.glycan_smiles
 

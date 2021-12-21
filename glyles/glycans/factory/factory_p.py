@@ -108,7 +108,7 @@ class PyranoseFactory:
                 "smiles": "C[C@H]1OC(O)[C@@H](O)C[C@@H]1O"},
         "A_TYV": {"name": "Tyv", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "C[C@H]1O[C@H](O)[C@@H](O)C[C@@H]1O"},
-        "B_TYV": {"name": "Oli", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "B_TYV": {"name": "Tyv", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "C[C@H]1O[C@@H](O)[C@@H](O)C[C@@H]1O"},
 
         # Abequose
@@ -178,9 +178,9 @@ class PyranoseFactory:
         # Keto-Deoxy-Nonulonic acid
         "KDN": {"name": "Kdn", "config": Config.UNDEF, "lactole": Lactole.PYRANOSE,
                 "smiles": "O=C(O)C1(O)C[C@H](O)[C@@H](O)C([C@H](O)[C@H](O)CO)O1"},
-        "A_KDN": {"name": "Kdn", "config": Config.UNDEF, "lactole": Lactole.PYRANOSE,
+        "A_KDN": {"name": "Kdn", "config": Config.ALPHA, "lactole": Lactole.PYRANOSE,
                   "smiles": "O=C(O)[C@@]1(O)C[C@H](O)[C@@H](O)C([C@H](O)[C@H](O)CO)O1"},
-        "B_KDN": {"name": "Kdn", "config": Config.UNDEF, "lactole": Lactole.PYRANOSE,
+        "B_KDN": {"name": "Kdn", "config": Config.BETA, "lactole": Lactole.PYRANOSE,
                   "smiles": "O=C(O)[C@]1(O)C[C@H](O)[C@@H](O)C([C@H](O)[C@H](O)CO)O1"},
 
         # Neuraminic acid
@@ -224,11 +224,11 @@ class PyranoseFactory:
                   "smiles": "C[C@H]1O[C@@H](O)[C@H](N)[C@@H](O)[C@@H]1N"},
 
         # L-Glycero-D-Manno-Heptose
-        "LDmanHep": {"name": "LDmanHep", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "LDMANHEP": {"name": "LDmanHep", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                      "smiles": "OC[C@H](O)C1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O"},
-        "A_LDmanHep": {"name": "LDmanHep", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "A_LDMANHEP": {"name": "LDmanHep", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                        "smiles": "OC[C@H](O)C1O[C@H](O)[C@@H](O)[C@@H](O)[C@@H]1O"},
-        "B_LDmanHep": {"name": "LDmanHep", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "B_LDMANHEP": {"name": "LDmanHep", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                        "smiles": "OC[C@H](O)C1O[C@@H](O)[C@@H](O)[C@@H](O)[C@@H]1O"},
 
         # 2-Keto-3-Deoxy-D-Mannooctanoic acid
@@ -248,11 +248,11 @@ class PyranoseFactory:
                   "smiles": "O=C(O)[C@H]1O[C@](O)(C(=O)O)C[C@@H](O)[C@H]1O"},
 
         # D-Glycero-D-Manno-Heptose
-        "DDmanHep": {"name": "DDmanHep", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "DDMANHEP": {"name": "DDmanHep", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                      "smiles": "OC[C@@H](O)C1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O"},
-        "A_DDmanHep": {"name": "DDmanHep", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "A_DDMANHEP": {"name": "DDmanHep", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                        "smiles": "OC[C@@H](O)C1O[C@H](O)[C@@H](O)[C@@H](O)[C@@H]1O"},
-        "B_DDmanHep": {"name": "DDmanHep", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "B_DDMANHEP": {"name": "DDmanHep", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                        "smiles": "OC[C@@H](O)C1O[C@@H](O)[C@@H](O)[C@@H](O)[C@@H]1O"},
 
         # Muramic acid

@@ -88,11 +88,11 @@ class DerivativesFactory:
                        "smiles": "CC(=O)N[C@H]1[C@H](O)O[C@H](COS(=O)(=O)[O-])[C@H](O)[C@@H]1O"},
 
         # Glucose
-        "GLC4S": {"name": "Gal4S", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "GLC4S": {"name": "Glc4S", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "O=S(=O)([O-])O[C@H]1[C@H](O)[C@@H](O)C(O)O[C@@H]1CO"},
-        "A_GLC4S": {"name": "Gal4S", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "A_GLC4S": {"name": "Glc4S", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                     "smiles": "O=S(=O)([O-])O[C@H]1[C@H](O)[C@@H](O)[C@@H](O)O[C@@H]1CO"},
-        "B_GLC4S": {"name": "Gal4S", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "B_GLC4S": {"name": "Glc4S", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                     "smiles": "O=S(=O)([O-])O[C@H]1[C@H](O)[C@@H](O)[C@H](O)O[C@@H]1CO"},
 
         "GLC6S": {"name": "Glc6S", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
@@ -118,40 +118,44 @@ class DerivativesFactory:
 
         "GLCNAC": {"name": "GlcNAc", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                    "smiles": "CC(=O)N[C@H]1C(O)O[C@H](CO)[C@@H](O)[C@@H]1O"},
-        "A_GLCNAC": {"name": "GlcNAc", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "A_GLCNAC": {"name": "GlcNAc", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                      "smiles": "CC(=O)N[C@H]1[C@@H](O)O[C@H](CO)[C@@H](O)[C@@H]1O"},
-        "B_GLCNAC": {"name": "GlcNAc", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "B_GLCNAC": {"name": "GlcNAc", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                      "smiles": "CC(=O)N[C@H]1[C@H](O)O[C@H](CO)[C@@H](O)[C@@H]1O"},
 
-        "GLCNAC3S": {"name": "GalNAc3S", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "GLCNAC3S": {"name": "GlcNAc3S", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                      "smiles": "CC(=O)N[C@H]1C(O)O[C@H](CO)[C@@H](O)[C@@H]1OS(=O)(=O)[O-]"},
-        "A_GLCNAC3S": {"name": "GalNAc3S", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "A_GLCNAC3S": {"name": "GlcNAc3S", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                        "smiles": "CC(=O)N[C@H]1[C@@H](O)O[C@H](CO)[C@@H](O)[C@@H]1OS(=O)(=O)[O-]"},
-        "B_GLCNAC3S": {"name": "GalNAc3S", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "B_GLCNAC3S": {"name": "GlcNAc3S", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                        "smiles": "CC(=O)N[C@H]1[C@H](O)O[C@H](CO)[C@@H](O)[C@@H]1OS(=O)(=O)[O-]"},
 
         "GLCNAC6S": {"name": "GlcNAc6S", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                      "smiles": "CC(=O)N[C@H]1C(O)O[C@H](COS(=O)(=O)[O-])[C@@H](O)[C@@H]1O"},
-        "A_GLCNAC6S": {"name": "GlcNAc6S", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "A_GLCNAC6S": {"name": "GlcNAc6S", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                        "smiles": "CC(=O)N[C@H]1[C@@H](O)O[C@H](COS(=O)(=O)[O-])[C@@H](O)[C@@H]1O"},
-        "B_GLCNAC6S": {"name": "GlcNAc6S", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "B_GLCNAC6S": {"name": "GlcNAc6S", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                        "smiles": "CC(=O)N[C@H]1[C@H](O)O[C@H](COS(=O)(=O)[O-])[C@@H](O)[C@@H]1O"},
-
-        # Neuraminic acid
-        "NEU5AC": {"name": "Neu5Ac", "config": Config.UNDEF,
-                   "smiles": "CC(=O)N[C@@H]1[C@@H](O)CC(O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
-        "A_NEU5AC": {"name": "Neu5Ac", "config": Config.ALPHA,
-                     "smiles": "CC(=O)N[C@@H]1[C@@H](O)C[C@@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
-        "B_NEU5AC": {"name": "Neu5Ac", "config": Config.BETA,
-                     "smiles": "CC(=O)N[C@@H]1[C@@H](O)C[C@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
-
-        "NEU5GC": {"name": "Neu5Ac", "config": Config.UNDEF,
-                   "smiles": "O=C(CO)N[C@@H]1[C@@H](O)CC(O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
-        "A_NEU5GC": {"name": "Neu5Ac", "config": Config.ALPHA,
-                     "smiles": "O=C(CO)N[C@@H]1[C@@H](O)C[C@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
-        "B_NEU5GC": {"name": "Neu5Ac", "config": Config.BETA,
-                     "smiles": "O=C(CO)N[C@@H]1[C@@H](O)C[C@@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
     }
+
+    '''
+    Missing:
+    
+    # Neuraminic acid
+    "NEU5AC": {"name": "Neu5Ac", "config": Config.UNDEF,
+               "smiles": "CC(=O)N[C@@H]1[C@@H](O)CC(O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
+    "A_NEU5AC": {"name": "Neu5Ac", "config": Config.ALPHA,
+                 "smiles": "CC(=O)N[C@@H]1[C@@H](O)C[C@@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
+    "B_NEU5AC": {"name": "Neu5Ac", "config": Config.BETA,
+                 "smiles": "CC(=O)N[C@@H]1[C@@H](O)C[C@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
+
+    "NEU5GC": {"name": "Neu5Ac", "config": Config.UNDEF,
+               "smiles": "O=C(CO)N[C@@H]1[C@@H](O)CC(O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
+    "A_NEU5GC": {"name": "Neu5Ac", "config": Config.ALPHA,
+                 "smiles": "O=C(CO)N[C@@H]1[C@@H](O)C[C@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
+    "B_NEU5GC": {"name": "Neu5Ac", "config": Config.BETA,
+                 "smiles": "O=C(CO)N[C@@H]1[C@@H](O)C[C@@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
+    '''
 
     '''
     # Keto - Deoxy - Nonulonic acid

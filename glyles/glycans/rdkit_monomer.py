@@ -270,7 +270,7 @@ class RDKitMonomer(Monomer):
         adj = self._adjacency.copy()
 
         while adj[start, ringo] == 0 and adj[end, ringo] == 0:
-            adj *= self._adjacency
+            adj = adj @ self._adjacency
 
         if adj[start, ringo] > 0 and adj[end, ringo] > 0:
             return self.__equidistant(start, end, ringo)
