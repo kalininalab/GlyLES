@@ -18,7 +18,7 @@ class MonomerFactory:
         return self.keys
 
     def monomers(self):
-        return set(x.split("_")[-1] for x in self.keys)
+        return sorted([self[x.split("_")[-1]]["name"] for x in self.keys], key=lambda x: -len(x))
 
     def monomers2(self):
         output = set()

@@ -52,9 +52,9 @@ def parsable_glycan(glycan, factory):
     if glycan[-2] == " ":
         glycan = glycan[:-2]
 
-    glycan = re.sub("[\(].*?[\)]", "", glycan)
-    glycan = glycan.replace("[", "").replace("]", "").upper()
-    for monomer in factory.monomers():
+    glycan = re.sub("[\(].*?[\)]", " ", glycan)
+    glycan = glycan.replace("[", " ").replace("]", " ")
+    for monomer in factory.monomers():  # Sometime true and sometimes false for Glca (invalid monomer)
         glycan = glycan.replace(monomer, " ")
     return len(glycan.replace(" ", "")) == 0
 
