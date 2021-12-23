@@ -69,7 +69,7 @@ class Glycan:
             """
 
             # parse the initial monomer and the orientation of the root monomer
-            children = list(t.getChildren())
+            children = list(t.getChildren())[1:-1]
             if len(children) == 1:  # SAC
                 self.__add_node(children[0].symbol.text, mode)
                 return self.g
@@ -371,11 +371,25 @@ class Glycan:
         """
         # parse the remaining structure description following the grammar.
         # with suppress_stdout():
-        stream = InputStream(data=self.iupac)
+        log = []
+
+        class writer(object):
+            def write(self, data):
+                log.append(data)
+        old_err = sys.stderr
+        sys.stderr = writer()
+
+        stream = InputStream(data='{' + self.iupac + '}')
         lexer = GlycanLexer(stream)
         token = CommonTokenStream(lexer)
         parser = GlycanParser(token)
         tree = parser.start()
+
+        if len(log) != 0:
+            self.parse_tree = None
+            self.glycan_smiles = ""
+            return
+        sys.stderr = old_err
 
         # walk through the AST and parse the AST into a networkx representation of the glycan.
         self.parse_tree = Glycan.__TreeWalker(self.factory).parse(tree, self.mode)
