@@ -77,7 +77,6 @@ class TestConverter:
         convert(args["glycan"], args["glycan_list"], args["glycan_file"], args["glycan_generator"],
                 output_file="./output.txt")
         output = [line.split(",") for line in open("./output.txt", "r").readlines()]
-        print(output)
         check_results(output)
 
     def test_return_output(self):

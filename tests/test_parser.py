@@ -1,6 +1,7 @@
 import pytest
 import numpy as np
 
+from glyles.converter import parsable_glycan
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import Config
 from glyles.grammar.parse import Glycan
@@ -30,25 +31,43 @@ def split_children(g, id_children, child_1):
 
 class TestParser:
     def test_parse_1(self):
-        g = Glycan("Man", MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        g = Glycan("Man", factory).get_tree()
 
         check_initial(g, "Man", 0, Config.UNDEF)
 
-    @pytest.mark.parametrize("mono", list(MonomerFactory().monomers2()))
-    def test_parse_1_multi(self, mono):
-        g = Glycan(mono, MonomerFactory(), parse=False).get_tree()
+        assert parsable_glycan("Man", factory)
 
-        check_initial(g, mono, 0, Config.UNDEF)
+    @pytest.mark.parametrize("mono", list(MonomerFactory().monomers2()))
+    @pytest.mark.parametrize("config", [Config.ALPHA, Config.BETA, Config.UNDEF])
+    def test_parse_1_multi(self, mono, config):
+        factory = MonomerFactory()
+        iupac = mono
+        if config == Config.ALPHA:
+            iupac += " a"
+        elif config == Config.BETA:
+            iupac += " b"
+        g = Glycan(iupac, factory, parse=False).get_tree()
+
+        check_initial(g, mono, 0, config)
+
+        assert parsable_glycan(iupac, factory)
 
     def test_parse_2(self):
-        g = Glycan("Man(a1-4)Glc", MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        iupac = "Man(a1-4)Glc"
+        g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "Glc", 1)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Man", "(a1-4)", 0)
 
+        assert parsable_glycan(iupac, factory)
+
     def test_parse_3(self):
-        g = Glycan("Man(a1-4)Glc(a1-3)Tal", MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        iupac = "Man(a1-4)Glc(a1-3)Tal"
+        g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "Tal", 1)
         id_child_1 = list(g.edges(0))[0][1]
@@ -57,7 +76,9 @@ class TestParser:
         check_child(g, id_child_1, id_child_2, "Man", "(a1-4)", 0)
 
     def test_parse_4(self):
-        g = Glycan("Man(a1-4)[Glc(a1-3)]Tal", MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        iupac = "Man(a1-4)[Glc(a1-3)]Tal"
+        g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "Tal", 2)
         id_children_1 = [x[1] for x in list(g.edges(0))]
@@ -66,8 +87,12 @@ class TestParser:
         check_child(g, 0, id_child_1, "Glc", "(a1-3)", 0)
         check_child(g, 0, id_child_2, "Man", "(a1-4)", 0)
 
+        assert parsable_glycan(iupac, factory)
+
     def test_parse_5(self):
-        g = Glycan("Man(a1-2)[Glc(a1-3)Tal(b1-4)]Gal", MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        iupac = "Man(a1-2)[Glc(a1-3)Tal(b1-4)]Gal"
+        g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "Gal", 2)
         id_children_1 = [x[1] for x in list(g.edges(0))]
@@ -79,8 +104,12 @@ class TestParser:
         id_child_11 = list(g.edges(id_child_1))[0][1]
         check_child(g, id_child_1, id_child_11, "Glc", "(a1-3)", 0)
 
+        assert parsable_glycan(iupac, factory)
+
     def test_parse_6(self):
-        g = Glycan("Man(a1-2)Glc(a1-3)[Tal(b1-4)]Gal", MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        iupac = "Man(a1-2)Glc(a1-3)[Tal(b1-4)]Gal"
+        g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "Gal", 2)
         id_children_1 = [x[1] for x in list(g.edges(0))]
@@ -92,8 +121,12 @@ class TestParser:
         id_child_21 = list(g.edges(id_child_2))[0][1]
         check_child(g, id_child_2, id_child_21, "Man", "(a1-2)", 0)
 
+        assert parsable_glycan(iupac, factory)
+
     def test_parse_7(self):
-        g = Glycan("Man(a1-4)Glc(a1-2)[Tal(b1-4)Gal(b1-3)]Tal", MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        iupac = "Man(a1-4)Glc(a1-2)[Tal(b1-4)Gal(b1-3)]Tal"
+        g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "Tal", 2)
         id_children_1 = [x[1] for x in list(g.edges(0))]
@@ -108,8 +141,12 @@ class TestParser:
         id_child_21 = list(g.edges(id_child_2))[0][1]
         check_child(g, id_child_2, id_child_21, "Man", "(a1-4)", 0)
 
+        assert parsable_glycan(iupac, factory)
+
     def test_parse_8(self):
-        g = Glycan("Man(a1-2)[Glc(a1-3)Tal(b1-4)]Gal(b1-3)Tal", MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        iupac = "Man(a1-2)[Glc(a1-3)Tal(b1-4)]Gal(b1-3)Tal"
+        g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "Tal", 1)
         id_child_1 = list(g.edges(0))[0][1]
@@ -124,32 +161,52 @@ class TestParser:
         id_child_111 = list(g.edges(id_child_11))[0][1]
         check_child(g, id_child_11, id_child_111, "Glc", "(a1-3)", 0)
 
+        assert parsable_glycan(iupac, factory)
+
     def test_parse_9(self):
-        g = Glycan("Man a", MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        iupac = "Man a"
+        g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "Man", 0, Config.ALPHA)
 
+        assert parsable_glycan(iupac, factory)
+
     def test_parse_10(self):
-        g = Glycan("Man b", MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        iupac = "Man b"
+        g = Glycan("Man b", factory).get_tree()
 
         check_initial(g, "Man", 0, Config.BETA)
 
+        assert parsable_glycan(iupac, factory)
+
     def test_parse_11(self):
-        g = Glycan("Man(a1-4)Glc a", MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        iupac = "Man(a1-4)Glc a"
+        g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "Glc", 1, Config.ALPHA)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Man", "(a1-4)", 0)
 
+        assert parsable_glycan(iupac, factory)
+
     def test_parse_12(self):
-        g = Glycan("Man(a1-4)Glc b", MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        iupac = "Man(a1-4)Glc b"
+        g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "Glc", 1, Config.BETA)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Man", "(a1-4)", 0)
 
+        assert parsable_glycan(iupac, factory)
+
     def test_parse_13(self):
-        g = Glycan("Fuc(a1-2)Gal(b1-3)GalNAc", MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        iupac = "Fuc(a1-2)Gal(b1-3)GalNAc"
+        g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "GalNAc", 1)
         id_child_1 = list(g.edges(0))[0][1]
@@ -157,8 +214,12 @@ class TestParser:
         id_child_2 = list(g.edges(id_child_1))[0][1]
         check_child(g, id_child_1, id_child_2, "Fuc", "(a1-2)", 0)
 
+        assert parsable_glycan(iupac, factory)
+
     def test_parse_14(self):
-        g = Glycan("Fuc(a1-2)Gal(b1-3)GlcNAc6S", MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        iupac = "Fuc(a1-2)Gal(b1-3)GlcNAc6S"
+        g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "GlcNAc6S", 1)
         id_child_1 = list(g.edges(0))[0][1]
@@ -166,8 +227,12 @@ class TestParser:
         id_child_2 = list(g.edges(id_child_1))[0][1]
         check_child(g, id_child_1, id_child_2, "Fuc", "(a1-2)", 0)
 
+        assert parsable_glycan(iupac, factory)
+
     def test_parse_15(self):
-        g = Glycan("Fuc(a1-2)Gal(b1-4)Gal6S", MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        iupac = "Fuc(a1-2)Gal(b1-4)Gal6S"
+        g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "Gal6S", 1)
         id_child_1 = list(g.edges(0))[0][1]
@@ -175,8 +240,12 @@ class TestParser:
         id_child_2 = list(g.edges(id_child_1))[0][1]
         check_child(g, id_child_1, id_child_2, "Fuc", "(a1-2)", 0)
 
+        assert parsable_glycan(iupac, factory)
+
     def test_parse_16(self):
-        g = Glycan("Fuc(a1-2)Gal(a1-3)[Fuc(a1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc", MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        iupac = "Fuc(a1-2)Gal(a1-3)[Fuc(a1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc"
+        g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "GlcNAc", 1)
         id_child_1 = list(g.edges(0))[0][1]
@@ -196,9 +265,12 @@ class TestParser:
         id_child_321 = list(g.edges(id_child_32))[0][1]
         check_child(g, id_child_32, id_child_321, "Fuc", "(a1-2)", 0)
 
+        assert parsable_glycan(iupac, factory)
+
     def test_parse_17(self):
-        g = Glycan("Fuc(a1-2)Gal(a1-3)[Fuc(a1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc",
-                   MonomerFactory()).get_tree()
+        factory = MonomerFactory()
+        iupac = "Fuc(a1-2)Gal(a1-3)[Fuc(a1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc"
+        g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "GlcNAc", 2)
         id_children_1 = [x[1] for x in list(g.edges(0))]
@@ -209,6 +281,8 @@ class TestParser:
 
         id_child_2 = list(g.edges(id_child_1))[0][1]
         check_child(g, id_child_1, id_child_2, "Man", "(b1-4)", 2)
+
+        assert parsable_glycan(iupac, factory)
 
     @pytest.mark.parametrize("monomers", np.random.choice(list(MonomerFactory().monomers2()), size=500).reshape(100, 5))
     @pytest.mark.parametrize("orientation", [Config.ALPHA, Config.BETA, Config.UNDEF])
@@ -221,7 +295,8 @@ class TestParser:
         elif orientation == Config.BETA:
             iupac += " b"
 
-        g = Glycan(iupac, MonomerFactory(), parse=False).get_tree()
+        factory = MonomerFactory()
+        g = Glycan(iupac, factory, parse=False).get_tree()
 
         check_initial(g, monomers[4], 1, orientation)
         id_child_1 = list(g.edges(0))[0][1]
@@ -236,31 +311,7 @@ class TestParser:
         id_child_111 = list(g.edges(id_child_11))[0][1]
         check_child(g, id_child_11, id_child_111, monomers[1], f"({c[1]})", 0)
 
-    def test_parse_fuzzy_detail(self, monomers=None, orientation=Config.ALPHA):
-        if monomers is None:
-            monomers = ['Fru', 'Man', 'GalNAc6S', 'GalNAc6S', 'GlcNAc6S']
-        c = ["a1-4", "a1-4", "a1-3", "a1-4"]
-
-        iupac = f"{monomers[0]}({c[0]})[{monomers[1]}({c[1]}){monomers[2]}({c[2]})]{monomers[3]}({c[3]}){monomers[4]}"
-        if orientation == Config.ALPHA:
-            iupac += " a"
-        elif orientation == Config.BETA:
-            iupac += " b"
-
-        g = Glycan(iupac, MonomerFactory(), parse=False).get_tree()
-
-        check_initial(g, monomers[4], 1, orientation)
-        id_child_1 = list(g.edges(0))[0][1]
-        check_child(g, 0, id_child_1, monomers[3], f"({c[3]})", 2)
-
-        id_children_1 = [x[1] for x in list(g.edges(id_child_1))]
-        id_child_11, id_child_12 = split_children(g, id_children_1, monomers[2])
-
-        check_child(g, id_child_1, id_child_11, monomers[2], f"({c[2]})", 1)
-        check_child(g, id_child_1, id_child_12, monomers[0], f"({c[0]})", 0)
-
-        id_child_111 = list(g.edges(id_child_11))[0][1]
-        check_child(g, id_child_11, id_child_111, monomers[1], f"({c[1]})", 0)
+        assert parsable_glycan(iupac, factory)
 
     @pytest.mark.parametrize("orientation", [Config.ALPHA, Config.BETA])
     @pytest.mark.parametrize("pos_man", [1, 2, 3, 4, 6])
@@ -269,14 +320,16 @@ class TestParser:
     def test_parse_connections(self, orientation, pos_man, pos_glc, conf_glc):
         config = "a" if orientation == Config.ALPHA else "b"
         iupac = f"Man({config}{pos_man}-{pos_glc})Glc"
+        factory = MonomerFactory()
         if conf_glc == Config.ALPHA:
             iupac += " a"
         elif conf_glc == Config.BETA:
             iupac += " b"
 
-        print(iupac)
-        g = Glycan(iupac, MonomerFactory()).get_tree()
+        g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "Glc", 1, conf_glc)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Man", f"({config}{pos_man}-{pos_glc})", 0)
+
+        assert parsable_glycan(iupac, factory)
