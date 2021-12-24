@@ -1,6 +1,4 @@
-import os
 import sys
-from contextlib import contextmanager
 from enum import Enum
 
 import networkx as nx
@@ -8,33 +6,10 @@ import pydot
 from antlr4 import *
 from rdkit.Chem import MolFromSmiles
 
-from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.nx_monomer import NXMonomer
 from glyles.glycans.rdkit_monomer import RDKitMonomer
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
-
-
-@contextmanager
-def suppress_stdout():
-    """
-    Source: https://thesmithfam.org/blog/2012/10/25/temporarily-suppress-console-output-in-python/
-    Suppress the output of a part of the program
-    Use:
-    with suppress_stdout():
-        // Put code here
-    continue with normal code and output
-    """
-    with open(os.devnull, "w") as devnull:
-        old_stdout = sys.stdout
-        old_stderr = sys.stderr
-        sys.stdout = devnull
-        sys.stderr = devnull
-        try:
-            yield
-        finally:
-            sys.stdout = old_stdout
-            sys.stderr = old_stderr
 
 
 class Glycan:
@@ -51,6 +26,9 @@ class Glycan:
         def __init__(self, factory):
             """
             Just initialize an empty tree
+
+            Args:
+                factory (MonomerFactory): factory instance to use to generate the monomers for the glycan tree from
             """
             self.g = nx.DiGraph()
             self.factory = factory
@@ -62,13 +40,14 @@ class Glycan:
 
             Args:
                 t (antlr.ParseTree): result of the parsing step from ANTLR
-                mode (Glycan.Mode):
+                mode (Glycan.Mode): mode determining which monomer-mode to use
 
             Returns:
                 Tree of parsed glycan with monomers in nodes
             """
 
             # parse the initial monomer and the orientation of the root monomer
+            # and remove the first and last char, i.e. '{' and '}'
             children = list(t.getChildren())[1:-1]
             if len(children) == 1:  # SAC
                 self.__add_node(children[0].symbol.text, mode)
@@ -95,6 +74,7 @@ class Glycan:
             Args:
                 t (antlr.ParseTree): subtree to parse in this recursive step.
                 parent (int): ID of the parent node for this (subtree)
+                mode (Glycan.Mode): mode determining which monomer-mode to use
 
             Returns:
                 ID of the parent for the remaining recursive procedure after resolving this subtree
@@ -120,12 +100,12 @@ class Glycan:
                 self.__add_edge(parent, node_id, children[1])
                 return node_id
 
-            elif len(children) == 3 and isinstance(children[1], GlycanParser.BranchContext):  # {[ branch ]}
+            elif len(children) == 3 and isinstance(children[1], GlycanParser.BranchContext):  # {'[' branch ']'}
                 # branching, hand the parent on to the next level
                 self.__walk(children[1], parent, mode)
                 return parent
 
-            elif len(children) == 6:  # {sac con [ branch ] branch}
+            elif len(children) == 6:  # {sac con '[' branch ']' branch}
                 # branching in a chain, append the end to the parent and hang both branches on that
                 node_id = self.__walk(children[5], parent, mode)
                 self.__walk(children[3], node_id, mode)
@@ -143,7 +123,7 @@ class Glycan:
             Args:
                 parent (int): ID of parent in the connection of the glycan tree
                 child (int): ID of the child in the connection of the glycan tree
-                con: Connection element from the ParseTree
+                con (str): Connection element from the ParseTree
 
             Returns:
                 Nothing
@@ -156,6 +136,7 @@ class Glycan:
 
             Args:
                 name (str): Name of the glycan to be represented in the new node
+                mode (Glycan.Mode): mode determining which monomer-mode to use
 
             Returns:
                 ID of the newly added node
@@ -196,6 +177,12 @@ class Glycan:
         """
 
         def __init__(self, factory):
+            """
+            Create a merger class to merge a parsed glycan tree into a SMILES string
+
+            Args:
+                factory (MonomerFactory): factory instance to use to generate the monomers for the glycan tree from
+            """
             self.factory = factory
 
         def merge(self, t, root_orientation="n", start=10):
@@ -258,6 +245,7 @@ class Glycan:
                 t (networkx.DiGraph): Graph representing the glycan to compute the whole SMILES representation for.
                 node (int): ID of the node to work on in this method
                 start (int): ID of the atom in the inner graph to start from when generating the SMILES string
+                ring_index (int): Index of the ring to use when generating the SMILES strings
 
             Returns:
                 SMILES representation of the subtree of the given node
@@ -298,7 +286,11 @@ class Glycan:
 
         Args:
             iupac (str): IUPAC string representation of the glycan to represent
-            mode (Glycan.Mode): Glycan mode to use. This controls the representation used (either networkx or RDKit).
+            factory (MonomerFactory): factory instance to use to generate the monomers for the glycan tree from
+            mode (Glycan.Mode): Glycan mode to use. This controls the representation used (either networkx or RDKit)
+            root_orientation (str): orientation of the root monomer in the glycan (choose from 'a', 'b', 'n')
+            start (int): ID of the atom to start with in the root monomer when generating the SMILES
+            parse (bool): Flag indicating to also parse the SMILES immediately
         """
         self.iupac = iupac
         self.mode = mode
@@ -369,30 +361,35 @@ class Glycan:
         Returns:
             Nothing
         """
-        # parse the remaining structure description following the grammar.
-        # with suppress_stdout():
+        # catch the prints of antlr to stderr to check if during parsing an error occurred and the glycan is invalid
         log = []
 
         class writer(object):
             def write(self, data):
                 log.append(data)
+
         old_err = sys.stderr
         sys.stderr = writer()
 
+        # parse the remaining structure description following the grammar, also add the dummy characters
         stream = InputStream(data='{' + self.iupac + '}')
         lexer = GlycanLexer(stream)
         token = CommonTokenStream(lexer)
         parser = GlycanParser(token)
         tree = parser.start()
 
+        sys.stderr = old_err
+
+        # if the glycan is invalid, set its structure to None and the SMILES string to empty and return
         if len(log) != 0:
             self.parse_tree = None
             self.glycan_smiles = ""
             return
-        sys.stderr = old_err
 
         # walk through the AST and parse the AST into a networkx representation of the glycan.
         self.parse_tree = Glycan.__TreeWalker(self.factory).parse(tree, self.mode)
 
+        # if the glycan should be parsed immediately, do so
         if self.parse_smiles:
-            self.glycan_smiles = Glycan.__Merger(self.factory).merge(self.parse_tree, self.root_orientation, start=self.start)
+            self.glycan_smiles = Glycan.__Merger(self.factory).merge(self.parse_tree, self.root_orientation,
+                                                                     start=self.start)

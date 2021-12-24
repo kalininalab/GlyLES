@@ -1,14 +1,29 @@
 import numpy as np
-from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix, GetShortestPath
+from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
 
 from glyles.glycans.monomer import Monomer
 
 
 class RDKitMonomer(Monomer):
-
     class Tree:
+        """
+        Represent a tree with nodes
+        """
+
         class Node:
+            """
+            Represent a node in a tree
+            """
+
             def __init__(self, node_id, parent_id, depth, tree):
+                """
+                Initialize a node in of a tree
+                Args:
+                    node_id (int): id of the node itself in the tree
+                    parent_id (int): id of the parent in the tree
+                    depth (int): depth of the node in the tree this node belongs to
+                    tree (RDKitMonomer.Tree): reference to the tree this node belongs to
+                """
                 self.children = []
                 self.node_id = node_id
                 self.parent_id = parent_id
@@ -16,33 +31,87 @@ class RDKitMonomer(Monomer):
                 self.tree = tree
 
             def add_child(self, child_id):
+                """
+                Add a child node to this node
+
+                Args:
+                    child_id (int): id of the added child node
+
+                Returns:
+                    Nothing
+                """
                 self.children.append(child_id)
 
             def is_leaf(self):
+                """
+                Check if this node is a leaf
+
+                Returns:
+                    true if this node has no children
+                """
                 return len(self.children) == 0
 
             def __str__(self):
-                return "(" + str(self.node_id) + " [" + ",".join([str(self.tree.nodes[child]) for child in self.children]) + "])"
+                """
+                Convert the node into a string representation
+
+                Returns:
+                    String representation of this node and all its children
+                """
+                return "(" + str(self.node_id) + " [" + \
+                       ",".join([str(self.tree.nodes[child]) for child in self.children]) + "])"
 
         def __init__(self):
+            """
+            Initialize the tree as empty tree without any node
+            """
             self.nodes = {}
             self.root = None
 
         def __str__(self):
+            """
+            Convert this tree into a string representation of all its nodes
+
+            Returns:
+                String representation of the tree seen from its root node
+            """
             return str(self.nodes[self.root])
 
         def add_node(self, node_id, parent_id=-1):
+            """
+            Add a node to the tree
+
+            Args:
+                node_id (int): id of the new node
+                parent_id (int): id of the parent of the new node
+
+            Returns:
+                Nothing
+            """
+            # check if the node is a root and the tree already has a root
             if parent_id == -1 and self.root is not None:
                 raise ValueError("Tree cannot have two roots")
+            if parent_id not in self.nodes:
+                raise ValueError("Parent node unknown")
+
+            # add the node and eventually set the root to be that node
             if parent_id == -1:
                 self.root = node_id
                 self.nodes[node_id] = RDKitMonomer.Tree.Node(node_id, parent_id, 0, self)
             else:
                 self.nodes[node_id] = RDKitMonomer.Tree.Node(node_id, parent_id, self.nodes[parent_id].depth + 1, self)
+
+            # add the node to the list of children in its parent
             if parent_id != -1:
                 self.nodes[parent_id].add_child(node_id)
 
         def deepest_node(self):
+            """
+            Find the deepest node in the tree (most distant to root)
+
+            Returns:
+                Id of deepest node and its depth in the tree
+            """
             deepest_id, deepest_depth = 0, 0
             for n_id, node in self.nodes.items():
                 if node.depth > deepest_depth:
@@ -51,6 +120,15 @@ class RDKitMonomer(Monomer):
             return deepest_id, deepest_depth
 
         def rehang_tree(self, node_id):
+            """
+            Reorder the tree to start with the node with the given id in the root
+
+            Args:
+                node_id (int): is of the node to be used as new root node
+
+            Returns:
+                New tree with the specified node as root node
+            """
             tree = RDKitMonomer.Tree()
             stack = [(-1, node_id)]
             while len(stack) != 0:
@@ -66,6 +144,16 @@ class RDKitMonomer(Monomer):
             return tree
 
         def longest_chain(self, node_id=None):
+            """
+            Find the longest chain of nodes in the parent. This chain starts in the provided node and goes down in the
+            tree. This might lead to false results of the node with the given id has two or more children.
+
+            Args:
+                node_id (int): id of the node to start in, if None, the root will be the start
+
+            Returns:
+                List of nodes along deepest path down the tree
+            """
             if node_id is None:
                 node_id = self.root
 
@@ -170,6 +258,7 @@ class RDKitMonomer(Monomer):
         Specify some dummy atoms that are used to mark oxygen atoms that will participate in bindings between glycans.
         Here, the atoms will be replaced by instances of the atom enum that are used to define the type of the atom in
         the nodes of the networkx representation of the monomer molecules.
+        TODO: Extend this to N- and C-glycosidic bonds
 
         Returns:
             Two lists:
@@ -264,14 +353,39 @@ class RDKitMonomer(Monomer):
         return self._structure
 
     def __equidistant(self, start, end, ringo):
+        """
+        Decider for C1 in case the previous splitting rules were all tied. This currently only fires for
+        Fruf, Tagf, Sorf, Psif
+
+        Args:
+            start (int): id of the first candidate for C1 atom
+            end (int): id of the second candidate for C1 atom
+            ringo (int): index of the oxygen atom in the ring
+
+        Returns:
+            Bool indicating that the end id is the C1 atom
+        """
         pass
 
     def __evaluate_distance(self, start, end, ringo):
+        """
+        Try to decide on C1 based on their distance to the oxygen in the ring
+
+        Args:
+            start (int): id of the first candidate for C1 atom
+            end (int): id of the second candidate for C1 atom
+            ringo (int): index of the oxygen atom in the ring
+
+        Returns:
+            Bool indicating that the end id is the C1 atom
+        """
         adj = self._adjacency.copy()
 
+        # as we have an adjacency matrix, multiply it with itself until one of the fields is non-zero
         while adj[start, ringo] == 0 and adj[end, ringo] == 0:
             adj = adj @ self._adjacency
 
+        # if both fields are non-zero, we cannot decide here and have to go further
         if adj[start, ringo] > 0 and adj[end, ringo] > 0:
             return self.__equidistant(start, end, ringo)
         elif adj[start, ringo] > 0:
@@ -279,7 +393,17 @@ class RDKitMonomer(Monomer):
         return False
 
     def __enumerate_c_atoms(self, c_atoms, ringo):
-        # find longest c-chain
+        """
+        Enumerate all carbon atoms starting from the first one
+
+        Args:
+            c_atoms List[int]: List of all ids of C atoms in the ring
+            ringo (int): id of the oxygen atom in the ring of the monomer
+
+        Returns:
+            Nothing
+        """
+        # create a tree of all carbon atoms directly connected to the main ring of the monomer
         c_tree = RDKitMonomer.Tree()
         stack = [(-1, c_atoms[0])]
         while len(stack) != 0:
@@ -292,11 +416,12 @@ class RDKitMonomer(Monomer):
                 if int(c) not in c_tree.nodes:
                     stack.append((c_id, int(c)))
 
+        # find the deepest node and rehang the tree to this node
         deepest_id, _ = c_tree.deepest_node()
         c_tree = c_tree.rehang_tree(deepest_id)
         longest_c_chain = c_tree.longest_chain()
 
-        # find ends
+        # now the two C1 candidates can be found at the ends of the longest chain
         start, end = longest_c_chain[0], longest_c_chain[-1]
 
         # check conditions

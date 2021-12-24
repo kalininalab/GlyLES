@@ -157,10 +157,6 @@ class DerivativesFactory:
                  "smiles": "O=C(CO)N[C@@H]1[C@@H](O)C[C@@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
     '''
 
-    '''
-    # Keto - Deoxy - Nonulonic acid
-    '''
-
     def __contains__(self, item):
         return item.upper() in DerivativesFactory.__monomers.keys()
 

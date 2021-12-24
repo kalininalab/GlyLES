@@ -38,7 +38,7 @@ class TestParser:
 
         assert parsable_glycan("Man", factory)
 
-    @pytest.mark.parametrize("mono", list(MonomerFactory().monomers2()))
+    @pytest.mark.parametrize("mono", list(MonomerFactory().monomer_names()))
     @pytest.mark.parametrize("config", [Config.ALPHA, Config.BETA, Config.UNDEF])
     def test_parse_1_multi(self, mono, config):
         factory = MonomerFactory()
@@ -284,7 +284,7 @@ class TestParser:
 
         assert parsable_glycan(iupac, factory)
 
-    @pytest.mark.parametrize("monomers", np.random.choice(list(MonomerFactory().monomers2()), size=500).reshape(100, 5))
+    @pytest.mark.parametrize("monomers", np.random.choice(list(MonomerFactory().monomer_names()), size=500).reshape(100, 5))
     @pytest.mark.parametrize("orientation", [Config.ALPHA, Config.BETA, Config.UNDEF])
     def test_parse_fuzzy(self, monomers, orientation):
         c = ["a1-4", "a1-4", "a1-3", "a1-4"]

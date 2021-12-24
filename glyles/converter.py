@@ -20,7 +20,7 @@ def preprocess_glycans(glycan, glycan_list, glycan_file):
     """
     glycans = []
 
-    # fill the list of glycans to convert
+    # fill a list with all glycans to convert
     if glycan is not None:
         glycans.append(glycan)
     if glycan_list is not None:
@@ -54,7 +54,7 @@ def parsable_glycan(glycan, factory):
 
     glycan = re.sub("[\(].*?[\)]", " ", glycan)
     glycan = glycan.replace("[", " ").replace("]", " ")
-    for monomer in factory.monomers():  # Sometime true and sometimes false for Glca (invalid monomer)
+    for monomer in factory.monomers():
         glycan = glycan.replace(monomer, " ")
     return len(glycan.replace(" ", "")) == 0
 
@@ -78,6 +78,7 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
         Nothing
     """
 
+    # collect all data and return if no data were provided
     glycans = preprocess_glycans(glycan, glycan_list, glycan_file)
     if len(glycans) == 0 and glycan_generator is None:
         if not silent:
@@ -100,20 +101,20 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
                 print("No output-file specified, results will be printed on stdout.")
             output = sys.stdout
 
+    # convert the IUPAC strings into SMILES strings from the input list
     if len(glycans) != 0:
         for glycan, smiles in convert_generator(glycan_list=glycans):
             if returning:
                 output.append((glycan, smiles))
             else:
-                # ... and return them as intended
                 print(glycan, smiles, file=output, sep=",")
 
+    # and from the input generator
     if glycan_generator is not None:
         for glycan, smiles in convert_generator(glycan_generator=glycan_generator):
             if returning:
                 output.append((glycan, smiles))
             else:
-                # ... and return them as intended
                 print(glycan, smiles, file=output, sep=",")
 
     if returning:
@@ -177,7 +178,3 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
                 print(f"An exception occurred with {glycan}:", e.__class__, file=sys.stderr)
                 print("Error message:", e.__str__(), file=sys.stderr)
                 yield glycan, ""
-
-
-if __name__ == '__main__':
-    Glycan("Man")
