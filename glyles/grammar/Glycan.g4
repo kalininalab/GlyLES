@@ -6,10 +6,13 @@ start:
     | '{' SAC ' ' TYPE '}'
     | '{' SAC '}';
 branch:
-    SAC CON
-    | SAC CON branch
+    glycan CON
+    | glycan CON branch
     | '[' branch ']'
-    | SAC CON '[' branch ']' branch;
+    | glycan CON '[' branch ']' branch;
+
+glycan:
+    SAC | SAC RING | SAC RING TYPE | SAC TYPE;
 
 SAC:
     'Glc' | 'Glc4S' | 'Glc6S' | 'GlcA' | 'GlcN' | 'GlcNAc' | 'GlcNAc3S' | 'GlcNAc6S'
@@ -19,12 +22,12 @@ SAC:
     | 'Gul' | 'Alt' | 'All' | 'Tal' | 'Ido' | 'Qui' | 'Rha' | 'Fuc' | 'Oli' | 'Tyv' | 'Abe' | 'Par' | 'Dig' | 'Col'
     | 'Ara' | 'Lyx' | 'Xyl' | 'Rib' | 'Kdn' | 'Neu' | 'Pse' | 'Leg' | 'Aci' | 'Bac' | 'LDmanHep' | 'Kdo' | 'Dha'
     | 'DDmanHep' | 'Mur' | 'Api' | 'Fru' | 'Tag' | 'Sor' | 'Psi';
-//    | 'Kdn'
-//    | 'Neu5Ac' | 'Neu5Gc'
 CON:
     '(' TYPE NUM '-' NUM ')';
 TYPE:
     'a' | 'b';
+RING:
+    'p' | 'f';
 NUM:
     '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';  // [1-9] ??
 

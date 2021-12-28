@@ -91,7 +91,7 @@ class RDKitMonomer(Monomer):
             # check if the node is a root and the tree already has a root
             if parent_id == -1 and self.root is not None:
                 raise ValueError("Tree cannot have two roots")
-            if parent_id not in self.nodes:
+            if parent_id != -1 and parent_id not in self.nodes:
                 raise ValueError("Parent node unknown")
 
             # add the node and eventually set the root to be that node

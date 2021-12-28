@@ -26,5 +26,14 @@ class GlycanListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by GlycanParser#glycan.
+    def enterGlycan(self, ctx:GlycanParser.GlycanContext):
+        pass
+
+    # Exit a parse tree produced by GlycanParser#glycan.
+    def exitGlycan(self, ctx:GlycanParser.GlycanContext):
+        pass
+
+
 
 del GlycanParser

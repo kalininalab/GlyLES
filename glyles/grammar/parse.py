@@ -87,16 +87,16 @@ class Glycan:
                 raise NotImplementedError("Terminal nodes should be unreachable!")
 
             children = list(t.getChildren())
-            if len(children) == 2:  # {sac con}
+            if len(children) == 2:  # {glycan con}
                 # terminal element, add the node with the connection
-                node_id = self.__add_node(children[0].symbol.text, mode)
+                node_id = self.__add_node("".join([str(c) for c in children[0].children]), mode)
                 self.__add_edge(parent, node_id, children[1])
                 return node_id
 
-            elif len(children) == 3 and isinstance(children[2], GlycanParser.BranchContext):  # {sac con branch}
+            elif len(children) == 3 and isinstance(children[2], GlycanParser.BranchContext):  # {glycan con branch}
                 # chain without branching, the parent is the parent of the parsing of the back part
                 parent = self.__walk(children[2], parent, mode)
-                node_id = self.__add_node(children[0].symbol.text, mode)
+                node_id = self.__add_node("".join([str(c) for c in children[0].children]), mode)
                 self.__add_edge(parent, node_id, children[1])
                 return node_id
 
@@ -105,11 +105,11 @@ class Glycan:
                 self.__walk(children[1], parent, mode)
                 return parent
 
-            elif len(children) == 6:  # {sac con '[' branch ']' branch}
+            elif len(children) == 6:  # {glycan con '[' branch ']' branch}
                 # branching in a chain, append the end to the parent and hang both branches on that
                 node_id = self.__walk(children[5], parent, mode)
                 self.__walk(children[3], node_id, mode)
-                node_id2 = self.__add_node(children[0].symbol.text, mode)
+                node_id2 = self.__add_node("".join([str(c) for c in children[0].children]), mode)
                 self.__add_edge(node_id, node_id2, children[1])
                 return node_id2
 
