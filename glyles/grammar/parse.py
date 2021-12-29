@@ -49,18 +49,19 @@ class Glycan:
             # parse the initial monomer and the orientation of the root monomer
             # and remove the first and last char, i.e. '{' and '}'
             children = list(t.getChildren())[1:-1]
-            if len(children) == 1:  # SAC
-                self.__add_node(children[0].symbol.text, mode)
+            if len(children) == 1:  # glycan
+                self.__add_node(children[0], mode)
                 return self.g
-            elif len(children) == 2:  # branch SAC
-                node_id = self.__add_node(children[1].symbol.text, mode)
+            elif len(children) == 2:  # branch glycan
+                node_id = self.__add_node(children[1], mode)
                 self.__walk(children[0], node_id, mode)
                 return self.g
             elif len(children) == 3:  # SAC ' ' TYPE
-                self.__add_node(children[2].symbol.text + "_" + children[0].symbol.text, mode)
+                self.__add_node(children[0], mode, children[2].symbol.text)
                 return self.g
             elif len(children) == 4:  # branch SAC ' ' TYPE
-                node_id = self.__add_node(children[3].symbol.text + "_" + children[1].symbol.text, mode)
+                # node_id = self.__add_node(children[3].symbol.text + "_" + "".join([str(c) for c in children[1].children]), mode)
+                node_id = self.__add_node(children[1], mode, children[3].symbol.text)
                 self.__walk(children[0], node_id, mode)
                 return self.g
             else:
@@ -89,14 +90,14 @@ class Glycan:
             children = list(t.getChildren())
             if len(children) == 2:  # {glycan con}
                 # terminal element, add the node with the connection
-                node_id = self.__add_node("".join([str(c) for c in children[0].children]), mode)
+                node_id = self.__add_node(children[0], mode)
                 self.__add_edge(parent, node_id, children[1])
                 return node_id
 
             elif len(children) == 3 and isinstance(children[2], GlycanParser.BranchContext):  # {glycan con branch}
                 # chain without branching, the parent is the parent of the parsing of the back part
                 parent = self.__walk(children[2], parent, mode)
-                node_id = self.__add_node("".join([str(c) for c in children[0].children]), mode)
+                node_id = self.__add_node(children[0], mode)
                 self.__add_edge(parent, node_id, children[1])
                 return node_id
 
@@ -109,7 +110,7 @@ class Glycan:
                 # branching in a chain, append the end to the parent and hang both branches on that
                 node_id = self.__walk(children[5], parent, mode)
                 self.__walk(children[3], node_id, mode)
-                node_id2 = self.__add_node("".join([str(c) for c in children[0].children]), mode)
+                node_id2 = self.__add_node(children[0], mode)
                 self.__add_edge(node_id, node_id2, children[1])
                 return node_id2
 
@@ -130,7 +131,7 @@ class Glycan:
             """
             self.g.add_edge(parent, child, type=str(con))
 
-        def __add_node(self, name, mode):
+        def __add_node(self, node, mode, config=""):
             """
             Add a new node to the network based on the name of the represented glycan.
 
@@ -146,9 +147,12 @@ class Glycan:
             self.node_id += 1
 
             # add the node to the network and store the enum of the glycan as attribute
+
+            tmp = [str(c) for c in node.children]
             self.g.add_node(
                 node_id,
-                type=self.monomer_from_string(name, mode),
+                type=self.monomer_from_string(tmp[0] if config == "" else config + "_" + tmp[0], mode),
+                recipe=tmp,
             )
 
             return node_id

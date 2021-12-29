@@ -1,10 +1,10 @@
 grammar Glycan;
 
 start:
-    '{' branch SAC ' ' TYPE '}'
-    | '{' branch SAC '}'
-    | '{' SAC ' ' TYPE '}'
-    | '{' SAC '}';
+    '{' branch glycan ' ' TYPE '}'
+    | '{' branch glycan '}'
+    | '{' glycan ' ' TYPE '}'
+    | '{' glycan '}';
 branch:
     glycan CON
     | glycan CON branch
@@ -12,7 +12,7 @@ branch:
     | glycan CON '[' branch ']' branch;
 
 glycan:
-    SAC | SAC RING | SAC RING TYPE | SAC TYPE;
+    SAC RING TYPE | SAC TYPE | SAC RING | SAC;
 
 SAC:
     'Glc' | 'Glc4S' | 'Glc6S' | 'GlcA' | 'GlcN' | 'GlcNAc' | 'GlcNAc3S' | 'GlcNAc6S'
