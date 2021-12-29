@@ -1,5 +1,5 @@
 from glyles.glycans.factory.factory import MonomerFactory
-from glyles.glycans.utils import Config
+from glyles.glycans.utils import Config, Lactole, Enantiomer
 
 
 class Monomer:
@@ -31,11 +31,15 @@ class Monomer:
             self._smiles = kwargs["smiles"]
             self._structure = kwargs.get("struct", None)
             self._config = kwargs.get("config", Config.UNDEF)
+            self._isomer = kwargs.get("isomer", Enantiomer.D)
+            self._lactole = kwargs.get("lactole", Lactole.PYRANOSE)
         else:
             self._name = origin.get_name()
             self._smiles = origin.get_smiles()
             self._structure = origin.get_structure()
             self._config = origin.get_config()
+            self._isomer = origin.get_isomer()
+            self._lactole = origin.get_lactole()
 
     def get_name(self):
         """
@@ -132,6 +136,24 @@ class Monomer:
             Config-Tag according to the conformation this monomer represents
         """
         return self._config
+
+    def get_isomer(self):
+        """
+        The current enantiomer of this monomer, i.e. L-form or D-form.
+
+        Returns:
+            Enantiomer-Tag according to the isomer this monomer represents
+        """
+        return self._isomer
+
+    def get_lactole(self):
+        """
+        The current lactole-form of this monomer, i.e. if it's a 5-ring or a 6-ring molecule.
+
+        Returns:
+            Lactole-Tag according to the lactole-form this monomer represents
+        """
+        return self._lactole
 
     def is_non_chiral(self):
         """

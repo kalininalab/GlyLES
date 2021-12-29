@@ -12,11 +12,11 @@ class MonomerFactory:
         """
         Initialize this factory by creating instances of all "sub-"factories
         """
-        self.pyranoses = PyranoseFactory()
-        self.furanoses = FuranoseFactory()
-        self.derivatives = DerivativesFactory()
+        self._pyranoses = PyranoseFactory()
+        self._furanoses = FuranoseFactory()
+        self._derivatives = DerivativesFactory()
 
-        self.keys = set(self.pyranoses.keys()).union(set(self.derivatives.keys()))
+        self._keys = set(self._pyranoses.keys()).union(set(self._derivatives.keys()))
 
     def __contains__(self, item):
         """
@@ -28,7 +28,7 @@ class MonomerFactory:
         Returns:
             True if the item is included in the current version of this package
         """
-        return item.upper() in self.keys
+        return item.upper() in self._keys
 
     def keys(self):
         """
@@ -37,7 +37,7 @@ class MonomerFactory:
         Returns:
             Set of names for all monomers, their available derivatives and configurations (alpha/beta/undefined)
         """
-        return self.keys
+        return self._keys
 
     def monomers(self):
         """
@@ -46,7 +46,13 @@ class MonomerFactory:
         Returns:
             List, sorted from long to short, of all monomer names in upper case
         """
-        return sorted([self[x.split("_")[-1]]["name"] for x in self.keys], key=lambda x: -len(x))
+        return sorted([self[x.split("_")[-1]]["name"] for x in self._keys], key=lambda x: -len(x))
+
+    def furanoses(self):
+        return sorted([self[x.split("_")[-1]]["name"] for x in self._furanoses.keys()])
+
+    def pyranoses(self):
+        return sorted([self[x.split("_")[-1]]["name"] for x in self._pyranoses.keys()])
 
     def monomer_names(self):
         """
@@ -57,10 +63,10 @@ class MonomerFactory:
         """
         output = set()
         for item in self.monomers():
-            if item in self.pyranoses:
-                output.add(self.pyranoses[item]["name"])
-            elif item in self.derivatives:
-                output.add(self.derivatives[item]["name"])
+            if item in self._pyranoses:
+                output.add(self._pyranoses[item]["name"])
+            elif item in self._derivatives:
+                output.add(self._derivatives[item]["name"])
         return output
 
     def __getitem__(self, item):
@@ -80,8 +86,8 @@ class MonomerFactory:
             item = item[:-1]
             furanose = True
 
-        if furanose and item in self.furanoses:
-            return self.furanoses[item]
-        if not furanose and item in self.pyranoses:
-            return self.pyranoses[item]
-        return self.derivatives[item]
+        if furanose and item in self._furanoses:
+            return self._furanoses[item]
+        if not furanose and item in self._pyranoses:
+            return self._pyranoses[item]
+        return self._derivatives[item]

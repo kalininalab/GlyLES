@@ -33,7 +33,7 @@ def preprocess_glycans(glycan, glycan_list, glycan_file):
             glycans.append(line.strip())
     return glycans
 
-
+'''
 def parsable_glycan(glycan, factory):
     """
     Check if the glycan string is parsable by removing all connections and brackets. Then remove all known monomers
@@ -57,7 +57,7 @@ def parsable_glycan(glycan, factory):
     for monomer in factory.monomers():
         glycan = glycan.replace(monomer, " ")
     return len(glycan.replace(" ", "")) == 0
-
+'''
 
 def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=None, output_file=None, returning=False,
             silent=True):
@@ -150,11 +150,12 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
         for glycan in glycans:
             try:
                 # ... by passing them to the glycan class to parse them and return them as intended
-                if parsable_glycan(glycan, factory):
+                '''if parsable_glycan(glycan, factory):
                     yield glycan, Glycan(glycan, factory).get_smiles()
                 else:
                     print(f"Glycan {glycan} is not parsable due to unknown monomers.", file=sys.stderr)
-                    yield glycan, ""
+                    yield glycan, ""'''
+                yield glycan, Glycan(glycan, factory).get_smiles()
 
             # catch any exception at glycan level to not destroy the whole pipeline because of one mis-formed glycan
             except Exception as e:
@@ -167,11 +168,12 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
         for glycan in glycan_generator:
             try:
                 # ... by passing them to the glycan class to parse them and return them as intended
-                if parsable_glycan(glycan, factory):
+                '''if parsable_glycan(glycan, factory):
                     yield glycan, Glycan(glycan, factory).get_smiles()
                 else:
                     print(f"Glycan {glycan} is not parsable due to unknown monomers.", file=sys.stderr)
-                    yield glycan, ""
+                    yield glycan, ""'''
+                yield glycan, Glycan(glycan, factory).get_smiles()
 
             # catch any exception at glycan level to not destroy the whole pipeline because of one mis-formed glycan
             except Exception as e:
