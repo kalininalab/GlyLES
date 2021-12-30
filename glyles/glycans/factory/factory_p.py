@@ -176,11 +176,11 @@ class PyranoseFactory:
                   "smiles": "O[C@@H]1CO[C@@H](O)[C@H](O)[C@@H]1O"},
 
         # Keto-Deoxy-Nonulonic acid
-        "KDN": {"name": "Kdn", "config": Config.UNDEF, "lactole": Lactole.PYRANOSE,
+        "KDN": {"name": "Kdn", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                 "smiles": "O=C(O)C1(O)C[C@H](O)[C@@H](O)C([C@H](O)[C@H](O)CO)O1"},
-        "A_KDN": {"name": "Kdn", "config": Config.ALPHA, "lactole": Lactole.PYRANOSE,
+        "A_KDN": {"name": "Kdn", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "O=C(O)[C@@]1(O)C[C@H](O)[C@@H](O)C([C@H](O)[C@H](O)CO)O1"},
-        "B_KDN": {"name": "Kdn", "config": Config.BETA, "lactole": Lactole.PYRANOSE,
+        "B_KDN": {"name": "Kdn", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "O=C(O)[C@]1(O)C[C@H](O)[C@@H](O)C([C@H](O)[C@H](O)CO)O1"},
 
         # Neuraminic acid

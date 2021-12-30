@@ -1,5 +1,4 @@
 import sys
-from enum import Enum
 
 import networkx as nx
 import pydot
@@ -8,6 +7,7 @@ from rdkit.Chem import MolFromSmiles
 
 from glyles.glycans.nx_monomer import NXMonomer
 from glyles.glycans.rdkit_monomer import RDKitMonomer
+from glyles.glycans.utils import Mode
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
 
@@ -40,7 +40,7 @@ class Glycan:
 
             Args:
                 t (antlr.ParseTree): result of the parsing step from ANTLR
-                mode (Glycan.Mode): mode determining which monomer-mode to use
+                mode (Mode): mode determining which monomer-mode to use
 
             Returns:
                 Tree of parsed glycan with monomers in nodes
@@ -75,7 +75,7 @@ class Glycan:
             Args:
                 t (antlr.ParseTree): subtree to parse in this recursive step.
                 parent (int): ID of the parent node for this (subtree)
-                mode (Glycan.Mode): mode determining which monomer-mode to use
+                mode (Mode): mode determining which monomer-mode to use
 
             Returns:
                 ID of the parent for the remaining recursive procedure after resolving this subtree
@@ -137,7 +137,7 @@ class Glycan:
 
             Args:
                 name (str): Name of the glycan to be represented in the new node
-                mode (Glycan.Mode): mode determining which monomer-mode to use
+                mode (Mode): mode determining which monomer-mode to use
 
             Returns:
                 ID of the newly added node
@@ -148,11 +148,13 @@ class Glycan:
 
             # add the node to the network and store the enum of the glycan as attribute
 
-            tmp = [str(c) for c in node.children]
+            tmp = [(str(c), c.symbol.type) for c in node.children]
+            mono = tmp[list(zip(*tmp))[1].index(GlycanLexer.SAC)][0]
             self.g.add_node(
                 node_id,
-                type=self.monomer_from_string(tmp[0] if config == "" else config + "_" + tmp[0], mode),
-                recipe=tmp,
+                type=self.factory.create(tmp, mode, config),
+                # type=self.monomer_from_string(mono if config == "" else config + "_" + mono, mode),
+                # recipe=tmp,
             )
 
             return node_id
@@ -163,14 +165,14 @@ class Glycan:
 
             Args:
                 mono (str): monomer in three (or more) letter representation, i.e. Glc = Glucose, Gal = Galactose, etc.
-                mode (Glycan.Mode): mode determining which monomer-mode to use
+                mode (Mode): mode determining which monomer-mode to use
 
             Returns:
                 An instance of a monomer representation for this graph
             """
-            if mode == Glycan.Mode.NETWORKX_MODE:
+            if mode == Mode.NETWORKX_MODE:
                 return NXMonomer(**self.factory[mono])
-            elif mode == Glycan.Mode.RDKIT_MODE:
+            elif mode == Mode.RDKIT_MODE:
                 return RDKitMonomer(**self.factory[mono])
             else:
                 raise ValueError("Unknown representation mode for monomers!")
@@ -276,14 +278,6 @@ class Glycan:
                 me = me.replace(atom, child_smiles)
             return me
 
-    class Mode(Enum):
-        """
-        Enumerate different modes how to represent the monomers in the tree.
-        """
-        DEFAULT_MODE = "rdkit"
-        NETWORKX_MODE = "nx"
-        RDKIT_MODE = "rdkit"
-
     def __init__(self, iupac, factory, mode=Mode.DEFAULT_MODE, root_orientation="n", start=10, parse=True):
         """
         Initialize the glycan from the IUPAC string.
@@ -291,7 +285,7 @@ class Glycan:
         Args:
             iupac (str): IUPAC string representation of the glycan to represent
             factory (MonomerFactory): factory instance to use to generate the monomers for the glycan tree from
-            mode (Glycan.Mode): Glycan mode to use. This controls the representation used (either networkx or RDKit)
+            mode (Mode): Glycan mode to use. This controls the representation used (either networkx or RDKit)
             root_orientation (str): orientation of the root monomer in the glycan (choose from 'a', 'b', 'n')
             start (int): ID of the atom to start with in the root monomer when generating the SMILES
             parse (bool): Flag indicating to also parse the SMILES immediately

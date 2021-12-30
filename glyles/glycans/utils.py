@@ -24,3 +24,12 @@ class Lactole(Enum):
     """
     FURANOSE = 5
     PYRANOSE = 6
+
+
+class Mode(Enum):
+    """
+    Enumerate different modes how to represent the monomers in the tree.
+    """
+    DEFAULT_MODE = "rdkit"
+    NETWORKX_MODE = "nx"
+    RDKIT_MODE = "rdkit"

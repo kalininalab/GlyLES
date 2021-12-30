@@ -1,7 +1,6 @@
 import pytest
 import numpy as np
 
-# from glyles.converter import parsable_glycan
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import Config, Lactole
 from glyles.grammar.parse import Glycan
@@ -50,9 +49,13 @@ class TestParser:
 
         check_initial(g, "Man", 0, Config.UNDEF, lactole=Lactole.PYRANOSE)
 
-        # # assert parsable_glycan("Man", factory)
+    def test_parse_1_2(self):
+        factory = MonomerFactory()
+        g = Glycan("Manpa", factory).get_tree()
 
-    @pytest.mark.parametrize("mono", list(MonomerFactory().monomer_names()))
+        check_initial(g, "Man", 0, Config.ALPHA, lactole=Lactole.PYRANOSE)
+
+    @pytest.mark.parametrize("mono", list(MonomerFactory().pyranoses()))
     @pytest.mark.parametrize("config", [Config.ALPHA, Config.BETA, Config.UNDEF])
     @pytest.mark.parametrize("lactole", ["", "p"])
     def test_parse_1_multi(self, mono, config, lactole):
@@ -67,9 +70,7 @@ class TestParser:
 
         check_initial(g, mono, 0, config, lactole=Lactole.PYRANOSE)
 
-        # # assert parsable_glycan(iupac, factory)
-
-    '''@pytest.mark.parametrize("mono", list(MonomerFactory().furanoses()))
+    @pytest.mark.parametrize("mono", list(MonomerFactory().furanoses()))
     @pytest.mark.parametrize("config", [Config.ALPHA, Config.BETA, Config.UNDEF])
     def test_parse_1_furanose(self, mono, config):
         factory = MonomerFactory()
@@ -79,12 +80,9 @@ class TestParser:
             iupac += " a"
         elif config == Config.BETA:
             iupac += " b"
-        print(iupac)
         g = Glycan(iupac, factory, parse=False).get_tree()
 
         check_initial(g, mono, 0, config, lactole=Lactole.FURANOSE)
-
-        # # assert parsable_glycan(iupac, factory)'''
 
     def test_parse_1_furanose_detail(self):
         check_initial(Glycan("All a", MonomerFactory(), parse=False).get_tree(),
@@ -98,8 +96,6 @@ class TestParser:
         check_initial(g, "Glc", 1, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Man", "(a1-4)", 0, lactole=Lactole.PYRANOSE)
-
-        # assert parsable_glycan(iupac, factory)
 
     def test_parse_3(self):
         factory = MonomerFactory()
@@ -124,8 +120,6 @@ class TestParser:
         check_child(g, 0, id_child_1, "Glc", "(a1-3)", 0, lactole=Lactole.PYRANOSE)
         check_child(g, 0, id_child_2, "Man", "(a1-4)", 0, lactole=Lactole.PYRANOSE)
 
-        # assert parsable_glycan(iupac, factory)
-
     def test_parse_5(self):
         factory = MonomerFactory()
         iupac = "Man(a1-2)[Glc(a1-3)Tal(b1-4)]Gal"
@@ -141,8 +135,6 @@ class TestParser:
         id_child_11 = list(g.edges(id_child_1))[0][1]
         check_child(g, id_child_1, id_child_11, "Glc", "(a1-3)", 0, lactole=Lactole.PYRANOSE)
 
-        # assert parsable_glycan(iupac, factory)
-
     def test_parse_6(self):
         factory = MonomerFactory()
         iupac = "Man(a1-2)Glc(a1-3)[Tal(b1-4)]Gal"
@@ -157,8 +149,6 @@ class TestParser:
 
         id_child_21 = list(g.edges(id_child_2))[0][1]
         check_child(g, id_child_2, id_child_21, "Man", "(a1-2)", 0, lactole=Lactole.PYRANOSE)
-
-        # assert parsable_glycan(iupac, factory)
 
     def test_parse_7(self):
         factory = MonomerFactory()
@@ -178,8 +168,6 @@ class TestParser:
         id_child_21 = list(g.edges(id_child_2))[0][1]
         check_child(g, id_child_2, id_child_21, "Man", "(a1-4)", 0, lactole=Lactole.PYRANOSE)
 
-        # assert parsable_glycan(iupac, factory)
-
     def test_parse_8(self):
         factory = MonomerFactory()
         iupac = "Man(a1-2)[Glc(a1-3)Tal(b1-4)]Gal(b1-3)Tal"
@@ -198,8 +186,6 @@ class TestParser:
         id_child_111 = list(g.edges(id_child_11))[0][1]
         check_child(g, id_child_11, id_child_111, "Glc", "(a1-3)", 0, lactole=Lactole.PYRANOSE)
 
-        # assert parsable_glycan(iupac, factory)
-
     def test_parse_9(self):
         factory = MonomerFactory()
         iupac = "Man a"
@@ -207,16 +193,12 @@ class TestParser:
 
         check_initial(g, "Man", 0, Config.ALPHA, lactole=Lactole.PYRANOSE)
 
-        # assert parsable_glycan(iupac, factory)
-
     def test_parse_10(self):
         factory = MonomerFactory()
         iupac = "Man b"
         g = Glycan("Man b", factory).get_tree()
 
         check_initial(g, "Man", 0, Config.BETA, lactole=Lactole.PYRANOSE)
-
-        # assert parsable_glycan(iupac, factory)
 
     def test_parse_11(self):
         factory = MonomerFactory()
@@ -227,8 +209,6 @@ class TestParser:
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Man", "(a1-4)", 0, lactole=Lactole.PYRANOSE)
 
-        # assert parsable_glycan(iupac, factory)
-
     def test_parse_12(self):
         factory = MonomerFactory()
         iupac = "Man(a1-4)Glc b"
@@ -237,8 +217,6 @@ class TestParser:
         check_initial(g, "Glc", 1, Config.BETA, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Man", "(a1-4)", 0, lactole=Lactole.PYRANOSE)
-
-        # assert parsable_glycan(iupac, factory)
 
     def test_parse_13(self):
         factory = MonomerFactory()
@@ -251,8 +229,6 @@ class TestParser:
         id_child_2 = list(g.edges(id_child_1))[0][1]
         check_child(g, id_child_1, id_child_2, "Fuc", "(a1-2)", 0, lactole=Lactole.PYRANOSE)
 
-        # assert parsable_glycan(iupac, factory)
-
     def test_parse_14(self):
         factory = MonomerFactory()
         iupac = "Fuc(a1-2)Gal(b1-3)GlcNAc6S"
@@ -264,8 +240,6 @@ class TestParser:
         id_child_2 = list(g.edges(id_child_1))[0][1]
         check_child(g, id_child_1, id_child_2, "Fuc", "(a1-2)", 0, lactole=Lactole.PYRANOSE)
 
-        # assert parsable_glycan(iupac, factory)
-
     def test_parse_15(self):
         factory = MonomerFactory()
         iupac = "Fuc(a1-2)Gal(b1-4)Gal6S"
@@ -276,8 +250,6 @@ class TestParser:
         check_child(g, 0, id_child_1, "Gal", "(b1-4)", 1, lactole=Lactole.PYRANOSE)
         id_child_2 = list(g.edges(id_child_1))[0][1]
         check_child(g, id_child_1, id_child_2, "Fuc", "(a1-2)", 0, lactole=Lactole.PYRANOSE)
-
-        # assert parsable_glycan(iupac, factory)
 
     def test_parse_16(self):
         factory = MonomerFactory()
@@ -302,8 +274,6 @@ class TestParser:
         id_child_321 = list(g.edges(id_child_32))[0][1]
         check_child(g, id_child_32, id_child_321, "Fuc", "(a1-2)", 0, lactole=Lactole.PYRANOSE)
 
-        # assert parsable_glycan(iupac, factory)
-
     def test_parse_17(self):
         factory = MonomerFactory()
         iupac = "Fuc(a1-2)Gal(a1-3)[Fuc(a1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc"
@@ -318,8 +288,6 @@ class TestParser:
 
         id_child_2 = list(g.edges(id_child_1))[0][1]
         check_child(g, id_child_1, id_child_2, "Man", "(b1-4)", 2, lactole=Lactole.PYRANOSE)
-
-        # assert parsable_glycan(iupac, factory)
 
     @pytest.mark.parametrize("monomers", np.random.choice(list(MonomerFactory().monomer_names()), size=500).reshape(100, 5))
     @pytest.mark.parametrize("orientation", [Config.ALPHA, Config.BETA, Config.UNDEF])
@@ -348,8 +316,6 @@ class TestParser:
         id_child_111 = list(g.edges(id_child_11))[0][1]
         check_child(g, id_child_11, id_child_111, monomers[1], f"({c[1]})", 0, lactole=Lactole.PYRANOSE)
 
-        # assert parsable_glycan(iupac, factory)
-
     @pytest.mark.parametrize("orientation", [Config.ALPHA, Config.BETA])
     @pytest.mark.parametrize("pos_man", [1, 2, 3, 4, 6])
     @pytest.mark.parametrize("pos_glc", [2, 3, 4, 6])
@@ -368,5 +334,3 @@ class TestParser:
         check_initial(g, "Glc", 1, conf_glc, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Man", f"({config}{pos_man}-{pos_glc})", 0)
-
-        # assert parsable_glycan(iupac, factory)

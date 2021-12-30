@@ -2,6 +2,7 @@ import pytest
 from rdkit import Chem
 
 from glyles.glycans.factory.factory import MonomerFactory
+from glyles.glycans.utils import Mode
 from glyles.grammar.parse import Glycan
 
 
@@ -117,7 +118,7 @@ class TestSMILES:
     @pytest.mark.parametrize("root_orientation", ["n", "a", "b"])
     @pytest.mark.parametrize("iupac, plain, alpha, beta", smiles_samples_simple)
     def test_smiles_poly(self, iupac, plain, alpha, beta, root_orientation):
-        computed = Glycan(iupac, factory=MonomerFactory(), mode=Glycan.Mode.RDKIT_MODE,
+        computed = Glycan(iupac, factory=MonomerFactory(), mode=Mode.RDKIT_MODE,
                           root_orientation=root_orientation).get_smiles()
 
         if root_orientation == "a":

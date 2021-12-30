@@ -1,4 +1,4 @@
-from glyles.glycans.factory.factory import MonomerFactory
+# from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import Config, Lactole, Enantiomer
 
 
@@ -30,9 +30,9 @@ class Monomer:
             self._name = kwargs["name"]
             self._smiles = kwargs["smiles"]
             self._structure = kwargs.get("struct", None)
-            self._config = kwargs.get("config", Config.UNDEF)
-            self._isomer = kwargs.get("isomer", Enantiomer.D)
-            self._lactole = kwargs.get("lactole", Lactole.PYRANOSE)
+            self._config = kwargs["config"]
+            self._isomer = kwargs["isomer"]
+            self._lactole = kwargs["lactole"]
         else:
             self._name = origin.get_name()
             self._smiles = origin.get_smiles()
