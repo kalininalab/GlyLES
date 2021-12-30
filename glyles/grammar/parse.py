@@ -5,8 +5,6 @@ import pydot
 from antlr4 import *
 from rdkit.Chem import MolFromSmiles
 
-from glyles.glycans.nx_monomer import NXMonomer
-from glyles.glycans.rdkit_monomer import RDKitMonomer
 from glyles.glycans.utils import Mode
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
@@ -60,7 +58,6 @@ class Glycan:
                 self.__add_node(children[0], mode, children[2].symbol.text)
                 return self.g
             elif len(children) == 4:  # branch SAC ' ' TYPE
-                # node_id = self.__add_node(children[3].symbol.text + "_" + "".join([str(c) for c in children[1].children]), mode)
                 node_id = self.__add_node(children[1], mode, children[3].symbol.text)
                 self.__walk(children[0], node_id, mode)
                 return self.g
@@ -136,8 +133,9 @@ class Glycan:
             Add a new node to the network based on the name of the represented glycan.
 
             Args:
-                name (str): Name of the glycan to be represented in the new node
+                node: Node of the parsed tree to be parsed into a monomer
                 mode (Mode): mode determining which monomer-mode to use
+                config (str): configuration to be applied to the monomer
 
             Returns:
                 ID of the newly added node
@@ -147,35 +145,12 @@ class Glycan:
             self.node_id += 1
 
             # add the node to the network and store the enum of the glycan as attribute
-
-            tmp = [(str(c), c.symbol.type) for c in node.children]
-            mono = tmp[list(zip(*tmp))[1].index(GlycanLexer.SAC)][0]
             self.g.add_node(
                 node_id,
-                type=self.factory.create(tmp, mode, config),
-                # type=self.monomer_from_string(mono if config == "" else config + "_" + mono, mode),
-                # recipe=tmp,
+                type=self.factory.create([(str(c), c.symbol.type) for c in node.children], mode, config),
             )
 
             return node_id
-
-        def monomer_from_string(self, mono, mode):
-            """
-            Get a monomer representation from its short name.
-
-            Args:
-                mono (str): monomer in three (or more) letter representation, i.e. Glc = Glucose, Gal = Galactose, etc.
-                mode (Mode): mode determining which monomer-mode to use
-
-            Returns:
-                An instance of a monomer representation for this graph
-            """
-            if mode == Mode.NETWORKX_MODE:
-                return NXMonomer(**self.factory[mono])
-            elif mode == Mode.RDKIT_MODE:
-                return RDKitMonomer(**self.factory[mono])
-            else:
-                raise ValueError("Unknown representation mode for monomers!")
 
     class __Merger:
         """
@@ -363,7 +338,8 @@ class Glycan:
         log = []
 
         class writer(object):
-            def write(self, data):
+            @staticmethod
+            def write(data):
                 log.append(data)
 
         old_err = sys.stderr

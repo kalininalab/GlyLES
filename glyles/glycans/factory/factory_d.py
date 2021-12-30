@@ -138,36 +138,47 @@ class DerivativesFactory:
                        "smiles": "CC(=O)N[C@H]1[C@H](O)O[C@H](COS(=O)(=O)[O-])[C@@H](O)[C@@H]1O"},
     }
 
-    '''
-    Missing:
-    
-    # Neuraminic acid
-    "NEU5AC": {"name": "Neu5Ac", "config": Config.UNDEF,
-               "smiles": "CC(=O)N[C@@H]1[C@@H](O)CC(O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
-    "A_NEU5AC": {"name": "Neu5Ac", "config": Config.ALPHA,
-                 "smiles": "CC(=O)N[C@@H]1[C@@H](O)C[C@@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
-    "B_NEU5AC": {"name": "Neu5Ac", "config": Config.BETA,
-                 "smiles": "CC(=O)N[C@@H]1[C@@H](O)C[C@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
-
-    "NEU5GC": {"name": "Neu5Ac", "config": Config.UNDEF,
-               "smiles": "O=C(CO)N[C@@H]1[C@@H](O)CC(O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
-    "A_NEU5GC": {"name": "Neu5Ac", "config": Config.ALPHA,
-                 "smiles": "O=C(CO)N[C@@H]1[C@@H](O)C[C@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
-    "B_NEU5GC": {"name": "Neu5Ac", "config": Config.BETA,
-                 "smiles": "O=C(CO)N[C@@H]1[C@@H](O)C[C@@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
-    '''
-
     def __contains__(self, item):
+        """
+        Check if an item is part of this factory and can be returned
+
+        Args:
+            item (str): Code of a monomer to be checked
+
+        Returns:
+            True if the item is included in the current version of this package
+        """
         return item.upper() in DerivativesFactory.__monomers.keys()
 
     @staticmethod
     def keys():
+        """
+        Get all monomers that are included in this package by their extended name.
+
+        Returns:
+            Set of names for all monomer derivatives (alpha/beta/undefined)
+        """
         return DerivativesFactory.__monomers.keys()
 
     @staticmethod
     def monomers():
+        """
+        Get the names of all monomers in this factory ignoring the alpha/beta conformations
+
+        Returns:
+            List, sorted from long to short, of all monomer names in upper case
+        """
         return list(set(x.split("_")[-1] for x in DerivativesFactory.__monomers.keys()))
 
     @staticmethod
     def __getitem__(item):
+        """
+        Get an instance of a monomer from this factory.
+
+        Args:
+            item (str): name of the query monomer
+
+        Returns:
+            Directory containing all necessary information to initialize a monomer implementation
+        """
         return DerivativesFactory.__monomers[item.upper()]

@@ -1,5 +1,4 @@
-# from glyles.glycans.factory.factory import MonomerFactory
-from glyles.glycans.utils import Config, Lactole, Enantiomer
+from glyles.glycans.utils import Config
 
 
 class Monomer:

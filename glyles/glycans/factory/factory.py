@@ -9,7 +9,7 @@ from glyles.grammar.GlycanLexer import GlycanLexer
 
 class MonomerFactory:
     """
-    Class holding and managing the access and generation of all monomers implemented in this package
+    Class holding and managing the access and generation of all monomers implemented in this package.
     """
 
     def __init__(self):
@@ -24,7 +24,7 @@ class MonomerFactory:
 
     def __contains__(self, item):
         """
-        Check if an item is part of this factory and can be returned
+        Check if an item is part of this factory and can be returned.
 
         Args:
             item (str): Code of a monomer to be checked
@@ -36,7 +36,7 @@ class MonomerFactory:
 
     def __getitem__(self, item):
         """
-        Get an instance of a monomer from this factory
+        Get an instance of a monomer from this factory.
 
         Args:
             item (str): name of the query monomer
@@ -59,7 +59,7 @@ class MonomerFactory:
 
     def keys(self):
         """
-        Get all monomers that are included in this package by their extended name
+        Get all monomers that are included in this package by their extended name.
 
         Returns:
             Set of names for all monomers, their available derivatives and configurations (alpha/beta/undefined)
@@ -68,7 +68,7 @@ class MonomerFactory:
 
     def monomers(self):
         """
-        Get the names of all monomers in this package ignoring the alpha/beta conformations
+        Get the names of all monomers in this package ignoring the alpha/beta conformations.
 
         Returns:
             List, sorted from long to short, of all monomer names in upper case
@@ -109,6 +109,18 @@ class MonomerFactory:
         return output
 
     def create(self, recipe, mode=Mode.RDKIT_MODE, config=None):
+        """
+        Create a monomer from its describing IUPAC string with all added side chains.
+
+        Args:
+            recipe (List[Tuple[str, int]]): List of modifications, conformations and the root monomer
+            mode (Mode): implementation used to represent monomers
+            config (str): configuration if monomer is alpha or beta monomer
+
+        Returns:
+            Monomer-Instance containing all modifications given in the input
+        """
+        # determine the class to use to represent the monomers
         if mode == Mode.NETWORKX_MODE:
             monomer_class = NXMonomer
         elif mode == Mode.RDKIT_MODE:
@@ -116,16 +128,19 @@ class MonomerFactory:
         else:
             raise ValueError("Unknown representation mode for monomers!")
 
+        # extract key information from the input, i.e. the type, the configuration and pyranose/furanose
         tmp = list(zip(*recipe))
         name = recipe[tmp[1].index(GlycanLexer.SAC)][0]
         config_index = tmp[1].index(GlycanLexer.TYPE) if GlycanLexer.TYPE in tmp[1] else None
         ring_index = tmp[1].index(GlycanLexer.RING) if GlycanLexer.RING in tmp[1] else None
 
+        # generate the full name that is looked up in the factory
         if config is not None and len(config) > 0:
             name = config + "_" + name
         elif config_index is not None:
             name = recipe[config_index][0] + "_" + name
 
+        # get the monomer from the factory
         try:
             if ring_index is not None and recipe[ring_index][0] == "f":
                 monomer = monomer_class(**self._furanoses[name])
@@ -133,5 +148,7 @@ class MonomerFactory:
                 monomer = monomer_class(**self._pyranoses[name])
         except KeyError:
             monomer = monomer_class(**self._derivatives[name])
+
+        # TODO: Implement the other possible modifications
 
         return monomer

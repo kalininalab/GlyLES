@@ -305,16 +305,46 @@ class PyranoseFactory:
     }
 
     def __contains__(self, item):
+        """
+        Check if an item is part of this factory and can be returned.
+
+        Args:
+            item (str): Code of a monomer to be checked
+
+        Returns:
+            True if the item is included in the current version of this package
+        """
         return item.upper() in PyranoseFactory.__monomers.keys()
 
     @staticmethod
     def keys():
+        """
+        Get all monomers that are included in this package by their extended name.
+
+        Returns:
+            Set of names for all monomers, their available derivatives and configurations (alpha/beta/undefined)
+        """
         return PyranoseFactory.__monomers.keys()
 
     @staticmethod
     def monomers():
+        """
+        Get the names of all monomers in this package ignoring the alpha/beta conformations.
+
+        Returns:
+            List, sorted from long to short, of all monomer names in upper case
+        """
         return list(set(x.split("_")[-1] for x in PyranoseFactory.__monomers.keys()))
 
     @staticmethod
     def __getitem__(item):
+        """
+        Get an instance of a monomer from this factory.
+
+        Args:
+            item (str): name of the query monomer
+
+        Returns:
+            Directory containing all necessary information to initialize a monomer implementation
+        """
         return PyranoseFactory.__monomers[item.upper()]

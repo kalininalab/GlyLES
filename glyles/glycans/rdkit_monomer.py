@@ -110,7 +110,7 @@ class RDKitMonomer(Monomer):
             Find the deepest node in the tree (most distant to root)
 
             Returns:
-                Id of deepest node and its depth in the tree
+                ID of the deepest node and its depth in the tree
             """
             deepest_id, deepest_depth = 0, 0
             for n_id, node in self.nodes.items():
