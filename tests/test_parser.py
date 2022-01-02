@@ -1,9 +1,11 @@
-import pytest
 import numpy as np
+import pytest
 
 from glyles.glycans.factory.factory import MonomerFactory
+from glyles.glycans.rdkit_monomer import RDKitMonomer
 from glyles.glycans.utils import Config, Lactole
 from glyles.grammar.parse import Glycan
+from tests.test_smiles import compare_smiles
 
 
 def check_initial(g, name, num_children, config=None, lactole=None):
@@ -84,9 +86,15 @@ class TestParser:
 
         check_initial(g, mono, 0, config, lactole=Lactole.FURANOSE)
 
-    def test_parse_1_furanose_detail(self):
-        check_initial(Glycan("All a", MonomerFactory(), parse=False).get_tree(),
-                      "All", 0, Config.ALPHA, lactole=Lactole.PYRANOSE)
+    def test_parse_1_detail(self):
+        g = Glycan("All a", MonomerFactory(), parse=False).get_tree()
+
+        check_initial(g, "All", 0, Config.ALPHA, lactole=Lactole.PYRANOSE)
+
+        compare_smiles(g.nodes[0]["type"].get_smiles(), "OC[C@H]1O[C@H](O)[C@H](O)[C@H](O)[C@@H]1O")
+
+        g2 = RDKitMonomer(origin=g.nodes[0]["type"])
+        assert g.nodes[0]["type"].get_smiles() == g2.get_smiles()
 
     def test_parse_2(self):
         factory = MonomerFactory()
@@ -289,7 +297,8 @@ class TestParser:
         id_child_2 = list(g.edges(id_child_1))[0][1]
         check_child(g, id_child_1, id_child_2, "Man", "(b1-4)", 2, lactole=Lactole.PYRANOSE)
 
-    @pytest.mark.parametrize("monomers", np.random.choice(list(MonomerFactory().monomer_names()), size=500).reshape(100, 5))
+    @pytest.mark.parametrize("monomers",
+                             np.random.choice(list(MonomerFactory().monomer_names()), size=500).reshape(100, 5))
     @pytest.mark.parametrize("orientation", [Config.ALPHA, Config.BETA, Config.UNDEF])
     def test_parse_fuzzy(self, monomers, orientation):
         c = ["a1-4", "a1-4", "a1-3", "a1-4"]
@@ -305,7 +314,7 @@ class TestParser:
 
         check_initial(g, monomers[4], 1, orientation, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
-        check_child(g, 0, id_child_1, monomers[3], f"({c[3]})", 2)
+        check_child(g, 0, id_child_1, monomers[3], f"({c[3]})", 2, lactole=Lactole.PYRANOSE)
 
         id_children_1 = [x[1] for x in list(g.edges(id_child_1))]
         id_child_11, id_child_12 = split_children(g, id_children_1, monomers[2])
@@ -334,3 +343,37 @@ class TestParser:
         check_initial(g, "Glc", 1, conf_glc, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Man", f"({config}{pos_man}-{pos_glc})", 0)
+
+    @pytest.mark.parametrize("lactoles", list(zip(*(
+            np.random.choice(list(MonomerFactory().pyranose_names()), size=500).reshape(100, 5),
+            np.random.choice(list(MonomerFactory().furanose_names()), size=500).reshape(100, 5),
+            np.random.choice([Lactole.PYRANOSE, Lactole.FURANOSE], size=500).reshape(100, 5),
+    ))))
+    @pytest.mark.parametrize("orientation", [Config.ALPHA, Config.BETA, Config.UNDEF])
+    def test_parse_fuzzy_pyranoses(self, lactoles, orientation):
+        c = ["a1-4", "a1-4", "a1-3", "a1-4"]
+
+        monomers = [lactoles[0][i] + "p" if lactoles[2][i] == Lactole.PYRANOSE else lactoles[1][i] + "f" for i in
+                    range(len(lactoles[0]))]
+
+        iupac = f"{monomers[0]}({c[0]})[{monomers[1]}({c[1]}){monomers[2]}({c[2]})]{monomers[3]}({c[3]}){monomers[4]}"
+        if orientation == Config.ALPHA:
+            iupac += " a"
+        elif orientation == Config.BETA:
+            iupac += " b"
+
+        factory = MonomerFactory()
+        g = Glycan(iupac, factory, parse=False).get_tree()
+
+        check_initial(g, monomers[4][:-1], 1, orientation, lactole=lactoles[2][4])
+        id_child_1 = list(g.edges(0))[0][1]
+        check_child(g, 0, id_child_1, monomers[3][:-1], f"({c[3]})", 2, lactole=lactoles[2][3])
+
+        id_children_1 = [x[1] for x in list(g.edges(id_child_1))]
+        id_child_11, id_child_12 = split_children(g, id_children_1, monomers[2][:-1])
+
+        check_child(g, id_child_1, id_child_11, monomers[2][:-1], f"({c[2]})", 1, lactole=lactoles[2][2])
+        check_child(g, id_child_1, id_child_12, monomers[0][:-1], f"({c[0]})", 0, lactole=lactoles[2][0])
+
+        id_child_111 = list(g.edges(id_child_11))[0][1]
+        check_child(g, id_child_11, id_child_111, monomers[1][:-1], f"({c[1]})", 0, lactole=lactoles[2][1])

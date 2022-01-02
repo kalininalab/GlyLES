@@ -56,7 +56,7 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
     glycans = preprocess_glycans(glycan, glycan_list, glycan_file)
     if len(glycans) == 0 and glycan_generator is None:
         if not silent:
-            print("List of glycans is empty")
+            print("List of glycans is empty", file=sys.stderr)
         return
 
     # determine the output format
@@ -116,7 +116,7 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
     glycans = preprocess_glycans(glycan, glycan_list, glycan_file)
     if len(glycans) == 0 and glycan_generator is None:
         if not silent:
-            print("List of glycans is empty")
+            print("List of glycans is empty", file=sys.stderr)
         return
 
     # Convert the glycans ...

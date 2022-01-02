@@ -106,7 +106,33 @@ class MonomerFactory:
                 output.add(self._pyranoses[item]["name"])
             elif item in self._derivatives:
                 output.add(self._derivatives[item]["name"])
-        return output
+        return list(output)
+
+    def pyranose_names(self):
+        """
+        Get the names of all pyranoses in this package ignoring the alpha/beta conformations
+
+        Returns:
+            List, sorted from long to short, of all monomer names in IUPAC notation
+        """
+        output = set()
+        for item in self.pyranoses():
+            if item in self._pyranoses:
+                output.add(self._pyranoses[item]["name"])
+        return list(output)
+
+    def furanose_names(self):
+        """
+        Get the names of all furanoses in this package ignoring the alpha/beta conformations
+
+        Returns:
+            List, sorted from long to short, of all monomer names in IUPAC notation
+        """
+        output = set()
+        for item in self.monomers():
+            if item in self._furanoses:
+                output.add(self._furanoses[item]["name"])
+        return list(output)
 
     def create(self, recipe, mode=Mode.RDKIT_MODE, config=None):
         """
