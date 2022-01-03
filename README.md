@@ -12,18 +12,18 @@ you can attach to monomers).
 
 This implementation currently only works for glycans that fulfil certain properties:
 
-* All monomers are given in D-Enantiomer, except fucose (Fuc) which has L-Enantiomer
 * Linkages have to be explicit, i.e. `(a1-4)`
-* The structure of the glycan can be represented as tree of the monomers with maximal branching factor 3.
-* Only the 23 implemented monomers may participate in the glycan (see below)
+* The structure of the glycan can be represented as tree of the monomers with maximal branching factor 2.
+* Only the root monomers (e.g. Glc, but not GlcNAc) from this [website](https://www.ncbi.nlm.nih.gov/glycans/snfg.html) 
+  and some derivatives of those are implemented so far
 
-For an overview of the implemented monomers, please look at the [README](glyles/grammar/README.md) in the grammar
+For an overview of the implemented derivatives, please look at the [README](glyles/grammar/README.md) in the grammar
 folder. You can get a python-readable list of the currently included monomers with the following code
 
 `````python
-from glyles.glycans.factory import MonomerFactory
+from glyles.glycans.factory.factory import MonomerFactory
 
-MonomerFactory.monomers()
+MonomerFactory().monomer_names()
 `````
 
 ## Installation
@@ -35,7 +35,13 @@ Just type
 pip install glyles
 ``````
 
-and you're ready to use it as described below.
+and you're ready to use it as described below. Use 
+
+````shell
+pip install --upgrade glyles
+````
+
+to upgrade the glyles package to the most recent version.
 
 ## Workflow
 

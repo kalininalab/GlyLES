@@ -147,7 +147,7 @@ class TestConverter:
 
         assert output is None
         assert len(log_out) == 0
-        assert len(log_err) == 0
+        assert len(log_err) == 2
 
     def test_convert_1_1_2(self):
         output, log_out, log_err = catch_output(method=convert, silent=False)
