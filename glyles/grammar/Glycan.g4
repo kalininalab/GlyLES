@@ -10,18 +10,17 @@ branch:
     | glycan CON branch
     | '[' branch ']'
     | glycan CON '[' branch ']' branch;
-
 glycan:
-    SAC RING TYPE | SAC TYPE | SAC RING | SAC;
+    deriv RING TYPE | deriv TYPE | deriv RING | deriv;
+deriv:
+    MOD* SAC MOD*;
 
 SAC:
-    'Glc' | 'Glc4S' | 'Glc6S' | 'GlcA' | 'GlcN' | 'GlcNAc' | 'GlcNAc3S' | 'GlcNAc6S'
-    | 'Man'
-    | 'Gal' | 'Gal3S' | 'Gal3S4S' | 'Gal3S6S' | 'Gal4S' | 'Gal4S6S' | 'Gal6S' | 'GalNAc' | 'GalNAc3S' | 'GalNAc4S'
-    | 'GalNAc4S6S' | 'GalNAc6S'
-    | 'Gul' | 'Alt' | 'All' | 'Tal' | 'Ido' | 'Qui' | 'Rha' | 'Fuc' | 'Oli' | 'Tyv' | 'Abe' | 'Par' | 'Dig' | 'Col'
-    | 'Ara' | 'Lyx' | 'Xyl' | 'Rib' | 'Kdn' | 'Neu' | 'Pse' | 'Leg' | 'Aci' | 'Bac' | 'LDmanHep' | 'Kdo' | 'Dha'
-    | 'DDmanHep' | 'Mur' | 'Api' | 'Fru' | 'Tag' | 'Sor' | 'Psi';
+    'Glc' | 'Man' | 'Gal' | 'Gul' | 'Alt' | 'All' | 'Tal' | 'Ido' | 'Qui' | 'Rha' | 'Fuc' | 'Oli' | 'Tyv' | 'Abe'
+    | 'Par' | 'Dig' | 'Col' | 'Ara' | 'Lyx' | 'Xyl' | 'Rib' | 'Kdn' | 'Neu' | 'Pse' | 'Leg' | 'Aci' | 'Bac'
+    | 'LDmanHep' | 'Kdo' | 'Dha' | 'DDmanHep' | 'Mur' | 'Api' | 'Fru' | 'Tag' | 'Sor' | 'Psi';
+MOD:
+    '3d' | '3S' | '4S' | '5S' | '6S' | '3P' | '4P' | '5P' | '6P' | 'A' | 'Ac' | 'NAc';
 CON:
     '(' TYPE NUM '-' NUM ')';
 TYPE:

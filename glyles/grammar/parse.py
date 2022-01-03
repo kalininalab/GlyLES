@@ -145,9 +145,17 @@ class Glycan:
             self.node_id += 1
 
             # add the node to the network and store the enum of the glycan as attribute
+            recipe = []
+            for child in node.children:
+                if isinstance(child, GlycanParser.DerivContext):
+                    for c in child.children:
+                        recipe.append((str(c), c.symbol.type))
+                else:
+                    recipe.append((str(child), child.symbol.type))
             self.g.add_node(
                 node_id,
-                type=self.factory.create([(str(c), c.symbol.type) for c in node.children], mode, config),
+                type=self.factory.create(recipe, mode, config),
+                # type=self.factory.create([(str(c), c.symbol.type) for c in node.children], mode, config),
             )
 
             return node_id

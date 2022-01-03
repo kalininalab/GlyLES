@@ -36,6 +36,12 @@ def split_children(g, id_children, child_1):
 
 
 class TestParser:
+    def test_grammar_simple(self):
+        factory = MonomerFactory()
+        g = Glycan("3dMan4S6Pfa", factory).get_tree()
+
+        check_initial(g, "Man", 0, Config.ALPHA, lactole=Lactole.FURANOSE)
+
     @pytest.mark.parametrize("iupac", ["Man", "Man a", "Man b", "Mana", "Manb", "Manp", "Manf", "Manpa", "Manpb",
                                        "Manfa", "Manfb", "Man(a1-2)Gal", "Man(a1-2)Gal a", "Man(a1-2)Gal b",
                                        "Mana(a1-2)Gal", "Manb(a1-2)Gal", "Manp(a1-2)Gal", "Manf(a1-2)Gal",
@@ -231,7 +237,7 @@ class TestParser:
         iupac = "Fuc(a1-2)Gal(b1-3)GalNAc"
         g = Glycan(iupac, factory).get_tree()
 
-        check_initial(g, "GalNAc", 1, lactole=Lactole.PYRANOSE)
+        check_initial(g, "Gal", 1, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Gal", "(b1-3)", 1, lactole=Lactole.PYRANOSE)
         id_child_2 = list(g.edges(id_child_1))[0][1]
@@ -242,7 +248,7 @@ class TestParser:
         iupac = "Fuc(a1-2)Gal(b1-3)GlcNAc6S"
         g = Glycan(iupac, factory).get_tree()
 
-        check_initial(g, "GlcNAc6S", 1, lactole=Lactole.PYRANOSE)
+        check_initial(g, "Glc", 1, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Gal", "(b1-3)", 1, lactole=Lactole.PYRANOSE)
         id_child_2 = list(g.edges(id_child_1))[0][1]
@@ -253,7 +259,7 @@ class TestParser:
         iupac = "Fuc(a1-2)Gal(b1-4)Gal6S"
         g = Glycan(iupac, factory).get_tree()
 
-        check_initial(g, "Gal6S", 1, lactole=Lactole.PYRANOSE)
+        check_initial(g, "Gal", 1, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Gal", "(b1-4)", 1, lactole=Lactole.PYRANOSE)
         id_child_2 = list(g.edges(id_child_1))[0][1]
@@ -264,9 +270,9 @@ class TestParser:
         iupac = "Fuc(a1-2)Gal(a1-3)[Fuc(a1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc"
         g = Glycan(iupac, factory).get_tree()
 
-        check_initial(g, "GlcNAc", 1, lactole=Lactole.PYRANOSE)
+        check_initial(g, "Glc", 1, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
-        check_child(g, 0, id_child_1, "GlcNAc", "(b1-4)", 1, lactole=Lactole.PYRANOSE)
+        check_child(g, 0, id_child_1, "Glc", "(b1-4)", 1, lactole=Lactole.PYRANOSE)
         id_child_2 = list(g.edges(id_child_1))[0][1]
         check_child(g, id_child_1, id_child_2, "Man", "(b1-4)", 2, lactole=Lactole.PYRANOSE)
 
@@ -287,11 +293,11 @@ class TestParser:
         iupac = "Fuc(a1-2)Gal(a1-3)[Fuc(a1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc"
         g = Glycan(iupac, factory).get_tree()
 
-        check_initial(g, "GlcNAc", 2, lactole=Lactole.PYRANOSE)
+        check_initial(g, "Glc", 2, lactole=Lactole.PYRANOSE)
         id_children_1 = [x[1] for x in list(g.edges(0))]
-        id_child_1, id_child_2 = split_children(g, id_children_1, "GlcNAc")
+        id_child_1, id_child_2 = split_children(g, id_children_1, "Glc")
 
-        check_child(g, 0, id_child_1, "GlcNAc", "(b1-4)", 1, lactole=Lactole.PYRANOSE)
+        check_child(g, 0, id_child_1, "Glc", "(b1-4)", 1, lactole=Lactole.PYRANOSE)
         check_child(g, 0, id_child_2, "Fuc", "(a1-6)", 0, lactole=Lactole.PYRANOSE)
 
         id_child_2 = list(g.edges(id_child_1))[0][1]

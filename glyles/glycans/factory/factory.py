@@ -1,4 +1,3 @@
-from glyles.glycans.factory.factory_d import DerivativesFactory
 from glyles.glycans.factory.factory_f import FuranoseFactory
 from glyles.glycans.factory.factory_p import PyranoseFactory
 from glyles.glycans.nx_monomer import NXMonomer
@@ -18,9 +17,9 @@ class MonomerFactory:
         """
         self._pyranoses = PyranoseFactory()
         self._furanoses = FuranoseFactory()
-        self._derivatives = DerivativesFactory()
+        # self._derivatives = DerivativesFactory()
 
-        self._keys = set(self._pyranoses.keys()).union(set(self._derivatives.keys()))
+        self._keys = set(self._pyranoses.keys())  # .union(set(self._derivatives.keys()))
 
     def __contains__(self, item):
         """
@@ -55,7 +54,8 @@ class MonomerFactory:
             return self._furanoses[item]
         if not furanose and item in self._pyranoses:
             return self._pyranoses[item]
-        return self._derivatives[item]
+        # return self._derivatives[item]
+        raise NotImplementedError("This case should be unreachable!")
 
     def keys(self):
         """
@@ -104,8 +104,8 @@ class MonomerFactory:
         for item in self.monomers():
             if item in self._pyranoses:
                 output.add(self._pyranoses[item]["name"])
-            elif item in self._derivatives:
-                output.add(self._derivatives[item]["name"])
+            # elif item in self._derivatives:
+            # output.add(self._derivatives[item]["name"])
         return list(output)
 
     def pyranose_names(self):
@@ -173,7 +173,8 @@ class MonomerFactory:
             else:
                 monomer = monomer_class(**self._pyranoses[name])
         except KeyError:
-            monomer = monomer_class(**self._derivatives[name])
+            # monomer = monomer_class(**self._derivatives[name])
+            raise NotImplementedError("This case should be ")
 
         # TODO: Implement the other possible modifications
 
