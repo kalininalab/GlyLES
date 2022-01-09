@@ -1,6 +1,7 @@
 import sys
 
 import networkx as nx
+import numpy as np
 import pydot
 from antlr4 import *
 from rdkit.Chem import MolFromSmiles
@@ -191,7 +192,8 @@ class Glycan:
             self.__mark(t, 0, "({}1-?)".format(root_orientation))
 
             # return the string that can be computed from connecting the monomers as marked above
-            return self.__merge(t, 0, start, 0)
+            position = int(np.argwhere(t.nodes[0]["type"].get_features()[:, 1] == start).squeeze())
+            return self.__merge(t, 0, position, 0)
 
         def __mark(self, t, node, p_edge):
             """

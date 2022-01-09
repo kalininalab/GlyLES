@@ -178,7 +178,7 @@ class TestConverter:
         assert output is None
         assert len(log_out) == 4
         assert log_out[0] == "Glc"
-        assert log_out[2] == "[C@H]1(O)[C@H](O)[C@@H](O)C(O)O[C@@H]1CO"
+        compare_smiles(log_out[2], "[C@H]1(O)[C@H](O)[C@@H](O)C(O)O[C@@H]1CO")
         assert len(log_err) == 0
 
     def test_convert_2_2(self):
@@ -187,7 +187,7 @@ class TestConverter:
         assert output is None
         assert len(log_out) == 4
         assert log_out[0] == "Glc"
-        assert log_out[2] == "[C@H]1(O)[C@H](O)[C@@H](O)C(O)O[C@@H]1CO"
+        compare_smiles(log_out[2], "[C@H]1(O)[C@H](O)[C@@H](O)C(O)O[C@@H]1CO")
         assert len(log_err) == 2
         assert log_err[0] == "Path of output-file does not exist! Results will be printed on stdout."
 
