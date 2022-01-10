@@ -73,7 +73,7 @@ class MonomerFactory:
         Returns:
             List, sorted from long to short, of all monomer names in upper case
         """
-        return sorted([self[x.split("_")[-1]]["name"] for x in self._keys], key=lambda x: -len(x))
+        return sorted(set([self[x.split("_")[-1]]["name"] for x in self._keys]), key=lambda x: -len(x))
 
     def furanoses(self):
         """
@@ -82,7 +82,7 @@ class MonomerFactory:
         Returns:
             List, sorted from long to short, of all furanose names in upper case
         """
-        return sorted([self[x.split("_")[-1]]["name"] for x in self._furanoses.keys()])
+        return sorted(set([self[x.split("_")[-1]]["name"] for x in self._furanoses.keys()]))
 
     def pyranoses(self):
         """
@@ -91,7 +91,7 @@ class MonomerFactory:
         Returns:
             List, sorted from long to short, of all pyranose names in upper case
         """
-        return sorted([self[x.split("_")[-1]]["name"] for x in self._pyranoses.keys()])
+        return sorted(set([self[x.split("_")[-1]]["name"] for x in self._pyranoses.keys()]))
 
     def monomer_names(self):
         """
@@ -169,9 +169,9 @@ class MonomerFactory:
         # get the monomer from the factory
         try:
             if ring_index is not None and recipe[ring_index][0] == "f":
-                monomer = monomer_class(**self._furanoses[name])
+                monomer = monomer_class(**self._furanoses[name], recipe=recipe)
             else:
-                monomer = monomer_class(**self._pyranoses[name])
+                monomer = monomer_class(**self._pyranoses[name], recipe=recipe)
         except KeyError:
             # monomer = monomer_class(**self._derivatives[name])
             raise NotImplementedError("This case should be ")

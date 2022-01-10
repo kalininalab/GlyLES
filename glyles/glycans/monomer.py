@@ -32,6 +32,7 @@ class Monomer:
             self._config = kwargs["config"]
             self._isomer = kwargs["isomer"]
             self._lactole = kwargs["lactole"]
+            self._recipe = kwargs["recipe"]
         else:
             self._name = origin.get_name()
             self._smiles = origin.get_smiles()
@@ -39,6 +40,7 @@ class Monomer:
             self._config = origin.get_config()
             self._isomer = origin.get_isomer()
             self._lactole = origin.get_lactole()
+            self._recipe = origin.get_recipe()
 
     def get_name(self):
         """
@@ -153,6 +155,15 @@ class Monomer:
             Lactole-Tag according to the lactole-form this monomer represents
         """
         return self._lactole
+
+    def get_recipe(self):
+        """
+        Return the recipe on how this monomer was created
+
+        Returns:
+            Recipe as list of modifications, confirmations and the root monomer as type List[Tuple[str, int]])
+        """
+        return self._recipe
 
     def is_non_chiral(self):
         """

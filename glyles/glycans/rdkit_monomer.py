@@ -2,6 +2,7 @@ import numpy as np
 from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
 
 from glyles.glycans.monomer import Monomer
+from glyles.grammar.GlycanLexer import GlycanLexer
 
 
 class RDKitMonomer(Monomer):
@@ -198,7 +199,8 @@ class RDKitMonomer(Monomer):
         Returns:
             Monomer in alpha conformation
         """
-        return RDKitMonomer(**factory["A_" + self._name])
+        recipe = [(('a', GlycanLexer.TYPE) if t == GlycanLexer.TYPE else (v, t)) for v, t in self._recipe]
+        return RDKitMonomer(factory.create(recipe))
 
     def beta(self, factory):
         """
@@ -210,7 +212,8 @@ class RDKitMonomer(Monomer):
         Returns:
             Monomer in beta conformation
         """
-        return RDKitMonomer(**factory["B_" + self._name])
+        recipe = [(('b', GlycanLexer.TYPE) if t == GlycanLexer.TYPE else (v, t)) for v, t in self._recipe]
+        return RDKitMonomer(factory.create(recipe))
 
     def undefined(self, factory):
         """
@@ -223,7 +226,8 @@ class RDKitMonomer(Monomer):
         Returns:
             Monomer in undefined conformation
         """
-        return RDKitMonomer(**factory[self._name])
+        recipe = [(v, t) for v, t in self._recipe if t != GlycanLexer.TYPE]
+        return RDKitMonomer(factory.create(recipe))
 
     def get_adjacency(self):
         """
@@ -232,6 +236,8 @@ class RDKitMonomer(Monomer):
         Returns:
             Adjacency matrix of all non-hydrogen atoms in this monomer
         """
+        if self._adjacency is None:
+            self.__get_structure()
         return self._adjacency
 
     def get_ring_info(self):
@@ -241,6 +247,8 @@ class RDKitMonomer(Monomer):
         Returns:
             Tuple of tuples with the atom-ids from rdkit in the monomer
         """
+        if self._ring_info is None:
+            self.__get_structure()
         return self._ring_info
 
     def get_features(self):
@@ -251,6 +259,8 @@ class RDKitMonomer(Monomer):
         Returns:
             A numpy array of shape Nx3 containing the extracted features for all atoms in this molecule
         """
+        if self._x is None:
+            self.__get_structure()
         return self._x
 
     def get_dummy_atoms(self):
