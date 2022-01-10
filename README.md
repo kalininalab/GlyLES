@@ -3,6 +3,9 @@
 A tool to convert IUPAC representation of Glycans into SMILES representation. This repo is still in the development 
 phase; so, feel free to report any errors in the issues section.
 
+# WARNING:
+## THIS VERSION IS CURRENTLY NOT ABLE TO PARSE DERIVATIVES OF GLYCANS CORRECTLY!! E.G. GalNAc/GalA/... CANNOT BE PARSED! 
+
 ## Specification and (current) Limitations
 
 The exact specification, we're refering to when talking about "IUPAC representations of glycan", is given in the 

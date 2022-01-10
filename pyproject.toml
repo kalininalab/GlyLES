@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "glyles"
-version = "0.1.0"
+version = "0.1.1"
 readme = "README.md"
 description = "A tool to convert IUPAC representation of glycans into SMILES strings"
 authors = ["Roman Joeres <Roman.Joeres@helmholtz-hzi.de>"]
