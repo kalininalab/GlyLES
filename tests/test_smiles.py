@@ -1,8 +1,10 @@
+from itertools import combinations
+
 import pytest
 from rdkit import Chem
 
 from glyles.glycans.factory.factory import MonomerFactory
-from glyles.glycans.utils import Mode
+from glyles.glycans.utils import Mode, Config
 from glyles.grammar.parse import Glycan
 
 
@@ -129,3 +131,36 @@ class TestSMILES:
             smiles = plain
 
         compare_smiles(computed, smiles)
+
+    def test_smiles_poly_detail(self, root_orientation="n"):
+        iupac, plain, alpha, beta = self.smiles_samples_simple[1]
+        computed = Glycan(iupac, factory=MonomerFactory(), mode=Mode.RDKIT_MODE,
+                          root_orientation=root_orientation).get_smiles()
+
+        if root_orientation == "a":
+            smiles = alpha
+        elif root_orientation == "b":
+            smiles = beta
+        else:
+            smiles = plain
+
+        compare_smiles(computed, smiles)
+
+    @pytest.mark.parametrize("names", list(combinations([x + "p" for x in MonomerFactory().pyranoses() if x != "Api"] +
+                                                        [x + "f" for x in MonomerFactory().furanoses()], 2)))
+    @pytest.mark.parametrize("config1", [Config.ALPHA, Config.BETA, Config.UNDEF])
+    @pytest.mark.parametrize("config2", [Config.ALPHA, Config.BETA, Config.UNDEF])
+    def test_check_different_smiles(self, names, config1, config2):
+        name1, name2 = names
+        factory = MonomerFactory()
+        if config1 == Config.ALPHA:
+            name1 += " a"
+        elif config1 == Config.BETA:
+            name1 += " b"
+
+        if config2 == Config.ALPHA:
+            name2 += " a"
+        elif config2 == Config.BETA:
+            name2 += " b"
+
+        compare_smiles(Glycan(name1, factory).get_smiles(), Glycan(name2, factory).get_smiles(), equal=False)

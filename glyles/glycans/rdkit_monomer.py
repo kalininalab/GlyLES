@@ -199,7 +199,8 @@ class RDKitMonomer(Monomer):
         Returns:
             Monomer in alpha conformation
         """
-        recipe = [(('a', GlycanLexer.TYPE) if t == GlycanLexer.TYPE else (v, t)) for v, t in self._recipe]
+        recipe = [(v, t) for v, t in self._recipe if t != GlycanLexer.TYPE]
+        recipe.append(('a', GlycanLexer.TYPE))
         return RDKitMonomer(factory.create(recipe))
 
     def beta(self, factory):
@@ -212,7 +213,8 @@ class RDKitMonomer(Monomer):
         Returns:
             Monomer in beta conformation
         """
-        recipe = [(('b', GlycanLexer.TYPE) if t == GlycanLexer.TYPE else (v, t)) for v, t in self._recipe]
+        recipe = [(v, t) for v, t in self._recipe if t != GlycanLexer.TYPE]
+        recipe.append(('b', GlycanLexer.TYPE))
         return RDKitMonomer(factory.create(recipe))
 
     def undefined(self, factory):
