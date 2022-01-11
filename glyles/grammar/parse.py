@@ -295,7 +295,7 @@ class Glycan:
         if self.glycan_smiles is None:
             self.glycan_smiles = Glycan.__Merger(self.factory).merge(self.parse_tree, self.root_orientation,
                                                                      start=self.start)
-
+        self.glycan_smiles = self.glycan_smiles.replace("At", "O-")
         return self.glycan_smiles
 
     def get_tree(self):

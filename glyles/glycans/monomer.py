@@ -225,7 +225,7 @@ class Monomer:
         """
         raise NotImplementedError
 
-    def __get_structure(self):
+    def _get_structure(self):
         """
         Compute and save the structure of this glycan.
 

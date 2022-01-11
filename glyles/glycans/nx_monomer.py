@@ -85,8 +85,8 @@ class NXMonomer(Monomer):
         child_start = -1
 
         # find the ID of the oxygen atom to start the SMILES representation from
-        for _, x in self.__get_structure().edges(binding_c_id):
-            if self.__get_structure().nodes[x]["type"] == NXMonomer.Atom.O and 11 <= x <= 15:
+        for _, x in self._get_structure().edges(binding_c_id):
+            if self._get_structure().nodes[x]["type"] == NXMonomer.Atom.O and 11 <= x <= 15:
                 child_start = x
                 break
 
@@ -109,7 +109,7 @@ class NXMonomer(Monomer):
         Returns:
             Nothing
         """
-        monomer = self.__get_structure()
+        monomer = self._get_structure()
 
         # and find that oxygen atom that will react with a hydrogen when connecting the glycans' monomers
         for _, x in monomer.edges(position):
@@ -129,9 +129,9 @@ class NXMonomer(Monomer):
         Returns:
             SMILES string representation of this molecule
         """
-        return SMILES().write(self.__get_structure(), root, ring_index)
+        return SMILES().write(self._get_structure(), root, ring_index)
 
-    def __get_structure(self):
+    def _get_structure(self):
         """
         Compute and save the structure of this glycan. So far its hard coded on the 4 given types of glycans
         Chirality refers to the OH/CH2OH group of the chiral C atom

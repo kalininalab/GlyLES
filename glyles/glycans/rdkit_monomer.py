@@ -1,5 +1,6 @@
 import numpy as np
 from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
+from rdkit.Chem.rdchem import Atom, EditableMol, BondType
 
 from glyles.glycans.monomer import Monomer
 from glyles.grammar.GlycanLexer import GlycanLexer
@@ -169,6 +170,74 @@ class RDKitMonomer(Monomer):
 
             return [node_id] + longest_chain
 
+    class Reactor:
+        def __init__(self, monomer):
+            """
+
+            Args:
+                monomer (RDKitMonomer):
+            """
+            self.monomer = monomer
+            if self.monomer._structure is None:
+                self.monomer._get_structure()
+
+        def react(self, names, types):
+            """
+
+            Args:
+                names (List[str]):
+                types (List[int]):
+
+            Returns:
+                Modified monomer
+            """
+            for name, t in zip(names, types):
+                if t != GlycanLexer.MOD:
+                    continue
+                if len(name) == 2 and name[0].isdigit():
+                    if name[1] == "d":  # ?d
+                        pass
+                    elif name[1] == "S":
+                        self.add_sulfur(int(name[0]))
+                    elif name[2] == "P":
+                        pass
+
+            return self.monomer
+
+        def add_sulfur(self, position):
+            """
+            Add a SO3- group at the oxygen of the specified position.
+            Example: Gal -> Gal3S
+
+            Args:
+                position (int): id of the carbon where to add the SO3- group to the bound oxygen
+
+            Returns:
+                Nothing
+            """
+            pos = self.monomer._find_oxygen(position)
+            emol = EditableMol(self.monomer._structure)
+            s_id = EditableMol.AddAtom(emol, Atom(16))
+            o1_id = EditableMol.AddAtom(emol, Atom(8))
+            o2_id = EditableMol.AddAtom(emol, Atom(85))
+            o3_id = EditableMol.AddAtom(emol, Atom(8))
+            EditableMol.AddBond(emol, s_id, o1_id, order=BondType.DOUBLE)
+            EditableMol.AddBond(emol, s_id, o2_id, order=BondType.SINGLE)
+            EditableMol.AddBond(emol, s_id, o3_id, order=BondType.DOUBLE)
+            EditableMol.AddBond(emol, pos, s_id, order=BondType.SINGLE)
+            self.monomer._structure = emol.GetMol()
+            new_x = self._extend_matrices(4)  # [1]
+            new_x[s_id:, 0] = [16, 8, 8, 8]
+            self.monomer._x = new_x
+            self.monomer._adjacency = GetAdjacencyMatrix(self.monomer._structure)
+
+        def _extend_matrices(self, count):
+            tmp_x = np.zeros((self.monomer._x.shape[0] + count, self.monomer._x.shape[1]))
+            tmp_x[:self.monomer._x.shape[0], :] = self.monomer._x
+            # tmp_adj = np.zeros((self.monomer._adjacency.shape[0] + count, self.monomer._adjacency.shape[1] + count))
+            # tmp_adj[:self.monomer._adjacency.shape[0], :self.monomer._x.shape[1]] = self.monomer._adjacency
+            return tmp_x  # , tmp_adj
+
     def __init__(self, origin=None, **kwargs):
         """
         Initialize the monomer using the super method. Additionally, some fields are initialized to describe the
@@ -187,7 +256,7 @@ class RDKitMonomer(Monomer):
             self._adjacency = None
             self._ring_info = None
             self._x = None
-            self.__get_structure()
+            self._get_structure()
 
     def alpha(self, factory):
         """
@@ -239,7 +308,7 @@ class RDKitMonomer(Monomer):
             Adjacency matrix of all non-hydrogen atoms in this monomer
         """
         if self._adjacency is None:
-            self.__get_structure()
+            self._get_structure()
         return self._adjacency
 
     def get_ring_info(self):
@@ -250,7 +319,7 @@ class RDKitMonomer(Monomer):
             Tuple of tuples with the atom-ids from rdkit in the monomer
         """
         if self._ring_info is None:
-            self.__get_structure()
+            self._get_structure()
         return self._ring_info
 
     def get_features(self):
@@ -262,7 +331,7 @@ class RDKitMonomer(Monomer):
             A numpy array of shape Nx3 containing the extracted features for all atoms in this molecule
         """
         if self._x is None:
-            self.__get_structure()
+            self._get_structure()
         return self._x
 
     def get_dummy_atoms(self):
@@ -291,7 +360,7 @@ class RDKitMonomer(Monomer):
         Returns:
             id of the atom that binds to the parent, -1 if the root cannot be found
         """
-        return self.__find_oxygen(binding_c_id)
+        return self._find_oxygen(binding_c_id)
 
     def mark(self, position, atom):
         """
@@ -306,8 +375,8 @@ class RDKitMonomer(Monomer):
         Returns:
             Nothing
         """
-        idx = self.__find_oxygen(position)
-        self.__get_structure().GetAtomWithIdx(idx).SetAtomicNum(atom)
+        idx = self._find_oxygen(position)
+        self._get_structure().GetAtomWithIdx(idx).SetAtomicNum(atom)
         self._x[idx, 0] = atom
 
     def to_smiles(self, root, ring_index):
@@ -322,10 +391,23 @@ class RDKitMonomer(Monomer):
         Returns:
             SMILES string representation of this molecule
         """
-        smiles = MolToSmiles(self.__get_structure(), rootedAtAtom=root)
+        smiles = MolToSmiles(self._get_structure(), rootedAtAtom=root)
+        smiles.replace("At", "O-")
         return "".join([(str(int(c) + ring_index) if c.isdigit() else c) for c in smiles])
 
-    def __get_structure(self):
+    def react(self, names, types):
+        """
+
+        Args:
+            names (List[str]):
+            types (List[int]):
+
+        Returns:
+            Nothing
+        """
+        return RDKitMonomer.Reactor(self).react(names, types)
+
+    def _get_structure(self):
         """
         Compute and save the structure of this glycan.
 
@@ -361,10 +443,10 @@ class RDKitMonomer(Monomer):
                     self._x[i, 1] = 10
                     ringo = i
 
-            self.__enumerate_c_atoms(c_atoms, ringo)
+            self._enumerate_c_atoms(c_atoms, ringo)
         return self._structure
 
-    def __equidistant(self, start, end, ringo):
+    def _equidistant(self, start, end, ringo):
         """
         Decider for C1 in case the previous splitting rules were all tied. This currently only fires for
         Fruf, Tagf, Sorf, Psif
@@ -379,7 +461,7 @@ class RDKitMonomer(Monomer):
         """
         pass
 
-    def __evaluate_distance(self, start, end, ringo):
+    def _evaluate_distance(self, start, end, ringo):
         """
         Try to decide on C1 based on their distance to the oxygen in the ring
 
@@ -399,12 +481,12 @@ class RDKitMonomer(Monomer):
 
         # if both fields are non-zero, we cannot decide here and have to go further
         if adj[start, ringo] > 0 and adj[end, ringo] > 0:
-            return self.__equidistant(start, end, ringo)
+            return self._equidistant(start, end, ringo)
         elif adj[start, ringo] > 0:
             return True
         return False
 
-    def __enumerate_c_atoms(self, c_atoms, ringo):
+    def _enumerate_c_atoms(self, c_atoms, ringo):
         """
         Enumerate all carbon atoms starting from the first one
 
@@ -442,7 +524,7 @@ class RDKitMonomer(Monomer):
 
         # decide on c1
         if start_o_conn and end_o_conn:
-            if not self.__evaluate_distance(start, end, ringo):
+            if not self._evaluate_distance(start, end, ringo):
                 longest_c_chain = reversed(longest_c_chain)
         elif end_o_conn:
             longest_c_chain = reversed(longest_c_chain)
@@ -453,7 +535,7 @@ class RDKitMonomer(Monomer):
             c_count += 1
             self._x[c, 1] = c_count
 
-    def __find_oxygen(self, binding_c_id):
+    def _find_oxygen(self, binding_c_id):
         """
         Find the oxygen atom that binds to the carbon atom with the provided id. The returned id may not refer to an
         oxygen atom in the ring of the monomer as this cannot bind anything.

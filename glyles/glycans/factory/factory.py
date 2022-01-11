@@ -176,6 +176,6 @@ class MonomerFactory:
             # monomer = monomer_class(**self._derivatives[name])
             raise NotImplementedError("This case should be ")
 
-        # TODO: Implement the other possible modifications
+        monomer = monomer.react(*tmp)
 
         return monomer
