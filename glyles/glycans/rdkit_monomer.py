@@ -199,7 +199,7 @@ class RDKitMonomer(Monomer):
                         pass
                     elif name[1] == "S":
                         self.add_sulfur(int(name[0]))
-                    elif name[2] == "P":
+                    elif name[1] == "P":
                         pass
 
             return self.monomer
@@ -217,6 +217,7 @@ class RDKitMonomer(Monomer):
             """
             pos = self.monomer._find_oxygen(position)
             emol = EditableMol(self.monomer._structure)
+
             s_id = EditableMol.AddAtom(emol, Atom(16))
             o1_id = EditableMol.AddAtom(emol, Atom(8))
             o2_id = EditableMol.AddAtom(emol, Atom(85))
@@ -225,18 +226,30 @@ class RDKitMonomer(Monomer):
             EditableMol.AddBond(emol, s_id, o2_id, order=BondType.SINGLE)
             EditableMol.AddBond(emol, s_id, o3_id, order=BondType.DOUBLE)
             EditableMol.AddBond(emol, pos, s_id, order=BondType.SINGLE)
+
             self.monomer._structure = emol.GetMol()
-            new_x = self._extend_matrices(4)  # [1]
+
+            new_x, new_adj = self._extend_matrices(4)
             new_x[s_id:, 0] = [16, 8, 8, 8]
             self.monomer._x = new_x
-            self.monomer._adjacency = GetAdjacencyMatrix(self.monomer._structure)
+
+            new_adj[s_id, o1_id] = 1
+            new_adj[s_id, o2_id] = 1
+            new_adj[s_id, o3_id] = 1
+            new_adj[s_id, pos] = 1
+            new_adj[o1_id, s_id] = 1
+            new_adj[o2_id, s_id] = 1
+            new_adj[o3_id, s_id] = 1
+            new_adj[pos, s_id] = 1
+
+            self.monomer._adjacency = new_adj
 
         def _extend_matrices(self, count):
             tmp_x = np.zeros((self.monomer._x.shape[0] + count, self.monomer._x.shape[1]))
             tmp_x[:self.monomer._x.shape[0], :] = self.monomer._x
-            # tmp_adj = np.zeros((self.monomer._adjacency.shape[0] + count, self.monomer._adjacency.shape[1] + count))
-            # tmp_adj[:self.monomer._adjacency.shape[0], :self.monomer._x.shape[1]] = self.monomer._adjacency
-            return tmp_x  # , tmp_adj
+            tmp_adj = np.zeros((self.monomer._adjacency.shape[0] + count, self.monomer._adjacency.shape[1] + count))
+            tmp_adj[:self.monomer._adjacency.shape[0], :self.monomer._adjacency.shape[1]] = self.monomer._adjacency
+            return tmp_x, tmp_adj
 
     def __init__(self, origin=None, **kwargs):
         """

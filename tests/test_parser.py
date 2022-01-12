@@ -38,7 +38,7 @@ def split_children(g, id_children, child_1):
 class TestParser:
     def test_grammar_simple(self):
         factory = MonomerFactory()
-        g = Glycan("3dMan4S6Pfa", factory).get_tree()
+        g = Glycan("3dMan5S6Pfa", factory).get_tree()
 
         check_initial(g, "Man", 0, Config.ALPHA, lactole=Lactole.FURANOSE)
 
