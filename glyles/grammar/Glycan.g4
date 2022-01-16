@@ -20,7 +20,7 @@ SAC:
     | 'Par' | 'Dig' | 'Col' | 'Ara' | 'Lyx' | 'Xyl' | 'Rib' | 'Kdn' | 'Neu' | 'Pse' | 'Leg' | 'Aci' | 'Bac'
     | 'LDmanHep' | 'Kdo' | 'Dha' | 'DDmanHep' | 'Mur' | 'Api' | 'Fru' | 'Tag' | 'Sor' | 'Psi';
 MOD:
-    '3d' | '3S' | '4S' | '5S' | '6S' | '3P' | '4P' | '5P' | '6P' | 'Ac' | 'A' | 'N';
+    'NAc' | '3d' | '3S' | '4S' | '5S' | '6S' | '3P' | '4P' | '5P' | '6P' | 'Ac' | 'A' | 'N';
 CON:
     '(' TYPE NUM '-' NUM ')';
 TYPE:
