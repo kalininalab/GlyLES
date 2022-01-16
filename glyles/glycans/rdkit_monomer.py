@@ -194,13 +194,25 @@ class RDKitMonomer(Monomer):
             for name, t in zip(names, types):
                 if t != GlycanLexer.MOD:
                     continue
-                if len(name) == 2 and name[0].isdigit():
-                    if name[1] == "d":  # ?d
+                if len(name) == 1:
+                    if name[0] == "N":
+                        self.set_nitrogen()
+                    if name[0] == "A":
+                        raise NotImplementedError()
+                elif len(name) == 2:
+                    if name[0].isdigit():
+                        if name[1] == "d":  # ?d
+                            raise NotImplementedError()
+                        elif name[1] == "S":
+                            self.add_sulfur(int(name[0]))
+                        elif name[1] == "P":
+                            self.add_phosphate(int(name[0]))
+                        elif name[1] == "N":
+                            self.set_nitrogen(int(name[0]))
+                    else:
                         pass
-                    elif name[1] == "S":
-                        self.add_sulfur(int(name[0]))
-                    elif name[1] == "P":
-                        pass
+                elif len(name) == 3:
+                    self.add_acid(pos=self.set_nitrogen(2))
 
             return self.monomer
 
@@ -220,7 +232,7 @@ class RDKitMonomer(Monomer):
 
             s_id = EditableMol.AddAtom(emol, Atom(16))
             o1_id = EditableMol.AddAtom(emol, Atom(8))
-            o2_id = EditableMol.AddAtom(emol, Atom(85))
+            o2_id = EditableMol.AddAtom(emol, Atom(8))
             o3_id = EditableMol.AddAtom(emol, Atom(8))
             EditableMol.AddBond(emol, s_id, o1_id, order=BondType.DOUBLE)
             EditableMol.AddBond(emol, s_id, o2_id, order=BondType.SINGLE)
@@ -243,6 +255,93 @@ class RDKitMonomer(Monomer):
             new_adj[pos, s_id] = 1
 
             self.monomer._adjacency = new_adj
+
+        def add_phosphate(self, position):
+            """
+            Add a PO3 group at the oxygen of the specified position.
+            Example: Gal -> Gal3P
+
+            Args:
+                position (int): id of the carbon where to add the PO3 group to the bound oxygen
+
+            Returns:
+                Nothing
+            """
+            pos = self.monomer._find_oxygen(position)
+            emol = EditableMol(self.monomer._structure)
+
+            s_id = EditableMol.AddAtom(emol, Atom(15))
+            o1_id = EditableMol.AddAtom(emol, Atom(8))
+            o2_id = EditableMol.AddAtom(emol, Atom(8))
+            o3_id = EditableMol.AddAtom(emol, Atom(8))
+            EditableMol.AddBond(emol, s_id, o1_id, order=BondType.SINGLE)
+            EditableMol.AddBond(emol, s_id, o2_id, order=BondType.SINGLE)
+            EditableMol.AddBond(emol, s_id, o3_id, order=BondType.DOUBLE)
+            EditableMol.AddBond(emol, pos, s_id, order=BondType.SINGLE)
+
+            self.monomer._structure = emol.GetMol()
+
+            new_x, new_adj = self._extend_matrices(4)
+            new_x[s_id:, 0] = [15, 8, 8, 8]
+            self.monomer._x = new_x
+
+            new_adj[s_id, o1_id] = 1
+            new_adj[s_id, o2_id] = 1
+            new_adj[s_id, o3_id] = 1
+            new_adj[s_id, pos] = 1
+            new_adj[o1_id, s_id] = 1
+            new_adj[o2_id, s_id] = 1
+            new_adj[o3_id, s_id] = 1
+            new_adj[pos, s_id] = 1
+
+            self.monomer._adjacency = new_adj
+
+        def add_acid(self, position=None, pos=None):
+            if (position is None) == (pos is None):
+                raise ValueError()
+
+            if position is not None:
+                pos = self.monomer._find_oxygen(position)
+
+            emol = EditableMol(self.monomer._structure)
+
+            c1_id = EditableMol.AddAtom(emol, Atom(6))
+            c2_id = EditableMol.AddAtom(emol, Atom(6))
+            o1_id = EditableMol.AddAtom(emol, Atom(8))
+            EditableMol.AddBond(emol, c1_id, pos, order=BondType.SINGLE)
+            EditableMol.AddBond(emol, c2_id, c1_id, order=BondType.SINGLE)
+            EditableMol.AddBond(emol, o1_id, c1_id, order=BondType.DOUBLE)
+
+            self.monomer._structure = emol.GetMol()
+
+            new_x, new_adj = self._extend_matrices(3)
+            new_x[c1_id:, 0] = [6, 6, 8]
+            self.monomer._x = new_x
+
+            new_adj[c1_id, c2_id] = 1
+            new_adj[c1_id, o1_id] = 1
+            new_adj[c1_id, pos] = 1
+            new_adj[c2_id, c1_id] = 1
+            new_adj[o1_id, c1_id] = 1
+            new_adj[pos, c1_id] = 1
+
+            self.monomer._adjacency = new_adj
+
+        def set_nitrogen(self, position=2):
+            """
+            Change an oxygen to a nitrogen.
+            Example: Gal -> GalN
+
+            Args:
+                position:
+
+            Returns:
+
+            """
+            pos = self.monomer._find_oxygen(position)
+            self.monomer._structure.GetAtomWithIdx(pos).SetAtomicNum(7)
+            self.monomer._x[pos, 0] = 7
+            return pos
 
         def _extend_matrices(self, count):
             tmp_x = np.zeros((self.monomer._x.shape[0] + count, self.monomer._x.shape[1]))
