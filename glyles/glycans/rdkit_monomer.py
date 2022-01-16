@@ -171,11 +171,16 @@ class RDKitMonomer(Monomer):
             return [node_id] + longest_chain
 
     class Reactor:
+        """
+        Class with access to protected classes fields managing the modifications of a root monomer.
+        """
+
         def __init__(self, monomer):
             """
+            Initialize the reactor with the monomer to modify.
 
             Args:
-                monomer (RDKitMonomer):
+                monomer (RDKitMonomer): monomer to be modified
             """
             self.monomer = monomer
             if self.monomer._structure is None:
@@ -183,10 +188,11 @@ class RDKitMonomer(Monomer):
 
         def react(self, names, types):
             """
+            Manage the parsed modifications and apply them in turn.
 
             Args:
-                names (List[str]):
-                types (List[int]):
+                names (List[str]): name (string representation) of the modification
+                types (List[int]): Type of the parsed stings based on GlycanLexer.TYPE
 
             Returns:
                 Modified monomer
@@ -207,8 +213,8 @@ class RDKitMonomer(Monomer):
                             self.add_sulfur(int(name[0]))
                         elif name[1] == "P":
                             self.add_phosphate(int(name[0]))
-                        elif name[1] == "N":
-                            self.set_nitrogen(int(name[0]))
+                        # elif name[1] == "N":
+                        #     self.set_nitrogen(int(name[0]))
                     else:
                         pass
                 elif len(name) == 3:
@@ -297,6 +303,18 @@ class RDKitMonomer(Monomer):
             self.monomer._adjacency = new_adj
 
         def add_acid(self, position=None, pos=None):
+            """
+            Add an acid group to a specific position. Here the position can be provided either as the C-index
+            (position) or as the rdkit id of the atom where to append the acid group (implemented for NAc). Exactly one
+            of both arguments must be provided.
+
+            Args:
+                position (int): index of the c-atom where to append the acid group
+                pos (int): rdkit id of the atom where to append the acid group
+
+            Returns:
+                Nothing
+            """
             if (position is None) == (pos is None):
                 raise ValueError()
 
@@ -333,10 +351,10 @@ class RDKitMonomer(Monomer):
             Example: Gal -> GalN
 
             Args:
-                position:
+                position (int): position of a carbon atom at which the bound o atom should be replaced by N
 
             Returns:
-
+                rdkit id of the atom that is now a nitrogen
             """
             pos = self.monomer._find_oxygen(position)
             self.monomer._structure.GetAtomWithIdx(pos).SetAtomicNum(7)
@@ -509,13 +527,14 @@ class RDKitMonomer(Monomer):
 
     def react(self, names, types):
         """
+        Override the method to the call of the reactor to modify this monomer.
 
         Args:
-            names (List[str]):
-            types (List[int]):
+            names (List[str]): name (string representation) of the modification
+                types (List[int]): Type of the parsed stings based on GlycanLexer.TYPE
 
         Returns:
-            Nothing
+            New monomer with the altered structure
         """
         return RDKitMonomer.Reactor(self).react(names, types)
 

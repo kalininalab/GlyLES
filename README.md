@@ -3,9 +3,6 @@
 A tool to convert IUPAC representation of Glycans into SMILES representation. This repo is still in the development 
 phase; so, feel free to report any errors in the issues section.
 
-# WARNING:
-## THIS VERSION IS CURRENTLY NOT ABLE TO PARSE DERIVATIVES OF GLYCANS CORRECTLY!! E.G. GalNAc/GalA/... CANNOT BE PARSED! 
-
 ## Specification and (current) Limitations
 
 The exact specification, we're refering to when talking about "IUPAC representations of glycan", is given in the 
@@ -17,8 +14,8 @@ This implementation currently only works for glycans that fulfil certain propert
 
 * Linkages have to be explicit, i.e. `(a1-4)`
 * The structure of the glycan can be represented as tree of the monomers with maximal branching factor 2.
-* Only the root monomers (e.g. Glc, but not GlcNAc) from this [website](https://www.ncbi.nlm.nih.gov/glycans/snfg.html) 
-  and some derivatives of those are implemented so far
+* All root monomers (e.g. Glc, but not GlcNAc) from this [website](https://www.ncbi.nlm.nih.gov/glycans/snfg.html)
+* Modification such as adding sulfur (e.g. Gal3S), phosphate (e.g. Gal3P) and a NAc-group can be added (e.g. GalNAc).
 
 For an overview of the implemented derivatives, please look at the [README](glyles/grammar/README.md) in the grammar
 folder. You can get a python-readable list of the currently included monomers with the following code

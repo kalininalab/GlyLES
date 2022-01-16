@@ -15,7 +15,7 @@ def preprocess_glycans(glycan, glycan_list, glycan_file):
         glycan_file (str): filepath of file to read glycans from
 
     Returns:
-        list of glycans in the order they are handed to the function, i.e glycan, glycan_list, glycan_file
+        list of glycans in the order they are handed to the function, i.e. glycan, glycan_list, glycan_file
     """
     glycans = []
 
@@ -107,7 +107,7 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
         glycan_file (str): File to read the glycans from
         glycan_generator (generator): generator yielding iupac representation.
             Together with output_generator=True this does not create any lists
-        silent (bool): Flag indicating to have no output from this method
+        silent (bool): Flag indicating to have no output-messages from this method
 
     Returns:
         Nothing
