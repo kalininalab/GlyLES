@@ -92,5 +92,16 @@ class TestDerivatives:
     @pytest.mark.parametrize("line", open("./tests.tsv", "r").readlines()[1:])
     def test_file(self, line):
         iupac, smiles = line.strip().split("\t")
-        output = convert(iupac, returning=True)[0][1]
-        compare_smiles(output, smiles)
+        output = convert(iupac, returning=True)
+
+        assert output[0][0] == iupac
+        assert output[0][1] != ""
+        # compare_smiles(output, smiles)
+
+    def test_file_detail(self, line="GlcNpb\tN[C@H]1[C@H](O)O[C@H](CO)[C@@H](O)[C@@H]1O\n"):
+        iupac, smiles = line.strip().split("\t")
+        output = convert(iupac, returning=True)
+        
+        assert output[0][0] == iupac
+        assert output[0][1] != ""
+        # compare_smiles(output, smiles)

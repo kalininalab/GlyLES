@@ -204,11 +204,11 @@ class RDKitMonomer(Monomer):
                     if name[0] == "N":
                         self.set_nitrogen()
                     if name[0] == "A":
-                        raise NotImplementedError()
+                        raise NotImplementedError("Appending acid groups not implemented yet")
                 elif len(name) == 2:
                     if name[0].isdigit():
                         if name[1] == "d":  # ?d
-                            raise NotImplementedError()
+                            raise NotImplementedError("Deoxygenation not implemented yet")
                         elif name[1] == "S":
                             self.add_sulfur(int(name[0]))
                         elif name[1] == "P":
@@ -684,4 +684,7 @@ class RDKitMonomer(Monomer):
         # then find the candidates. There should be exactly one element in the resulting array
         candidates = np.argwhere((self._adjacency[position, :] == 1) &
                                  (self._x[:, 0] == 8) & (self._x[:, 2] != 1)).squeeze()
+        if candidates.size != 1:
+            raise ValueError(f"Multiple (or no) options for oxygen found ({candidates.size})")
+
         return int(candidates)

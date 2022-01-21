@@ -33,3 +33,7 @@ class Mode(Enum):
     DEFAULT_MODE = "rdkit"
     NETWORKX_MODE = "nx"
     RDKIT_MODE = "rdkit"
+
+
+class UnreachableError(NotImplementedError):
+    pass

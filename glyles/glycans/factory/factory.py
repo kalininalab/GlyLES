@@ -2,7 +2,7 @@ from glyles.glycans.factory.factory_f import FuranoseFactory
 from glyles.glycans.factory.factory_p import PyranoseFactory
 from glyles.glycans.nx_monomer import NXMonomer
 from glyles.glycans.rdkit_monomer import RDKitMonomer
-from glyles.glycans.utils import Mode
+from glyles.glycans.utils import Mode, UnreachableError
 from glyles.grammar.GlycanLexer import GlycanLexer
 
 
@@ -55,7 +55,7 @@ class MonomerFactory:
         if not furanose and item in self._pyranoses:
             return self._pyranoses[item]
         # return self._derivatives[item]
-        raise NotImplementedError("This case should be unreachable!")
+        raise NotImplementedError("Item is neither in pyranoses nor in furanoses")
 
     def keys(self):
         """
@@ -174,7 +174,7 @@ class MonomerFactory:
                 monomer = monomer_class(**self._pyranoses[name], recipe=recipe)
         except KeyError:
             # monomer = monomer_class(**self._derivatives[name])
-            raise NotImplementedError("This case should be ")
+            raise UnreachableError("Invalid monomer found, should never get so far.")
 
         monomer = monomer.react(*tmp)
 

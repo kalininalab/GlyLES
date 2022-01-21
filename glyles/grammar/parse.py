@@ -6,7 +6,7 @@ import pydot
 from antlr4 import *
 from rdkit.Chem import MolFromSmiles
 
-from glyles.glycans.utils import Mode
+from glyles.glycans.utils import Mode, UnreachableError
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
 
@@ -81,9 +81,9 @@ class Glycan:
 
             # security check for some nodes that should not occur, but who knows what ANTLR does (or does not) ;-)
             if isinstance(t, ErrorNode):
-                raise NotImplementedError("ErrorNodes not implemented yet! (Should also never occur!)")
+                raise UnreachableError("ErrorNodes in parsing!")
             elif isinstance(t, TerminalNode):
-                raise NotImplementedError("Terminal nodes should be unreachable!")
+                raise UnreachableError("TerminalNodes in parsing!")
 
             children = list(t.getChildren())
             if len(children) == 2:  # {glycan con}
@@ -113,7 +113,7 @@ class Glycan:
                 return node_id2
 
             # there should be no case missing, but who knows...
-            raise NotImplementedError("This should be unreachable")
+            raise UnreachableError("Invalid branching in glycan tree")
 
         def __add_edge(self, parent, child, con):
             """
