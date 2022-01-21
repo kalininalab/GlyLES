@@ -161,7 +161,7 @@ class Monomer:
         Return the recipe on how this monomer was created
 
         Returns:
-            Recipe as list of modifications, confirmations and the root monomer as type List[Tuple[str, int]])
+            Recipe as list of modifications, confirmations and the root monomer as type List[Tuple[str, int]]
         """
         return self._recipe
 

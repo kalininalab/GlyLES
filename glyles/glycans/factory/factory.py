@@ -17,9 +17,8 @@ class MonomerFactory:
         """
         self._pyranoses = PyranoseFactory()
         self._furanoses = FuranoseFactory()
-        # self._derivatives = DerivativesFactory()
 
-        self._keys = set(self._pyranoses.keys())  # .union(set(self._derivatives.keys()))
+        self._keys = set(self._pyranoses.keys())
 
     def __contains__(self, item):
         """
@@ -54,8 +53,7 @@ class MonomerFactory:
             return self._furanoses[item]
         if not furanose and item in self._pyranoses:
             return self._pyranoses[item]
-        # return self._derivatives[item]
-        raise NotImplementedError("Item is neither in pyranoses nor in furanoses")
+        raise NotImplementedError("Query-monomer is neither in pyranoses nor in furanoses")
 
     def keys(self):
         """
@@ -104,8 +102,6 @@ class MonomerFactory:
         for item in self.monomers():
             if item in self._pyranoses:
                 output.add(self._pyranoses[item]["name"])
-            # elif item in self._derivatives:
-            # output.add(self._derivatives[item]["name"])
         return list(output)
 
     def pyranose_names(self):

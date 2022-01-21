@@ -36,4 +36,8 @@ class Mode(Enum):
 
 
 class UnreachableError(NotImplementedError):
+    """
+    Represent exceptions that should arise in case a piece of code is reached that under normal circumstances should
+    not be reached
+    """
     pass

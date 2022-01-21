@@ -531,7 +531,7 @@ class RDKitMonomer(Monomer):
 
         Args:
             names (List[str]): name (string representation) of the modification
-                types (List[int]): Type of the parsed stings based on GlycanLexer.TYPE
+            types (List[int]): Type of the parsed stings based on GlycanLexer.TYPE
 
         Returns:
             New monomer with the altered structure
