@@ -88,3 +88,10 @@ instruction). It has basically the same functionality as conda but supports the 
 supports distinguishing packages into those that are needed to use the package and those that are needed in the 
 development of the package. In order to enable others to work on this repository, we also publish the exact 
 specifications of out poetry environment.
+
+
+## ToDos:
+Allow for both formats:
+* 2-O-S-Xyz = Xyz2S
+* 2-O-Me-Xyl = Xyz2Me
+* 1-GalNAc = CC(=O)NC1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O)O)O

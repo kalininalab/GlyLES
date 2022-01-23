@@ -204,7 +204,7 @@ class RDKitMonomer(Monomer):
                     if name[0] == "N":
                         self.set_nitrogen()
                     if name[0] == "A":
-                        raise NotImplementedError("Appending acid groups not implemented yet")
+                        self.make_acid()
                 elif len(name) == 2:
                     if name[0].isdigit():
                         if name[1] == "d":  # ?d
@@ -213,12 +213,16 @@ class RDKitMonomer(Monomer):
                             self.add_sulfur(int(name[0]))
                         elif name[1] == "P":
                             self.add_phosphate(int(name[0]))
-                        # elif name[1] == "N":
-                        #     self.set_nitrogen(int(name[0]))
                     else:
                         pass
                 elif len(name) == 3:
-                    self.add_acid(pos=self.set_nitrogen(2))
+                    if name == "NAc":
+                        self.add_acid(pos=self.set_nitrogen())
+                elif len(name) == 6:
+                    if name.endswith("Me"):
+                        pass
+                    if name.endswith("Ac"):
+                        self.add_acid(position=name[0])
 
             return self.monomer
 
@@ -307,6 +311,7 @@ class RDKitMonomer(Monomer):
             Add an acid group to a specific position. Here the position can be provided either as the C-index
             (position) or as the rdkit id of the atom where to append the acid group (implemented for NAc). Exactly one
             of both arguments must be provided.
+            Example: GalN -> GalNAc or Gal -> Gal5Ac
 
             Args:
                 position (int): index of the c-atom where to append the acid group
@@ -345,6 +350,33 @@ class RDKitMonomer(Monomer):
 
             self.monomer._adjacency = new_adj
 
+        def add_methyl(self, position):
+            """
+
+            Args:
+                position:
+
+            Returns:
+
+            """
+            pos = self.monomer._find_oxygen(position)
+
+            emol = EditableMol(self.monomer._structure)
+
+            c_id = EditableMol.AddAtom(emol, Atom(6))
+            EditableMol.AddBond(emol, c_id, pos, order=BondType.SINGLE)
+
+            self.monomer._structure = emol.GetMol()
+
+            new_x, new_adj = self._extend_matrices(1)
+            new_x[c_id, 0] = 6
+            self.monomer._x = new_x
+
+            new_adj[c_id, pos] = 1
+            new_adj[pos, c_id] = 1
+
+            self.monomer._adjacency = new_adj
+
         def set_nitrogen(self, position=2):
             """
             Change an oxygen to a nitrogen.
@@ -356,12 +388,42 @@ class RDKitMonomer(Monomer):
             Returns:
                 rdkit id of the atom that is now a nitrogen
             """
-            pos = self.monomer._find_oxygen(position)
+            pos = self.monomer._find_oxygen(position, check_for=[8, 7])
             self.monomer._structure.GetAtomWithIdx(pos).SetAtomicNum(7)
             self.monomer._x[pos, 0] = 7
             return pos
 
+        def make_acid(self):
+            """
+
+            Returns:
+
+            """
+            emol = EditableMol(self.monomer._structure)
+
+            c_id = int(np.argwhere(self.monomer._x[:, 1] == 6))
+            o_id = EditableMol.AddAtom(emol, Atom(8))
+            EditableMol.AddBond(emol, o_id, c_id, order=BondType.DOUBLE)
+
+            self.monomer._structure = emol.GetMol()
+
+            new_x, new_adj = self._extend_matrices(1)
+            new_x[o_id, 0] = 8
+            self.monomer._x = new_x
+
+            new_adj[c_id, o_id] = 1
+            new_adj[o_id, c_id] = 1
+            self.monomer._adjacency = new_adj
+
         def _extend_matrices(self, count):
+            """
+
+            Args:
+                count:
+
+            Returns:
+
+            """
             tmp_x = np.zeros((self.monomer._x.shape[0] + count, self.monomer._x.shape[1]))
             tmp_x[:self.monomer._x.shape[0], :] = self.monomer._x
             tmp_adj = np.zeros((self.monomer._adjacency.shape[0] + count, self.monomer._adjacency.shape[1] + count))
@@ -666,7 +728,7 @@ class RDKitMonomer(Monomer):
             c_count += 1
             self._x[c, 1] = c_count
 
-    def _find_oxygen(self, binding_c_id):
+    def _find_oxygen(self, binding_c_id, check_for=None):
         """
         Find the oxygen atom that binds to the carbon atom with the provided id. The returned id may not refer to an
         oxygen atom in the ring of the monomer as this cannot bind anything.
@@ -679,12 +741,16 @@ class RDKitMonomer(Monomer):
             id referring to the oxygen binding the provided carbon atom and may participate in a glycan-binding.
         """
         # first find the rdkit id of the carbon atom that should bind to something
+        if check_for is None:
+            check_for = [8]
+
         position = np.argwhere(self._x[:, 1] == binding_c_id).squeeze()
 
-        # then find the candidates. There should be exactly one element in the resulting array
-        candidates = np.argwhere((self._adjacency[position, :] == 1) &
-                                 (self._x[:, 0] == 8) & (self._x[:, 2] != 1)).squeeze()
-        if candidates.size != 1:
-            raise ValueError(f"Multiple (or no) options for oxygen found ({candidates.size})")
+        for check in check_for:
+            # then find the candidates. There should be exactly one element in the resulting array
+            candidates = np.argwhere((self._adjacency[position, :] == 1) &
+                                     (self._x[:, 0] == check) & (self._x[:, 2] != 1)).squeeze()
+            if candidates.size == 1:
+                return int(candidates)
 
-        return int(candidates)
+        raise ValueError(f"Multiple (or no) options for oxygen (or other atom type) found.")

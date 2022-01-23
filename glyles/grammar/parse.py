@@ -6,7 +6,7 @@ import pydot
 from antlr4 import *
 from rdkit.Chem import MolFromSmiles
 
-from glyles.glycans.utils import Mode, UnreachableError
+from glyles.glycans.utils import Mode, UnreachableError, ParseError
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
 
@@ -368,7 +368,7 @@ class Glycan:
         if len(log) != 0:
             self.parse_tree = None
             self.glycan_smiles = ""
-            return
+            raise ParseError("Glycan cannot be parsed:\n" + log[0])
 
         # walk through the AST and parse the AST into a networkx representation of the glycan.
         self.parse_tree = Glycan.__TreeWalker(self.factory).parse(tree, self.mode)

@@ -41,3 +41,10 @@ class UnreachableError(NotImplementedError):
     not be reached
     """
     pass
+
+
+class ParseError(ValueError):
+    """
+    Represent parsing errors when reading in a glycan
+    """
+    pass

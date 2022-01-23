@@ -90,18 +90,24 @@ class TestDerivatives:
         compare_smiles(output, self.__derivatives[name])
 
     @pytest.mark.parametrize("line", open("./tests.tsv", "r").readlines()[1:])
-    def test_file(self, line):
+    def test_file_parsing(self, line):
         iupac, smiles = line.strip().split("\t")
         output = convert(iupac, returning=True)
 
         assert output[0][0] == iupac
         assert output[0][1] != ""
-        # compare_smiles(output, smiles)
 
-    def test_file_detail(self, line="GlcNpb\tN[C@H]1[C@H](O)O[C@H](CO)[C@@H](O)[C@@H]1O\n"):
+    '''def test_file_detail(self, line="GalA\t[C@@H]1([C@H]([C@H](OC([C@@H]1O)O)C(=O)O)O)O\n"):
         iupac, smiles = line.strip().split("\t")
         output = convert(iupac, returning=True)
-        
+
         assert output[0][0] == iupac
-        assert output[0][1] != ""
-        # compare_smiles(output, smiles)
+        assert output[0][1] != ""'''
+
+    @pytest.mark.parametrize("line", open("./tests.tsv", "r").readlines()[1:])
+    def test_file_correct(self, line):
+        iupac, smiles = line.strip().split("\t")
+        output = convert(iupac, returning=True)
+
+        assert output[0][0] == iupac
+        compare_smiles(output[0][1], smiles)
