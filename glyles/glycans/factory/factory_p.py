@@ -185,7 +185,7 @@ class PyranoseFactory:
 
         # Neuraminic acid
         "NEU": {"name": "Neu", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
-                "smiles": "N[C@@H]1[C@@H](O)CC(O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
+                "smiles": "C1[C@@H]([C@H]([C@@H](OC1(C(=O)O)O)[C@@H]([C@@H](CO)O)O)N)O"},
         "A_NEU": {"name": "Neu", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "N[C@@H]1[C@@H](O)C[C@](O)(C(=O)O)OC1[C@H](O)[C@H](O)CO"},
         "B_NEU": {"name": "Neu", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,

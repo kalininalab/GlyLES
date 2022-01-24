@@ -213,16 +213,24 @@ class RDKitMonomer(Monomer):
                             self.add_sulfur(int(name[0]))
                         elif name[1] == "P":
                             self.add_phosphate(int(name[0]))
+                        elif name[1] == "N":
+                            self.set_nitrogen(position=int(name[0]))
                     else:
-                        pass
+                        if name == "Ac":
+                            self.add_acid(position=5)
                 elif len(name) == 3:
                     if name == "NAc":
                         self.add_acid(pos=self.set_nitrogen())
-                elif len(name) == 6:
-                    if name.endswith("Me"):
-                        pass
-                    if name.endswith("Ac"):
-                        self.add_acid(position=name[0])
+                    elif name[0].isdigit():
+                        if name.endswith("Me"):
+                            self.add_methyl(position=int(name[0]))
+                        elif name.endswith("Ac"):
+                            self.add_acid(position=int(name[0]))
+                elif len(name) == 7:
+                    if name.endswith("Me-"):
+                        self.add_methyl(position=int(name[0]))
+                    if name.endswith("Ac-"):
+                        self.add_acid(position=int(name[0]))
 
             return self.monomer
 
@@ -324,7 +332,7 @@ class RDKitMonomer(Monomer):
                 raise ValueError()
 
             if position is not None:
-                pos = self.monomer._find_oxygen(position)
+                pos = self.monomer._find_oxygen(position, check_for=[8, 7])
 
             emol = EditableMol(self.monomer._structure)
 
