@@ -101,7 +101,7 @@ class TestDerivatives:
         assert output[0][0] == iupac
         compare_smiles(output[0][1], smiles)
 
-    def test_file_detail(self, line="NeuAc\tCC(=O)N[C@@H]1[C@H](CC(O[C@H]1[C@@H]([C@@H](CO)O)O)(C(=O)O)O)O\n"):
+    def test_file_detail(self, line="Fru2Pfb\tC([C@@H]1[C@H]([C@@H]([C@](O1)(CO)OP(=O)(O)O)O)O)O\n\n"):
         iupac, smiles = line.strip().split("\t")
         output = convert(iupac, returning=True)
 
