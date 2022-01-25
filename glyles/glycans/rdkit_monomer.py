@@ -3,6 +3,7 @@ from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
 from rdkit.Chem.rdchem import Atom, EditableMol, BondType
 
 from glyles.glycans.monomer import Monomer
+from glyles.glycans.utils import UnreachableError
 from glyles.grammar.GlycanLexer import GlycanLexer
 
 
@@ -658,9 +659,28 @@ class RDKitMonomer(Monomer):
             ringo (int): index of the oxygen atom in the ring
 
         Returns:
-            Bool indicating that the end id is the C1 atom
+            Bool indicating that the start id is the C1 atom
         """
-        pass
+        c_start_candidates = np.argwhere((self._adjacency[start, :] == 1) &
+                                         (self._x[:, 0] == 6) & (self._x[:, 2] == 1)).squeeze()
+        c_end_candidates = np.argwhere((self._adjacency[end, :] == 1) &
+                                       (self._x[:, 0] == 6) & (self._x[:, 2] == 1)).squeeze()
+        if c_start_candidates.size == 1 and c_end_candidates.size == 1:
+            start_ring_c = int(c_start_candidates)
+            end_ring_c = int(c_end_candidates)
+
+            start_ring_c_o_candidates = np.argwhere((self._adjacency[start_ring_c, :] == 1) &
+                                                    (self._x[:, 0] == 8) & (self._x[:, 2] != 1)).squeeze()
+            end_ring_c_o_candidates = np.argwhere((self._adjacency[end_ring_c, :] == 1) &
+                                                  (self._x[:, 0] == 8) & (self._x[:, 2] != 1)).squeeze()
+
+            if start_ring_c_o_candidates.size == 1 and end_ring_c_o_candidates.size == 1:
+                raise UnreachableError("C1 atom cannot be detected")
+            elif start_ring_c_o_candidates.size == 1:
+                return True
+        elif c_start_candidates.size == 1:
+            return True
+        return False
 
     def _evaluate_distance(self, start, end, ringo):
         """
@@ -672,7 +692,7 @@ class RDKitMonomer(Monomer):
             ringo (int): index of the oxygen atom in the ring
 
         Returns:
-            Bool indicating that the end id is the C1 atom
+            Bool indicating that the start id is the C1 atom
         """
         adj = self._adjacency.copy()
 
@@ -720,8 +740,10 @@ class RDKitMonomer(Monomer):
         start, end = longest_c_chain[0], longest_c_chain[-1]
 
         # check conditions
-        start_o_conn = any(self._x[np.where(self._adjacency[start, :]), 0].flatten() == 6)
-        end_o_conn = any(self._x[np.where(self._adjacency[end, :]), 0].flatten() == 6)
+        start_o_conn = np.argwhere((self._adjacency[start, :] == 1) & (self._x[:, 0] == 8) &
+                                   (self._x[:, 2] != 1)).squeeze().size > 0
+        end_o_conn = np.argwhere((self._adjacency[end, :] == 1) & (self._x[:, 0] == 8) &
+                                 (self._x[:, 2] != 1)).squeeze().size > 0
 
         # decide on c1
         if start_o_conn and end_o_conn:
