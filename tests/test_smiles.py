@@ -132,20 +132,6 @@ class TestSMILES:
 
         compare_smiles(computed, smiles)
 
-    def test_smiles_poly_detail(self, root_orientation="n"):
-        iupac, plain, alpha, beta = self.smiles_samples_simple[1]
-        computed = Glycan(iupac, factory=MonomerFactory(), mode=Mode.RDKIT_MODE,
-                          root_orientation=root_orientation).get_smiles()
-
-        if root_orientation == "a":
-            smiles = alpha
-        elif root_orientation == "b":
-            smiles = beta
-        else:
-            smiles = plain
-
-        compare_smiles(computed, smiles)
-
     @pytest.mark.parametrize("names", list(combinations([x + "p" for x in MonomerFactory().pyranoses() if x != "Api"] +
                                                         [x + "f" for x in MonomerFactory().furanoses()], 2)))
     @pytest.mark.parametrize("config1", [Config.ALPHA, Config.BETA, Config.UNDEF])

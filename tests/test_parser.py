@@ -92,16 +92,6 @@ class TestParser:
 
         check_initial(g, mono, 0, config, lactole=Lactole.FURANOSE)
 
-    def test_parse_1_detail(self):
-        g = Glycan("All a", MonomerFactory(), parse=False).get_tree()
-
-        check_initial(g, "All", 0, Config.ALPHA, lactole=Lactole.PYRANOSE)
-
-        compare_smiles(g.nodes[0]["type"].get_smiles(), "OC[C@H]1O[C@H](O)[C@H](O)[C@H](O)[C@@H]1O")
-
-        g2 = RDKitMonomer(origin=g.nodes[0]["type"])
-        assert g.nodes[0]["type"].get_smiles() == g2.get_smiles()
-
     def test_parse_2(self):
         factory = MonomerFactory()
         iupac = "Man(a1-4)Glc"

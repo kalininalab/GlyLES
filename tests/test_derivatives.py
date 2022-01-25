@@ -85,10 +85,6 @@ class TestDerivatives:
         output = convert(name, returning=True)[0][1]
         compare_smiles(output, self.__derivatives[name])
 
-    def test_basic_detail(self, name="Gal3S"):
-        output = convert(name, returning=True)[0][1]
-        compare_smiles(output, self.__derivatives[name])
-
     @pytest.mark.parametrize("line", open("./tests.tsv", "r").readlines()[1:])
     def test_file_parsing(self, line):
         iupac, smiles = line.strip().split("\t")
