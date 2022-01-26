@@ -169,9 +169,9 @@ class MonomerFactory:
             else:
                 monomer = monomer_class(**self._pyranoses[name], recipe=recipe)
         except KeyError:
-            # monomer = monomer_class(**self._derivatives[name])
             raise UnreachableError("Invalid monomer found, should never get so far.")
 
+        # create the final molecule using the molecule's react-method augmented with the recipe of the molecule
         monomer = monomer.react(*tmp)
 
         return monomer

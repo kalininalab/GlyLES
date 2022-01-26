@@ -49,7 +49,7 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
         silent (bool): Flag indicating to have no prints from this method
 
     Returns:
-        Nothing
+        List of type (IUPAC, SMILES) items giving the converted SMILES formulas. Only if returning=True is set.
     """
 
     # collect all data and return if no data were provided
@@ -110,7 +110,7 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
         silent (bool): Flag indicating to have no output-messages from this method
 
     Returns:
-        Nothing
+        Generator generating pairs of type (IUPAC, SMILES) items giving the converted SMILES formulas for the IUPACs.
     """
     factory = MonomerFactory()
     glycans = preprocess_glycans(glycan, glycan_list, glycan_file)

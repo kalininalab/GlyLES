@@ -156,7 +156,6 @@ class Glycan:
             self.g.add_node(
                 node_id,
                 type=self.factory.create(recipe, mode, config),
-                # type=self.factory.create([(str(c), c.symbol.type) for c in node.children], mode, config),
             )
 
             return node_id
@@ -217,8 +216,8 @@ class Glycan:
             # check for validity of the tree, ie if it's a leaf (return, nothing to do) or has too many children (Error)
             if len(children) == 0:  # leaf
                 return
-            if len(children) > 3:  # too many children
-                raise NotImplementedError("Glycans with maximal branching 4 factor not implemented.")
+            if len(children) > 2:  # too many children
+                raise NotImplementedError("Glycans with maximal branching factor greater then 2 not implemented.")
 
             # iterate over the children and the atoms used to mark binding atoms in my structure
             for child, atom in zip(children, t.nodes[node]["type"].get_dummy_atoms()[0]):
