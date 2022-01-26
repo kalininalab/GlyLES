@@ -1,11 +1,11 @@
 # GlyLES
 
 A tool to convert IUPAC representation of Glycans into SMILES representation. This repo is still in the development 
-phase; so, feel free to report any errors in the issues section.
+phase; so, feel free to report any errors or issues.
 
 ## Specification and (current) Limitations
 
-The exact specification, we're refering to when talking about "IUPAC representations of glycan", is given in the 
+The exact specification, we're referring to when talking about "IUPAC representations of glycan", is given in the 
 "Notes" section of this [website](https://www.ncbi.nlm.nih.gov/glycans/snfg.html). But as this package is still in the 
 development phase, not everything of the specification is implemented yet (especially not all monomers and side chains 
 you can attach to monomers).
@@ -15,16 +15,8 @@ This implementation currently only works for glycans that fulfil certain propert
 * Linkages have to be explicit, i.e. `(a1-4)`
 * The structure of the glycan can be represented as tree of the monomers with maximal branching factor 2.
 * All root monomers (e.g. Glc, but not GlcNAc) from this [website](https://www.ncbi.nlm.nih.gov/glycans/snfg.html)
-* Modification such as adding sulfur (e.g. Gal3S), phosphate (e.g. Gal3P) and a NAc-group can be added (e.g. GalNAc).
-
-For an overview of the implemented derivatives, please look at the [README](glyles/grammar/README.md) in the grammar
-folder. You can get a python-readable list of the currently included monomers with the following code
-
-`````python
-from glyles.glycans.factory.factory import MonomerFactory
-
-MonomerFactory().monomer_names()
-`````
+* Some modifications can be added to the monomers, please see the [README](glyles/grammar/README.md) in the grammar
+folder for more information on this. 
 
 ## Installation
 
@@ -88,10 +80,3 @@ instruction). It has basically the same functionality as conda but supports the 
 supports distinguishing packages into those that are needed to use the package and those that are needed in the 
 development of the package. In order to enable others to work on this repository, we also publish the exact 
 specifications of out poetry environment.
-
-
-## ToDos:
-Allow for both formats:
-* 2-O-S-Xyz = Xyz2S
-* 2-O-Me-Xyl = Xyz2Me
-* 1-GalNAc = CC(=O)NC1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O)O)O
