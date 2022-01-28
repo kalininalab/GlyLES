@@ -50,6 +50,13 @@ class ParseError(ValueError):
     pass
 
 
+class ModificationNotImplementedWarning(UserWarning):
+    """
+    Warning for non-implemented modifications of monomers
+    """
+    pass
+
+
 class Node:
     """
     Represent a node in a tree

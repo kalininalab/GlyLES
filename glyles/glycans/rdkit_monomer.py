@@ -1,14 +1,22 @@
+import warnings
+
 import numpy as np
 from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
 from rdkit.Chem.rdchem import Atom, EditableMol, BondType
 
 from glyles.glycans.monomer import Monomer
-from glyles.glycans.utils import UnreachableError, Tree
+from glyles.glycans.utils import UnreachableError, Tree, ModificationNotImplementedWarning
 from glyles.grammar.GlycanLexer import GlycanLexer
 
 
-class RDKitMonomer(Monomer):
+def not_implemented_warning(mod):
+    print(f"ModificationNotImplementedWarning: {mod} Modification not implemented. The returned molecule will not have "
+          f"this modification")
+    warnings.warn(f"{mod} Modification not implemented. The returned molecule will not have "
+                  f"this modification", ModificationNotImplementedWarning)
 
+
+class RDKitMonomer(Monomer):
     class Reactor:
         """
         Class with access to protected classes fields managing the modifications of a root monomer.
@@ -47,7 +55,11 @@ class RDKitMonomer(Monomer):
                 elif len(name) == 2:
                     if name[0].isdigit():
                         if name[1] == "d":  # ?d
-                            raise NotImplementedError("Deoxygenation not implemented yet")
+                            # raise NotImplementedError("Deoxygenation not implemented yet")
+                            not_implemented_warning(name)
+                        elif name[1] == "e":  # ?d
+                            # raise NotImplementedError("Deoxygenation not implemented yet")
+                            not_implemented_warning(name)
                         elif name[1] == "S":
                             self.add_sulfur(int(name[0]))
                         elif name[1] == "P":

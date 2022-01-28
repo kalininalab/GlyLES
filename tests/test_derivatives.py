@@ -1,3 +1,6 @@
+import sys
+from io import StringIO
+
 import pytest
 
 from glyles.converter import convert
@@ -108,9 +111,10 @@ class TestDerivatives:
         assert output[0][0] == iupac
         compare_smiles(output[0][1], smiles)
 
-    '''@pytest.mark.parametrize("line", open("./oracle.txt", "r").readlines())
+    @pytest.mark.parametrize("line", open("./oracle.txt", "r").readlines())
     def test_oracle(self, line):
         iupac = line.strip()
         output = convert(iupac, returning=True)
+
         assert output[0][0] == iupac
-        assert output[0][1] != ""'''
+        assert output[0][1] != ""

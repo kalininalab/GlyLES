@@ -77,7 +77,7 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
 
     # convert the IUPAC strings into SMILES strings from the input list
     if len(glycans) != 0:
-        for glycan, smiles in convert_generator(glycan_list=glycans):
+        for glycan, smiles in convert_generator(glycan_list=glycans, silent=silent):
             if returning:
                 output.append((glycan, smiles))
             else:
@@ -85,7 +85,7 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
 
     # and from the input generator
     if glycan_generator is not None:
-        for glycan, smiles in convert_generator(glycan_generator=glycan_generator):
+        for glycan, smiles in convert_generator(glycan_generator=glycan_generator, silent=silent):
             if returning:
                 output.append((glycan, smiles))
             else:
