@@ -22,16 +22,18 @@ class Glycan:
     """
 
     class __TreeWalker:
-        def __init__(self, factory):
+        def __init__(self, factory, tree_only):
             """
             Just initialize an empty tree
 
             Args:
                 factory (MonomerFactory): factory instance to use to generate the monomers for the glycan tree from
+            tree_only (bool): Flag indicating to only parse the tree of glycans and not the modifications
             """
             self.g = nx.DiGraph()
             self.factory = factory
             self.node_id = 0
+            self.tree_only = tree_only
 
         def parse(self, t, mode):
             """
@@ -155,7 +157,7 @@ class Glycan:
                     recipe.append((str(child), child.symbol.type))
             self.g.add_node(
                 node_id,
-                type=self.factory.create(recipe, mode, config),
+                type=self.factory.create(recipe, mode, config, tree_only=self.tree_only),
             )
 
             return node_id
@@ -262,7 +264,7 @@ class Glycan:
                 me = me.replace(atom, child_smiles)
             return me
 
-    def __init__(self, iupac, factory, mode=Mode.DEFAULT_MODE, root_orientation="n", start=10, parse=True):
+    def __init__(self, iupac, factory, mode=Mode.DEFAULT_MODE, root_orientation="n", start=10, tree_only=False):
         """
         Initialize the glycan from the IUPAC string.
 
@@ -272,7 +274,7 @@ class Glycan:
             mode (Mode): Glycan mode to use. This controls the representation used (either networkx or RDKit)
             root_orientation (str): orientation of the root monomer in the glycan (choose from 'a', 'b', 'n')
             start (int): ID of the atom to start with in the root monomer when generating the SMILES
-            parse (bool): Flag indicating to also parse the SMILES immediately
+            tree_only (bool): Flag indicating to only parse the tree of glycans and not the modifications
         """
         self.iupac = iupac
         self.mode = mode
@@ -280,7 +282,7 @@ class Glycan:
         self.glycan_smiles = None
         self.root_orientation = root_orientation
         self.start = start
-        self.parse_smiles = parse
+        self.tree_only = tree_only
         self.factory = factory
         self.__parse()
 
@@ -370,9 +372,9 @@ class Glycan:
             raise ParseError("Glycan cannot be parsed:\n" + log[0])
 
         # walk through the AST and parse the AST into a networkx representation of the glycan.
-        self.parse_tree = Glycan.__TreeWalker(self.factory).parse(tree, self.mode)
+        self.parse_tree = Glycan.__TreeWalker(self.factory, self.tree_only).parse(tree, self.mode)
 
         # if the glycan should be parsed immediately, do so
-        if self.parse_smiles:
+        if not self.tree_only:
             self.glycan_smiles = Glycan.__Merger(self.factory).merge(self.parse_tree, self.root_orientation,
                                                                      start=self.start)

@@ -4,6 +4,8 @@ from io import StringIO
 import pytest
 
 from glyles.converter import convert
+from glyles.glycans.factory.factory import MonomerFactory
+from glyles.grammar.parse import Glycan
 from tests.test_smiles import compare_smiles
 
 
@@ -107,23 +109,12 @@ class TestDerivatives:
     @pytest.mark.parametrize("line", open("./oracle.txt", "r").readlines())
     def test_oracle(self, line):
         iupac = line.strip()
-        output = convert(iupac, returning=True)
+        output = Glycan(iupac, MonomerFactory(), tree_only=True).get_tree()
 
-        assert output[0][0] == iupac
-        assert output[0][1] != ""
+        assert output is not None
 
-    @pytest.mark.parametrize("line", open("./oracle.txt", "r").readlines())
-    def test_file_detail(self, line):
+    def test_oracle_detail(self, line="1,5-Anhydro-GlcN2S-ol\n"):
         iupac = line.strip()
+        output = Glycan(iupac, MonomerFactory(), tree_only=True).get_tree()
 
-        old_stdout = sys.stdout
-        sys.stdout = stdout = StringIO()
-
-        output = convert(iupac, returning=True)
-
-        sys.stdout = old_stdout
-        std_output = stdout.getvalue()
-
-        assert output[0][0] == iupac
-        assert output[0][1] != ""
-        assert (len(std_output) == 0 or std_output.startswith("ModificationNotImplementedWarning"))
+        assert output is not None

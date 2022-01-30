@@ -130,7 +130,7 @@ class MonomerFactory:
                 output.add(self.furanoses_fac[item]["name"])
         return list(output)
 
-    def create(self, recipe, mode=Mode.RDKIT_MODE, config=None):
+    def create(self, recipe, mode=Mode.RDKIT_MODE, config=None, tree_only=False):
         """
         Create a monomer from its describing IUPAC string with all added side chains.
 
@@ -138,6 +138,7 @@ class MonomerFactory:
             recipe (List[Tuple[str, int]]): List of modifications, conformations and the root monomer
             mode (Mode): implementation used to represent monomers
             config (str): configuration if monomer is alpha or beta monomer
+            tree_only (bool): Flag indicating to only parse the tree of glycans and not the modifications
 
         Returns:
             Monomer-Instance containing all modifications given in the input
@@ -171,7 +172,8 @@ class MonomerFactory:
         except KeyError:
             raise UnreachableError("Invalid monomer found, should never get so far.")
 
-        # create the final molecule using the molecule's react-method augmented with the recipe of the molecule
-        monomer = monomer.react(*tmp)
+        if not tree_only:
+            # create the final molecule using the molecule's react-method augmented with the recipe of the molecule
+            monomer = monomer.react(*tmp)
 
         return monomer

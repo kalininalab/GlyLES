@@ -45,33 +45,46 @@ class Reactor:
                 if name[0] == "A":
                     self.make_acid()
             elif len(name) == 2:
-                if name[0].isdigit():
+                if name[0].isdigit() or name[0] == "O":
                     if name[1] == "d":  # ?d
                         not_implemented_message(name)
                     elif name[1] == "e":  # ?d
                         not_implemented_message(name)
-                    elif name[1] == "S":
-                        self.add_sulfur(int(name[0]))
-                    elif name[1] == "P":
-                        self.add_phosphate(int(name[0]))
+                    elif name[1] == "F":
+                        not_implemented_message(name)
                     elif name[1] == "N":
-                        self.set_nitrogen(position=int(name[0]))
+                        self.set_nitrogen(position=("O" if name[0] == "O" else int(name[0])))
+                    elif name[1] == "S":
+                        self.add_sulfur(position=("O" if name[0] == "O" else int(name[0])))
+                    elif name[1] == "P":
+                        self.add_phosphate(position=("O" if name[0] == "O" else int(name[0])))
                 else:
                     if name == "Ac":
                         self.add_acid(position=5)
+                    if name == "D-":
+                        not_implemented_message(name)
+                    if name == "L-":
+                        not_implemented_message(name)
             elif len(name) == 3:
-                if name == "NAc":
-                    self.add_acid(pos=self.set_nitrogen())
-                elif name[0].isdigit():
+                if name[0].isdigit() or name[0] == "O":
                     if name.endswith("Me"):
-                        self.add_methyl(position=int(name[0]))
+                        self.add_methyl(position=("O" if name[0] == "O" else int(name[0])))
                     elif name.endswith("Ac"):
-                        self.add_acid(position=int(name[0]))
+                        self.add_acid(position=("O" if name[0] == "O" else int(name[0])))
+                elif name == "NAc":
+                    self.add_acid(pos=self.set_nitrogen())
+                elif name == "-ol":
+                    not_implemented_message(name)
+            elif len(name) == 5:
+                if name == "-onic":
+                    not_implemented_message(name)
             elif len(name) == 7:
                 if name.endswith("Me-"):
                     self.add_methyl(position=int(name[0]))
                 if name.endswith("Ac-"):
                     self.add_acid(position=int(name[0]))
+            elif len(name) == 12:  # ?,?-Anhydro-
+                not_implemented_message(name)
 
         return self.monomer
 
@@ -86,6 +99,8 @@ class Reactor:
         Returns:
             Nothing
         """
+        if position == "O":
+            return
         pos = self.monomer.find_oxygen(position)
         emol = EditableMol(self.monomer.structure)
 
@@ -126,6 +141,8 @@ class Reactor:
         Returns:
             Nothing
         """
+        if position == "O":
+            return
         pos = self.monomer.find_oxygen(position)
         emol = EditableMol(self.monomer.structure)
 
@@ -172,6 +189,9 @@ class Reactor:
         if (position is None) == (pos is None):
             raise ValueError()
 
+        if position == "O":
+            return
+
         if position is not None:
             pos = self.monomer.find_oxygen(position, check_for=[8, 7])
 
@@ -208,6 +228,9 @@ class Reactor:
         Returns:
 
         """
+        if position == "O":
+            return
+
         pos = self.monomer.find_oxygen(position)
 
         emol = EditableMol(self.monomer.structure)
@@ -237,6 +260,9 @@ class Reactor:
         Returns:
             rdkit id of the atom that is now a nitrogen
         """
+        if position == "O":
+            return
+
         pos = self.monomer.find_oxygen(position, check_for=[8, 7])
         self.monomer.structure.GetAtomWithIdx(pos).SetAtomicNum(7)
         self.monomer.x[pos, 0] = 7
