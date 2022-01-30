@@ -15,10 +15,10 @@ class MonomerFactory:
         """
         Initialize this factory by creating instances of all "sub-"factories
         """
-        self._pyranoses = PyranoseFactory()
-        self._furanoses = FuranoseFactory()
+        self.pyranoses_fac = PyranoseFactory()
+        self.furanoses_fac = FuranoseFactory()
 
-        self._keys = set(self._pyranoses.keys())
+        self.keys = set(self.pyranoses_fac.keys())
 
     def __contains__(self, item):
         """
@@ -30,7 +30,7 @@ class MonomerFactory:
         Returns:
             True if the item is included in the current version of this package
         """
-        return item.upper() in self._keys
+        return item.upper() in self.keys
 
     def __getitem__(self, item):
         """
@@ -49,10 +49,10 @@ class MonomerFactory:
             item = item[:-1]
             furanose = True
 
-        if furanose and item in self._furanoses:
-            return self._furanoses[item]
-        if not furanose and item in self._pyranoses:
-            return self._pyranoses[item]
+        if furanose and item in self.furanoses_fac:
+            return self.furanoses_fac[item]
+        if not furanose and item in self.pyranoses_fac:
+            return self.pyranoses_fac[item]
         raise NotImplementedError("Query-monomer is neither in pyranoses nor in furanoses")
 
     def keys(self):
@@ -62,7 +62,7 @@ class MonomerFactory:
         Returns:
             Set of names for all monomers, their available derivatives and configurations (alpha/beta/undefined)
         """
-        return self._keys
+        return self.keys
 
     def monomers(self):
         """
@@ -71,7 +71,7 @@ class MonomerFactory:
         Returns:
             List, sorted from long to short, of all monomer names in upper case
         """
-        return sorted(set([self[x.split("_")[-1]]["name"] for x in self._keys]), key=lambda x: -len(x))
+        return sorted(set([self[x.split("_")[-1]]["name"] for x in self.keys]), key=lambda x: -len(x))
 
     def furanoses(self):
         """
@@ -80,7 +80,7 @@ class MonomerFactory:
         Returns:
             List, sorted from long to short, of all furanose names in upper case
         """
-        return sorted(set([self[x.split("_")[-1]]["name"] for x in self._furanoses.keys()]))
+        return sorted(set([self[x.split("_")[-1]]["name"] for x in self.furanoses_fac.keys()]))
 
     def pyranoses(self):
         """
@@ -89,7 +89,7 @@ class MonomerFactory:
         Returns:
             List, sorted from long to short, of all pyranose names in upper case
         """
-        return sorted(set([self[x.split("_")[-1]]["name"] for x in self._pyranoses.keys()]))
+        return sorted(set([self[x.split("_")[-1]]["name"] for x in self.pyranoses_fac.keys()]))
 
     def monomer_names(self):
         """
@@ -100,8 +100,8 @@ class MonomerFactory:
         """
         output = set()
         for item in self.monomers():
-            if item in self._pyranoses:
-                output.add(self._pyranoses[item]["name"])
+            if item in self.pyranoses_fac:
+                output.add(self.pyranoses_fac[item]["name"])
         return list(output)
 
     def pyranose_names(self):
@@ -113,8 +113,8 @@ class MonomerFactory:
         """
         output = set()
         for item in self.pyranoses():
-            if item in self._pyranoses:
-                output.add(self._pyranoses[item]["name"])
+            if item in self.pyranoses_fac:
+                output.add(self.pyranoses_fac[item]["name"])
         return list(output)
 
     def furanose_names(self):
@@ -126,8 +126,8 @@ class MonomerFactory:
         """
         output = set()
         for item in self.monomers():
-            if item in self._furanoses:
-                output.add(self._furanoses[item]["name"])
+            if item in self.furanoses_fac:
+                output.add(self.furanoses_fac[item]["name"])
         return list(output)
 
     def create(self, recipe, mode=Mode.RDKIT_MODE, config=None):
@@ -165,9 +165,9 @@ class MonomerFactory:
         # get the monomer from the factory
         try:
             if ring_index is not None and recipe[ring_index][0] == "f":
-                monomer = monomer_class(**self._furanoses[name], recipe=recipe)
+                monomer = monomer_class(**self.furanoses_fac[name], recipe=recipe)
             else:
-                monomer = monomer_class(**self._pyranoses[name], recipe=recipe)
+                monomer = monomer_class(**self.pyranoses_fac[name], recipe=recipe)
         except KeyError:
             raise UnreachableError("Invalid monomer found, should never get so far.")
 

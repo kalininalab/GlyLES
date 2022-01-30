@@ -7,287 +7,14 @@ from rdkit.Chem.rdchem import Atom, EditableMol, BondType
 from glyles.glycans.monomer import Monomer
 from glyles.glycans.utils import UnreachableError, Tree, ModificationNotImplementedWarning
 from glyles.grammar.GlycanLexer import GlycanLexer
+from glyles.glycans.rdkit_reactor import Reactor
 
-
-def not_implemented_warning(mod):
+'''def not_implemented_message(mod):
     print(f"ModificationNotImplementedWarning: {mod} Modification not implemented. The returned molecule will not have "
-          f"this modification")
-    warnings.warn(f"{mod} Modification not implemented. The returned molecule will not have "
-                  f"this modification", ModificationNotImplementedWarning)
+          f"this modification")'''
 
 
 class RDKitMonomer(Monomer):
-    class Reactor:
-        """
-        Class with access to protected classes fields managing the modifications of a root monomer.
-        """
-
-        def __init__(self, monomer):
-            """
-            Initialize the reactor with the monomer to modify.
-
-            Args:
-                monomer (RDKitMonomer): monomer to be modified
-            """
-            self.monomer = monomer
-            if self.monomer._structure is None:
-                self.monomer._get_structure()
-
-        def react(self, names, types):
-            """
-            Manage the parsed modifications and apply them in turn.
-
-            Args:
-                names (List[str]): name (string representation) of the modification
-                types (List[int]): Type of the parsed stings based on GlycanLexer.TYPE
-
-            Returns:
-                Modified monomer
-            """
-            for name, t in zip(names, types):
-                if t != GlycanLexer.MOD:
-                    continue
-                if len(name) == 1:
-                    if name[0] == "N":
-                        self.set_nitrogen()
-                    if name[0] == "A":
-                        self.make_acid()
-                elif len(name) == 2:
-                    if name[0].isdigit():
-                        if name[1] == "d":  # ?d
-                            # raise NotImplementedError("Deoxygenation not implemented yet")
-                            not_implemented_warning(name)
-                        elif name[1] == "e":  # ?d
-                            # raise NotImplementedError("Deoxygenation not implemented yet")
-                            not_implemented_warning(name)
-                        elif name[1] == "S":
-                            self.add_sulfur(int(name[0]))
-                        elif name[1] == "P":
-                            self.add_phosphate(int(name[0]))
-                        elif name[1] == "N":
-                            self.set_nitrogen(position=int(name[0]))
-                    else:
-                        if name == "Ac":
-                            self.add_acid(position=5)
-                elif len(name) == 3:
-                    if name == "NAc":
-                        self.add_acid(pos=self.set_nitrogen())
-                    elif name[0].isdigit():
-                        if name.endswith("Me"):
-                            self.add_methyl(position=int(name[0]))
-                        elif name.endswith("Ac"):
-                            self.add_acid(position=int(name[0]))
-                elif len(name) == 7:
-                    if name.endswith("Me-"):
-                        self.add_methyl(position=int(name[0]))
-                    if name.endswith("Ac-"):
-                        self.add_acid(position=int(name[0]))
-
-            return self.monomer
-
-        def add_sulfur(self, position):
-            """
-            Add a SO3- group at the oxygen of the specified position.
-            Example: Gal -> Gal3S
-
-            Args:
-                position (int): id of the carbon where to add the SO3- group to the bound oxygen
-
-            Returns:
-                Nothing
-            """
-            pos = self.monomer._find_oxygen(position)
-            emol = EditableMol(self.monomer._structure)
-
-            s_id = EditableMol.AddAtom(emol, Atom(16))
-            o1_id = EditableMol.AddAtom(emol, Atom(8))
-            o2_id = EditableMol.AddAtom(emol, Atom(8))
-            o3_id = EditableMol.AddAtom(emol, Atom(8))
-            EditableMol.AddBond(emol, s_id, o1_id, order=BondType.DOUBLE)
-            EditableMol.AddBond(emol, s_id, o2_id, order=BondType.SINGLE)
-            EditableMol.AddBond(emol, s_id, o3_id, order=BondType.DOUBLE)
-            EditableMol.AddBond(emol, pos, s_id, order=BondType.SINGLE)
-
-            self.monomer._structure = emol.GetMol()
-
-            new_x, new_adj = self._extend_matrices(4)
-            new_x[s_id:, 0] = [16, 8, 8, 8]
-            self.monomer._x = new_x
-
-            new_adj[s_id, o1_id] = 1
-            new_adj[s_id, o2_id] = 1
-            new_adj[s_id, o3_id] = 1
-            new_adj[s_id, pos] = 1
-            new_adj[o1_id, s_id] = 1
-            new_adj[o2_id, s_id] = 1
-            new_adj[o3_id, s_id] = 1
-            new_adj[pos, s_id] = 1
-
-            self.monomer._adjacency = new_adj
-
-        def add_phosphate(self, position):
-            """
-            Add a PO3 group at the oxygen of the specified position.
-            Example: Gal -> Gal3P
-
-            Args:
-                position (int): id of the carbon where to add the PO3 group to the bound oxygen
-
-            Returns:
-                Nothing
-            """
-            pos = self.monomer._find_oxygen(position)
-            emol = EditableMol(self.monomer._structure)
-
-            s_id = EditableMol.AddAtom(emol, Atom(15))
-            o1_id = EditableMol.AddAtom(emol, Atom(8))
-            o2_id = EditableMol.AddAtom(emol, Atom(8))
-            o3_id = EditableMol.AddAtom(emol, Atom(8))
-            EditableMol.AddBond(emol, s_id, o1_id, order=BondType.SINGLE)
-            EditableMol.AddBond(emol, s_id, o2_id, order=BondType.SINGLE)
-            EditableMol.AddBond(emol, s_id, o3_id, order=BondType.DOUBLE)
-            EditableMol.AddBond(emol, pos, s_id, order=BondType.SINGLE)
-
-            self.monomer._structure = emol.GetMol()
-
-            new_x, new_adj = self._extend_matrices(4)
-            new_x[s_id:, 0] = [15, 8, 8, 8]
-            self.monomer._x = new_x
-
-            new_adj[s_id, o1_id] = 1
-            new_adj[s_id, o2_id] = 1
-            new_adj[s_id, o3_id] = 1
-            new_adj[s_id, pos] = 1
-            new_adj[o1_id, s_id] = 1
-            new_adj[o2_id, s_id] = 1
-            new_adj[o3_id, s_id] = 1
-            new_adj[pos, s_id] = 1
-
-            self.monomer._adjacency = new_adj
-
-        def add_acid(self, position=None, pos=None):
-            """
-            Add an acid group to a specific position. Here the position can be provided either as the C-index
-            (position) or as the rdkit id of the atom where to append the acid group (implemented for NAc). Exactly one
-            of both arguments must be provided.
-            Example: GalN -> GalNAc or Gal -> Gal5Ac
-
-            Args:
-                position (int): index of the c-atom where to append the acid group
-                pos (int): rdkit id of the atom where to append the acid group
-
-            Returns:
-                Nothing
-            """
-            if (position is None) == (pos is None):
-                raise ValueError()
-
-            if position is not None:
-                pos = self.monomer._find_oxygen(position, check_for=[8, 7])
-
-            emol = EditableMol(self.monomer._structure)
-
-            c1_id = EditableMol.AddAtom(emol, Atom(6))
-            c2_id = EditableMol.AddAtom(emol, Atom(6))
-            o1_id = EditableMol.AddAtom(emol, Atom(8))
-            EditableMol.AddBond(emol, c1_id, pos, order=BondType.SINGLE)
-            EditableMol.AddBond(emol, c2_id, c1_id, order=BondType.SINGLE)
-            EditableMol.AddBond(emol, o1_id, c1_id, order=BondType.DOUBLE)
-
-            self.monomer._structure = emol.GetMol()
-
-            new_x, new_adj = self._extend_matrices(3)
-            new_x[c1_id:, 0] = [6, 6, 8]
-            self.monomer._x = new_x
-
-            new_adj[c1_id, c2_id] = 1
-            new_adj[c1_id, o1_id] = 1
-            new_adj[c1_id, pos] = 1
-            new_adj[c2_id, c1_id] = 1
-            new_adj[o1_id, c1_id] = 1
-            new_adj[pos, c1_id] = 1
-
-            self.monomer._adjacency = new_adj
-
-        def add_methyl(self, position):
-            """
-
-            Args:
-                position:
-
-            Returns:
-
-            """
-            pos = self.monomer._find_oxygen(position)
-
-            emol = EditableMol(self.monomer._structure)
-
-            c_id = EditableMol.AddAtom(emol, Atom(6))
-            EditableMol.AddBond(emol, c_id, pos, order=BondType.SINGLE)
-
-            self.monomer._structure = emol.GetMol()
-
-            new_x, new_adj = self._extend_matrices(1)
-            new_x[c_id, 0] = 6
-            self.monomer._x = new_x
-
-            new_adj[c_id, pos] = 1
-            new_adj[pos, c_id] = 1
-
-            self.monomer._adjacency = new_adj
-
-        def set_nitrogen(self, position=2):
-            """
-            Change an oxygen to a nitrogen.
-            Example: Gal -> GalN
-
-            Args:
-                position (int): position of a carbon atom at which the bound o atom should be replaced by N
-
-            Returns:
-                rdkit id of the atom that is now a nitrogen
-            """
-            pos = self.monomer._find_oxygen(position, check_for=[8, 7])
-            self.monomer._structure.GetAtomWithIdx(pos).SetAtomicNum(7)
-            self.monomer._x[pos, 0] = 7
-            return pos
-
-        def make_acid(self):
-            """
-
-            Returns:
-
-            """
-            emol = EditableMol(self.monomer._structure)
-
-            c_id = int(np.argwhere(self.monomer._x[:, 1] == 6))
-            o_id = EditableMol.AddAtom(emol, Atom(8))
-            EditableMol.AddBond(emol, o_id, c_id, order=BondType.DOUBLE)
-
-            self.monomer._structure = emol.GetMol()
-
-            new_x, new_adj = self._extend_matrices(1)
-            new_x[o_id, 0] = 8
-            self.monomer._x = new_x
-
-            new_adj[c_id, o_id] = 1
-            new_adj[o_id, c_id] = 1
-            self.monomer._adjacency = new_adj
-
-        def _extend_matrices(self, count):
-            """
-
-            Args:
-                count:
-
-            Returns:
-
-            """
-            tmp_x = np.zeros((self.monomer._x.shape[0] + count, self.monomer._x.shape[1]))
-            tmp_x[:self.monomer._x.shape[0], :] = self.monomer._x
-            tmp_adj = np.zeros((self.monomer._adjacency.shape[0] + count, self.monomer._adjacency.shape[1] + count))
-            tmp_adj[:self.monomer._adjacency.shape[0], :self.monomer._adjacency.shape[1]] = self.monomer._adjacency
-            return tmp_x, tmp_adj
 
     def __init__(self, origin=None, **kwargs):
         """
@@ -300,14 +27,14 @@ class RDKitMonomer(Monomer):
         """
         super(RDKitMonomer, self).__init__(origin, **kwargs)
         if isinstance(origin, RDKitMonomer):
-            self._adjacency = origin.get_adjacency()
-            self._ring_info = origin.get_ring_info()
-            self._x = origin.get_features()
+            self.adjacency = origin.get_adjacency()
+            self.ring_info = origin.get_ring_info()
+            self.x = origin.get_features()
         else:
-            self._adjacency = None
-            self._ring_info = None
-            self._x = None
-            self._get_structure()
+            self.adjacency = None
+            self.ring_info = None
+            self.x = None
+            self.get_structure()
 
     def alpha(self, factory):
         """
@@ -319,7 +46,7 @@ class RDKitMonomer(Monomer):
         Returns:
             Monomer in alpha conformation
         """
-        recipe = [(v, t) for v, t in self._recipe if t != GlycanLexer.TYPE]
+        recipe = [(v, t) for v, t in self.recipe if t != GlycanLexer.TYPE]
         recipe.append(('a', GlycanLexer.TYPE))
         return RDKitMonomer(factory.create(recipe))
 
@@ -333,7 +60,7 @@ class RDKitMonomer(Monomer):
         Returns:
             Monomer in beta conformation
         """
-        recipe = [(v, t) for v, t in self._recipe if t != GlycanLexer.TYPE]
+        recipe = [(v, t) for v, t in self.recipe if t != GlycanLexer.TYPE]
         recipe.append(('b', GlycanLexer.TYPE))
         return RDKitMonomer(factory.create(recipe))
 
@@ -348,7 +75,7 @@ class RDKitMonomer(Monomer):
         Returns:
             Monomer in undefined conformation
         """
-        recipe = [(v, t) for v, t in self._recipe if t != GlycanLexer.TYPE]
+        recipe = [(v, t) for v, t in self.recipe if t != GlycanLexer.TYPE]
         return RDKitMonomer(factory.create(recipe))
 
     def get_adjacency(self):
@@ -358,9 +85,9 @@ class RDKitMonomer(Monomer):
         Returns:
             Adjacency matrix of all non-hydrogen atoms in this monomer
         """
-        if self._adjacency is None:
-            self._get_structure()
-        return self._adjacency
+        if self.adjacency is None:
+            self.get_structure()
+        return self.adjacency
 
     def get_ring_info(self):
         """
@@ -369,9 +96,9 @@ class RDKitMonomer(Monomer):
         Returns:
             Tuple of tuples with the atom-ids from rdkit in the monomer
         """
-        if self._ring_info is None:
-            self._get_structure()
-        return self._ring_info
+        if self.ring_info is None:
+            self.get_structure()
+        return self.ring_info
 
     def get_features(self):
         """
@@ -381,9 +108,9 @@ class RDKitMonomer(Monomer):
         Returns:
             A numpy array of shape Nx3 containing the extracted features for all atoms in this molecule
         """
-        if self._x is None:
-            self._get_structure()
-        return self._x
+        if self.x is None:
+            self.get_structure()
+        return self.x
 
     def get_dummy_atoms(self):
         """
@@ -411,7 +138,7 @@ class RDKitMonomer(Monomer):
         Returns:
             id of the atom that binds to the parent, -1 if the root cannot be found
         """
-        return self._find_oxygen(binding_c_id)
+        return self.find_oxygen(binding_c_id)
 
     def mark(self, position, atom):
         """
@@ -426,9 +153,9 @@ class RDKitMonomer(Monomer):
         Returns:
             Nothing
         """
-        idx = self._find_oxygen(position)
-        self._get_structure().GetAtomWithIdx(idx).SetAtomicNum(atom)
-        self._x[idx, 0] = atom
+        idx = self.find_oxygen(position)
+        self.get_structure().GetAtomWithIdx(idx).SetAtomicNum(atom)
+        self.x[idx, 0] = atom
 
     def to_smiles(self, root, ring_index):
         """
@@ -442,7 +169,7 @@ class RDKitMonomer(Monomer):
         Returns:
             SMILES string representation of this molecule
         """
-        smiles = MolToSmiles(self._get_structure(), rootedAtAtom=root)
+        smiles = MolToSmiles(self.get_structure(), rootedAtAtom=root)
         smiles.replace("At", "O-")
         return "".join([(str(int(c) + ring_index) if c.isdigit() else c) for c in smiles])
 
@@ -457,46 +184,46 @@ class RDKitMonomer(Monomer):
         Returns:
             New monomer with the altered structure
         """
-        return RDKitMonomer.Reactor(self).react(names, types)
+        return Reactor(self).react(names, types)
 
-    def _get_structure(self):
+    def get_structure(self):
         """
         Compute and save the structure of this glycan.
 
         Returns:
             rdkit molecule representing the structure of the glycan as a graph of its non-hydrogen atoms.
         """
-        if self._structure is None:
+        if self.structure is None:
             # read the structure from the SMILES string
-            self._structure = MolFromSmiles(self._smiles)
+            self.structure = MolFromSmiles(self.smiles)
 
             # extract some further information from the molecule to not operate always on the molecule
-            self._adjacency = GetAdjacencyMatrix(self._structure)
-            self._ring_info = self._structure.GetRingInfo().AtomRings()
-            self._x = np.zeros((self._adjacency.shape[0], 3))
+            self.adjacency = GetAdjacencyMatrix(self.structure)
+            self.ring_info = self.structure.GetRingInfo().AtomRings()
+            self.x = np.zeros((self.adjacency.shape[0], 3))
 
             c_atoms, ringo = [], -1
             # extract some information form the molecule
-            for i in range(self._adjacency.shape[0]):
-                atom = self._structure.GetAtomWithIdx(i)
+            for i in range(self.adjacency.shape[0]):
+                atom = self.structure.GetAtomWithIdx(i)
 
                 # store the atom type
-                self._x[i, 0] = atom.GetAtomicNum()
-                if self._x[i, 0] == 6 and i in self._ring_info[0]:
+                self.x[i, 0] = atom.GetAtomicNum()
+                if self.x[i, 0] == 6 and i in self.ring_info[0]:
                     c_atoms.append(int(i))
 
                 # if the atom is part of any ring, store the number of that ring
-                for r in range(len(self._ring_info)):
-                    if i in self._ring_info[r]:
-                        self._x[i, 2] = r + 1
+                for r in range(len(self.ring_info)):
+                    if i in self.ring_info[r]:
+                        self.x[i, 2] = r + 1
 
                 # identify the oxygen atom in the main ring and set its id to 10
-                if self._x[i, 2] == 1 and self._x[i, 0] == 8:
-                    self._x[i, 1] = 10
+                if self.x[i, 2] == 1 and self.x[i, 0] == 8:
+                    self.x[i, 1] = 10
                     ringo = i
 
             self._enumerate_c_atoms(c_atoms, ringo)
-        return self._structure
+        return self.structure
 
     def _equidistant(self, start, end):
         """
@@ -510,18 +237,18 @@ class RDKitMonomer(Monomer):
         Returns:
             Bool indicating that the start id is the C1 atom
         """
-        c_start_candidates = np.argwhere((self._adjacency[start, :] == 1) &
-                                         (self._x[:, 0] == 6) & (self._x[:, 2] == 1)).squeeze()
-        c_end_candidates = np.argwhere((self._adjacency[end, :] == 1) &
-                                       (self._x[:, 0] == 6) & (self._x[:, 2] == 1)).squeeze()
+        c_start_candidates = np.argwhere((self.adjacency[start, :] == 1) &
+                                         (self.x[:, 0] == 6) & (self.x[:, 2] == 1)).squeeze()
+        c_end_candidates = np.argwhere((self.adjacency[end, :] == 1) &
+                                       (self.x[:, 0] == 6) & (self.x[:, 2] == 1)).squeeze()
         if c_start_candidates.size == 1 and c_end_candidates.size == 1:
             start_ring_c = int(c_start_candidates)
             end_ring_c = int(c_end_candidates)
 
-            start_ring_c_o_candidates = np.argwhere((self._adjacency[start_ring_c, :] == 1) &
-                                                    (self._x[:, 0] == 8) & (self._x[:, 2] != 1)).squeeze()
-            end_ring_c_o_candidates = np.argwhere((self._adjacency[end_ring_c, :] == 1) &
-                                                  (self._x[:, 0] == 8) & (self._x[:, 2] != 1)).squeeze()
+            start_ring_c_o_candidates = np.argwhere((self.adjacency[start_ring_c, :] == 1) &
+                                                    (self.x[:, 0] == 8) & (self.x[:, 2] != 1)).squeeze()
+            end_ring_c_o_candidates = np.argwhere((self.adjacency[end_ring_c, :] == 1) &
+                                                  (self.x[:, 0] == 8) & (self.x[:, 2] != 1)).squeeze()
 
             if start_ring_c_o_candidates.size == 1 and end_ring_c_o_candidates.size == 1:
                 raise UnreachableError("C1 atom cannot be detected")
@@ -543,11 +270,11 @@ class RDKitMonomer(Monomer):
         Returns:
             Bool indicating that the start id is the C1 atom
         """
-        adj = self._adjacency.copy()
+        adj = self.adjacency.copy()
 
         # as we have an adjacency matrix, multiply it with itself until one of the fields is non-zero
         while adj[start, ringo] == 0 and adj[end, ringo] == 0:
-            adj = adj @ self._adjacency
+            adj = adj @ self.adjacency
 
         # if both fields are non-zero, we cannot decide here and have to go further
         if adj[start, ringo] > 0 and adj[end, ringo] > 0:
@@ -575,7 +302,7 @@ class RDKitMonomer(Monomer):
             stack = stack[:-1]
             c_tree.add_node(c_id, p_id)
 
-            children = np.argwhere(self._adjacency[c_id] & (self._x[:, 0] == 6))
+            children = np.argwhere(self.adjacency[c_id] & (self.x[:, 0] == 6))
             for c in children:
                 if int(c) not in c_tree.nodes:
                     stack.append((c_id, int(c)))
@@ -589,10 +316,10 @@ class RDKitMonomer(Monomer):
         start, end = longest_c_chain[0], longest_c_chain[-1]
 
         # check conditions
-        start_o_conn = np.argwhere((self._adjacency[start, :] == 1) & (self._x[:, 0] == 8) &
-                                   (self._x[:, 2] != 1)).squeeze().size > 0
-        end_o_conn = np.argwhere((self._adjacency[end, :] == 1) & (self._x[:, 0] == 8) &
-                                 (self._x[:, 2] != 1)).squeeze().size > 0
+        start_o_conn = np.argwhere((self.adjacency[start, :] == 1) & (self.x[:, 0] == 8) &
+                                   (self.x[:, 2] != 1)).squeeze().size > 0
+        end_o_conn = np.argwhere((self.adjacency[end, :] == 1) & (self.x[:, 0] == 8) &
+                                 (self.x[:, 2] != 1)).squeeze().size > 0
 
         # decide on c1
         if start_o_conn and end_o_conn:
@@ -605,9 +332,9 @@ class RDKitMonomer(Monomer):
         c_count = 0
         for c in longest_c_chain:
             c_count += 1
-            self._x[c, 1] = c_count
+            self.x[c, 1] = c_count
 
-    def _find_oxygen(self, binding_c_id, check_for=None):
+    def find_oxygen(self, binding_c_id, check_for=None):
         """
         Find the oxygen atom that binds to the carbon atom with the provided id. The returned id may not refer to an
         oxygen atom in the ring of the monomer as this cannot bind anything. This method will report the atom id of the
@@ -627,12 +354,12 @@ class RDKitMonomer(Monomer):
             check_for = [8]
 
         # first find the rdkit id of the carbon atom that should bind to something
-        position = np.argwhere(self._x[:, 1] == binding_c_id).squeeze()
+        position = np.argwhere(self.x[:, 1] == binding_c_id).squeeze()
 
         for check in check_for:
             # then find the candidates. There should be exactly one element in the resulting array
-            candidates = np.argwhere((self._adjacency[position, :] == 1) &
-                                     (self._x[:, 0] == check) & (self._x[:, 2] != 1)).squeeze()
+            candidates = np.argwhere((self.adjacency[position, :] == 1) &
+                                     (self.x[:, 0] == check) & (self.x[:, 2] != 1)).squeeze()
             if candidates.size == 1:
                 return int(candidates)
 

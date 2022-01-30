@@ -85,8 +85,8 @@ class NXMonomer(Monomer):
         child_start = -1
 
         # find the ID of the oxygen atom to start the SMILES representation from
-        for _, x in self._get_structure().edges(binding_c_id):
-            if self._get_structure().nodes[x]["type"] == NXMonomer.Atom.O and 11 <= x <= 15:
+        for _, x in self.get_structure().edges(binding_c_id):
+            if self.get_structure().nodes[x]["type"] == NXMonomer.Atom.O and 11 <= x <= 15:
                 child_start = x
                 break
 
@@ -109,7 +109,7 @@ class NXMonomer(Monomer):
         Returns:
             Nothing
         """
-        monomer = self._get_structure()
+        monomer = self.get_structure()
 
         # and find that oxygen atom that will react with a hydrogen when connecting the glycans' monomers
         for _, x in monomer.edges(position):
@@ -129,9 +129,9 @@ class NXMonomer(Monomer):
         Returns:
             SMILES string representation of this molecule
         """
-        return SMILES().write(self._get_structure(), root, ring_index)
+        return SMILES().write(self.get_structure(), root, ring_index)
 
-    def _get_structure(self):
+    def get_structure(self):
         """
         Compute and save the structure of this glycan. So far its hard coded on the 4 given types of glycans
         Chirality refers to the OH/CH2OH group of the chiral C atom
@@ -139,7 +139,7 @@ class NXMonomer(Monomer):
         Returns:
             networkx graph representing the structure of the glycan as a graph of its non-hydrogen atoms.
         """
-        if self._structure is None:
+        if self.structure is None:
             g = nx.Graph()
             g.add_nodes_from([
                 (1, {"type": NXMonomer.Atom.C, "chiral": NXMonomer.Chirality.NONE, "ring": True}),
@@ -155,7 +155,7 @@ class NXMonomer(Monomer):
                 (14, {"type": NXMonomer.Atom.O, "chiral": NXMonomer.Chirality.NONE, "ring": False}),
                 (15, {"type": NXMonomer.Atom.O, "chiral": NXMonomer.Chirality.NONE, "ring": False}),
             ])
-            if self._name == "Glc":
+            if self.name == "Glc":
                 g.add_edges_from([
                     (10, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 10),
                     (1, 11), (2, 12), (3, 13), (4, 14), (5, 6), (6, 15),
@@ -164,7 +164,7 @@ class NXMonomer(Monomer):
                                            3: {"chiral": NXMonomer.Chirality.UP},
                                            4: {"chiral": NXMonomer.Chirality.DOWN},
                                            5: {"chiral": NXMonomer.Chirality.UP}})
-            elif self._name == "Man":
+            elif self.name == "Man":
                 g.add_edges_from([
                     (10, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 10),
                     (1, 11), (2, 12), (3, 13), (4, 14), (5, 6), (6, 15)
@@ -173,7 +173,7 @@ class NXMonomer(Monomer):
                                            3: {"chiral": NXMonomer.Chirality.UP},
                                            4: {"chiral": NXMonomer.Chirality.DOWN},
                                            5: {"chiral": NXMonomer.Chirality.UP}})
-            elif self._name == "Gal":
+            elif self.name == "Gal":
                 g.add_edges_from([
                     (10, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 10),
                     (1, 11), (2, 12), (3, 13), (4, 14), (5, 6), (6, 15),
@@ -182,7 +182,7 @@ class NXMonomer(Monomer):
                                            3: {"chiral": NXMonomer.Chirality.UP},
                                            4: {"chiral": NXMonomer.Chirality.UP},
                                            5: {"chiral": NXMonomer.Chirality.UP}})
-            elif self._name == "Tal":
+            elif self.name == "Tal":
                 g.add_edges_from([
                     (10, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 10),
                     (1, 11), (2, 12), (3, 13), (4, 14), (5, 6), (6, 15),
@@ -192,13 +192,13 @@ class NXMonomer(Monomer):
                                            4: {"chiral": NXMonomer.Chirality.UP},
                                            5: {"chiral": NXMonomer.Chirality.UP}})
 
-            if self._config == NXMonomer.Config.ALPHA:
+            if self.config == NXMonomer.Config.ALPHA:
                 nx.set_node_attributes(g, {1: {"chiral": NXMonomer.Chirality.DOWN}})
-            elif self._config == NXMonomer.Config.BETA:
+            elif self.config == NXMonomer.Config.BETA:
                 nx.set_node_attributes(g, {1: {"chiral": NXMonomer.Chirality.UP}})
 
-            self._structure = g
-        return self._structure
+            self.structure = g
+        return self.structure
 
 
 class DFS:

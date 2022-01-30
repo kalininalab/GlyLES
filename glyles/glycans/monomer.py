@@ -26,21 +26,21 @@ class Monomer:
             **kwargs: arguments to initialize monomer if object is None. Must include name, SMILES, and config
         """
         if origin is None:
-            self._name = kwargs["name"]
-            self._smiles = kwargs["smiles"]
-            self._structure = kwargs.get("struct", None)
-            self._config = kwargs["config"]
-            self._isomer = kwargs["isomer"]
-            self._lactole = kwargs["lactole"]
-            self._recipe = kwargs["recipe"]
+            self.name = kwargs["name"]
+            self.smiles = kwargs["smiles"]
+            self.structure = kwargs.get("struct", None)
+            self.config = kwargs["config"]
+            self.isomer = kwargs["isomer"]
+            self.lactole = kwargs["lactole"]
+            self.recipe = kwargs["recipe"]
         else:
-            self._name = origin.get_name()
-            self._smiles = origin.get_smiles()
-            self._structure = origin.get_structure()
-            self._config = origin.get_config()
-            self._isomer = origin.get_isomer()
-            self._lactole = origin.get_lactole()
-            self._recipe = origin.get_recipe()
+            self.name = origin.get_name()
+            self.smiles = origin.get_smiles()
+            self.structure = origin.get_structure()
+            self.config = origin.get_config()
+            self.isomer = origin.get_isomer()
+            self.lactole = origin.get_lactole()
+            self.recipe = origin.get_recipe()
 
     def get_name(self):
         """
@@ -50,7 +50,7 @@ class Monomer:
         Returns:
             The name of this monomer
         """
-        return self._name
+        return self.name
 
     def get_smiles(self):
         """
@@ -62,7 +62,7 @@ class Monomer:
         Returns:
             The SMILES string that was used for initialization of this monomer
         """
-        return self._smiles
+        return self.smiles
 
     def get_structure(self):
         """
@@ -72,7 +72,7 @@ class Monomer:
         Returns:
             Structure depending on the methods chosen to represent the structure of this monomer, might be Null
         """
-        return self._structure
+        return self.structure
 
     def alpha(self, factory):
         """
@@ -84,7 +84,7 @@ class Monomer:
         Returns:
             Monomer in alpha conformation
         """
-        return Monomer(factory["A_" + self._name])
+        return Monomer(factory["A_" + self.name])
 
     def beta(self, factory):
         """
@@ -96,7 +96,7 @@ class Monomer:
         Returns:
             Monomer in beta conformation
         """
-        return Monomer(factory["B_" + self._name])
+        return Monomer(factory["B_" + self.name])
 
     def undefined(self, factory):
         """
@@ -109,7 +109,7 @@ class Monomer:
         Returns:
             Monomer in undefined conformation
         """
-        return Monomer(factory[self._name])
+        return Monomer(factory[self.name])
 
     def to_chirality(self, chirality, factory):
         """
@@ -136,7 +136,7 @@ class Monomer:
         Returns:
             Config-Tag according to the conformation this monomer represents
         """
-        return self._config
+        return self.config
 
     def get_isomer(self):
         """
@@ -145,7 +145,7 @@ class Monomer:
         Returns:
             Enantiomer-Tag according to the isomer this monomer represents
         """
-        return self._isomer
+        return self.isomer
 
     def get_lactole(self):
         """
@@ -154,7 +154,7 @@ class Monomer:
         Returns:
             Lactole-Tag according to the lactole-form this monomer represents
         """
-        return self._lactole
+        return self.lactole
 
     def get_recipe(self):
         """
@@ -163,7 +163,7 @@ class Monomer:
         Returns:
             Recipe as list of modifications, confirmations and the root monomer as type List[Tuple[str, int]]
         """
-        return self._recipe
+        return self.recipe
 
     def is_non_chiral(self):
         """
@@ -172,7 +172,7 @@ class Monomer:
         Returns:
             boolean indicating chirality of this monomer
         """
-        return self._config == Config.UNDEF
+        return self.config == Config.UNDEF
 
     def get_dummy_atoms(self):
         """
@@ -225,7 +225,7 @@ class Monomer:
         """
         raise NotImplementedError
 
-    def _get_structure(self):
+    def get_structure(self):
         """
         Compute and save the structure of this glycan.
 

@@ -104,13 +104,6 @@ class TestDerivatives:
         assert output[0][0] == iupac
         compare_smiles(output[0][1], smiles)
 
-    def test_file_detail(self, line="Fru2Pfb\tC([C@@H]1[C@H]([C@@H]([C@](O1)(CO)OP(=O)(O)O)O)O)O\n\n"):
-        iupac, smiles = line.strip().split("\t")
-        output = convert(iupac, returning=True)
-
-        assert output[0][0] == iupac
-        compare_smiles(output[0][1], smiles)
-
     @pytest.mark.parametrize("line", open("./oracle.txt", "r").readlines())
     def test_oracle(self, line):
         iupac = line.strip()
@@ -118,3 +111,19 @@ class TestDerivatives:
 
         assert output[0][0] == iupac
         assert output[0][1] != ""
+
+    @pytest.mark.parametrize("line", open("./oracle.txt", "r").readlines())
+    def test_file_detail(self, line):
+        iupac = line.strip()
+
+        old_stdout = sys.stdout
+        sys.stdout = stdout = StringIO()
+
+        output = convert(iupac, returning=True)
+
+        sys.stdout = old_stdout
+        std_output = stdout.getvalue()
+
+        assert output[0][0] == iupac
+        assert output[0][1] != ""
+        assert (len(std_output) == 0 or std_output.startswith("ModificationNotImplementedWarning"))
