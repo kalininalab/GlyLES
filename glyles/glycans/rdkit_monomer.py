@@ -198,7 +198,7 @@ class RDKitMonomer(Monomer):
             self.structure = MolFromSmiles(self.smiles)
 
             # extract some further information from the molecule to not operate always on the molecule
-            self.adjacency = GetAdjacencyMatrix(self.structure)
+            self.adjacency = GetAdjacencyMatrix(self.structure, useBO=True)
             self.ring_info = self.structure.GetRingInfo().AtomRings()
             self.x = np.zeros((self.adjacency.shape[0], 3))
 
@@ -302,7 +302,7 @@ class RDKitMonomer(Monomer):
             stack = stack[:-1]
             c_tree.add_node(c_id, p_id)
 
-            children = np.argwhere(self.adjacency[c_id] & (self.x[:, 0] == 6))
+            children = np.argwhere((self.adjacency[c_id, :] == 1) & (self.x[:, 0] == 6))
             for c in children:
                 if int(c) not in c_tree.nodes:
                     stack.append((c_id, int(c)))

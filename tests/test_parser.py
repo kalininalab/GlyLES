@@ -49,7 +49,7 @@ class TestParser:
                                        "Man(b1-2)Gala", "Man(b1-2)Galb", "Man(b1-2)Galp", "Man(b1-2)Galf",
                                        "Man(b1-2)Galpa", "Man(b1-2)Galpb", "Man(b1-2)Galfa", "Man(b1-2)Galfb"])
     def test_grammar_main(self, iupac):
-        assert Glycan(iupac, MonomerFactory(), tree_only=False).get_tree() is not None
+        assert Glycan(iupac, MonomerFactory(), tree_only=True).get_tree() is not None
 
     def test_parse_1(self):
         factory = MonomerFactory()
@@ -74,7 +74,7 @@ class TestParser:
             iupac += " a"
         elif config == Config.BETA:
             iupac += " b"
-        g = Glycan(iupac, factory, tree_only=False).get_tree()
+        g = Glycan(iupac, factory, tree_only=True).get_tree()
 
         check_initial(g, mono, 0, config, lactole=Lactole.PYRANOSE)
 
@@ -88,7 +88,7 @@ class TestParser:
             iupac += " a"
         elif config == Config.BETA:
             iupac += " b"
-        g = Glycan(iupac, factory, tree_only=False).get_tree()
+        g = Glycan(iupac, factory, tree_only=True).get_tree()
 
         check_initial(g, mono, 0, config, lactole=Lactole.FURANOSE)
 
@@ -306,7 +306,7 @@ class TestParser:
             iupac += " b"
 
         factory = MonomerFactory()
-        g = Glycan(iupac, factory, tree_only=False).get_tree()
+        g = Glycan(iupac, factory, tree_only=True).get_tree()
 
         check_initial(g, monomers[4], 1, orientation, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
@@ -359,7 +359,7 @@ class TestParser:
             iupac += " b"
 
         factory = MonomerFactory()
-        g = Glycan(iupac, factory, tree_only=False).get_tree()
+        g = Glycan(iupac, factory, tree_only=True).get_tree()
 
         check_initial(g, monomers[4][:-1], 1, orientation, lactole=lactoles[2][4])
         id_child_1 = list(g.edges(0))[0][1]

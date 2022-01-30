@@ -7,13 +7,29 @@ class FuranoseFactory:
     """
 
     __monomers = {
+        # Hexose
+        "HEX": {"name": "Glc", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                "smiles": "C(C(C1C(C(C(O1)O)O)O)O)O"},
+        "A_HEX": {"name": "Glc", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                  "smiles": "OCC(O)C1O[C@H](O)C(O)C1O"},
+        "B_HEX": {"name": "Glc", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                  "smiles": "OCC(O)C1O[C@@H](O)C(O)C1O"},
+
+        # Pentose
+        "PEN": {"name": "Glc", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                "smiles": "OC[C@H](O)[C@H]1O[C@H](O)[C@H](O)[C@H]1O"},
+        "A_PEN": {"name": "Glc", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                  "smiles": "OC[C@H](O)[C@H]1O[C@@H](O)[C@H](O)[C@H]1O"},
+        "B_PEN": {"name": "Glc", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                  "smiles": "OC[C@H](O)[C@H]1OC(O)[C@H](O)[C@H]1O"},
+
         # Glucose
         "GLC": {"name": "Glc", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
-                "smiles": "OC[C@H](O)[C@H]1O[C@H](O)[C@H](O)[C@H]1O"},
+                "smiles": "C(C1C(C(C(O1)O)O)O)O"},
         "A_GLC": {"name": "Glc", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
-                  "smiles": "OC[C@H](O)[C@H]1O[C@@H](O)[C@H](O)[C@H]1O"},
+                  "smiles": "OCC1O[C@H](O)C(O)C1O"},
         "B_GLC": {"name": "Glc", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
-                  "smiles": "OC[C@H](O)[C@H]1OC(O)[C@H](O)[C@H]1O"},
+                  "smiles": "OCC1O[C@@H](O)C(O)C1O"},
 
         # Mannose
         "MAN": {"name": "Man", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,

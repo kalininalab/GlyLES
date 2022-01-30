@@ -7,6 +7,22 @@ class PyranoseFactory:
     """
 
     __monomers = {
+        # Hexose
+        "HEX": {"name": "Glc", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+                "smiles": "C(C1C(C(C(C(O1)O)O)O)O)O"},
+        "A_HEX": {"name": "Glc", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+                  "smiles": "OCC1O[C@H](O)C(O)C(O)C1O"},
+        "B_HEX": {"name": "Glc", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+                  "smiles": "OCC1O[C@@H](O)C(O)C(O)C1O"},
+
+        # Pentose
+        "PEN": {"name": "Glc", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+                "smiles": "C1C(C(C(C(O1)O)O)O)O"},
+        "A_PEN": {"name": "Glc", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+                  "smiles": "OC1CO[C@H](O)C(O)C1O"},
+        "B_PEN": {"name": "Glc", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+                  "smiles": "OC1CO[C@@H](O)C(O)C1O"},
+
         # Glucose
         "GLC": {"name": "Glc", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                 "smiles": "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"},

@@ -165,7 +165,7 @@ class MonomerFactory:
 
         # get the monomer from the factory
         try:
-            if ring_index is not None and recipe[ring_index][0] == "f":
+            if ring_index is not None and recipe[ring_index][0] == "f" and name in self.furanoses_fac:
                 monomer = monomer_class(**self.furanoses_fac[name], recipe=recipe)
             else:
                 monomer = monomer_class(**self.pyranoses_fac[name], recipe=recipe)
