@@ -2,10 +2,8 @@ import numpy as np
 import pytest
 
 from glyles.glycans.factory.factory import MonomerFactory
-from glyles.glycans.rdkit_monomer import RDKitMonomer
 from glyles.glycans.utils import Config, Lactole
 from glyles.grammar.parse import Glycan
-from tests.test_smiles import compare_smiles
 
 
 def check_initial(g, name, num_children, config=None, lactole=None):
@@ -36,11 +34,23 @@ def split_children(g, id_children, child_1):
 
 
 class TestParser:
-    def test_grammar_simple(self):
+    """def test_grammar_simple(self):
         factory = MonomerFactory()
         g = Glycan("3dMan5S6Pfa", factory).get_tree()
 
-        check_initial(g, "Man", 0, Config.ALPHA, lactole=Lactole.FURANOSE)
+        check_initial(g, "Man", 0, Config.ALPHA, lactole=Lactole.FURANOSE)"""
+
+    def test_extreme_1(self):
+        factory = MonomerFactory()
+        g = Glycan("Gal(a1-4)" * 9 + "Glc", factory)
+        print("\n" + g.get_smiles())
+        check_initial(g.get_tree(), "Glc", 1, Config.UNDEF, lactole=Lactole.PYRANOSE)
+
+    def test_extreme_2(self):
+        factory = MonomerFactory()
+        g = Glycan("Gal(a1-4)" * 8 + "[" + "Man(b1-3)" * 8 + "]" + "Glc", factory)
+        print("\n" + g.get_smiles())
+        check_initial(g.get_tree(), "Glc", 2, Config.UNDEF, lactole=Lactole.PYRANOSE)
 
     @pytest.mark.parametrize("iupac", ["Man", "Man a", "Man b", "Mana", "Manb", "Manp", "Manf", "Manpa", "Manpb",
                                        "Manfa", "Manfb", "Man(a1-2)Gal", "Man(a1-2)Gal a", "Man(a1-2)Gal b",
