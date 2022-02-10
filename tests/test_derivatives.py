@@ -5,6 +5,7 @@ import pytest
 
 from glyles.converter import convert
 from glyles.glycans.factory.factory import MonomerFactory
+from glyles.glycans.utils import ParseError
 from glyles.grammar.parse import Glycan
 from tests.test_smiles import compare_smiles
 
@@ -109,12 +110,12 @@ class TestDerivatives:
     @pytest.mark.parametrize("line", open("./oracle.txt", "r").readlines())
     def test_oracle(self, line):
         iupac = line.strip()
-        output = Glycan(iupac, MonomerFactory(), tree_only=True).get_tree()
-
-        assert output is not None
-
-    def test_oracle_detail(self, line="1,5-Anhydro-GlcN2S-ol\n"):
-        iupac = line.strip()
-        output = Glycan(iupac, MonomerFactory(), tree_only=True).get_tree()
+        output = None
+        try:
+            output = Glycan(iupac, MonomerFactory(), tree_only=True).get_tree()
+        except ParseError:
+            with open("./not_parsed.txt", "a") as tmp:
+                tmp.write(line)
+                tmp.close()
 
         assert output is not None

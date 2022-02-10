@@ -16,13 +16,16 @@ deriv:
     MOD* SAC RING TYPE MOD* | MOD* SAC TYPE MOD* | MOD* SAC RING MOD* | MOD* SAC MOD*;
 
 SAC:
-    'Glc' | 'Man' | 'Gal' | 'Gul' | 'Alt' | 'All' | 'Tal' | 'Ido' | 'Qui' | 'Rha' | 'Fuc' | 'Oli' | 'Tyv' | 'Abe'
-    | 'Par' | 'Dig' | 'Col' | 'Ara' | 'Lyx' | 'Xyl' | 'Rib' | 'Kdn' | 'Neu' | 'Pse' | 'Leg' | 'Aci' | 'Bac'
-    | 'LDmanHep' | 'Kdo' | 'Dha' | 'DDmanHep' | 'Mur' | 'Api' | 'Fru' | 'Tag' | 'Sor' | 'Psi';
+    'Hex' | 'Pen' | 'Glc' | 'Man' | 'Gal' | 'Gul' | 'Alt' | 'All' | 'Tal' | 'Ido' | 'Qui' | 'Rha' | 'Fuc' | 'Oli'
+    | 'Tyv' | 'Abe' | 'Par' | 'Dig' | 'Col' | 'Ara' | 'Lyx' | 'Xyl' | 'Rib' | 'Kdn' | 'Neu' | 'Pse' | 'Leg' | 'Aci'
+    | 'Bac' | 'LDmanHep' | 'Kdo' | 'Dha' | 'DDmanHep' | 'Mur' | 'Api' | 'Fru' | 'Tag' | 'Sor' | 'Psi';
 MOD:
-    NUM ',' NUM '-Anhydro-' | NUM ('-O-Me-' | '-O-Ac-')
-    | (NUM | 'O') ('Me' | 'Ac' | 'S' | 'P' | 'N' | 'F' | 'd' | 'e')
-    | '-onic' | 'NAc' | '-ol' | 'O' ('Me' | 'Ac') | '0d' | 'D-' | 'L-' | 'Ac' | 'A' | 'N';
+    NUM ',' NUM '-Anhydro-' | NUM ('-O-Ac-' | '-O-Me-')
+    | NUM 'N' ('SerAc' | 'ThrAc' | 'But' | 'Me')
+    | (NUM | 'O') ('Prop' | 'Ala' | 'But'| 'Etn' | 'Fer' | 'Lac' | 'Gro' | 'Hxo' | 'Lin' | 'Oco' | 'Ole' | 'Pyr'
+        | 'Ac' | 'Am' | 'Fo' | 'Me' | 'Gc' | 'Gr' | 'PP' | 'S' | 'P' | 'N' | 'F' | 'd' | 'e')
+    | 'N' ('But' | 'Lac' | 'Ac' | 'Fo' | 'Me')
+    | '-ulosaric' | '-uronic' | '-onic' | '-aric' | 'Ala' | 'Ser' | '-ol' | '0d' | 'D-' | 'L-' | 'Ac' | 'CN' | 'A' | 'N';
 CON:
     '(' TYPE NUM '-' NUM ')';
 TYPE:
