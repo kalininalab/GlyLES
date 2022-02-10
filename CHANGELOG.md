@@ -1,6 +1,6 @@
 # Change Log
 
-## v0.2.1 - 2022-0?-??
+## v0.2.1 - 2022-02-10
 
 Release for 17th German Conference on Chemoinformatics and EuroSAMPL Satellite Workshop
 ([Link](https://veranstaltungen.gdch.de/tms/frontend/index.cfm?l=10916&sp_id=2))
