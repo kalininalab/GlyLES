@@ -50,7 +50,8 @@ class Monomer:
         Returns:
             The name of this monomer
         """
-        return self.name
+        # return self._name
+        return "".join((s for s, _ in self.recipe))
 
     def get_smiles(self):
         """

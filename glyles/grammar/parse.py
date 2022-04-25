@@ -321,17 +321,21 @@ class Glycan:
         mol = MolFromSmiles(self.glycan_smiles)
         raise NotImplementedError("PDB conversion planned, but not implemented yet.")
 
-    def save_dot(self, output):
+    def save_dot(self, output, horizontal=False):
         """
         Save the tree structure of the encoded glycan molecule into a dot file visualizing the graph of monomers.
 
         Args:
             output (str): path to store the DOT file in
+            horizontal (bool): Show graph in horizontal orientation from left to right
 
         Returns:
             Nothing
         """
-        graph = pydot.Dot("iupac_tree")
+        if horizontal:
+            graph = pydot.Dot("iupac_tree", rankdir="LR")
+        else:
+            graph = pydot.Dot("iupac_tree")
         for node in range(len(self.parse_tree.nodes)):
             graph.add_node(pydot.Node(node, label=self.parse_tree.nodes[node]["type"].get_name()))
         for edge in self.parse_tree.edges():
