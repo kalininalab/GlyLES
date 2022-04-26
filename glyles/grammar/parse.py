@@ -337,7 +337,7 @@ class Glycan:
         else:
             graph = pydot.Dot("iupac_tree")
         for node in range(len(self.parse_tree.nodes)):
-            graph.add_node(pydot.Node(node, label=self.parse_tree.nodes[node]["type"].get_name()))
+            graph.add_node(pydot.Node(node, label=self.parse_tree.nodes[node]["type"].get_name(full=True)))
         for edge in self.parse_tree.edges():
             graph.add_edge(pydot.Edge(*edge, label=self.parse_tree.get_edge_data(*edge)["type"]))
         graph.write(output + ".dot")

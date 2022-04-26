@@ -9,7 +9,7 @@
 * Nitrogen-groups
   * i.e. GalN or Gal3N
 * Acid-groups
-  * i.e. GalA or GalNAc or Gal2Ac or 2-O-Me-Gal
+  * i.e. GalA or GalNAc or Gal2Ac
 * Methyl-groups
   * i.e. Gal2Me or 2-O-Me-Gal
 * Desoxygenation

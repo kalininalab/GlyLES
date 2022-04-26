@@ -42,16 +42,20 @@ class Monomer:
             self.lactole = origin.get_lactole()
             self.recipe = origin.get_recipe()
 
-    def get_name(self):
+    def get_name(self, full=False):
         """
         Returns the name of this monomer as three-letter code (eventually longer for more fancy monosaccharides with
         more complex side chains).
 
+        Args:
+            full (bool): Flag indicating to also output recipe of monomer
+
         Returns:
             The name of this monomer
         """
-        # return self._name
-        return "".join((s for s, _ in self.recipe))
+        if full:
+            return "".join((s for s, _ in self.recipe))
+        return self.name
 
     def get_smiles(self):
         """
