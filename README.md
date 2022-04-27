@@ -18,7 +18,6 @@ This implementation currently only works for glycans that fulfill certain proper
   (GalNAc is seen as modification of galactose)
 * Some modifications can be added to the monomers, please see the [README](glyles/grammar/README.md) in the grammar
 folder for more information on this. 
-* No path from the root to any leaf-monomer might have more than 9 monomers in sequence
 
 ## Installation
 

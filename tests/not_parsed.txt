@@ -1,4 +1,4 @@
-	New Monomer
+New Monomer
 		Pen-/Hep-/Hex-/Octextension
 				New extension
 					Unknown

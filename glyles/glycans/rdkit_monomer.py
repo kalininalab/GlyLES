@@ -171,7 +171,7 @@ class RDKitMonomer(Monomer):
         """
         smiles = MolToSmiles(self.get_structure(), rootedAtAtom=root)
         smiles.replace("At", "O-")
-        return "".join([(str(int(c) + ring_index) if c.isdigit() else c) for c in smiles])
+        return "".join([((f"%{int(c) + ring_index}" if int(c) + ring_index >= 10 else f"{int(c) + ring_index}") if c.isdigit() else c) for c in smiles])
 
     def react(self, names, types):
         """

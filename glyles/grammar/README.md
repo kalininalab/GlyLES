@@ -2,16 +2,22 @@
 
 ## Implemented Modifications
 
-* Sulfur-groups
-  * i.e. Gal3S
-* Phosphate-groups
-  * i.e. Gal3P
-* Nitrogen-groups
-  * i.e. GalN or Gal3N
-* Acid-groups
-  * i.e. GalA or GalNAc or Gal2Ac
-* Methyl-groups
-  * i.e. Gal2Me or 2-O-Me-Gal
-* Desoxygenation
-  * i.e. 3dGal
-  * This can be parsed but not converted into SMILES. Currently, it is just discarded.
+| Modification     | Example              | parsable | convertable |
+|------------------|----------------------|----------|-------------|
+| Sulfur groups    | Gal3S                | &check;  | &check;     |
+| Phosphate groups | Gal3P                | &check;  | &check;     |
+| Fluor groups     | Gal3F                | &check;  | &cross;     |
+| Nitrogen gropus  | GalN<br>Gal3N        | &check;  | &check;     |
+| Acid groups      | Gal3S<br>2-O-Ac-Gal  | &check;  | &check;     |
+| Methyl groups    | Gal2Me<br>2-O-Me-Gal | &check;  | &check;     |
+| Desoxygenation   | 3dGal                | &check;  | &cross;     |
+| ???              | 3eGal                | &check;  | &cross;     |
+| Enantiomers      | L-Gal<br>D-Gal       | &check;  | &cross;     |
+
+###### parsable 
+the modification might be in the input glycan and will not raise an exception when parsed. When
+converting glycans with parsable modifications, the modification might not necessarily be present in the resulting
+SMILES string.
+
+###### convertible
+the modification can also be converted into a SMILES string.

@@ -107,6 +107,7 @@ class TestDerivatives:
         assert output[0][0] == iupac
         compare_smiles(output[0][1], smiles)
 
+    """
     @pytest.mark.parametrize("line", open("./oracle.txt", "r").readlines())
     def test_oracle(self, line):
         iupac = line.strip()
@@ -114,8 +115,9 @@ class TestDerivatives:
         try:
             output = Glycan(iupac, MonomerFactory(), tree_only=True).get_tree()
         except ParseError:
-            with open("./not_parsed.txt", "a") as tmp:
+            with open("./still_not_parsed.txt", "a") as tmp:
                 tmp.write(line)
                 tmp.close()
 
         assert output is not None
+    """
