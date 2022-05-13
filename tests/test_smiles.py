@@ -151,7 +151,7 @@ class TestSMILES:
 
         compare_smiles(Glycan(name1, factory).get_smiles(), Glycan(name2, factory).get_smiles(), equal=False)
 
-    @pytest.mark.parametrize("structure", ["X?", "XX?", "?(a1-2)[Y]?", "?(a1-2)[Z]?(a1-4)?", "Z?(a1-2)[Y]?",
+    @pytest.mark.parametrize("structure", ["X?", "XX?", "?(a1-2)[X]?", "?(a1-2)[Y]?(a1-4)?", "Y?(a1-2)[X]?",
                                            "Z?(a1-2)[Y]X?"])
     def test_length(self, structure):
         arm = "?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)"
@@ -161,8 +161,12 @@ class TestSMILES:
         mol = Chem.MolFromSmiles(smiles)
         rings = mol.GetRingInfo().AtomRings()
 
+        print(smiles)
+
         assert len(rings) == structure.count("?")
         for ring in rings:
             assert len(ring) == 6
+        assert smiles.count('%') > 0
+        assert smiles.count('%') % 2 == 0
 
         compare_smiles(smiles, Chem.MolToSmiles(mol))
