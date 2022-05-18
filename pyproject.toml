@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "glyles"
-version = "0.2.1"
+version = "0.3.1"
 readme = "README.md"
 description = "A tool to convert IUPAC representation of glycans into SMILES strings"
-authors = ["Roman Joeres <Roman.Joeres@helmholtz-hzi.de>"]
+authors = ["Roman Joeres <roman.joeres@helmholtz-hips.de>"]
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 3 - Alpha",
     "Operating System :: OS Independent"
 ]
 
@@ -13,7 +13,7 @@ classifiers = [
 python = ">=3.7,<3.11"
 numpy = "^1.21.4"
 rdkit-pypi = "^2021.9.2"
-antlr4-python3-runtime = "^4.9.3"
+antlr4-python3-runtime = "==4.9.3"
 networkx = "^2.6.3"
 pydot = "^1.4.2"
 
