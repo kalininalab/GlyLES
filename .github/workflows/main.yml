@@ -1,0 +1,34 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Testing
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - "*"
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "test"
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: Install poetry
+        uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: 1.0
+      - name: Install dependencies
+        run: poetry install
+      - name: Run tests
+        run: |
+          cd tests
+          poetry run python -m pytest
