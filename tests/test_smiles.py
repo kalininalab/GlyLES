@@ -3,103 +3,14 @@ from itertools import combinations
 import pytest
 from rdkit import Chem
 
+from glyles.converter import convert
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import Mode, Config
 from glyles.grammar.parse import Glycan
-
-
-def compare_smiles(computed, solution, equal=True):
-    c = Chem.MolFromSmiles(computed)
-    Chem.Kekulize(c)
-    c_rdkit = Chem.MolToSmiles(c, kekuleSmiles=True)
-
-    s = Chem.MolFromSmiles(solution)
-    Chem.Kekulize(s)
-    s_rdkit = Chem.MolToSmiles(s, kekuleSmiles=True)
-
-    if equal:
-        assert c_rdkit == s_rdkit
-    else:
-        assert c_rdkit != s_rdkit
+from tests.utils import compare_smiles, catch_output, smiles_samples_simple
 
 
 class TestSMILES:
-    smiles_samples_simple = [
-        ("Gal(a1-4)Gal",
-         "OC[C@H]1O[C@H](O[C@H]2[C@@H](CO)OC(O)[C@H](O)[C@H]2O)[C@H](O)[C@@H](O)[C@H]1O",
-         "OC[C@H]1O[C@H](O[C@H]2[C@@H](CO)O[C@H](O)[C@H](O)[C@H]2O)[C@H](O)[C@@H](O)[C@H]1O",  # alpha
-         "OC[C@H]1O[C@H](O[C@H]2[C@@H](CO)O[C@@H](O)[C@H](O)[C@H]2O)[C@H](O)[C@@H](O)[C@H]1O"),  # beta
-
-        ("Man(a1-3)[Man(a1-6)]Man",
-         "OC[C@H]3O[C@H](OC[C@H]2OC(O)[C@@H](O)[C@@H](O[C@H]1O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]1O)[C@@H]2O)[C@@H](O)"
-         "[C@@H](O)[C@@H]3O",
-         "OC[C@H]1O[C@H](OC[C@H]2O[C@H](O)[C@@H](O)[C@@H](O[C@H]3O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]3O)[C@@H]2O)[C@@H](O)"
-         "[C@@H](O)[C@@H]1O",  # alpha
-         "OC[C@H]1O[C@H](OC[C@H]2O[C@@H](O)[C@@H](O)[C@@H](O[C@H]3O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]3O)[C@@H]2O)[C@@H]"
-         "(O)[C@@H](O)[C@@H]1O"),  # beta
-
-        ("Man(a1-2)Man(a1-3)[Man(a1-3)Man(a1-6)]Man",
-         "OC[C@H]5O[C@H](O[C@H]4[C@H](O)[C@@H](CO)O[C@H](OC[C@H]3OC(O)[C@@H](O)[C@@H](O[C@H]1O[C@H](CO)[C@@H](O)[C@H]"
-         "(O)[C@@H]1O[C@H]2O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]2O)[C@@H]3O)[C@H]4O)[C@@H](O)[C@@H](O)[C@@H]5O",
-         "OC[C@H]5O[C@H](O[C@H]4[C@H](O)[C@@H](CO)O[C@H](OC[C@H]3O[C@H](O)[C@@H](O)[C@@H](O[C@H]1O[C@H](CO)[C@@H](O)"
-         "[C@H](O)[C@@H]1O[C@H]2O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]2O)[C@@H]3O)[C@H]4O)[C@@H](O)[C@@H](O)[C@@H]5O",  # a
-         "OC[C@H]1O[C@H](O[C@H]2[C@@H](O)[C@H](O)[C@@H](CO)O[C@@H]2O[C@@H]2[C@H](O)[C@H](O)O[C@H](CO[C@H]3O[C@H](CO)"
-         "[C@@H](O)[C@H](O[C@H]4O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]4O)[C@@H]3O)[C@H]2O)[C@@H](O)[C@@H](O)[C@@H]1O"),  # b
-
-        ("Gal(b1-4)Glc",
-         "OC[C@H]2O[C@@H](O[C@H]1[C@H](O)[C@@H](O)C(O)O[C@@H]1CO)[C@H](O)[C@@H](O)[C@H]2O",
-         "OC[C@H]2O[C@@H](O[C@H]1[C@H](O)[C@@H](O)[C@@H](O)O[C@@H]1CO)[C@H](O)[C@@H](O)[C@H]2O",  # alpha
-         "OC[C@H]2O[C@@H](O[C@H]1[C@H](O)[C@@H](O)[C@H](O)O[C@@H]1CO)[C@H](O)[C@@H](O)[C@H]2O"),  # beta
-
-        ("Gal(b1-3)Glc",
-         "OC[C@H]2O[C@@H](O[C@@H]1[C@@H](O)C(O)O[C@H](CO)[C@H]1O)[C@H](O)[C@@H](O)[C@H]2O",
-         "OC[C@H]2O[C@@H](O[C@@H]1[C@@H](O)[C@@H](O)O[C@H](CO)[C@H]1O)[C@H](O)[C@@H](O)[C@H]2O",  # alpha
-         "OC[C@H]1O[C@@H](O[C@@H]2[C@@H](O)[C@H](O)O[C@H](CO)[C@H]2O)[C@H](O)[C@@H](O)[C@H]1O"),  # beta
-
-        ("Glc(b1-3)Glc",
-         "OC[C@H]2O[C@@H](O[C@@H]1[C@@H](O)C(O)O[C@H](CO)[C@H]1O)[C@H](O)[C@@H](O)[C@@H]2O",
-         "OC[C@H]2O[C@@H](O[C@@H]1[C@@H](O)[C@@H](O)O[C@H](CO)[C@H]1O)[C@H](O)[C@@H](O)[C@@H]2O",  # alpha
-         "OC[C@H]1O[C@@H](O[C@@H]2[C@@H](O)[C@H](O)O[C@H](CO)[C@H]2O)[C@H](O)[C@@H](O)[C@@H]1O"),  # beta
-
-        ("Gal(b1-4)Gal",
-         "OC[C@H]2O[C@@H](O[C@@H]1[C@H](O)[C@@H](O)C(O)O[C@@H]1CO)[C@H](O)[C@@H](O)[C@H]2O",
-         "OC[C@H]2O[C@@H](O[C@@H]1[C@H](O)[C@@H](O)[C@@H](O)O[C@@H]1CO)[C@H](O)[C@@H](O)[C@H]2O",  # alpha
-         "OC[C@H]1O[C@@H](O[C@H]2[C@@H](CO)O[C@@H](O)[C@H](O)[C@H]2O)[C@H](O)[C@@H](O)[C@H]1O"),  # beta
-
-        ("Man(a1-4)Man",
-         "OC[C@H]2O[C@H](O[C@H]1[C@H](O)[C@H](O)C(O)O[C@@H]1CO)[C@@H](O)[C@@H](O)[C@@H]2O",
-         "OC[C@H]2O[C@H](O[C@H]1[C@H](O)[C@H](O)[C@@H](O)O[C@@H]1CO)[C@@H](O)[C@@H](O)[C@@H]2O",  # alpha
-         "OC[C@H]1O[C@H](O[C@@H]2[C@@H](CO)O[C@@H](O)[C@@H](O)[C@H]2O)[C@@H](O)[C@@H](O)[C@@H]1O"),  # beta
-
-        ("Man(a1-3)Man",
-         "OC[C@H]2O[C@H](O[C@@H]1[C@H](O)C(O)O[C@H](CO)[C@H]1O)[C@@H](O)[C@@H](O)[C@@H]2O",
-         "OC[C@H]2O[C@H](O[C@@H]1[C@H](O)[C@@H](O)O[C@H](CO)[C@H]1O)[C@@H](O)[C@@H](O)[C@@H]2O",  # alpha
-         "OC[C@H]1O[C@H](O[C@@H]2[C@H](O)[C@H](O)O[C@H](CO)[C@H]2O)[C@@H](O)[C@@H](O)[C@@H]1O"),  # beta
-
-        ("Gal(a1-4)Gal(b1-4)Glc",
-         "OC[C@H]3O[C@H](O[C@@H]2[C@H](O)[C@@H](O)[C@H](O[C@H]1[C@H](O)[C@@H](O)C(O)O[C@@H]1CO)O[C@@H]2CO)[C@H](O)"
-         "[C@@H](O)[C@H]3O",
-         "OC[C@H]3O[C@H](O[C@@H]2[C@H](O)[C@@H](O)[C@H](O[C@H]1[C@H](O)[C@@H](O)[C@@H](O)O[C@@H]1CO)O[C@@H]2CO)[C@H](O)"
-         "[C@@H](O)[C@H]3O",  # alpha
-         "OC[C@H]3O[C@H](O[C@@H]2[C@H](O)[C@@H](O)[C@H](O[C@H]1[C@H](O)[C@@H](O)[C@H](O)O[C@@H]1CO)O[C@@H]2CO)[C@H](O)"
-         "[C@@H](O)[C@H]3O"),  # beta
-
-        ("Gal(a1-3)Gal",
-         "OC[C@H]2O[C@H](O[C@@H]1[C@@H](O)C(O)O[C@H](CO)[C@@H]1O)[C@H](O)[C@@H](O)[C@H]2O",
-         "OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O[C@H]2O[C@H](CO)[C@H](O)[C@H](O)[C@H]2O)[C@H]1O",  # alpha
-         "OC[C@H]2O[C@H](O[C@@H]1[C@@H](O)[C@H](O)O[C@H](CO)[C@@H]1O)[C@H](O)[C@@H](O)[C@H]2O"),  # beta
-
-        ("Glc(a1-3)Glc",
-         "OC[C@H]2O[C@H](O[C@@H]1[C@@H](O)C(O)O[C@H](CO)[C@H]1O)[C@H](O)[C@@H](O)[C@@H]2O",
-         "OC[C@H]2O[C@H](O[C@@H]1[C@@H](O)[C@@H](O)O[C@H](CO)[C@H]1O)[C@H](O)[C@@H](O)[C@@H]2O",  # alpha
-         "OC[C@H]1O[C@H](O[C@@H]2[C@@H](O)[C@H](O)O[C@H](CO)[C@H]2O)[C@H](O)[C@@H](O)[C@@H]1O"),  # beta
-
-        ("Man(a1-2)Man",
-         "OC[C@H]2OC(O)[C@@H](O[C@H]1O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]1O)[C@@H](O)[C@@H]2O",
-         "OC[C@H]2O[C@H](O)[C@@H](O[C@H]1O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]1O)[C@@H](O)[C@@H]2O",  # alpha
-         "OC[C@H]1O[C@@H](O)[C@@H](O[C@H]2O[C@H](CO)[C@@H](O)[C@H](O)[C@@H]2O)[C@@H](O)[C@@H]1O"),  # beta
-    ]
-
     def test_sanity(self):
         compare_smiles("OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O",
                        equal=False)
@@ -161,12 +72,32 @@ class TestSMILES:
         mol = Chem.MolFromSmiles(smiles)
         rings = mol.GetRingInfo().AtomRings()
 
-        print(smiles)
-
         assert len(rings) == structure.count("?")
         for ring in rings:
             assert len(ring) == 6
         assert smiles.count('%') > 0
         assert smiles.count('%') % 2 == 0
 
+        compare_smiles(smiles, Chem.MolToSmiles(mol))
+
+    @pytest.mark.parametrize("glycan", [x[:-1] for x in open("data/lo_glycans.txt", "r").readlines()])
+    def test_lectinoracle(self, glycan):
+        output, out, err = catch_output(convert, glycan=glycan)
+
+        assert output is None
+
+        smiles = out[-2]
+
+        mol = Chem.MolFromSmiles(smiles)
+        compare_smiles(smiles, Chem.MolToSmiles(mol))
+
+    @pytest.mark.parametrize("glycan", ["3dGal(b1-4)Glc"])
+    def test_lectinoracle_detail(self, glycan):
+        output, out, err = catch_output(convert, glycan=glycan)
+
+        assert output is None
+
+        smiles = out[-2]
+
+        mol = Chem.MolFromSmiles(smiles)
         compare_smiles(smiles, Chem.MolToSmiles(mol))
