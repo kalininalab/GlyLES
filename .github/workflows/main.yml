@@ -26,11 +26,7 @@ jobs:
         uses: abatilo/actions-poetry@v2.0.0
         with:
           poetry-version: 1.0
-          virtualenvs-create: true
-          virtualenvs-in-project: true
       - name: Install dependencies
-        run: |
-          poetry install
-          poetry shell
+        run: poetry install
       - name: Run tests
-        run: pytest
+        run: poetry run python -m pytest
