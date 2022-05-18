@@ -77,8 +77,14 @@ class Reactor:
                         self.add_methyl(position=("O" if name[0] == "O" else int(name[0])))
                     elif name.endswith("Ac"):
                         self.add_acid(position=("O" if name[0] == "O" else int(name[0])))
+                    elif name.endswith("Bz"):
+                        not_implemented_message(name)
+                        full = False
                 elif name == "NAc":
                     self.add_acid(pos=self.set_nitrogen())
+                elif name == "NBz":
+                    not_implemented_message(name)
+                    full = False
                 elif name == "-ol":
                     not_implemented_message(name)
                     full = False
@@ -257,6 +263,20 @@ class Reactor:
         new_adj[pos, c_id] = 1
 
         self.monomer.adjacency = new_adj
+
+    def add_benzoyl(self, position):
+        """
+        Add a benzoyl group
+
+        Parameters
+        ----------
+        position
+
+        Returns
+        -------
+
+        """
+        pass
 
     def set_nitrogen(self, position=2):
         """
