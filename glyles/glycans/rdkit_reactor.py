@@ -36,6 +36,7 @@ class Reactor:
         Returns:
             Modified monomer
         """
+        full = True
         for name, t in zip(names, types):
             if t != GlycanLexer.MOD:
                 continue
@@ -48,10 +49,13 @@ class Reactor:
                 if name[0].isdigit() or name[0] == "O":
                     if name[1] == "d":  # ?d
                         not_implemented_message(name)
+                        full = False
                     elif name[1] == "e":  # ?d
                         not_implemented_message(name)
+                        full = False
                     elif name[1] == "F":
                         not_implemented_message(name)
+                        full = False
                     elif name[1] == "N":
                         self.set_nitrogen(position=("O" if name[0] == "O" else int(name[0])))
                     elif name[1] == "S":
@@ -63,8 +67,10 @@ class Reactor:
                         self.add_acid(position=5)
                     if name == "D-":
                         not_implemented_message(name)
+                        full = False
                     if name == "L-":
                         not_implemented_message(name)
+                        full = False
             elif len(name) == 3:
                 if name[0].isdigit() or name[0] == "O":
                     if name.endswith("Me"):
@@ -75,9 +81,11 @@ class Reactor:
                     self.add_acid(pos=self.set_nitrogen())
                 elif name == "-ol":
                     not_implemented_message(name)
+                    full = False
             elif len(name) == 5:
                 if name == "-onic":
                     not_implemented_message(name)
+                    full = False
             elif len(name) == 7:
                 if name.endswith("Me-"):
                     self.add_methyl(position=int(name[0]))
@@ -85,8 +93,9 @@ class Reactor:
                     self.add_acid(position=int(name[0]))
             elif len(name) == 12:  # ?,?-Anhydro-
                 not_implemented_message(name)
+                full = False
 
-        return self.monomer
+        return self.monomer, full
 
     def add_sulfur(self, position):
         """

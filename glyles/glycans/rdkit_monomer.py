@@ -26,6 +26,8 @@ class RDKitMonomer(Monomer):
             **kwargs: arguments to initialize monomer if object is None. Must include name, SMILES, and config
         """
         super(RDKitMonomer, self).__init__(origin, **kwargs)
+        if isinstance(origin, tuple):
+            origin = origin[0]
         if isinstance(origin, RDKitMonomer):
             self.adjacency = origin.get_adjacency()
             self.ring_info = origin.get_ring_info()

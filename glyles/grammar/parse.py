@@ -34,6 +34,7 @@ class Glycan:
             self.factory = factory
             self.node_id = 0
             self.tree_only = tree_only
+            self.full = True
 
         def parse(self, t, mode):
             """
@@ -52,20 +53,17 @@ class Glycan:
             children = list(t.getChildren())[1:-1]
             if len(children) == 1:  # glycan
                 self.__add_node(children[0], mode)
-                return self.g
             elif len(children) == 2:  # branch glycan
                 node_id = self.__add_node(children[1], mode)
                 self.__walk(children[0], node_id, mode)
-                return self.g
             elif len(children) == 3:  # SAC ' ' TYPE
                 self.__add_node(children[0], mode, children[2].symbol.text)
-                return self.g
             elif len(children) == 4:  # branch SAC ' ' TYPE
                 node_id = self.__add_node(children[1], mode, children[3].symbol.text)
                 self.__walk(children[0], node_id, mode)
-                return self.g
             else:
                 raise RuntimeError("This branch of the if-statement should be unreachable!")
+            return self.g, self.full
 
         def __walk(self, t, parent, mode):
             """
@@ -155,10 +153,12 @@ class Glycan:
                         recipe.append((str(c), c.symbol.type))
                 else:
                     recipe.append((str(child), child.symbol.type))
+            monomer, full = self.factory.create(recipe, mode, config, tree_only=self.tree_only)
             self.g.add_node(
                 node_id,
-                type=self.factory.create(recipe, mode, config, tree_only=self.tree_only),
+                type=monomer,
             )
+            self.full &= full
 
             return node_id
 
@@ -264,7 +264,8 @@ class Glycan:
                 me = me.replace(atom, child_smiles)
             return me
 
-    def __init__(self, iupac, factory, mode=Mode.DEFAULT_MODE, root_orientation="n", start=10, tree_only=False):
+    def __init__(self, iupac, factory, mode=Mode.DEFAULT_MODE, root_orientation="n", start=10, tree_only=False,
+                 full=True):
         """
         Initialize the glycan from the IUPAC string.
 
@@ -275,6 +276,8 @@ class Glycan:
             root_orientation (str): orientation of the root monomer in the glycan (choose from 'a', 'b', 'n')
             start (int): ID of the atom to start with in the root monomer when generating the SMILES
             tree_only (bool): Flag indicating to only parse the tree of glycans and not the modifications
+            full (bool): Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
+                such as 3-Anhydro-[...] are also present in the SMILES
         """
         self.iupac = iupac
         self.mode = mode
@@ -284,6 +287,8 @@ class Glycan:
         self.start = start
         self.tree_only = tree_only
         self.factory = factory
+        self.full = full
+        self.tree_full = True
         self.__parse()
 
     def get_smiles(self):
@@ -293,6 +298,10 @@ class Glycan:
         Returns:
             Generated SMILES string
         """
+        # return an empty SMILES if the output is required to represent all modifications, but it actually wouldn't
+        if self.tree_full != self.full:
+            return ""
+
         if self.glycan_smiles is None:
             self.glycan_smiles = Glycan.__Merger(self.factory).merge(self.parse_tree, self.root_orientation,
                                                                      start=self.start)
@@ -307,19 +316,6 @@ class Glycan:
             The parsed tree with the single monomers in the nodes
         """
         return self.parse_tree
-
-    def to_pdb(self, output):
-        """
-        Compute a 3-dimensional conformation of the molecule using ForceFields. The result will be stored in a PDB file.
-
-        Args:
-            output (str): Path to store the PDB file in
-
-        Returns:
-            Nothing
-        """
-        mol = MolFromSmiles(self.glycan_smiles)
-        raise NotImplementedError("PDB conversion planned, but not implemented yet.")
 
     def save_dot(self, output, horizontal=False):
         """
@@ -376,9 +372,9 @@ class Glycan:
             raise ParseError("Glycan cannot be parsed:\n" + log[0])
 
         # walk through the AST and parse the AST into a networkx representation of the glycan.
-        self.parse_tree = Glycan.__TreeWalker(self.factory, self.tree_only).parse(tree, self.mode)
+        self.parse_tree, self.tree_full = Glycan.__TreeWalker(self.factory, self.tree_only).parse(tree, self.mode)
 
         # if the glycan should be parsed immediately, do so
-        if not self.tree_only:
+        if not self.tree_only and self.tree_full == self.full:
             self.glycan_smiles = Glycan.__Merger(self.factory).merge(self.parse_tree, self.root_orientation,
                                                                      start=self.start)

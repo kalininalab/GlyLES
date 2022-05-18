@@ -164,16 +164,14 @@ class MonomerFactory:
             name = recipe[config_index][0] + "_" + name
 
         # get the monomer from the factory
-        try:
-            if ring_index is not None and recipe[ring_index][0] == "f" and name in self.furanoses_fac:
-                monomer = monomer_class(**self.furanoses_fac[name], recipe=recipe)
-            else:
-                monomer = monomer_class(**self.pyranoses_fac[name], recipe=recipe)
-        except KeyError:
-            raise UnreachableError("Invalid monomer found, should never get so far.")
+        if ring_index is not None and recipe[ring_index][0] == "f" and name in self.furanoses_fac:
+            monomer = monomer_class(**self.furanoses_fac[name], recipe=recipe)
+        else:
+            monomer = monomer_class(**self.pyranoses_fac[name], recipe=recipe)
 
+        full = False
         if not tree_only:
             # create the final molecule using the molecule's react-method augmented with the recipe of the molecule
-            monomer = monomer.react(*tmp)
+            monomer, full = monomer.react(*tmp)
 
-        return monomer
+        return monomer, full

@@ -1,5 +1,13 @@
 # Change Log
 
+## v0.3.1 - 2022-05-18
+
+### Changed
+
+- Bug fixed in ANTLR4 package version requirement
+
+---
+
 ## v0.3.0 - 2022-02-10
 
 Release for 17th German Conference on Cheminformatics and EuroSAMPL Satellite Workshop

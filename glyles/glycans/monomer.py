@@ -25,6 +25,9 @@ class Monomer:
             origin (Monomer): Other monomer to use to initialize this object
             **kwargs: arguments to initialize monomer if object is None. Must include name, SMILES, and config
         """
+        if isinstance(origin, tuple):
+            origin = origin[0]
+
         if origin is None:
             self.name = kwargs["name"]
             self.smiles = kwargs["smiles"]

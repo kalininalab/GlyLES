@@ -1,6 +1,14 @@
 from enum import Enum
 
 
+class Verbosity(Enum):
+    """
+    define Levels of verbosity for printing different important messages
+    """
+    QUIET = 0
+    NORMAL = 1
+
+
 class Config(Enum):
     """
     Configuration enum to represent if the monomer is in alpha, beta, or undefined configuration.
