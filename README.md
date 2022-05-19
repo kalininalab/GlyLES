@@ -1,5 +1,7 @@
 # GlyLES
 
+![testing](https://github.com/kalininalab/glyles/actions/workflows/test.yaml/badge.svg)
+
 A tool to convert IUPAC representation of Glycans into SMILES representation. This repo is still in the development 
 phase; so, feel free to report any errors or issues.
 
