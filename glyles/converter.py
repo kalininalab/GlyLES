@@ -127,29 +127,35 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
     # Convert the glycans ...
     if len(glycans) != 0:
         for glycan in glycans:
-            try:
-                # ... by passing them to the glycan class to parse them and return them as intended
-                yield glycan, Glycan(glycan, factory, full=full).get_smiles()
-
-            # catch any exception at glycan level to not destroy the whole pipeline because of one mis-formed glycan
-            except ParseError as e:
-                print(f"An exception occurred with {glycan}:", e.__class__, file=sys.stderr)
-                print("Error message:", e.__str__(), file=sys.stderr)
-                yield glycan, ""
-            except Exception as e:
-                raise e
+            yield generate(glycan, factory, full)
 
     # Convert the glycans ...
     if glycan_generator is not None:
         for glycan in glycan_generator:
-            try:
-                # ... by passing them to the glycan class to parse them and return them as intended
-                yield glycan, Glycan(glycan, factory, full=full).get_smiles()
+            yield generate(glycan, factory, full)
 
-            # catch any exception at glycan level to not destroy the whole pipeline because of one mis-formed glycan
-            except ParseError as e:
-                print(f"An exception occurred with {glycan}:", e.__class__, file=sys.stderr)
-                print("Error message:", e.__str__(), file=sys.stderr)
-                yield glycan, ""
-            except Exception as e:
-                raise e
+
+def generate(glycan, factory, full):
+    """
+    Actually generate the SMILES string based on the glycan given in IUPAC notation
+
+    Parameters:
+        glycan (str): Glycan molecule described by its IUPAC string
+        factory (MonomerFactory): Factory to generate the monomers from
+        full (bool): flag indicating to only return SMILES string that include all modifications from the IUPAC
+
+    Returns:
+        A pair of glycan represented with its IUPAC string and SMILES string
+    """
+    try:
+        # ... by passing them to the glycan class to parse them and return them as intended
+        return glycan, Glycan(glycan, factory, full=full).get_smiles()
+
+    # catch any exception at glycan level to not destroy the whole pipeline because of one mis-formed glycan
+    except ParseError as e:
+        print(f"An exception occurred with {glycan}:", e.__class__, file=sys.stderr)
+        print("Error message:", e.__str__(), file=sys.stderr)
+        return glycan, ""
+    except Exception:
+        print(f"An unexpected error occurred with with {glycan}. This glycan cannot be parsed.")
+        return glycan, ""

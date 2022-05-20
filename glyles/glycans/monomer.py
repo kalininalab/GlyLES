@@ -232,12 +232,3 @@ class Monomer:
             SMILES string representation of this molecule
         """
         raise NotImplementedError
-
-    def get_structure(self):
-        """
-        Compute and save the structure of this glycan.
-
-        Returns:
-            Representation the structure of the glycan as a graph.
-        """
-        raise NotImplementedError

@@ -33,12 +33,12 @@ class TestDerivatives:
     @pytest.mark.parametrize("line", open("data/oracle.txt", "r").readlines())
     def test_oracle(self, line):
         iupac = line.strip()
-        output = None
         try:
             output = Glycan(iupac, MonomerFactory(), tree_only=True).get_tree()
         except ParseError:
             with open("./still_not_parsed.txt", "a") as tmp:
                 tmp.write(line)
                 tmp.close()
+            return
 
         assert output is not None

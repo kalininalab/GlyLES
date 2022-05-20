@@ -1,11 +1,8 @@
-import warnings
-
 import numpy as np
 from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
-from rdkit.Chem.rdchem import Atom, EditableMol, BondType
 
 from glyles.glycans.monomer import Monomer
-from glyles.glycans.utils import UnreachableError, Tree, ModificationNotImplementedWarning
+from glyles.glycans.utils import UnreachableError, Tree
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.glycans.rdkit_reactor import Reactor
 
@@ -173,7 +170,8 @@ class RDKitMonomer(Monomer):
         """
         smiles = MolToSmiles(self.get_structure(), rootedAtAtom=root)
         smiles.replace("At", "O-")
-        return "".join([((f"%{int(c) + ring_index}" if int(c) + ring_index >= 10 else f"{int(c) + ring_index}") if c.isdigit() else c) for c in smiles])
+        return "".join([((f"%{int(c) + ring_index}" if int(c) + ring_index >= 10
+                          else f"{int(c) + ring_index}") if c.isdigit() else c) for c in smiles])
 
     def react(self, names, types):
         """
@@ -336,7 +334,7 @@ class RDKitMonomer(Monomer):
             c_count += 1
             self.x[c, 1] = c_count
 
-    def find_oxygen(self, binding_c_id, check_for=None):
+    def find_oxygen(self, binding_c_id):
         """
         Find the oxygen atom that binds to the carbon atom with the provided id. The returned id may not refer to an
         oxygen atom in the ring of the monomer as this cannot bind anything. This method will report the atom id of the
@@ -346,19 +344,14 @@ class RDKitMonomer(Monomer):
         Args:
             binding_c_id (int): id of the carbon atom that participates in a binding, and we need to find the oxygen
                 from
-            check_for (List[int]): List if atom types as numbered in PSE to check for binding the above given carbon
 
         Returns:
             id referring to the atom binding the provided carbon atom and may participate in a glycan-binding.
         """
-        # by default only check for binding oxygen
-        if check_for is None:
-            check_for = [8]
-
         # first find the rdkit id of the carbon atom that should bind to something
         position = np.argwhere(self.x[:, 1] == binding_c_id).squeeze()
 
-        for check in check_for:
+        for check in [8, 7]:
             # then find the candidates. There should be exactly one element in the resulting array
             candidates = np.argwhere((self.adjacency[position, :] == 1) &
                                      (self.x[:, 0] == check) & (self.x[:, 2] != 1)).squeeze()

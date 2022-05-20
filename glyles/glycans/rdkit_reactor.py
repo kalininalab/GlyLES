@@ -208,7 +208,7 @@ class Reactor:
             return
 
         if position is not None:
-            pos = self.monomer.find_oxygen(position, check_for=[8, 7])
+            pos = self.monomer.find_oxygen(position)
 
         emol = EditableMol(self.monomer.structure)
 
@@ -292,7 +292,7 @@ class Reactor:
         if position == "O":
             return
 
-        pos = self.monomer.find_oxygen(position, check_for=[8, 7])
+        pos = self.monomer.find_oxygen(position)
         self.monomer.structure.GetAtomWithIdx(pos).SetAtomicNum(7)
         self.monomer.x[pos, 0] = 7
         return pos

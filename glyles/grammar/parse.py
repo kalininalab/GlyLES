@@ -4,7 +4,6 @@ import networkx as nx
 import numpy as np
 import pydot
 from antlr4 import *
-from rdkit.Chem import MolFromSmiles
 
 from glyles.glycans.utils import Mode, UnreachableError, ParseError
 from glyles.grammar.GlycanLexer import GlycanLexer
@@ -357,13 +356,13 @@ class Glycan:
         # catch the prints of antlr to stderr to check if during parsing an error occurred and the glycan is invalid
         log = []
 
-        class writer(object):
+        class Writer(object):
             @staticmethod
             def write(data):
                 log.append(data)
 
         old_err = sys.stderr
-        sys.stderr = writer()
+        sys.stderr = Writer()
 
         # parse the remaining structure description following the grammar, also add the dummy characters
         stream = InputStream(data='{' + self.iupac + '}')

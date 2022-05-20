@@ -2,7 +2,7 @@ from glyles.glycans.factory.factory_f import FuranoseFactory
 from glyles.glycans.factory.factory_p import PyranoseFactory
 from glyles.glycans.nx_monomer import NXMonomer
 from glyles.glycans.rdkit_monomer import RDKitMonomer
-from glyles.glycans.utils import Mode, UnreachableError
+from glyles.glycans.utils import Mode
 from glyles.grammar.GlycanLexer import GlycanLexer
 
 
