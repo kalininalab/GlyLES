@@ -241,10 +241,10 @@ def split_ternary_children(g, id_children, child_1, child_2):
         if g.nodes[id_children[0]]["type"].get_name() == child_2:
             id_child_2, id_child_1, id_child_3 = id_children
         else:
-            id_child_2, id_child_3, id_child_1 = id_children
+            id_child_3, id_child_1, id_child_2 = id_children
     else:
         if g.nodes[id_children[0]]["type"].get_name() == child_2:
-            id_child_3, id_child_1, id_child_2 = id_children
+            id_child_2, id_child_3, id_child_1 = id_children
         else:
             id_child_3, id_child_2, id_child_1 = id_children
     return id_child_1, id_child_2, id_child_3
