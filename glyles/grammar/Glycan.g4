@@ -9,7 +9,8 @@ branch:
     glycan CON
     | glycan CON branch
     | '[' branch ']'
-    | glycan CON '[' branch ']' branch;
+    | glycan CON '[' branch ']' branch
+    | glycan CON '[' branch '][' branch ']' branch;
 glycan:
     deriv RING TYPE | deriv TYPE | deriv RING | deriv;
 deriv:

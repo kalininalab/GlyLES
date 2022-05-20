@@ -4,7 +4,7 @@ import pytest
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import Config, Lactole
 from glyles.grammar.parse import Glycan
-from tests.utils import check_initial, check_child, split_children
+from tests.utils import check_initial, check_child, split_children, split_ternary_children
 
 
 class TestParser:
@@ -356,3 +356,30 @@ class TestParser:
 
         id_child_111 = list(g.edges(id_child_11))[0][1]
         check_child(g, id_child_11, id_child_111, monomers[1][:-1], f"({c[1]})", 0, lactole=lactoles[2][1])
+
+    def test_parse_ternary_branching_1(self):
+        factory = MonomerFactory()
+        iupac = "Alt(a1-2)[Glc(a1-4)][Gal(a1-6)]Man"
+        g = Glycan(iupac, factory).get_tree()
+
+        check_initial(g, "Man", 3, lactole=Lactole.PYRANOSE)
+
+        id_children_1 = [x[1] for x in list(g.edges(0))]
+        id_child_11, id_child_12, id_child_13 = split_ternary_children(g, id_children_1, "Alt", "Glc")
+        check_child(g, 0, id_child_11, "Alt", "(a1-2)", 0, Lactole.PYRANOSE)
+        check_child(g, 0, id_child_12, "Glc", "(a1-4)", 0, Lactole.PYRANOSE)
+        check_child(g, 0, id_child_13, "Gal", "(a1-6)", 0, Lactole.PYRANOSE)
+
+    def test_parse_ternary_branching_2(self):
+        factory = MonomerFactory()
+        iupac = "Alt(a1-2)[Glc(a1-4)][Gla(a1-6)]Gul(a1-4)Man"
+        g = Glycan(iupac, factory).get_tree()
+
+        check_initial(g, "Man", 1, lactole=Lactole.PYRANOSE)
+        id_child_1 = list(g.edges(0))[0][1]
+        check_child(g, 0, id_child_1, "Gul", "(a1-4)", 3, lactole=Lactole.PYRANOSE)
+        id_children_2 = [x[1] for x in list(g.edges(id_child_1))]
+        id_child_21, id_child_22, id_child_23 = split_ternary_children(g, id_children_2, "Alt", "Glc")
+        check_child(g, 0, id_child_21, "Alt", "(a1-2)", 0, Lactole.PYRANOSE)
+        check_child(g, 0, id_child_22, "Glc", "(a1-4)", 0, Lactole.PYRANOSE)
+        check_child(g, 0, id_child_23, "Gal", "(a1-6)", 0, Lactole.PYRANOSE)

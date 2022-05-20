@@ -137,7 +137,7 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
                 print("Error message:", e.__str__(), file=sys.stderr)
                 yield glycan, ""
             except Exception as e:
-                pass
+                raise e
 
     # Convert the glycans ...
     if glycan_generator is not None:
@@ -152,4 +152,4 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
                 print("Error message:", e.__str__(), file=sys.stderr)
                 yield glycan, ""
             except Exception as e:
-                pass
+                raise e

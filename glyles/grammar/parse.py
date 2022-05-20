@@ -112,6 +112,15 @@ class Glycan:
                 self.__add_edge(node_id, node_id2, children[1])
                 return node_id2
 
+            elif len(children) == 8:  # {glycan con '[' branch '][' branch ']' branch}
+                # branching in a chain, append the end to the parent and hang both branches on that
+                node_id = self.__walk(children[7], parent, mode)
+                self.__walk(children[3], node_id, mode)
+                self.__walk(children[5], node_id, mode)
+                node_id2 = self.__add_node(children[0], mode)
+                self.__add_edge(node_id, node_id2, children[1])
+                return node_id2
+
             # there should be no case missing, but who knows...
             raise UnreachableError("Invalid branching in glycan tree")
 
@@ -218,8 +227,8 @@ class Glycan:
             # check for validity of the tree, ie if it's a leaf (return, nothing to do) or has too many children (Error)
             if len(children) == 0:  # leaf
                 return
-            if len(children) > 2:  # too many children
-                raise NotImplementedError("Glycans with maximal branching factor greater then 2 not implemented.")
+            if len(children) > 3:  # too many children
+                raise NotImplementedError("Glycans with maximal branching factor greater then 3 not implemented.")
 
             # iterate over the children and the atoms used to mark binding atoms in my structure
             for child, atom in zip(children, t.nodes[node]["type"].get_dummy_atoms()[0]):
@@ -335,8 +344,8 @@ class Glycan:
         for node in range(len(self.parse_tree.nodes)):
             graph.add_node(pydot.Node(node, label=self.parse_tree.nodes[node]["type"].get_name(full=True)))
         for edge in self.parse_tree.edges():
-            graph.add_edge(pydot.Edge(*edge, label=self.parse_tree.get_edge_data(*edge)["type"]))
-        graph.write(output + ".dot")
+            graph.add_edge(pydot.Edge(*edge[::-1], label=self.parse_tree.get_edge_data(*edge)["type"]))
+        graph.write(output)
 
     def __parse(self):
         """
@@ -373,7 +382,7 @@ class Glycan:
 
         # walk through the AST and parse the AST into a networkx representation of the glycan.
         self.parse_tree, self.tree_full = Glycan.__TreeWalker(self.factory, self.tree_only).parse(tree, self.mode)
-
+        self.save_dot('./output.dot')
         # if the glycan should be parsed immediately, do so
         if not self.tree_only and self.tree_full == self.full:
             self.glycan_smiles = Glycan.__Merger(self.factory).merge(self.parse_tree, self.root_orientation,
