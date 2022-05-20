@@ -372,7 +372,7 @@ class TestParser:
 
     def test_parse_ternary_branching_2(self):
         factory = MonomerFactory()
-        iupac = "Alt(a1-2)[Glc(a1-4)][Gla(a1-6)]Gul(a1-4)Man"
+        iupac = "Alt(a1-2)[Glc(a1-4)][Gal(a1-6)]Gul(a1-4)Man"
         g = Glycan(iupac, factory).get_tree()
 
         check_initial(g, "Man", 1, lactole=Lactole.PYRANOSE)
@@ -380,6 +380,6 @@ class TestParser:
         check_child(g, 0, id_child_1, "Gul", "(a1-4)", 3, lactole=Lactole.PYRANOSE)
         id_children_2 = [x[1] for x in list(g.edges(id_child_1))]
         id_child_21, id_child_22, id_child_23 = split_ternary_children(g, id_children_2, "Alt", "Glc")
-        check_child(g, 0, id_child_21, "Alt", "(a1-2)", 0, Lactole.PYRANOSE)
-        check_child(g, 0, id_child_22, "Glc", "(a1-4)", 0, Lactole.PYRANOSE)
-        check_child(g, 0, id_child_23, "Gal", "(a1-6)", 0, Lactole.PYRANOSE)
+        check_child(g, id_child_1, id_child_21, "Alt", "(a1-2)", 0, Lactole.PYRANOSE)
+        check_child(g, id_child_1, id_child_22, "Glc", "(a1-4)", 0, Lactole.PYRANOSE)
+        check_child(g, id_child_1, id_child_23, "Gal", "(a1-6)", 0, Lactole.PYRANOSE)
