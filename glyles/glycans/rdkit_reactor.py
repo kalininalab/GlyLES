@@ -5,6 +5,16 @@ from glyles.grammar.GlycanLexer import GlycanLexer
 
 
 def not_implemented_message(mod):
+    """
+    Print a message if some modification is parsable but not implemented yet. So, the grammar might accept some
+    modifications but the reactor is yet not capable to attach that functional group to the monomer
+
+    Args
+        mod (str): name of the modification that cannot be converted
+
+    Returns
+        Nothing
+    """
     print(f"ModificationNotImplementedWarning: {mod} Modification not implemented. The returned molecule will not have "
           f"this modification")
 
@@ -236,12 +246,13 @@ class Reactor:
 
     def add_methyl(self, position):
         """
+        Append a methyl group to the monomer at the specified position.
 
         Args:
-            position:
+            position (int): number of the c atom where to add the group
 
         Returns:
-
+            Nothing
         """
         if position == "O":
             return
@@ -266,16 +277,15 @@ class Reactor:
 
     def add_benzoyl(self, position):
         """
-        Add a benzoyl group
+        Add a benzoyl group to the monomer at the specified position
 
-        Parameters
-        ----------
-        position
+        Args:
+            position (int): Position where to add a benzoyl group
 
-        Returns
-        -------
-
+        Returns:
+            Nothing
         """
+        # TODO: Add the benzoyl group
         pass
 
     def set_nitrogen(self, position=2):
@@ -299,9 +309,10 @@ class Reactor:
 
     def make_acid(self):
         """
+        Make the monomer acidic by adding a acid group to the last carbon atom
 
         Returns:
-
+            Nothing
         """
         emol = EditableMol(self.monomer.structure)
 
@@ -321,12 +332,13 @@ class Reactor:
 
     def _extend_matrices(self, count):
         """
+        Extend the describing matrices of this monomer by count-many positions to be able to add a functional group
 
         Args:
-            count:
+            count (int): Number of atoms added in the functional group
 
         Returns:
-
+            new adjacency matrix and new feature matrix
         """
         tmp_x = np.zeros((self.monomer.x.shape[0] + count, self.monomer.x.shape[1]))
         tmp_x[:self.monomer.x.shape[0], :] = self.monomer.x

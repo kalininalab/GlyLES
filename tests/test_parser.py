@@ -17,13 +17,11 @@ class TestParser:
     def test_extreme_1(self):
         factory = MonomerFactory()
         g = Glycan("Gal(a1-4)" * 9 + "Glc", factory)
-        print("\n" + g.get_smiles())
         check_initial(g.get_tree(), "Glc", 1, Config.UNDEF, lactole=Lactole.PYRANOSE)
 
     def test_extreme_2(self):
         factory = MonomerFactory()
         g = Glycan("Gal(a1-4)" * 8 + "[" + "Man(b1-3)" * 8 + "]" + "Glc", factory)
-        print("\n" + g.get_smiles())
         check_initial(g.get_tree(), "Glc", 2, Config.UNDEF, lactole=Lactole.PYRANOSE)
 
     @pytest.mark.parametrize("iupac", ["Man", "Man a", "Man b", "Mana", "Manb", "Manp", "Manf", "Manpa", "Manpb",

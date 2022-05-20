@@ -1,8 +1,22 @@
 # Change Log
 
-## v0.3.1 - 2022-05-18
+## v0.4.0 - 2022-05-?? - to be released
+
+### Added
+
+- Ternary branching is now possible. Monomers may have three children in the tree-like structure of a glycan.
+- More tests for the new functionality
 
 ### Changed
+
+- Monomers only in RDKit representation possible. NetworkX-implementation has been removed
+- Comments and code style improved, also a bit of a cleanup
+
+---
+
+## v0.3.1 - 2022-05-18
+
+### Fixed
 
 - Bug fixed in ANTLR4 package version requirement
 

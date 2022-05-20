@@ -1,8 +1,6 @@
 from glyles.glycans.factory.factory_f import FuranoseFactory
 from glyles.glycans.factory.factory_p import PyranoseFactory
-from glyles.glycans.nx_monomer import NXMonomer
-from glyles.glycans.rdkit_monomer import RDKitMonomer
-from glyles.glycans.utils import Mode
+from glyles.glycans.monomer import Monomer
 from glyles.grammar.GlycanLexer import GlycanLexer
 
 
@@ -130,26 +128,18 @@ class MonomerFactory:
                 output.add(self.furanoses_fac[item]["name"])
         return list(output)
 
-    def create(self, recipe, mode=Mode.RDKIT_MODE, config=None, tree_only=False):
+    def create(self, recipe, config=None, tree_only=False):
         """
         Create a monomer from its describing IUPAC string with all added side chains.
 
         Args:
             recipe (List[Tuple[str, int]]): List of modifications, conformations and the root monomer
-            mode (Mode): implementation used to represent monomers
             config (str): configuration if monomer is alpha or beta monomer
             tree_only (bool): Flag indicating to only parse the tree of glycans and not the modifications
 
         Returns:
             Monomer-Instance containing all modifications given in the input
         """
-        # determine the class to use to represent the monomers
-        if mode == Mode.NETWORKX_MODE:
-            monomer_class = NXMonomer
-        elif mode == Mode.RDKIT_MODE:
-            monomer_class = RDKitMonomer
-        else:
-            raise ValueError("Unknown representation mode for monomers!")
 
         # extract key information from the input, i.e. the type, the configuration and pyranose/furanose
         tmp = list(zip(*recipe))
@@ -165,9 +155,9 @@ class MonomerFactory:
 
         # get the monomer from the factory
         if ring_index is not None and recipe[ring_index][0] == "f" and name in self.furanoses_fac:
-            monomer = monomer_class(**self.furanoses_fac[name], recipe=recipe)
+            monomer = Monomer(**self.furanoses_fac[name], recipe=recipe)
         else:
-            monomer = monomer_class(**self.pyranoses_fac[name], recipe=recipe)
+            monomer = Monomer(**self.pyranoses_fac[name], recipe=recipe)
 
         full = False
         if not tree_only:

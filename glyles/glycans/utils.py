@@ -34,15 +34,6 @@ class Lactole(Enum):
     PYRANOSE = 6
 
 
-class Mode(Enum):
-    """
-    Enumerate different modes how to represent the monomers in the tree.
-    """
-    DEFAULT_MODE = "rdkit"
-    NETWORKX_MODE = "nx"
-    RDKIT_MODE = "rdkit"
-
-
 class UnreachableError(NotImplementedError):
     """
     Represent exceptions that should arise in case a piece of code is reached that under normal circumstances should
@@ -54,13 +45,6 @@ class UnreachableError(NotImplementedError):
 class ParseError(ValueError):
     """
     Represent parsing errors when reading in a glycan
-    """
-    pass
-
-
-class ModificationNotImplementedWarning(UserWarning):
-    """
-    Warning for non-implemented modifications of monomers
     """
     pass
 
