@@ -22,6 +22,7 @@ def not_implemented_message(mod):
 class Reactor:
     """
     Class with access to protected classes fields managing the modifications of a root monomer.
+    #https://pubchem.ncbi.nlm.nih.gov/compound/N-Glycolyl-Neuraminic-acid
     """
 
     def __init__(self, monomer):
@@ -51,63 +52,78 @@ class Reactor:
             if t != GlycanLexer.MOD:
                 continue
             if len(name) == 1:
-                if name[0] == "N":
+                if name[0] == "N":  # put a nitrogen at position 5
                     self.set_nitrogen()
-                if name[0] == "A":
+                if name[0] == "A":  # put an acid group at position 6
                     self.make_acid()
             elif len(name) == 2:
                 if name[0].isdigit() or name[0] == "O":
-                    if name[1] == "d":  # ?d
+                    if name[1] == "d":  # ?d - deoxygenate some positions in monomers
                         not_implemented_message(name)
                         full = False
                     elif name[1] == "e":  # ?d
                         not_implemented_message(name)
                         full = False
+                        # self.deoxygenate(int(name[0]))
+                    # having a fluor atom instead of a hydrogen opposite to an oxygen at a certain position
                     elif name[1] == "F":
                         not_implemented_message(name)
                         full = False
-                    elif name[1] == "N":
+                    elif name[1] == "N":  # add a nitrogen atom to a certain position
                         self.set_nitrogen(position=("O" if name[0] == "O" else int(name[0])))
-                    elif name[1] == "S":
+                    elif name[1] == "S":  # add a sulfur atom to a certain position
                         self.add_sulfur(position=("O" if name[0] == "O" else int(name[0])))
-                    elif name[1] == "P":
+                    elif name[1] == "P":  # add a phosphate atom to a certain position
                         self.add_phosphate(position=("O" if name[0] == "O" else int(name[0])))
                 else:
-                    if name == "Ac":
+                    if name == "Ac":  # add an acid group to a certain position
                         self.add_acid(position=5)
-                    if name == "D-":
+                    if name == "D-":  # have the monomer in D form (regarding the enantiomerism)
                         not_implemented_message(name)
                         full = False
-                    if name == "L-":
+                    if name == "L-":  # have the monomer is L form (regarding the enantiomerism)
                         not_implemented_message(name)
                         full = False
             elif len(name) == 3:
                 if name[0].isdigit() or name[0] == "O":
+                    # add a methyl group to a certain position (or to an oxygen at position 2)
                     if name.endswith("Me"):
                         self.add_methyl(position=("O" if name[0] == "O" else int(name[0])))
+                    # add an acid group to a certain position (or to an oxygen at position 2)
                     elif name.endswith("Ac"):
                         self.add_acid(position=("O" if name[0] == "O" else int(name[0])))
+                    # add a benzoyl group to a certain position (or to an oxygen at position 2)
                     elif name.endswith("Bz"):
                         not_implemented_message(name)
                         full = False
-                elif name == "NAc":
+                        # self.add_benzoyl(position=("O" if name[0] == "O" else int(name[0])))
+                    # add a glycolyl group to a certain position (or to an oxygen at position 2)
+                    elif name.endswith("Gc"):
+                        not_implemented_message(name)
+                        full = False
+                        # self.add_glycolyl()
+                elif name == "NAc":  # add a nitrogen and attach an acid group to that at position 2
                     self.add_acid(pos=self.set_nitrogen())
-                elif name == "NBz":
+                elif name == "NBz":  # add a nitrogen and attach a benzoyl group to that at position ?(2)
                     not_implemented_message(name)
                     full = False
-                elif name == "-ol":
+                    # self.add_benzoyl(pos=self.set_nitrogen())
+                elif name == "-ol":  # ??
                     not_implemented_message(name)
                     full = False
-            elif len(name) == 5:
+            elif len(name) == 5:  # ??
                 if name == "-onic":
                     not_implemented_message(name)
                     full = False
             elif len(name) == 7:
-                if name.endswith("Me-"):
+                if name.endswith("Me-"):  # add a methyl group to a certain position
                     self.add_methyl(position=int(name[0]))
-                if name.endswith("Ac-"):
+                if name.endswith("Ac-"):  # add an acid group to a certain position
                     self.add_acid(position=int(name[0]))
-            elif len(name) == 12:  # ?,?-Anhydro-
+            elif len(name) == 12:  # ?,?-Anhydro- ??
+                not_implemented_message(name)
+                full = False
+            else:
                 not_implemented_message(name)
                 full = False
 
@@ -275,9 +291,23 @@ class Reactor:
 
         self.monomer.adjacency = new_adj
 
-    def add_benzoyl(self, position):
+    def add_benzoyl(self, position=None, pos=None):
         """
         Add a benzoyl group to the monomer at the specified position
+
+        Args:
+            position (int): index of the c-atom where to append the benzoyl group
+            pos (int): rdkit id of the atom where to append the acid group
+
+        Returns:
+            Nothing
+        """
+        # TODO: Add the benzoyl group
+        pass
+
+    def add_glycolyl(self, position=2):
+        """
+        Add a glycolyl group to the monomer at the specified position
 
         Args:
             position (int): Position where to add a benzoyl group
@@ -285,7 +315,7 @@ class Reactor:
         Returns:
             Nothing
         """
-        # TODO: Add the benzoyl group
+        # TODO: Add the glycolyl group
         pass
 
     def set_nitrogen(self, position=2):
@@ -329,6 +359,19 @@ class Reactor:
         new_adj[c_id, o_id] = 1
         new_adj[o_id, c_id] = 1
         self.monomer.adjacency = new_adj
+
+    def deoxygenate(self, position):
+        """
+        deoxygenate the given position by removing the oxygen atom
+
+        Args:
+            position (int): position to deoxygenate
+
+        Returns:
+            Nothing
+        """
+        # TODO: Implement deoxygenation
+        pass
 
     def _extend_matrices(self, count):
         """
