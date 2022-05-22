@@ -1,5 +1,37 @@
+import os
+
 from glyles.converter import convert, convert_generator
-from tests.utils import setup_test, check_results, catch_output, compare_smiles
+from tests.utils import setup_test, catch_output, smiles_samples
+from rdkit import Chem
+
+
+def check_results(output):
+    solution = [smiles_samples[i][1] for i in range(13)]
+    i = 0
+    for i, ((o_glycan, o_smiles), s_smiles) in enumerate(zip(output, solution)):
+        assert o_glycan == smiles_samples[i][0]
+        compare_smiles(o_smiles, s_smiles)
+    assert i == 12
+
+    if os.path.exists("./test.txt"):
+        os.remove("./test.txt")
+    if os.path.exists("./output.txt"):
+        os.remove("./output.txt")
+
+
+def compare_smiles(computed, solution, equal=True):
+    c = Chem.MolFromSmiles(computed)
+    Chem.Kekulize(c)
+    c_rdkit = Chem.MolToSmiles(c, kekuleSmiles=True)
+
+    s = Chem.MolFromSmiles(solution)
+    Chem.Kekulize(s)
+    s_rdkit = Chem.MolToSmiles(s, kekuleSmiles=True)
+
+    if equal:
+        assert c_rdkit == s_rdkit
+    else:
+        assert c_rdkit != s_rdkit
 
 
 class TestConverter:

@@ -4,7 +4,52 @@ import pytest
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import Config, Lactole
 from glyles.grammar.parse import Glycan
-from tests.utils import check_initial, check_child, split_children, split_ternary_children
+
+
+def check_initial(g, name, num_children, config=None, lactole=None):
+    assert g.nodes[0]["type"].get_name() == name
+    assert len(g.edges(0)) == num_children
+
+    if config is not None:
+        assert g.nodes[0]["type"].get_config() == config
+    if lactole is not None and name != "Api":
+        assert g.nodes[0]["type"].get_lactole() == lactole
+
+
+def check_child(g, id_parent, id_child, name, edge, num_children, lactole=None):
+    assert g.get_edge_data(id_parent, id_child)["type"] == edge
+    assert g.nodes[id_child]["type"].get_name() == name
+    assert len(g.edges(id_child)) == num_children
+
+    if lactole is not None and name != "Api":
+        assert g.nodes[id_child]["type"].get_lactole() == lactole
+
+
+def split_children(g, id_children, child_1):
+    if g.nodes[id_children[0]]["type"].get_name() == child_1:
+        id_child_1, id_child_2 = id_children
+    else:
+        id_child_2, id_child_1 = id_children
+    return id_child_1, id_child_2
+
+
+def split_ternary_children(g, id_children, child_1, child_2):
+    if g.nodes[id_children[0]]["type"].get_name() == child_1:
+        if g.nodes[id_children[1]]["type"].get_name() == child_2:
+            id_child_1, id_child_2, id_child_3 = id_children
+        else:
+            id_child_1, id_child_3, id_child_2 = id_children
+    elif g.nodes[id_children[1]]["type"].get_name() == child_1:
+        if g.nodes[id_children[0]]["type"].get_name() == child_2:
+            id_child_2, id_child_1, id_child_3 = id_children
+        else:
+            id_child_3, id_child_1, id_child_2 = id_children
+    else:
+        if g.nodes[id_children[0]]["type"].get_name() == child_2:
+            id_child_2, id_child_3, id_child_1 = id_children
+        else:
+            id_child_3, id_child_2, id_child_1 = id_children
+    return id_child_1, id_child_2, id_child_3
 
 
 class TestParser:

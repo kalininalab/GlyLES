@@ -1,7 +1,4 @@
-import os
 import sys
-
-from rdkit import Chem
 
 from glyles.converter import convert
 
@@ -189,67 +186,6 @@ smiles_samples_simple = [
 ]
 
 
-def compare_smiles(computed, solution, equal=True):
-    c = Chem.MolFromSmiles(computed)
-    Chem.Kekulize(c)
-    c_rdkit = Chem.MolToSmiles(c, kekuleSmiles=True)
-
-    s = Chem.MolFromSmiles(solution)
-    Chem.Kekulize(s)
-    s_rdkit = Chem.MolToSmiles(s, kekuleSmiles=True)
-
-    if equal:
-        assert c_rdkit == s_rdkit
-    else:
-        assert c_rdkit != s_rdkit
-
-
-def check_initial(g, name, num_children, config=None, lactole=None):
-    assert g.nodes[0]["type"].get_name() == name
-    assert len(g.edges(0)) == num_children
-
-    if config is not None:
-        assert g.nodes[0]["type"].get_config() == config
-    if lactole is not None and name != "Api":
-        assert g.nodes[0]["type"].get_lactole() == lactole
-
-
-def check_child(g, id_parent, id_child, name, edge, num_children, lactole=None):
-    assert g.get_edge_data(id_parent, id_child)["type"] == edge
-    assert g.nodes[id_child]["type"].get_name() == name
-    assert len(g.edges(id_child)) == num_children
-
-    if lactole is not None and name != "Api":
-        assert g.nodes[id_child]["type"].get_lactole() == lactole
-
-
-def split_children(g, id_children, child_1):
-    if g.nodes[id_children[0]]["type"].get_name() == child_1:
-        id_child_1, id_child_2 = id_children
-    else:
-        id_child_2, id_child_1 = id_children
-    return id_child_1, id_child_2
-
-
-def split_ternary_children(g, id_children, child_1, child_2):
-    if g.nodes[id_children[0]]["type"].get_name() == child_1:
-        if g.nodes[id_children[1]]["type"].get_name() == child_2:
-            id_child_1, id_child_2, id_child_3 = id_children
-        else:
-            id_child_1, id_child_3, id_child_2 = id_children
-    elif g.nodes[id_children[1]]["type"].get_name() == child_1:
-        if g.nodes[id_children[0]]["type"].get_name() == child_2:
-            id_child_2, id_child_1, id_child_3 = id_children
-        else:
-            id_child_3, id_child_1, id_child_2 = id_children
-    else:
-        if g.nodes[id_children[0]]["type"].get_name() == child_2:
-            id_child_2, id_child_3, id_child_1 = id_children
-        else:
-            id_child_3, id_child_2, id_child_1 = id_children
-    return id_child_1, id_child_2, id_child_3
-
-
 def catch_output(method, glycan=None, output_file=None, silent=True):
     logging_out, logging_err = [], []
 
@@ -303,17 +239,3 @@ def setup_test():
         "glycan_file": write_file([smiles_samples[i][0] for i in range(3, 8)]),
         "glycan_generator": generator([smiles_samples[i][0] for i in range(8, 13)])
     }
-
-
-def check_results(output):
-    solution = [smiles_samples[i][1] for i in range(13)]
-    i = 0
-    for i, ((o_glycan, o_smiles), s_smiles) in enumerate(zip(output, solution)):
-        assert o_glycan == smiles_samples[i][0]
-        compare_smiles(o_smiles, s_smiles)
-    assert i == 12
-
-    if os.path.exists("./test.txt"):
-        os.remove("./test.txt")
-    if os.path.exists("./output.txt"):
-        os.remove("./output.txt")
