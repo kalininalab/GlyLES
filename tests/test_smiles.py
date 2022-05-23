@@ -110,7 +110,7 @@ class TestSMILES:
             'GlcNAc(b1-2)Man(a1-3)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc',
         ]:
             return
-        output, out, err = catch_output(convert, glycan=glycan)
+        output, out, err = catch_output(convert, glycan=glycan, returning=False)
 
         assert output is None
 
@@ -121,7 +121,7 @@ class TestSMILES:
 
     @pytest.mark.parametrize("glycan", ["Neu5Gc(a2-3)Gal(b1-4)[Fuc(a1-4)]GlcNAc"])
     def test_lectinoracle_detail(self, glycan):
-        output, out, err = catch_output(convert, glycan=glycan)
+        output, out, err = catch_output(convert, glycan=glycan, returning=False)
 
         assert output is None
 

@@ -6,11 +6,13 @@
 
 - Ternary branching is now possible. Monomers may have three children in the tree-like structure of a glycan.
 - More tests for the new functionality
+- Support for two new IUPAC representations (full and simplified according to [SNFG](https://www.ncbi.nlm.nih.gov/glycans/snfg.html))
 
 ### Changed
 
 - Monomers only in RDKit representation possible. NetworkX-implementation has been removed
 - Comments and code style improved, also a bit of a cleanup
+- Default output-type is ``return`` instead of commandline prints
 
 ---
 

@@ -9,7 +9,11 @@ from glyles.glycans.utils import UnreachableError, ParseError, Lactole
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
 
-ketoses2 = {"Fru", "Psi", "Sor", "Tag"}
+ketoses2 = {
+    ("Kde", Lactole.PYRANOSE), ("Neu", Lactole.PYRANOSE), ("Pse", Lactole.PYRANOSE), ("Leg", Lactole.PYRANOSE),
+    ("Aci", Lactole.PYRANOSE), ("Kdo", Lactole.PYRANOSE), ("Dha", Lactole.PYRANOSE), ("Fru", Lactole.PYRANOSE),
+    ("Sor", Lactole.PYRANOSE), ("Tag", Lactole.PYRANOSE), ("Psi", Lactole.PYRANOSE),
+}
 
 
 class Glycan:
@@ -138,8 +142,8 @@ class Glycan:
             con = str(con)
             if "(" not in con and ")" not in con:
                 if "-" not in con:
-                    bond = ("2-" if self.g.nodes[child]['type'].get_name() in ketoses2 and
-                                    self.g.nodes[child]["type"].get_lactole == Lactole.FURANOSE else "1-")
+                    bond = ("2-" if (self.g.nodes[child]["type"].get_lactole,
+                                     self.g.nodes[child]['type'].get_name()) in ketoses2 else "1-")
                     con = con[0] + bond + con[1:]
                 con = "(" + con + ")"
             self.g.add_edge(parent, child, type=con)
