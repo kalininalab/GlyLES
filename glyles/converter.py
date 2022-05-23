@@ -1,5 +1,7 @@
 import os
 import sys
+import logging
+import warnings
 
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import ParseError
@@ -59,7 +61,7 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
     glycans = preprocess_glycans(glycan, glycan_list, glycan_file)
     if len(glycans) == 0 and glycan_generator is None:
         if not silent:
-            print("List of glycans is empty", file=sys.stderr)
+            logging.info("List of glycans is empty")
         return
 
     # determine the output format
@@ -67,16 +69,14 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
         if os.path.isdir(os.path.dirname(os.path.abspath(output_file))):
             output = open(output_file, "w")
         else:
-            if not silent:
-                print("Path of output-file does not exist! Results will be printed on stdout.", file=sys.stderr)
+            warnings.warn("Path of output-file does not exist! Results will be printed on stdout.")
             output = sys.stdout
         returning = False
     else:
         if returning:
             output = []
         else:
-            if not silent:
-                print("No output-file specified, results will be printed on stdout.")
+            warnings.warn("No output-file specified, results will be printed on stdout.")
             output = sys.stdout
 
     # convert the IUPAC strings into SMILES strings from the input list
@@ -121,8 +121,7 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
     factory = MonomerFactory()
     glycans = preprocess_glycans(glycan, glycan_list, glycan_file)
     if len(glycans) == 0 and glycan_generator is None:
-        if not silent:
-            print("List of glycans is empty", file=sys.stderr)
+        logging.info("List of glycans is empty")
         return
 
     # Convert the glycans ...
@@ -154,9 +153,9 @@ def generate(glycan, factory, full):
 
     # catch any exception at glycan level to not destroy the whole pipeline because of one mis-formed glycan
     except ParseError as e:
-        print(f"An exception occurred with {glycan}:", e.__class__, file=sys.stderr)
-        print("Error message:", e.__str__(), file=sys.stderr)
+        logging.error(f"An exception occurred with {glycan}: {e.__class__}\n"
+                      f"Error message: {e.__str__()}")
         return glycan, ""
     except Exception:
-        print(f"An unexpected error occurred with with {glycan}. This glycan cannot be parsed.")
+        logging.error(f"An unexpected error occurred with with {glycan}. This glycan cannot be parsed.")
         return glycan, ""

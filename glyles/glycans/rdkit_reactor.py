@@ -1,5 +1,6 @@
 import numpy as np
 from rdkit.Chem.rdchem import Atom, BondType, EditableMol
+import logging
 
 from glyles.grammar.GlycanLexer import GlycanLexer
 
@@ -15,8 +16,9 @@ def not_implemented_message(mod):
     Returns
         Nothing
     """
-    print(f"ModificationNotImplementedWarning: {mod} Modification not implemented. The returned molecule will not have "
-          f"this modification")
+    logging.warning(
+        f"ModificationNotImplementedWarning: {mod} Modification not implemented. The returned molecule will not have "
+        f"this modification")
 
 
 class Reactor:
