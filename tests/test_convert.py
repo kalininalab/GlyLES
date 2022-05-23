@@ -122,7 +122,7 @@ class TestConverter:
         assert log_err[0] == "Path of output-file does not exist! Results will be printed on stdout."
 
     def test_convert_3_1(self):
-        output, log_out, log_err = catch_output(method=convert, glycan="Man", silent=True)
+        output, log_out, log_err = catch_output(method=convert, glycan="Man", silent=True, returning=False)
 
         assert output is None
         assert len(log_out) == 4
@@ -130,7 +130,7 @@ class TestConverter:
         assert len(log_err) == 0
 
     def test_convert_3_2(self):
-        output, log_out, log_err = catch_output(method=convert, glycan="Man", silent=False)
+        output, log_out, log_err = catch_output(method=convert, glycan="Man", silent=False, returning=False)
 
         assert output is None
         assert len(log_out) == 6

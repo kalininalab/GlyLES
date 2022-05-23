@@ -5,9 +5,11 @@ import numpy as np
 import pydot
 from antlr4 import *
 
-from glyles.glycans.utils import UnreachableError, ParseError
+from glyles.glycans.utils import UnreachableError, ParseError, Lactole
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
+
+ketoses2 = {"Fru", "Psi", "Sor", "Tag"}
 
 
 class Glycan:
@@ -133,7 +135,14 @@ class Glycan:
             Returns:
                 Nothing
             """
-            self.g.add_edge(parent, child, type=str(con))
+            con = str(con)
+            if "(" not in con and ")" not in con:
+                if "-" not in con:
+                    bond = ("2-" if self.g.nodes[child]['type'].get_name() in ketoses2 and
+                                    self.g.nodes[child]["type"].get_lactole == Lactole.FURANOSE else "1-")
+                    con = con[0] + bond + con[1:]
+                con = "(" + con + ")"
+            self.g.add_edge(parent, child, type=con)
 
         def __add_node(self, node, config=""):
             """

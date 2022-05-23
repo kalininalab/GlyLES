@@ -186,7 +186,7 @@ smiles_samples_simple = [
 ]
 
 
-def catch_output(method, glycan=None, output_file=None, silent=True):
+def catch_output(method, glycan=None, output_file=None, silent=True, returning=True):
     logging_out, logging_err = [], []
 
     class writer_out(object):
@@ -212,7 +212,7 @@ def catch_output(method, glycan=None, output_file=None, silent=True):
     sys.stderr = writer_err()
 
     if method == convert:
-        output = method(glycan=glycan, output_file=output_file, silent=silent)
+        output = method(glycan=glycan, output_file=output_file, silent=silent, returning=returning)
     else:
         output = list(method(glycan=glycan, silent=silent))
 
@@ -239,3 +239,11 @@ def setup_test():
         "glycan_file": write_file([smiles_samples[i][0] for i in range(3, 8)]),
         "glycan_generator": generator([smiles_samples[i][0] for i in range(8, 13)])
     }
+
+
+def reduce_notation(iupac, mode):
+    if mode != "full":
+        iupac = iupac.replace("(", "").replace(")", "")
+    if mode == "simple":
+        iupac = iupac.replace("1-", "")
+    return iupac

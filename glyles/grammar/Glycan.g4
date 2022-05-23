@@ -29,7 +29,9 @@ MOD:
     | '-ulosaric' | '-uronic' | '-onic' | '-aric' | 'Ala' | 'OBz' | 'Ser' | '-ol' | '0d' | 'D-' | 'L-' | 'Ac' | 'CN'
     | 'A' | 'N';
 CON:
-    '(' TYPE NUM '-' NUM ')';
+    '(' TYPE NUM '-' NUM ')'
+    | TYPE NUM '-' NUM
+    | TYPE NUM;
 TYPE:
     'a' | 'b';
 RING:

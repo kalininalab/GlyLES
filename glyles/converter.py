@@ -34,7 +34,7 @@ def preprocess_glycans(glycan, glycan_list, glycan_file):
     return glycans
 
 
-def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=None, output_file=None, returning=False,
+def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=None, output_file=None, returning=True,
             silent=True, full=True):
     """
     General user interaction interface to use this library.
@@ -70,6 +70,7 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
             if not silent:
                 print("Path of output-file does not exist! Results will be printed on stdout.", file=sys.stderr)
             output = sys.stdout
+        returning = False
     else:
         if returning:
             output = []
