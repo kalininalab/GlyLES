@@ -21,12 +21,12 @@ SAC:
     | 'Tyv' | 'Abe' | 'Par' | 'Dig' | 'Col' | 'Ara' | 'Lyx' | 'Xyl' | 'Rib' | 'Kdn' | 'Neu' | 'Pse' | 'Leg' | 'Aci'
     | 'Bac' | 'LDmanHep' | 'Kdo' | 'Dha' | 'DDmanHep' | 'Mur' | 'Api' | 'Fru' | 'Tag' | 'Sor' | 'Psi';
 MOD:
-    NUM ',' NUM '-Anhydro-' | NUM ('-O-Ac-' | '-O-Me-')
+    NUM ',' NUM '-Anhydro-' | NUM '-O-' ('Ac' | 'Bn' | 'Bz' | 'Et' | 'Me') '-'
     | NUM 'N' ('SerAc' | 'ThrAc' | 'But' | 'Me')
     | (NUM | 'O') ('Prop' | 'Ala' | 'But'| 'Etn' | 'Fer' | 'Lac' | 'Gro' | 'Hxo' | 'Lin' | 'Oco' | 'Ole' | 'Pyr'
-        | 'Ac' | 'Am' | 'Fo' | 'Me' | 'Gc' | 'Gr' | 'PP' | 'S' | 'P' | 'N' | 'F' | 'd' | 'e')
-    | 'N' ('But' | 'Lac' | 'Ac' | 'Fo' | 'Me' | 'Bz')
-    | '-ulosaric' | '-uronic' | '-onic' | '-aric' | 'Ala' | 'OBz' | 'Ser' | '-ol' | '0d' | 'D-' | 'L-' | 'Ac' | 'CN'
+        | 'Ac' | 'Am' | 'Bn' | 'Bz' | 'Et' | 'Fo' | 'Me' | 'Gc' | 'Gr' | 'Ph' | 'Tf' | 'Tr' | 'Ts' | 'S' | 'P' | 'N' | 'F' | 'd' | 'e')
+    | 'N' ('But' | 'Lac' | 'Ac' | 'Bz' | 'Fo' | 'Me')
+    | '-ulosaric' | '-uronic' | '-onic' | '-aric' | 'Ala' | 'Ser' | '-ol' | '0d' | 'D-' | 'L-' | 'Ac' | 'CN'
     | 'A' | 'N';
 CON:
     '(' TYPE NUM '-' NUM ')'

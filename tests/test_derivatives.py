@@ -27,13 +27,13 @@ class TestDerivatives:
 
     @pytest.mark.parametrize("name", derivatives.keys())
     def test_basic(self, name):
-        output = convert(name, returning=True)[0][1]
+        output = convert(name)[0][1]
         compare_smiles(output, derivatives[name])
 
     @pytest.mark.parametrize("line", open("data/tests.tsv", "r").readlines()[1:])
     def test_file_parsing(self, line):
         iupac, smiles = line.strip().split("\t")
-        output = convert(iupac, returning=True)
+        output = convert(iupac)
 
         assert output[0][0] == iupac
         assert output[0][1] != ""
@@ -41,7 +41,7 @@ class TestDerivatives:
     @pytest.mark.parametrize("line", open("data/tests.tsv", "r").readlines()[1:])
     def test_file_correct(self, line):
         iupac, smiles = line.strip().split("\t")
-        output = convert(iupac, returning=True)
+        output = convert(iupac)
 
         assert output[0][0] == iupac
         compare_smiles(output[0][1], smiles)

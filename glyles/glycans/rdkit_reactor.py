@@ -1,7 +1,8 @@
 import numpy as np
-from rdkit.Chem.rdchem import Atom, BondType, EditableMol
+from rdkit.Chem.rdchem import Atom, BondType, EditableMol, ChiralType
 import logging
 
+from glyles.glycans.utils import Enantiomer
 from glyles.grammar.GlycanLexer import GlycanLexer
 
 
@@ -41,6 +42,7 @@ class Reactor:
     def react(self, names, types):
         """
         Manage the parsed modifications and apply them in turn.
+        Untested modifications are marked with >TBT< - to be tested in the code
 
         Args:
             names (List[str]): name (string representation) of the modification
@@ -54,38 +56,33 @@ class Reactor:
             if t != GlycanLexer.MOD:
                 continue
             if len(name) == 1:
-                if name[0] == "N":  # put a nitrogen at position 5
+                if name[0] == "N":  # put a nitrogen at position 2
                     self.set_nitrogen()
                 if name[0] == "A":  # put an acid group at position 6
                     self.make_acid()
             elif len(name) == 2:
                 if name[0].isdigit() or name[0] == "O":
-                    if name[1] == "d":  # ?d - deoxygenate some positions in monomers
-                        not_implemented_message(name)
-                        full = False
-                    elif name[1] == "e":  # ?d
+                    if name[1] == "d":  # ?d - deoxygenate some positions in monomers  (TBT)
                         not_implemented_message(name)
                         full = False
                         # self.deoxygenate(int(name[0]))
-                    # having a fluor atom instead of a hydrogen opposite to an oxygen at a certain position
+                    # having a fluor atom instead of a hydrogen opposite to an oxygen at a certain position (TBI)
                     elif name[1] == "F":
                         not_implemented_message(name)
                         full = False
-                    elif name[1] == "N":  # add a nitrogen atom to a certain position
+                    elif name[1] == "N":  # add a nitrogen atom to a certain position (TBT with O)
                         self.set_nitrogen(position=("O" if name[0] == "O" else int(name[0])))
-                    elif name[1] == "S":  # add a sulfur atom to a certain position
+                    elif name[1] == "S":  # add a sulfur atom to a certain position (TBT with O)
                         self.add_sulfur(position=("O" if name[0] == "O" else int(name[0])))
-                    elif name[1] == "P":  # add a phosphate atom to a certain position
+                    elif name[1] == "P":  # add a phosphate atom to a certain position (TBT with O)
                         self.add_phosphate(position=("O" if name[0] == "O" else int(name[0])))
                 else:
-                    if name == "Ac":  # add an acid group to a certain position
+                    if name == "Ac":  # add an acid group to a certain position (TBT + to be checked)
                         self.add_acid(position=5)
                     if name == "D-":  # have the monomer in D form (regarding the enantiomerism)
-                        not_implemented_message(name)
-                        full = False
+                        self.to_enantiomer(Enantiomer.D)
                     if name == "L-":  # have the monomer is L form (regarding the enantiomerism)
-                        not_implemented_message(name)
-                        full = False
+                        self.to_enantiomer(Enantiomer.L)
             elif len(name) == 3:
                 if name[0].isdigit() or name[0] == "O":
                     # add a methyl group to a certain position (or to an oxygen at position 2)
@@ -95,6 +92,10 @@ class Reactor:
                     elif name.endswith("Ac"):
                         self.add_acid(position=("O" if name[0] == "O" else int(name[0])))
                     # add a benzoyl group to a certain position (or to an oxygen at position 2)
+                    elif name.endswith("Bn"):
+                        not_implemented_message(name)
+                        full = False
+                        # self.add_benzyl(position=("O" if name[0] == "O" else int(name[0])))
                     elif name.endswith("Bz"):
                         not_implemented_message(name)
                         full = False
@@ -103,28 +104,50 @@ class Reactor:
                     elif name.endswith("Gc"):
                         not_implemented_message(name)
                         full = False
-                        # self.add_glycolyl()
+                        # self.add_glycolyl(position=("O" if name[0] == "O" else int(name[0])))
+                    elif name.endswith("Ph"):
+                        not_implemented_message(name)
+                        full = False
+                        # self.add_phenyl(position=("O" if name[0] == "O" else int(name[0])))
+                    elif name.endswith("Tf"):
+                        not_implemented_message(name)
+                        full = False
+                        # self.add_triflyl(position=("O" if name[0] == "O" else int(name[0])))
+                    elif name.endswith("Tr"):
+                        not_implemented_message(name)
+                        full = False
+                        # self.add_trityl(position=("O" if name[0] == "O" else int(name[0])))
+                    elif name.endswith("Ts"):
+                        not_implemented_message(name)
+                        full = False
+                        # self.add_tosyl(position=("O" if name[0] == "O" else int(name[0])))
                 elif name == "NAc":  # add a nitrogen and attach an acid group to that at position 2
                     self.add_acid(pos=self.set_nitrogen())
                 elif name == "NBz":  # add a nitrogen and attach a benzoyl group to that at position ?(2)
                     not_implemented_message(name)
                     full = False
                     # self.add_benzoyl(pos=self.set_nitrogen())
-                elif name == "-ol":  # ??
-                    not_implemented_message(name)
-                    full = False
-            elif len(name) == 5:  # ??
-                if name == "-onic":
-                    not_implemented_message(name)
-                    full = False
             elif len(name) == 7:
                 if name.endswith("Me-"):  # add a methyl group to a certain position
                     self.add_methyl(position=int(name[0]))
                 if name.endswith("Ac-"):  # add an acid group to a certain position
                     self.add_acid(position=int(name[0]))
+                if name.endswith("Bn-"):
+                    not_implemented_message(name)
+                    full = False
+                    # self.add_benzyl(position=int(name[0]))
+                if name.endswith("Bz-"):
+                    not_implemented_message(name)
+                    full = False
+                    # self.add_benzoyl(position=int(name[0]))
+                if name.endswith("Et-"):
+                    not_implemented_message(name)
+                    full = False
+                    # self.add_ethyl(position=int(name[0]))
             elif len(name) == 12:  # ?,?-Anhydro- ??
                 not_implemented_message(name)
                 full = False
+                # self.add_anhydro(int(name[0]), int(name[2]))
             else:
                 not_implemented_message(name)
                 full = False
@@ -186,6 +209,7 @@ class Reactor:
         """
         if position == "O":
             return
+
         pos = self.monomer.find_oxygen(position)
         emol = EditableMol(self.monomer.structure)
 
@@ -374,6 +398,16 @@ class Reactor:
         """
         # TODO: Implement deoxygenation
         pass
+
+    def to_enantiomer(self, form):
+        if self.monomer.get_isomer() == form:
+            return
+        ring_info = self.monomer.structure.GetRingInfo().AtomRings()[0]
+        for idx in ring_info:
+            if self.monomer.structure.GetAtomWithIdx(idx).GetChiralTag() == ChiralType.CHI_TETRAHEDRAL_CCW:
+                self.monomer.structure.GetAtomWithIdx(idx).SetChiralTag(ChiralType.CHI_TETRAHEDRAL_CW)
+            elif self.monomer.structure.GetAtomWithIdx(idx).GetChiralTag() == ChiralType.CHI_TETRAHEDRAL_CW:
+                self.monomer.structure.GetAtomWithIdx(idx).SetChiralTag(ChiralType.CHI_TETRAHEDRAL_CCW)
 
     def _extend_matrices(self, count):
         """
