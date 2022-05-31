@@ -5,15 +5,9 @@ import numpy as np
 import pydot
 from antlr4 import *
 
-from glyles.glycans.utils import UnreachableError, ParseError, Lactole
+from glyles.glycans.utils import UnreachableError, ParseError, ketoses2
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
-
-ketoses2 = {
-    ("Kde", Lactole.PYRANOSE), ("Neu", Lactole.PYRANOSE), ("Pse", Lactole.PYRANOSE), ("Leg", Lactole.PYRANOSE),
-    ("Aci", Lactole.PYRANOSE), ("Kdo", Lactole.PYRANOSE), ("Dha", Lactole.PYRANOSE), ("Fru", Lactole.PYRANOSE),
-    ("Sor", Lactole.PYRANOSE), ("Tag", Lactole.PYRANOSE), ("Psi", Lactole.PYRANOSE),
-}
 
 
 class Glycan:

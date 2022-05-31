@@ -118,14 +118,3 @@ class TestSMILES:
 
         mol = Chem.MolFromSmiles(smiles)
         compare_smiles(smiles, Chem.MolToSmiles(mol))
-
-    @pytest.mark.parametrize("glycan", ["Neu5Gc(a2-3)Gal(b1-4)[Fuc(a1-4)]GlcNAc"])
-    def test_lectinoracle_detail(self, glycan):
-        output, out, err = catch_output(convert, glycan=glycan, returning=False)
-
-        assert output is None
-
-        smiles = out[-2]
-
-        mol = Chem.MolFromSmiles(smiles)
-        compare_smiles(smiles, Chem.MolToSmiles(mol))

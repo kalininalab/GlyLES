@@ -26,7 +26,7 @@ MOD:
     | (NUM | 'O') ('Prop' | 'Ala' | 'But'| 'Etn' | 'Fer' | 'Lac' | 'Gro' | 'Hxo' | 'Lin' | 'Oco' | 'Ole' | 'Pyr'
         | 'Ac' | 'Am' | 'Bn' | 'Bz' | 'Et' | 'Fo' | 'Me' | 'Gc' | 'Gr' | 'Ph' | 'Tf' | 'Tr' | 'Ts' | 'S' | 'P' | 'N' | 'F' | 'd' | 'e')
     | 'N' ('But' | 'Lac' | 'Ac' | 'Bz' | 'Fo' | 'Me')
-    | '-ulosaric' | '-uronic' | '-onic' | '-aric' | 'Ala' | 'Ser' | '-ol' | '0d' | 'D-' | 'L-' | 'Ac' | 'CN'
+    | '-ulosaric' | '-uronic' | '-onic' | '-aric' | 'Ala' | 'Ser' | '-ol' | '0d' | 'D-' | 'L-' | 'CN'
     | 'A' | 'N';
 CON:
     '(' TYPE NUM '-' NUM ')'

@@ -1,8 +1,9 @@
 import numpy as np
+from rdkit import Chem
 from rdkit.Chem.rdchem import Atom, BondType, EditableMol, ChiralType
 import logging
 
-from glyles.glycans.utils import Enantiomer
+from glyles.glycans.utils import Enantiomer, ketoses2
 from glyles.grammar.GlycanLexer import GlycanLexer
 
 
@@ -20,6 +21,10 @@ def not_implemented_message(mod):
     logging.warning(
         f"ModificationNotImplementedWarning: {mod} Modification not implemented. The returned molecule will not have "
         f"this modification")
+
+
+def ringC(monomer):
+    return 2 if (monomer, monomer.get_lactole()) in ketoses2 else 1
 
 
 class Reactor:
@@ -62,35 +67,31 @@ class Reactor:
                     self.make_acid()
             elif len(name) == 2:
                 if name[0].isdigit() or name[0] == "O":
-                    if name[1] == "d":  # ?d - deoxygenate some positions in monomers  (TBT)
-                        not_implemented_message(name)
-                        full = False
-                        # self.deoxygenate(int(name[0]))
+                    if name[1] == "d":  # ?d - desoxygenate some positions in monomers  (TBT)
+                        self.desoxygenate(int(name[0]))
                     # having a fluor atom instead of a hydrogen opposite to an oxygen at a certain position (TBI)
                     elif name[1] == "F":
                         not_implemented_message(name)
                         full = False
                     elif name[1] == "N":  # add a nitrogen atom to a certain position (TBT with O)
-                        self.set_nitrogen(position=("O" if name[0] == "O" else int(name[0])))
+                        self.set_nitrogen(position=(ringC(self.monomer) if name[0] == "O" else int(name[0])))
                     elif name[1] == "S":  # add a sulfur atom to a certain position (TBT with O)
-                        self.add_sulfur(position=("O" if name[0] == "O" else int(name[0])))
+                        self.add_sulfur(position=(ringC(self.monomer) if name[0] == "O" else int(name[0])))
                     elif name[1] == "P":  # add a phosphate atom to a certain position (TBT with O)
-                        self.add_phosphate(position=("O" if name[0] == "O" else int(name[0])))
+                        self.add_phosphate(position=(ringC(self.monomer) if name[0] == "O" else int(name[0])))
                 else:
-                    if name == "Ac":  # add an acid group to a certain position (TBT + to be checked)
-                        self.add_acid(position=5)
                     if name == "D-":  # have the monomer in D form (regarding the enantiomerism)
                         self.to_enantiomer(Enantiomer.D)
-                    if name == "L-":  # have the monomer is L form (regarding the enantiomerism)
+                    elif name == "L-":  # have the monomer is L form (regarding the enantiomerism)
                         self.to_enantiomer(Enantiomer.L)
             elif len(name) == 3:
                 if name[0].isdigit() or name[0] == "O":
                     # add a methyl group to a certain position (or to an oxygen at position 2)
                     if name.endswith("Me"):
-                        self.add_methyl(position=("O" if name[0] == "O" else int(name[0])))
+                        self.add_methyl(position=(ringC(self.monomer) if name[0] == "O" else int(name[0])))
                     # add an acid group to a certain position (or to an oxygen at position 2)
                     elif name.endswith("Ac"):
-                        self.add_acid(position=("O" if name[0] == "O" else int(name[0])))
+                        self.add_acid(position=(ringC(self.monomer) if name[0] == "O" else int(name[0])))
                     # add a benzoyl group to a certain position (or to an oxygen at position 2)
                     elif name.endswith("Bn"):
                         not_implemented_message(name)
@@ -106,9 +107,7 @@ class Reactor:
                         full = False
                         # self.add_glycolyl(position=("O" if name[0] == "O" else int(name[0])))
                     elif name.endswith("Ph"):
-                        not_implemented_message(name)
-                        full = False
-                        # self.add_phenyl(position=("O" if name[0] == "O" else int(name[0])))
+                        self.add_phenyl(position=(ringC(self.monomer) if name[0] == "O" else int(name[0])))
                     elif name.endswith("Tf"):
                         not_implemented_message(name)
                         full = False
@@ -165,8 +164,6 @@ class Reactor:
         Returns:
             Nothing
         """
-        if position == "O":
-            return
         pos = self.monomer.find_oxygen(position)
         emol = EditableMol(self.monomer.structure)
 
@@ -207,8 +204,6 @@ class Reactor:
         Returns:
             Nothing
         """
-        if position == "O":
-            return
 
         pos = self.monomer.find_oxygen(position)
         emol = EditableMol(self.monomer.structure)
@@ -256,9 +251,6 @@ class Reactor:
         if (position is None) == (pos is None):
             raise ValueError()
 
-        if position == "O":
-            return
-
         if position is not None:
             pos = self.monomer.find_oxygen(position)
 
@@ -286,20 +278,23 @@ class Reactor:
 
         self.monomer.adjacency = new_adj
 
-    def add_methyl(self, position):
+    def add_methyl(self, position=None, pos=None):
         """
         Append a methyl group to the monomer at the specified position.
 
         Args:
-            position (int): number of the c atom where to add the group
+            position (int): index of the c-atom where to append the acid group
+            pos (int): rdkit id of the atom where to append the acid group
 
         Returns:
             Nothing
         """
-        if position == "O":
-            return
 
-        pos = self.monomer.find_oxygen(position)
+        if (position is None) == (pos is None):
+            raise ValueError()
+
+        if position is not None:
+            pos = self.monomer.find_oxygen(position)
 
         emol = EditableMol(self.monomer.structure)
 
@@ -344,6 +339,69 @@ class Reactor:
         # TODO: Add the glycolyl group
         pass
 
+    def add_phenyl(self, position=None, pos=None):
+        """
+        Add a phenyl group to the monomer at the specified position
+
+        Args:
+            position (int): index of the c-atom where to append the phenyl group
+            pos (int): rdkit id of the atom where to append the phenyl group
+
+        Returns:
+            Nothing
+        """
+        print()
+        if (position is None) == (pos is None):
+            raise ValueError()
+
+        if position is not None:
+            print(Chem.MolToSmiles(self.monomer.structure))
+            chirality = self.desoxygenate(position)
+            print("Chi1:", chirality)
+            pos = int(np.where(self.monomer.x[:, 1] == position)[0])
+            pos2 = int(np.where(self.monomer.x[:, 1] == (position + 1))[0])
+            print("Chi2:", self.monomer.structure.GetAtomWithIdx(pos2).GetChiralTag())
+            print(Chem.MolToSmiles(self.monomer.structure))
+        else:
+            chirality = None
+
+        emol = EditableMol(self.monomer.structure)
+
+        c1_id = EditableMol.AddAtom(emol, Atom(6))
+        c2_id = EditableMol.AddAtom(emol, Atom(6))
+        c3_id = EditableMol.AddAtom(emol, Atom(6))
+        c4_id = EditableMol.AddAtom(emol, Atom(6))
+        c5_id = EditableMol.AddAtom(emol, Atom(6))
+        c6_id = EditableMol.AddAtom(emol, Atom(6))
+        EditableMol.AddBond(emol, pos, c1_id, order=BondType.SINGLE)
+        EditableMol.AddBond(emol, c1_id, c2_id, order=BondType.AROMATIC)
+        EditableMol.AddBond(emol, c2_id, c3_id, order=BondType.AROMATIC)
+        EditableMol.AddBond(emol, c3_id, c4_id, order=BondType.AROMATIC)
+        EditableMol.AddBond(emol, c4_id, c5_id, order=BondType.AROMATIC)
+        EditableMol.AddBond(emol, c5_id, c6_id, order=BondType.AROMATIC)
+        EditableMol.AddBond(emol, c6_id, c1_id, order=BondType.AROMATIC)
+
+        self.monomer.structure = emol.GetMol()
+        print(Chem.MolToSmiles(self.monomer.structure))
+        print("Chi2:", self.monomer.structure.GetAtomWithIdx(pos2).GetChiralTag())
+        print("Chi1:", self.monomer.structure.GetAtomWithIdx(pos).GetChiralTag())
+        print("P1-N:", [atom.GetIdx() for atom in self.monomer.structure.GetAtomWithIdx(pos).GetNeighbors()])
+        self.monomer.structure.GetAtomWithIdx(pos).SetChiralTag(chirality)
+        print("Chi1:", self.monomer.structure.GetAtomWithIdx(pos).GetChiralTag())
+        print(Chem.MolToSmiles(self.monomer.structure))
+
+        new_x, new_adj = self._extend_matrices(6)
+        new_x[c1_id:, 0] = [6, 6, 6, 6, 6, 6]
+        new_x[c1_id:, 2] = [2, 2, 2, 2, 2, 2]
+        self.monomer.x = new_x
+
+        for c1 in [c1_id, c2_id, c3_id, c4_id, c5_id, c6_id]:
+            for c2 in [c1_id, c2_id, c3_id, c4_id, c5_id, c6_id]:
+                if c1 != c2:
+                    new_adj[c1, c2] = 1
+
+        self.monomer.adjacency = new_adj
+
     def set_nitrogen(self, position=2):
         """
         Change an oxygen to a nitrogen.
@@ -386,18 +444,24 @@ class Reactor:
         new_adj[o_id, c_id] = 1
         self.monomer.adjacency = new_adj
 
-    def deoxygenate(self, position):
+    def desoxygenate(self, position):
         """
-        deoxygenate the given position by removing the oxygen atom
+        desoxygenate the given position by removing the oxygen atom
 
         Args:
-            position (int): position to deoxygenate
+            position (int): position to desoxygenate
 
         Returns:
             Nothing
         """
-        # TODO: Implement deoxygenation
-        pass
+        oxygen = self.monomer.find_oxygen(position)
+        chirality = self.monomer.structure.GetAtomWithIdx(int(np.where(self.monomer.x[:, 1] == position)[0])).GetChiralTag()
+        print(self.monomer.structure.GetAtomWithIdx(int(np.where(self.monomer.x[:, 1] == position)[0])).GetChiralTag())
+        print("P1-N:", [atom.GetIdx() for atom in self.monomer.structure.GetAtomWithIdx(int(np.where(self.monomer.x[:, 1] == position)[0])).GetNeighbors()])
+        # self.monomer.structure.GetAtomWithIdx(int(np.where(self.monomer.x[:, 1] == position)[0])).SetChiralTag(ChiralType.CHI_UNSPECIFIED)
+        self._reduce_matrices([oxygen])
+        print(self.monomer.structure.GetAtomWithIdx(int(np.where(self.monomer.x[:, 1] == position)[0])).GetChiralTag())
+        return chirality
 
     def to_enantiomer(self, form):
         if self.monomer.get_isomer() == form:
@@ -424,3 +488,23 @@ class Reactor:
         tmp_adj = np.zeros((self.monomer.adjacency.shape[0] + count, self.monomer.adjacency.shape[1] + count))
         tmp_adj[:self.monomer.adjacency.shape[0], :self.monomer.adjacency.shape[1]] = self.monomer.adjacency
         return tmp_x, tmp_adj
+
+    def _reduce_matrices(self, positions):
+        """
+        Drop some atoms at the specified positions.
+
+        Args:
+            positions (List[int]): list of atom positions in the RDKit molecule to be deleted
+
+        Returns:
+            Nothing
+        """
+        emol = EditableMol(self.monomer.structure)
+
+        for p in sorted(positions, reverse=True):
+            self.monomer.x = np.delete(self.monomer.x, p, 0)
+            self.monomer.adjacency = np.delete(self.monomer.adjacency, p, 0)
+            self.monomer.adjacency = np.delete(self.monomer.adjacency, p, 1)
+            EditableMol.RemoveAtom(emol, p)
+
+        self.monomer.structure = emol.GetMol()

@@ -156,6 +156,7 @@ def generate(glycan, factory, full):
         logging.error(f"An exception occurred with {glycan}: {e.__class__}\n"
                       f"Error message: {e.__str__()}")
         return glycan, ""
-    except Exception:
+    except Exception as e:
         logging.error(f"An unexpected error occurred with with {glycan}. This glycan cannot be parsed.")
+        raise e
         return glycan, ""

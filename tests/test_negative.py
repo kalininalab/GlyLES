@@ -31,12 +31,11 @@ class TestNegatives:
         assert output[0][1] == ""
 
     @pytest.mark.parametrize("num", ["1", "2", "3", "4", "5", "6"])
-    @pytest.mark.parametrize("mod", ["d", "e", "F"])
     @pytest.mark.parametrize("monomer", ["Man", "Gal", "Glc", "NeuAc", "Gal3S", "Glc4P"])
     @pytest.mark.parametrize("ending", ["", "-ol", "-onic"])
     @pytest.mark.parametrize("full", [True, False])
-    def test_not_fully_parsable(self, num, mod, monomer, ending, full):
-        unparsable = num + mod + monomer + ending
+    def test_not_fully_parsable(self, num, monomer, ending, full):
+        unparsable = num + "e" + monomer + ending
         output = convert(unparsable, returning=True, full=full)
         smiles = convert(monomer, returning=True, full=True)
 

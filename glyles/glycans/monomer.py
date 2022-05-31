@@ -1,6 +1,7 @@
 import numpy as np
 from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
 
+from glyles.glycans.smiles_reactor import SMILESReaktor
 from glyles.glycans.utils import UnreachableError, Tree, Config
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.glycans.rdkit_reactor import Reactor
@@ -264,7 +265,7 @@ class Monomer:
             SMILES string representation of this molecule
         """
         smiles = MolToSmiles(self.get_structure(), rootedAtAtom=root)
-        smiles.replace("At", "O-")
+        # smiles.replace("At", "O-")
         return "".join([((f"%{int(c) + ring_index}" if int(c) + ring_index >= 10
                           else f"{int(c) + ring_index}") if c.isdigit() else c) for c in smiles])
 
@@ -279,7 +280,8 @@ class Monomer:
         Returns:
             New monomer with the altered structure
         """
-        return Reactor(self).react(names, types)
+        # return Reactor(self).react(names, types)
+        return SMILESReaktor(self).react(names, types)
 
     def get_structure(self):
         """
