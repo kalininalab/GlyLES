@@ -91,9 +91,9 @@ class PyranoseFactory:
         "QUI": {"name": "Qui", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                 "smiles": "C[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"},
         "A_QUI": {"name": "Qui", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
-                  "smiles": "C[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O"},
-        "B_QUI": {"name": "Qui", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "C[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@@H]1O"},
+        "B_QUI": {"name": "Qui", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+                  "smiles": "C[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O"},
 
         # Rhamnose
         "RHA": {"name": "Rha", "config": Config.UNDEF, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,

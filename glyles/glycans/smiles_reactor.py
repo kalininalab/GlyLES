@@ -2,6 +2,7 @@ import logging
 
 import numpy as np
 from rdkit.Chem.rdchem import ChiralType
+from rdkit.Chem.rdmolops import AddHs, RemoveHs
 
 from glyles.glycans.utils import Enantiomer, ketoses2
 from glyles.grammar.GlycanLexer import GlycanLexer
@@ -119,11 +120,26 @@ class SMILESReaktor:
         ]
         for i, chain in enumerate(self.side_chains):
             if chain:
-                idx = self.monomer.find_oxygen(i)
-                if chain == "H":  # Account for desoxygenation
-                    self.monomer.structure.GetAtomWithIdx(idx).SetAtomicNum(1)
-                else:
-                    self.monomer.structure.GetAtomWithIdx(idx).SetAtomicNum(placeholder[i][0])
+                try:
+                    idx = self.monomer.find_oxygen(i)
+                    if chain == "H":  # Account for desoxygenation
+                        self.monomer.structure.GetAtomWithIdx(idx).SetAtomicNum(1)
+                    else:
+                        self.monomer.structure.GetAtomWithIdx(idx).SetAtomicNum(placeholder[i][0])
+                except ValueError:
+                    tmp = AddHs(self.monomer.structure)
+                    h = None
+                    for n in tmp.GetAtomWithIdx(int(np.where(self.monomer.x[:, 1] == i)[0])).GetNeighbors():
+                        if n.GetAtomicNum() == 1:
+                            h = n.GetIdx()
+                            break
+                    if h is None:
+                        raise ValueError(f"There is no oxygen, nitrogen, and hydrogen attached to C{i}! "
+                                         f"No functional group can be attached there!")
+                    tmp.GetAtomWithIdx(h).SetAtomicNum(placeholder[i][0])
+                    self.monomer.structure = RemoveHs(tmp)
+                    if chain[0] == "O":
+                        self.side_chains[i] = self.side_chains[i][1:]
         smiles = self.monomer.to_smiles(int(np.where(self.monomer.x[:, 1] == 10)[0]), 0)
         smiles = smiles
         for i, chain in enumerate(self.side_chains):

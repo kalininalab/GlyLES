@@ -202,7 +202,7 @@ class Glycan:
                 SMILES representation as string
             """
             # first mark the atoms that will be replaced in a binding of two monomers
-            self.__mark(t, 0, "({}1-?)".format(root_orientation))
+            self.__mark(t, 0, f"({root_orientation}1-?)")
 
             # return the string that can be computed from connecting the monomers as marked above
             position = int(np.argwhere(t.nodes[0]["type"].get_features()[:, 1] == start).squeeze())
