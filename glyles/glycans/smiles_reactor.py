@@ -85,13 +85,29 @@ class SMILESReaktor:
                     elif n[1:] == "Ac":
                         elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol()
                         self.side_chains[int(n[0])] = elem + "C(C)(=O)"
+                    elif n[1:] == "Bn":
+                        self.side_chains[int(n[0])] = "Oc2ccccc2"
+                    elif n[1:] == "Bz":
+                        self.side_chains[int(n[0])] = "OC(=O)c2ccccc2"
+                    elif n[1:] == "Gc":
+                        self.side_chains[int(n[0])] = "OC(=O)CO"
                     elif n[1:] == "Ph":
                         self.side_chains[int(n[0])] = "c2ccccc2"
+                    elif n[1:] == "Tf":
+                        self.side_chains[int(n[0])] = "OS(=O)(=O)C(F)(F)F"
+                    elif n[1:] == "Tr":
+                        self.side_chains[int(n[0])] = "C(c2ccccc2)(c3ccccc3)c4ccccc4"
+                    elif n[1:] == "Ts":
+                        self.side_chains[int(n[0])] = "OS(=O)(=O)c2ccc(C)cc2"
                 elif n[0] == "O":
                     if n[1:] == "Me":
                         self.side_chains[self.ring_c] = "OC"
                 elif n == "NAc":
                     self.side_chains[self.ring_c + 1] = "NC(C)(=O)"
+                elif n == "NBz":
+                    self.side_chains[self.ring_c + 1] = "NC(=O)c2ccccc2"
+                elif n == "NGc":
+                    self.side_chains[self.ring_c + 1] = "NC(=O)c2ccccc2"
                 else:
                     not_implemented_message(n)
                     full = False
