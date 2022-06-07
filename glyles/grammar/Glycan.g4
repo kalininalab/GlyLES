@@ -38,7 +38,7 @@ FG:
     | 'Tr' | 'Ts' | 'Vl' | 'en'
     | 'A' | 'N' | 'F' | 'I' | 'S' | 'P';
 COUNT:
-    'Hep' | 'Hex' | 'Pen';
+    'Hep' | 'Hex' | 'Oct' | 'Pen';
 CON:
     '(' TYPE NUM '-' NUM ')'
     | TYPE NUM '-' NUM

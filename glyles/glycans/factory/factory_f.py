@@ -23,6 +23,14 @@ class FuranoseFactory:
         "B_HEX": {"name": "Hex", "config": Config.BETA, "isomer": Enantiomer.U, "lactole": Lactole.FURANOSE,
                   "smiles": "OCC(O)C1O[C@@H](O)C(O)C1O"},
 
+        # Octose
+        "OCT": {"name": "Oct", "config": Config.UNDEF, "isomer": Enantiomer.U, "lactole": Lactole.FURANOSE,
+                "smiles": "OCC(O)C(O)C(O)C1OC(O)C(O)C1O"},
+        "A_OCT": {"name": "Oct", "config": Config.ALPHA, "isomer": Enantiomer.U, "lactole": Lactole.FURANOSE,
+                  "smiles": "OCC(O)C(O)C(O)C1O[C@H](O)C(O)C1O"},
+        "B_OCT": {"name": "Oct", "config": Config.BETA, "isomer": Enantiomer.U, "lactole": Lactole.FURANOSE,
+                  "smiles": "OCC(O)C(O)C(O)C1O[C@@H](O)C(O)C1O"},
+
         # Pentose
         "PEN": {"name": "Pen", "config": Config.UNDEF, "isomer": Enantiomer.U, "lactole": Lactole.FURANOSE,
                 "smiles": "OC[C@H](O)[C@H]1O[C@H](O)[C@H](O)[C@H]1O"},
