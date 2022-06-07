@@ -30,6 +30,12 @@ class TestSMILES:
         compare_smiles("OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O",
                        equal=False)
 
+    def test_1_1_bond(self):
+        smiles = Glycan("Gal(a1-1)Gal", factory=MonomerFactory()).get_smiles()
+        print(smiles)
+        assert smiles is not None
+        assert smiles != ""
+
     @pytest.mark.parametrize("glycan", [
         ("Glc", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"),
         ("Man", "OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O"),
