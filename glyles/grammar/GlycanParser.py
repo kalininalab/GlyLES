@@ -12,60 +12,87 @@ else:
 def serializedATN():
     with StringIO() as buf:
         buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\17")
-        buf.write("\u0098\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\3\2\3\2\3\2\3\2")
+        buf.write("\u00c4\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\3\2\3\2\3\2\3\2")
         buf.write("\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3")
         buf.write("\2\3\2\3\2\3\2\3\2\5\2!\n\2\3\3\3\3\3\3\3\3\3\3\3\3\3")
         buf.write("\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3")
         buf.write("\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3?\n\3\3\4\3\4\3\4")
-        buf.write("\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4L\n\4\3\5\7\5O\n\5")
-        buf.write("\f\5\16\5R\13\5\3\5\6\5U\n\5\r\5\16\5V\3\5\3\5\3\5\7\5")
-        buf.write("\\\n\5\f\5\16\5_\13\5\3\5\7\5b\n\5\f\5\16\5e\13\5\3\5")
-        buf.write("\6\5h\n\5\r\5\16\5i\3\5\3\5\7\5n\n\5\f\5\16\5q\13\5\3")
-        buf.write("\5\7\5t\n\5\f\5\16\5w\13\5\3\5\6\5z\n\5\r\5\16\5{\3\5")
-        buf.write("\3\5\7\5\u0080\n\5\f\5\16\5\u0083\13\5\3\5\7\5\u0086\n")
-        buf.write("\5\f\5\16\5\u0089\13\5\3\5\6\5\u008c\n\5\r\5\16\5\u008d")
-        buf.write("\3\5\7\5\u0091\n\5\f\5\16\5\u0094\13\5\5\5\u0096\n\5\3")
-        buf.write("\5\2\2\6\2\4\6\b\2\2\2\u00ac\2 \3\2\2\2\4>\3\2\2\2\6K")
-        buf.write("\3\2\2\2\b\u0095\3\2\2\2\n\13\7\3\2\2\13\f\5\4\3\2\f\r")
-        buf.write("\5\6\4\2\r\16\7\4\2\2\16\17\7\r\2\2\17\20\7\5\2\2\20!")
-        buf.write("\3\2\2\2\21\22\7\3\2\2\22\23\5\4\3\2\23\24\5\6\4\2\24")
-        buf.write("\25\7\5\2\2\25!\3\2\2\2\26\27\7\3\2\2\27\30\5\6\4\2\30")
-        buf.write("\31\7\4\2\2\31\32\7\r\2\2\32\33\7\5\2\2\33!\3\2\2\2\34")
-        buf.write("\35\7\3\2\2\35\36\5\6\4\2\36\37\7\5\2\2\37!\3\2\2\2 \n")
-        buf.write("\3\2\2\2 \21\3\2\2\2 \26\3\2\2\2 \34\3\2\2\2!\3\3\2\2")
-        buf.write("\2\"#\5\6\4\2#$\7\f\2\2$?\3\2\2\2%&\5\6\4\2&\'\7\f\2\2")
-        buf.write("\'(\5\4\3\2(?\3\2\2\2)*\7\6\2\2*+\5\4\3\2+,\7\7\2\2,?")
-        buf.write("\3\2\2\2-.\5\6\4\2./\7\f\2\2/\60\7\6\2\2\60\61\5\4\3\2")
-        buf.write("\61\62\7\7\2\2\62\63\5\4\3\2\63?\3\2\2\2\64\65\5\6\4\2")
-        buf.write("\65\66\7\f\2\2\66\67\7\6\2\2\678\5\4\3\289\7\7\2\29:\7")
-        buf.write("\6\2\2:;\5\4\3\2;<\7\7\2\2<=\5\4\3\2=?\3\2\2\2>\"\3\2")
-        buf.write("\2\2>%\3\2\2\2>)\3\2\2\2>-\3\2\2\2>\64\3\2\2\2?\5\3\2")
-        buf.write("\2\2@A\5\b\5\2AB\7\16\2\2BC\7\r\2\2CL\3\2\2\2DE\5\b\5")
-        buf.write("\2EF\7\r\2\2FL\3\2\2\2GH\5\b\5\2HI\7\16\2\2IL\3\2\2\2")
-        buf.write("JL\5\b\5\2K@\3\2\2\2KD\3\2\2\2KG\3\2\2\2KJ\3\2\2\2L\7")
-        buf.write("\3\2\2\2MO\7\t\2\2NM\3\2\2\2OR\3\2\2\2PN\3\2\2\2PQ\3\2")
-        buf.write("\2\2QT\3\2\2\2RP\3\2\2\2SU\7\b\2\2TS\3\2\2\2UV\3\2\2\2")
-        buf.write("VT\3\2\2\2VW\3\2\2\2WX\3\2\2\2XY\7\16\2\2Y]\7\r\2\2Z\\")
-        buf.write("\7\t\2\2[Z\3\2\2\2\\_\3\2\2\2][\3\2\2\2]^\3\2\2\2^\u0096")
-        buf.write("\3\2\2\2_]\3\2\2\2`b\7\t\2\2a`\3\2\2\2be\3\2\2\2ca\3\2")
-        buf.write("\2\2cd\3\2\2\2dg\3\2\2\2ec\3\2\2\2fh\7\b\2\2gf\3\2\2\2")
-        buf.write("hi\3\2\2\2ig\3\2\2\2ij\3\2\2\2jk\3\2\2\2ko\7\r\2\2ln\7")
-        buf.write("\t\2\2ml\3\2\2\2nq\3\2\2\2om\3\2\2\2op\3\2\2\2p\u0096")
-        buf.write("\3\2\2\2qo\3\2\2\2rt\7\t\2\2sr\3\2\2\2tw\3\2\2\2us\3\2")
-        buf.write("\2\2uv\3\2\2\2vy\3\2\2\2wu\3\2\2\2xz\7\b\2\2yx\3\2\2\2")
-        buf.write("z{\3\2\2\2{y\3\2\2\2{|\3\2\2\2|}\3\2\2\2}\u0081\7\16\2")
-        buf.write("\2~\u0080\7\t\2\2\177~\3\2\2\2\u0080\u0083\3\2\2\2\u0081")
-        buf.write("\177\3\2\2\2\u0081\u0082\3\2\2\2\u0082\u0096\3\2\2\2\u0083")
-        buf.write("\u0081\3\2\2\2\u0084\u0086\7\t\2\2\u0085\u0084\3\2\2\2")
-        buf.write("\u0086\u0089\3\2\2\2\u0087\u0085\3\2\2\2\u0087\u0088\3")
-        buf.write("\2\2\2\u0088\u008b\3\2\2\2\u0089\u0087\3\2\2\2\u008a\u008c")
-        buf.write("\7\b\2\2\u008b\u008a\3\2\2\2\u008c\u008d\3\2\2\2\u008d")
-        buf.write("\u008b\3\2\2\2\u008d\u008e\3\2\2\2\u008e\u0092\3\2\2\2")
-        buf.write("\u008f\u0091\7\t\2\2\u0090\u008f\3\2\2\2\u0091\u0094\3")
-        buf.write("\2\2\2\u0092\u0090\3\2\2\2\u0092\u0093\3\2\2\2\u0093\u0096")
-        buf.write("\3\2\2\2\u0094\u0092\3\2\2\2\u0095P\3\2\2\2\u0095c\3\2")
-        buf.write("\2\2\u0095u\3\2\2\2\u0095\u0087\3\2\2\2\u0096\t\3\2\2")
-        buf.write("\2\22 >KPV]ciou{\u0081\u0087\u008d\u0092\u0095")
+        buf.write("\3\4\3\4\3\4\3\4\3\4\3\4\3\4\3\4\5\4L\n\4\3\5\6\5O\n\5")
+        buf.write("\r\5\16\5P\3\5\3\5\3\5\7\5V\n\5\f\5\16\5Y\13\5\3\5\6\5")
+        buf.write("\\\n\5\r\5\16\5]\3\5\3\5\7\5b\n\5\f\5\16\5e\13\5\3\5\6")
+        buf.write("\5h\n\5\r\5\16\5i\3\5\3\5\7\5n\n\5\f\5\16\5q\13\5\3\5")
+        buf.write("\6\5t\n\5\r\5\16\5u\3\5\7\5y\n\5\f\5\16\5|\13\5\3\5\6")
+        buf.write("\5\177\n\5\r\5\16\5\u0080\3\5\6\5\u0084\n\5\r\5\16\5\u0085")
+        buf.write("\3\5\3\5\3\5\7\5\u008b\n\5\f\5\16\5\u008e\13\5\3\5\6\5")
+        buf.write("\u0091\n\5\r\5\16\5\u0092\3\5\6\5\u0096\n\5\r\5\16\5\u0097")
+        buf.write("\3\5\3\5\7\5\u009c\n\5\f\5\16\5\u009f\13\5\3\5\6\5\u00a2")
+        buf.write("\n\5\r\5\16\5\u00a3\3\5\6\5\u00a7\n\5\r\5\16\5\u00a8\3")
+        buf.write("\5\3\5\7\5\u00ad\n\5\f\5\16\5\u00b0\13\5\3\5\6\5\u00b3")
+        buf.write("\n\5\r\5\16\5\u00b4\3\5\6\5\u00b8\n\5\r\5\16\5\u00b9\3")
+        buf.write("\5\7\5\u00bd\n\5\f\5\16\5\u00c0\13\5\5\5\u00c2\n\5\3\5")
+        buf.write("\2\2\6\2\4\6\b\2\2\2\u00e4\2 \3\2\2\2\4>\3\2\2\2\6K\3")
+        buf.write("\2\2\2\b\u00c1\3\2\2\2\n\13\7\3\2\2\13\f\5\4\3\2\f\r\5")
+        buf.write("\6\4\2\r\16\7\4\2\2\16\17\7\r\2\2\17\20\7\5\2\2\20!\3")
+        buf.write("\2\2\2\21\22\7\3\2\2\22\23\5\4\3\2\23\24\5\6\4\2\24\25")
+        buf.write("\7\5\2\2\25!\3\2\2\2\26\27\7\3\2\2\27\30\5\6\4\2\30\31")
+        buf.write("\7\4\2\2\31\32\7\r\2\2\32\33\7\5\2\2\33!\3\2\2\2\34\35")
+        buf.write("\7\3\2\2\35\36\5\6\4\2\36\37\7\5\2\2\37!\3\2\2\2 \n\3")
+        buf.write("\2\2\2 \21\3\2\2\2 \26\3\2\2\2 \34\3\2\2\2!\3\3\2\2\2")
+        buf.write("\"#\5\6\4\2#$\7\f\2\2$?\3\2\2\2%&\5\6\4\2&\'\7\f\2\2\'")
+        buf.write("(\5\4\3\2(?\3\2\2\2)*\7\6\2\2*+\5\4\3\2+,\7\7\2\2,?\3")
+        buf.write("\2\2\2-.\5\6\4\2./\7\f\2\2/\60\7\6\2\2\60\61\5\4\3\2\61")
+        buf.write("\62\7\7\2\2\62\63\5\4\3\2\63?\3\2\2\2\64\65\5\6\4\2\65")
+        buf.write("\66\7\f\2\2\66\67\7\6\2\2\678\5\4\3\289\7\7\2\29:\7\6")
+        buf.write("\2\2:;\5\4\3\2;<\7\7\2\2<=\5\4\3\2=?\3\2\2\2>\"\3\2\2")
+        buf.write("\2>%\3\2\2\2>)\3\2\2\2>-\3\2\2\2>\64\3\2\2\2?\5\3\2\2")
+        buf.write("\2@A\5\b\5\2AB\7\16\2\2BC\7\r\2\2CL\3\2\2\2DE\5\b\5\2")
+        buf.write("EF\7\r\2\2FL\3\2\2\2GH\5\b\5\2HI\7\16\2\2IL\3\2\2\2JL")
+        buf.write("\5\b\5\2K@\3\2\2\2KD\3\2\2\2KG\3\2\2\2KJ\3\2\2\2L\7\3")
+        buf.write("\2\2\2MO\7\b\2\2NM\3\2\2\2OP\3\2\2\2PN\3\2\2\2PQ\3\2\2")
+        buf.write("\2QR\3\2\2\2RS\7\16\2\2SW\7\r\2\2TV\7\t\2\2UT\3\2\2\2")
+        buf.write("VY\3\2\2\2WU\3\2\2\2WX\3\2\2\2X\u00c2\3\2\2\2YW\3\2\2")
+        buf.write("\2Z\\\7\b\2\2[Z\3\2\2\2\\]\3\2\2\2][\3\2\2\2]^\3\2\2\2")
+        buf.write("^_\3\2\2\2_c\7\r\2\2`b\7\t\2\2a`\3\2\2\2be\3\2\2\2ca\3")
+        buf.write("\2\2\2cd\3\2\2\2d\u00c2\3\2\2\2ec\3\2\2\2fh\7\b\2\2gf")
+        buf.write("\3\2\2\2hi\3\2\2\2ig\3\2\2\2ij\3\2\2\2jk\3\2\2\2ko\7\16")
+        buf.write("\2\2ln\7\t\2\2ml\3\2\2\2nq\3\2\2\2om\3\2\2\2op\3\2\2\2")
+        buf.write("p\u00c2\3\2\2\2qo\3\2\2\2rt\7\b\2\2sr\3\2\2\2tu\3\2\2")
+        buf.write("\2us\3\2\2\2uv\3\2\2\2vz\3\2\2\2wy\7\t\2\2xw\3\2\2\2y")
+        buf.write("|\3\2\2\2zx\3\2\2\2z{\3\2\2\2{\u00c2\3\2\2\2|z\3\2\2\2")
+        buf.write("}\177\7\t\2\2~}\3\2\2\2\177\u0080\3\2\2\2\u0080~\3\2\2")
+        buf.write("\2\u0080\u0081\3\2\2\2\u0081\u0083\3\2\2\2\u0082\u0084")
+        buf.write("\7\b\2\2\u0083\u0082\3\2\2\2\u0084\u0085\3\2\2\2\u0085")
+        buf.write("\u0083\3\2\2\2\u0085\u0086\3\2\2\2\u0086\u0087\3\2\2\2")
+        buf.write("\u0087\u0088\7\16\2\2\u0088\u008c\7\r\2\2\u0089\u008b")
+        buf.write("\7\t\2\2\u008a\u0089\3\2\2\2\u008b\u008e\3\2\2\2\u008c")
+        buf.write("\u008a\3\2\2\2\u008c\u008d\3\2\2\2\u008d\u00c2\3\2\2\2")
+        buf.write("\u008e\u008c\3\2\2\2\u008f\u0091\7\t\2\2\u0090\u008f\3")
+        buf.write("\2\2\2\u0091\u0092\3\2\2\2\u0092\u0090\3\2\2\2\u0092\u0093")
+        buf.write("\3\2\2\2\u0093\u0095\3\2\2\2\u0094\u0096\7\b\2\2\u0095")
+        buf.write("\u0094\3\2\2\2\u0096\u0097\3\2\2\2\u0097\u0095\3\2\2\2")
+        buf.write("\u0097\u0098\3\2\2\2\u0098\u0099\3\2\2\2\u0099\u009d\7")
+        buf.write("\r\2\2\u009a\u009c\7\t\2\2\u009b\u009a\3\2\2\2\u009c\u009f")
+        buf.write("\3\2\2\2\u009d\u009b\3\2\2\2\u009d\u009e\3\2\2\2\u009e")
+        buf.write("\u00c2\3\2\2\2\u009f\u009d\3\2\2\2\u00a0\u00a2\7\t\2\2")
+        buf.write("\u00a1\u00a0\3\2\2\2\u00a2\u00a3\3\2\2\2\u00a3\u00a1\3")
+        buf.write("\2\2\2\u00a3\u00a4\3\2\2\2\u00a4\u00a6\3\2\2\2\u00a5\u00a7")
+        buf.write("\7\b\2\2\u00a6\u00a5\3\2\2\2\u00a7\u00a8\3\2\2\2\u00a8")
+        buf.write("\u00a6\3\2\2\2\u00a8\u00a9\3\2\2\2\u00a9\u00aa\3\2\2\2")
+        buf.write("\u00aa\u00ae\7\16\2\2\u00ab\u00ad\7\t\2\2\u00ac\u00ab")
+        buf.write("\3\2\2\2\u00ad\u00b0\3\2\2\2\u00ae\u00ac\3\2\2\2\u00ae")
+        buf.write("\u00af\3\2\2\2\u00af\u00c2\3\2\2\2\u00b0\u00ae\3\2\2\2")
+        buf.write("\u00b1\u00b3\7\t\2\2\u00b2\u00b1\3\2\2\2\u00b3\u00b4\3")
+        buf.write("\2\2\2\u00b4\u00b2\3\2\2\2\u00b4\u00b5\3\2\2\2\u00b5\u00b7")
+        buf.write("\3\2\2\2\u00b6\u00b8\7\b\2\2\u00b7\u00b6\3\2\2\2\u00b8")
+        buf.write("\u00b9\3\2\2\2\u00b9\u00b7\3\2\2\2\u00b9\u00ba\3\2\2\2")
+        buf.write("\u00ba\u00be\3\2\2\2\u00bb\u00bd\7\t\2\2\u00bc\u00bb\3")
+        buf.write("\2\2\2\u00bd\u00c0\3\2\2\2\u00be\u00bc\3\2\2\2\u00be\u00bf")
+        buf.write("\3\2\2\2\u00bf\u00c2\3\2\2\2\u00c0\u00be\3\2\2\2\u00c1")
+        buf.write("N\3\2\2\2\u00c1[\3\2\2\2\u00c1g\3\2\2\2\u00c1s\3\2\2\2")
+        buf.write("\u00c1~\3\2\2\2\u00c1\u0090\3\2\2\2\u00c1\u00a1\3\2\2")
+        buf.write("\2\u00c1\u00b2\3\2\2\2\u00c2\t\3\2\2\2\32 >KPW]ciouz\u0080")
+        buf.write("\u0085\u008c\u0092\u0097\u009d\u00a3\u00a8\u00ae\u00b4")
+        buf.write("\u00b9\u00be\u00c1")
         return buf.getvalue()
 
 
@@ -427,17 +454,17 @@ class GlycanParser ( Parser ):
         def TYPE(self):
             return self.getToken(GlycanParser.TYPE, 0)
 
-        def MOD(self, i:int=None):
-            if i is None:
-                return self.getTokens(GlycanParser.MOD)
-            else:
-                return self.getToken(GlycanParser.MOD, i)
-
         def SAC(self, i:int=None):
             if i is None:
                 return self.getTokens(GlycanParser.SAC)
             else:
                 return self.getToken(GlycanParser.SAC, i)
+
+        def MOD(self, i:int=None):
+            if i is None:
+                return self.getTokens(GlycanParser.MOD)
+            else:
+                return self.getToken(GlycanParser.MOD, i)
 
         def getRuleIndex(self):
             return GlycanParser.RULE_deriv
@@ -459,44 +486,34 @@ class GlycanParser ( Parser ):
         self.enterRule(localctx, 6, self.RULE_deriv)
         self._la = 0 # Token type
         try:
-            self.state = 147
+            self.state = 191
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,15,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,23,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 78
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while _la==GlycanParser.MOD:
-                    self.state = 75
-                    self.match(GlycanParser.MOD)
-                    self.state = 80
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-
-                self.state = 82 
+                self.state = 76 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 81
+                    self.state = 75
                     self.match(GlycanParser.SAC)
-                    self.state = 84 
+                    self.state = 78 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==GlycanParser.SAC):
                         break
 
-                self.state = 86
+                self.state = 80
                 self.match(GlycanParser.RING)
-                self.state = 87
+                self.state = 81
                 self.match(GlycanParser.TYPE)
-                self.state = 91
+                self.state = 85
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==GlycanParser.MOD:
-                    self.state = 88
+                    self.state = 82
                     self.match(GlycanParser.MOD)
-                    self.state = 93
+                    self.state = 87
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
@@ -504,6 +521,20 @@ class GlycanParser ( Parser ):
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
+                self.state = 89 
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while True:
+                    self.state = 88
+                    self.match(GlycanParser.SAC)
+                    self.state = 91 
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+                    if not (_la==GlycanParser.SAC):
+                        break
+
+                self.state = 93
+                self.match(GlycanParser.TYPE)
                 self.state = 97
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
@@ -514,6 +545,10 @@ class GlycanParser ( Parser ):
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
+                pass
+
+            elif la_ == 3:
+                self.enterOuterAlt(localctx, 3)
                 self.state = 101 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
@@ -527,7 +562,7 @@ class GlycanParser ( Parser ):
                         break
 
                 self.state = 105
-                self.match(GlycanParser.TYPE)
+                self.match(GlycanParser.RING)
                 self.state = 109
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
@@ -540,75 +575,187 @@ class GlycanParser ( Parser ):
 
                 pass
 
-            elif la_ == 3:
-                self.enterOuterAlt(localctx, 3)
-                self.state = 115
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while _la==GlycanParser.MOD:
-                    self.state = 112
-                    self.match(GlycanParser.MOD)
-                    self.state = 117
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-
-                self.state = 119 
+            elif la_ == 4:
+                self.enterOuterAlt(localctx, 4)
+                self.state = 113 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 118
+                    self.state = 112
                     self.match(GlycanParser.SAC)
-                    self.state = 121 
+                    self.state = 115 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==GlycanParser.SAC):
                         break
 
-                self.state = 123
-                self.match(GlycanParser.RING)
-                self.state = 127
+                self.state = 120
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==GlycanParser.MOD:
-                    self.state = 124
+                    self.state = 117
                     self.match(GlycanParser.MOD)
-                    self.state = 129
+                    self.state = 122
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
                 pass
 
-            elif la_ == 4:
-                self.enterOuterAlt(localctx, 4)
-                self.state = 133
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while _la==GlycanParser.MOD:
-                    self.state = 130
-                    self.match(GlycanParser.MOD)
-                    self.state = 135
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-
-                self.state = 137 
+            elif la_ == 5:
+                self.enterOuterAlt(localctx, 5)
+                self.state = 124 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while True:
-                    self.state = 136
+                    self.state = 123
+                    self.match(GlycanParser.MOD)
+                    self.state = 126 
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+                    if not (_la==GlycanParser.MOD):
+                        break
+
+                self.state = 129 
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while True:
+                    self.state = 128
                     self.match(GlycanParser.SAC)
-                    self.state = 139 
+                    self.state = 131 
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if not (_la==GlycanParser.SAC):
                         break
 
-                self.state = 144
+                self.state = 133
+                self.match(GlycanParser.RING)
+                self.state = 134
+                self.match(GlycanParser.TYPE)
+                self.state = 138
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==GlycanParser.MOD:
+                    self.state = 135
+                    self.match(GlycanParser.MOD)
+                    self.state = 140
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+
+                pass
+
+            elif la_ == 6:
+                self.enterOuterAlt(localctx, 6)
+                self.state = 142 
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while True:
                     self.state = 141
                     self.match(GlycanParser.MOD)
+                    self.state = 144 
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+                    if not (_la==GlycanParser.MOD):
+                        break
+
+                self.state = 147 
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while True:
                     self.state = 146
+                    self.match(GlycanParser.SAC)
+                    self.state = 149 
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+                    if not (_la==GlycanParser.SAC):
+                        break
+
+                self.state = 151
+                self.match(GlycanParser.TYPE)
+                self.state = 155
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while _la==GlycanParser.MOD:
+                    self.state = 152
+                    self.match(GlycanParser.MOD)
+                    self.state = 157
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+
+                pass
+
+            elif la_ == 7:
+                self.enterOuterAlt(localctx, 7)
+                self.state = 159 
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while True:
+                    self.state = 158
+                    self.match(GlycanParser.MOD)
+                    self.state = 161 
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+                    if not (_la==GlycanParser.MOD):
+                        break
+
+                self.state = 164 
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while True:
+                    self.state = 163
+                    self.match(GlycanParser.SAC)
+                    self.state = 166 
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+                    if not (_la==GlycanParser.SAC):
+                        break
+
+                self.state = 168
+                self.match(GlycanParser.RING)
+                self.state = 172
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while _la==GlycanParser.MOD:
+                    self.state = 169
+                    self.match(GlycanParser.MOD)
+                    self.state = 174
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+
+                pass
+
+            elif la_ == 8:
+                self.enterOuterAlt(localctx, 8)
+                self.state = 176 
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while True:
+                    self.state = 175
+                    self.match(GlycanParser.MOD)
+                    self.state = 178 
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+                    if not (_la==GlycanParser.MOD):
+                        break
+
+                self.state = 181 
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while True:
+                    self.state = 180
+                    self.match(GlycanParser.SAC)
+                    self.state = 183 
+                    self._errHandler.sync(self)
+                    _la = self._input.LA(1)
+                    if not (_la==GlycanParser.SAC):
+                        break
+
+                self.state = 188
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+                while _la==GlycanParser.MOD:
+                    self.state = 185
+                    self.match(GlycanParser.MOD)
+                    self.state = 190
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 

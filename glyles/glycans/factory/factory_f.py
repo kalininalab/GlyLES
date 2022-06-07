@@ -234,6 +234,30 @@ class FuranoseFactory:
         "B_ERY": {"name": "Ery", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                   "smiles": "O[C@@H]1CO[C@@H](O)[C@@H]1O"},
 
+        # Erythrose
+        "THRE": {"name": "Thre", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                 "smiles": "O[C@@H]1COC(O)[C@H]1O"},
+        "A_THRE": {"name": "Thre", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                   "smiles": "O[C@@H]1CO[C@H](O)[C@H]1O"},
+        "B_THRE": {"name": "Thre", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                   "smiles": "O[C@@H]1CO[C@@H](O)[C@H]1O"},
+
+        # Ribulose
+        "RUL": {"name": "Rul", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                "smiles": "OCC1(O)OC[C@@H](O)[C@H]1O"},
+        "A_RUL": {"name": "Rul", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                  "smiles": "OC[C@]1(O)OC[C@@H](O)[C@H]1O"},
+        "B_RUL": {"name": "Rul", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                  "smiles": "OC[C@@]1(O)OC[C@@H](O)[C@H]1O"},
+
+        # Xylulose
+        "XUL": {"name": "Xul", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                "smiles": "OCC1(O)OC[C@@H](O)[C@@H]1O"},
+        "A_XUL": {"name": "Xul", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                  "smiles": "OC[C@]1(O)OC[C@@H](O)[C@@H]1O"},
+        "B_XUL": {"name": "Xul", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                  "smiles": "OC[C@@]1(O)OC[C@@H](O)[C@@H]1O"},
+
     }
 
     def __contains__(self, item):
