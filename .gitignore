@@ -7,3 +7,4 @@ dist/
 
 *.dot
 /.vscode/settings.json
+tests/still_not_parsed.txt

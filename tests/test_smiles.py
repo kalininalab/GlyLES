@@ -1,3 +1,4 @@
+import os
 from itertools import combinations
 
 import pytest
@@ -149,6 +150,8 @@ class TestSMILES:
         }
         for i in range(6, 10):
             assert dot_lines[i][-9:-3] == edges[(int(dot_lines[i][0]), int(dot_lines[i][5]))]
+
+        os.remove("test.dot")
 
         smiles = glycan.get_smiles()
         assert smiles != ""

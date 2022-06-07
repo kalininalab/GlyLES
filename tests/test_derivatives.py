@@ -1,3 +1,4 @@
+import os
 import pytest
 
 from glyles.converter import convert
@@ -21,7 +22,6 @@ def compare_smiles(computed, solution):
 
 
 class TestDerivatives:
-
     @pytest.mark.parametrize("name", derivatives.keys())
     def test_basic(self, name):
         output = convert(name)[0][1]
@@ -51,9 +51,12 @@ class TestDerivatives:
         try:
             output = Glycan(iupac, MonomerFactory(), tree_only=True).get_tree()
         except ParseError:
-            with open("./still_not_parsed.txt", "a") as tmp:
+            with open("still_not_parsed.txt", "a") as tmp:
                 tmp.write(line)
                 tmp.close()
             return
 
         assert output is not None
+
+    def test_count(self):
+        assert Glycan("GlcNAc4Dhpa", MonomerFactory())
