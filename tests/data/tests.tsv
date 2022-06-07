@@ -82,3 +82,8 @@ Neu5Gc	C1[C@@H]([C@H]([C@@H](OC1(C(=O)O)O)[C@@H]([C@@H](CO)O)O)NC(=O)CO)O
 Gal3Tf	O=S(=O)(O[C@@H]1[C@@H](O)C(O)O[C@H](CO)[C@@H]1O)C(F)(F)F
 Gal4Tr	OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1C(c2ccccc2)(c3ccccc3)c4ccccc4
 Gal3Ts	Cc2ccc(S(=O)(=O)O[C@@H]1[C@@H](O)C(O)O[C@H](CO)[C@@H]1O)cc2
+GalOS	O=S(=O)(O)O[C@H]1C(O)O[C@H](CO)[C@H](O)[C@@H]1O
+GalON	NO[C@H]1C(O)O[C@H](CO)[C@H](O)[C@@H]1O
+GalOP	O=P(O)(O)O[C@H]1C(O)O[C@H](CO)[C@H](O)[C@@H]1O
+GalNGc	O=C(CO)N[C@@H]1[C@@H](O)C(O)O[C@H](CO)[C@@H]1O
+D-Gal a	OC[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@H]1O

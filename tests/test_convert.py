@@ -1,8 +1,7 @@
 import os
-import logging
 
 from glyles.converter import convert, convert_generator
-from tests.utils import setup_test, catch_output, smiles_samples
+from tests.utils import setup_test, smiles_samples
 from rdkit import Chem
 
 
@@ -20,7 +19,7 @@ def check_results(output):
         os.remove("./output.txt")
 
 
-def compare_smiles(computed, solution, equal=True):
+def compare_smiles(computed, solution):
     c = Chem.MolFromSmiles(computed)
     Chem.Kekulize(c)
     c_rdkit = Chem.MolToSmiles(c, kekuleSmiles=True)
@@ -29,10 +28,7 @@ def compare_smiles(computed, solution, equal=True):
     Chem.Kekulize(s)
     s_rdkit = Chem.MolToSmiles(s, kekuleSmiles=True)
 
-    if equal:
-        assert c_rdkit == s_rdkit
-    else:
-        assert c_rdkit != s_rdkit
+    assert c_rdkit == s_rdkit
 
 
 class TestConverter:

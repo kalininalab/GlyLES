@@ -30,7 +30,7 @@ def preprocess_glycans(glycan, glycan_list, glycan_file):
     if glycan_file is not None:
         # check if the file is valid and read it out
         if not os.path.isfile(glycan_file):
-            pass
+            raise ValueError(f"{glycan_file} does not exists, cannot read glycans.")
         for line in open(glycan_file, "r").readlines():
             glycans.append(line.strip())
     return glycans
@@ -156,7 +156,6 @@ def generate(glycan, factory, full):
         logging.error(f"An exception occurred with {glycan}: {e.__class__}\n"
                       f"Error message: {e.__str__()}")
         return glycan, ""
-    except Exception as e:
+    except Exception:
         logging.error(f"An unexpected error occurred with with {glycan}. This glycan cannot be parsed.")
-        raise e
         return glycan, ""

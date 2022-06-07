@@ -118,3 +118,31 @@ class TestSMILES:
 
         mol = Chem.MolFromSmiles(smiles)
         compare_smiles(smiles, Chem.MolToSmiles(mol))
+
+    def test_dot(self):
+        glycan = Glycan("Man(a1-2)[Glc(a1-3)Gul(b1-4)]Gal(b1-3)Tal", MonomerFactory(), tree_only=True)
+        glycan.save_dot("test.dot")
+
+        with open("test.dot", "r") as dot:
+            dot_lines = [x.strip() for x in dot.readlines()]
+
+        monos = {}
+        assert len([x for x in dot_lines if len(x.strip()) > 0]) == 11
+        for i in range(5):
+            assert dot_lines[i + 1][0].isdigit()
+            assert "[label=" in dot_lines[i + 1]
+            monos[dot_lines[i + 1][-5:-2]] = int(dot_lines[i + 1][0])
+
+        assert list(sorted(monos.keys())) == ["Gal", "Glc", "Gul", "Man", "Tal"]
+
+        edges = {
+            (monos["Gal"], monos["Tal"]): "(b1-3)",
+            (monos["Gul"], monos["Gal"]): "(b1-4)",
+            (monos["Man"], monos["Gal"]): "(a1-2)",
+            (monos["Glc"], monos["Gul"]): "(a1-3)",
+        }
+        for i in range(6, 10):
+            assert dot_lines[i][-9:-3] == edges[(int(dot_lines[i][0]), int(dot_lines[i][5]))]
+
+        smiles = glycan.get_smiles()
+        assert smiles != ""

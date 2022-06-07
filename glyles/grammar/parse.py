@@ -309,7 +309,7 @@ class Glycan:
             Generated SMILES string
         """
         # return an empty SMILES if the output is required to represent all modifications, but it actually wouldn't
-        if self.tree_full != self.full:
+        if not self.tree_only and self.tree_full != self.full:
             return ""
 
         if self.glycan_smiles is None:

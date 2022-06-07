@@ -209,6 +209,15 @@ class FuranoseFactory:
                   "smiles": "OC[C@H]1O[C@@](O)(CO)[C@H](O)[C@@H]1O"},
         "B_PSI": {"name": "Psi", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                   "smiles": "OC[C@H]1O[C@](O)(CO)[C@H](O)[C@@H]1O"},
+
+        # Erythrose
+        "ERY": {"name": "Ery", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                "smiles": "O[C@@H]1COC(O)[C@@H]1O"},
+        "A_ERY": {"name": "Ery", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                  "smiles": "O[C@@H]1CO[C@H](O)[C@@H]1O"},
+        "B_ERY": {"name": "Ery", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                  "smiles": "O[C@@H]1CO[C@@H](O)[C@@H]1O"},
+
     }
 
     def __contains__(self, item):

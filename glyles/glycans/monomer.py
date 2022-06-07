@@ -4,7 +4,6 @@ from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
 from glyles.glycans.smiles_reactor import SMILESReaktor
 from glyles.glycans.utils import UnreachableError, Tree, Config
 from glyles.grammar.GlycanLexer import GlycanLexer
-from glyles.glycans.rdkit_reactor import Reactor
 
 
 class Monomer:

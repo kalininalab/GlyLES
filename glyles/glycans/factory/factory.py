@@ -13,10 +13,10 @@ class MonomerFactory:
         """
         Initialize this factory by creating instances of all "sub-"factories
         """
-        self.pyranoses_fac = PyranoseFactory()
-        self.furanoses_fac = FuranoseFactory()
+        self.pyranose_fac = PyranoseFactory()
+        self.furanose_fac = FuranoseFactory()
 
-        self.keys = set(self.pyranoses_fac.keys())
+        self.keys = set(self.pyranose_fac.keys()).union(self.furanose_fac.keys())
 
     def __contains__(self, item):
         """
@@ -40,17 +40,17 @@ class MonomerFactory:
         Returns:
             Directory containing all necessary information to initialize a monomer implementation
         """
-        furanose = False
+        furanose = item == "ERY"
         if item[-1] == "p" and not item.endswith("manHep"):
             item = item[:-1]
         if item[-1] == "f":
             item = item[:-1]
             furanose = True
 
-        if furanose and item in self.furanoses_fac:
-            return self.furanoses_fac[item]
-        if not furanose and item in self.pyranoses_fac:
-            return self.pyranoses_fac[item]
+        if furanose and item in self.furanose_fac:
+            return self.furanose_fac[item]
+        if not furanose and item in self.pyranose_fac:
+            return self.pyranose_fac[item]
         raise NotImplementedError("Query-monomer is neither in pyranoses nor in furanoses")
 
     def keys(self):
@@ -78,7 +78,7 @@ class MonomerFactory:
         Returns:
             List, sorted from long to short, of all furanose names in upper case
         """
-        return sorted(set([self[x.split("_")[-1]]["name"] for x in self.furanoses_fac.keys()]))
+        return sorted(set([self[x.split("_")[-1]]["name"] for x in self.furanose_fac.keys()]))
 
     def pyranoses(self):
         """
@@ -87,7 +87,7 @@ class MonomerFactory:
         Returns:
             List, sorted from long to short, of all pyranose names in upper case
         """
-        return sorted(set([self[x.split("_")[-1]]["name"] for x in self.pyranoses_fac.keys()]))
+        return sorted(set([self[x.split("_")[-1]]["name"] for x in self.pyranose_fac.keys()]))
 
     def monomer_names(self):
         """
@@ -98,8 +98,8 @@ class MonomerFactory:
         """
         output = set()
         for item in self.monomers():
-            if item in self.pyranoses_fac:
-                output.add(self.pyranoses_fac[item]["name"])
+            if item in self.pyranose_fac:
+                output.add(self.pyranose_fac[item]["name"])
         return list(output)
 
     def pyranose_names(self):
@@ -111,8 +111,8 @@ class MonomerFactory:
         """
         output = set()
         for item in self.pyranoses():
-            if item in self.pyranoses_fac:
-                output.add(self.pyranoses_fac[item]["name"])
+            if item in self.pyranose_fac:
+                output.add(self.pyranose_fac[item]["name"])
         return list(output)
 
     def furanose_names(self):
@@ -124,8 +124,8 @@ class MonomerFactory:
         """
         output = set()
         for item in self.monomers():
-            if item in self.furanoses_fac:
-                output.add(self.furanoses_fac[item]["name"])
+            if item in self.furanose_fac:
+                output.add(self.furanose_fac[item]["name"])
         return list(output)
 
     def create(self, recipe, config=None, tree_only=False):
@@ -154,10 +154,10 @@ class MonomerFactory:
             name = recipe[config_index][0] + "_" + name
 
         # get the monomer from the factory
-        if ring_index is not None and recipe[ring_index][0] == "f" and name in self.furanoses_fac:
-            monomer = Monomer(**self.furanoses_fac[name], recipe=recipe)
+        if ring_index is not None and recipe[ring_index][0] == "f" and name in self.furanose_fac:
+            monomer = Monomer(**self.furanose_fac[name], recipe=recipe)
         else:
-            monomer = Monomer(**self.pyranoses_fac[name], recipe=recipe)
+            monomer = Monomer(**self.pyranose_fac[name], recipe=recipe)
 
         full = False
         if not tree_only:

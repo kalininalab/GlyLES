@@ -318,6 +318,8 @@ class PyranoseFactory:
                   "smiles": "OC[C@]1(O)OC[C@@H](O)[C@@H](O)[C@H]1O"},
         "B_PSI": {"name": "Psi", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "OC[C@@]1(O)OC[C@@H](O)[C@@H](O)[C@H]1O"},
+
+        # Erythrose
     }
 
     def __contains__(self, item):

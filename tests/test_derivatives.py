@@ -8,7 +8,7 @@ from tests.utils import derivatives
 from rdkit import Chem
 
 
-def compare_smiles(computed, solution, equal=True):
+def compare_smiles(computed, solution):
     c = Chem.MolFromSmiles(computed)
     Chem.Kekulize(c)
     c_rdkit = Chem.MolToSmiles(c, kekuleSmiles=True)
@@ -17,10 +17,7 @@ def compare_smiles(computed, solution, equal=True):
     Chem.Kekulize(s)
     s_rdkit = Chem.MolToSmiles(s, kekuleSmiles=True)
 
-    if equal:
-        assert c_rdkit == s_rdkit
-    else:
-        assert c_rdkit != s_rdkit
+    assert c_rdkit == s_rdkit
 
 
 class TestDerivatives:

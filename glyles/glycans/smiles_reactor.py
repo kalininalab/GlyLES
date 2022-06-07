@@ -61,7 +61,7 @@ class SMILESReaktor:
                         full = False
                 elif n[0] == "O":
                     if n[1] == "N":  # add a nitrogen atom to a certain position (TBT with O)
-                        self.side_chains[self.ring_c] = "N"
+                        self.side_chains[self.ring_c] = "ON"
                     elif n[1] == "S":  # add a sulfur atom to a certain position (TBT with O)
                         self.side_chains[self.ring_c] = "OS(=O)(=O)(O)"
                     elif n[1] == "P":  # add a phosphate atom to a certain position (TBT with O)

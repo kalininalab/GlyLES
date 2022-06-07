@@ -14,7 +14,7 @@ This implementation currently only works for glycans that fulfill certain proper
 
 * The structure of the glycan can be represented as a tree of the monosaccharides with maximal branching factor 3.
 * Only basic monomers (e.g. ``Glc``, but not ``GlcNAc``) from this [website](https://www.ncbi.nlm.nih.gov/glycans/snfg.html) 
-  (GalNAc is seen as modification of galactose)
+  (GalNAc is seen as modification of galactose). In addition to this list, Erythrose is parsable.
 * Some modifications can be added to the monomers, please see the [README](glyles/grammar/README.md) in the grammar
 folder for more information on this. <br>E.g. ``GlcNAc`` is seen to be a modified version of ``Glc``. 
 
