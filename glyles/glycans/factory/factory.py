@@ -154,7 +154,8 @@ class MonomerFactory:
             name = recipe[config_index][0] + "_" + name
 
         # get the monomer from the factory
-        if ring_index is not None and recipe[ring_index][0] == "f" and name in self.furanose_fac:
+        if (ring_index is not None and recipe[ring_index][0] == "f" and name in self.furanose_fac) or \
+                name not in self.pyranose_fac:
             monomer = Monomer(**self.furanose_fac[name], recipe=recipe)
         else:
             monomer = Monomer(**self.pyranose_fac[name], recipe=recipe)

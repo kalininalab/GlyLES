@@ -17,21 +17,27 @@ deriv:
     MOD* SAC RING TYPE MOD* | MOD* SAC TYPE MOD* | MOD* SAC RING MOD* | MOD* SAC MOD*;
 
 SAC:
-    'Glc' | 'Man' | 'Gal' | 'Gul' | 'Alt' | 'All' | 'Tal' | 'Ido' | 'Qui' | 'Rha' | 'Fuc' | 'Oli'
+    COUNT | 'Glc' | 'Man' | 'Gal' | 'Gul' | 'Alt' | 'All' | 'Tal' | 'Ido' | 'Qui' | 'Rha' | 'Fuc' | 'Oli'
     | 'Tyv' | 'Abe' | 'Par' | 'Dig' | 'Col' | 'Ara' | 'Lyx' | 'Xyl' | 'Rib' | 'Kdn' | 'Neu' | 'Pse' | 'Leg' | 'Aci'
     | 'Bac' | 'LDManHep' | 'Kdo' | 'Dha' | 'DDManHep' | 'Mur' | 'Api' | 'Fru' | 'Tag' | 'Sor' | 'Psi' | 'Ery';
 MOD:
-    NUM ',' NUM '-Anhydro-' | NUM '-O-' ('Ac' | 'Bn' | 'Bz' | 'Et' | 'Me') '-'
-    | NUM 'N' ('SerAc' | 'ThrAc' | 'But' | 'Me')
-    | (NUM | 'O') ('Prop'
-        | 'Ala' | 'Beh' | 'But' | 'Cho' | 'Etn' | 'Fer' | 'Lac' | 'Gro' | 'Hxo' | 'Lau' | 'Lin' | 'Oco' | 'Ole' | 'Pyr'
-        | 'Ac' | 'Am' | 'Bn' | 'Bz' | 'Et' | 'Fo' | 'Me' | 'Gc' | 'Gr' | 'Ph' | 'Tf' | 'Tr'
-        | 'Ts' | 'S' | 'P' | 'N' | 'F' | 'd' | 'e')
-    | 'N' ('But' | 'Lac' | 'Ac' | 'Bz' | 'Fo' | 'Gc' | 'Me')
+    COUNT
+    | NUM ',' NUM '-Anhydro-'
+    | NUM '-O-' FG '-'
+    | NUM ('N' | 'O' | 'C') FG
+    | (NUM | 'O' | 'N' | 'C') FG
+    | NUM ('d' | 'e')
     | '-ulosaric' | '-uronic' | '-onic' | '-aric' | '-ol'
-    | 'Ala' | 'Hep' | 'Hex' | 'Ser' | 'Pen'
-    | '0d' | 'D-' | 'L-' | 'Ac' | 'CN'
-    | 'A' | 'N' | 'P';
+    | '0d' | 'D-' | 'L-' | FG;
+FG:
+    'SerAc' | 'ThrAc'
+    | 'Prop'
+    | 'Ala' | 'Beh' | 'But' | 'Cho' | 'Etn' | 'Fer' | 'Gro' | 'Hxo' | 'Lac' | 'Lau' | 'Lin' | 'Oco' | 'Ole' | 'Pyr'
+    | 'Ser'
+    | 'Ac' | 'Am' | 'Bn' | 'Bz' | 'Et' | 'Fo' | 'Gc' | 'Gr' | 'Me' | 'Ph' | 'Tf' | 'Tr' | 'Ts'
+    | 'A' | 'N' | 'F' | 'S' | 'P';
+COUNT:
+    'Hep' | 'Hex' | 'Pen';
 CON:
     '(' TYPE NUM '-' NUM ')'
     | TYPE NUM '-' NUM

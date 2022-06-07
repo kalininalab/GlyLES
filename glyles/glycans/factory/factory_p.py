@@ -7,20 +7,28 @@ class PyranoseFactory:
     """
 
     __monomers = {
+        # Heptose
+        "HEP": {"name": "Hep", "config": Config.UNDEF, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,
+                "smiles": "OCC(O)C(O)C1OC(O)C(O)C1O"},
+        "A_HEP": {"name": "Hep", "config": Config.ALPHA, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,
+                  "smiles": "OCC(O)C(O)C1O[C@H](O)C(O)C1O"},
+        "B_HEP": {"name": "Hep", "config": Config.BETA, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,
+                  "smiles": "OCC(O)C(O)C1O[C@@H](O)C(O)C1O"},
+
         # Hexose
-        "HEX": {"name": "Glc", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "HEX": {"name": "Hex", "config": Config.UNDEF, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,
                 "smiles": "C(C1C(C(C(C(O1)O)O)O)O)O"},
-        "A_HEX": {"name": "Glc", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "A_HEX": {"name": "Hex", "config": Config.ALPHA, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,
                   "smiles": "OCC1O[C@H](O)C(O)C(O)C1O"},
-        "B_HEX": {"name": "Glc", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "B_HEX": {"name": "Hex", "config": Config.BETA, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,
                   "smiles": "OCC1O[C@@H](O)C(O)C(O)C1O"},
 
         # Pentose
-        "PEN": {"name": "Glc", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "PEN": {"name": "Pen", "config": Config.UNDEF, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,
                 "smiles": "C1C(C(C(C(O1)O)O)O)O"},
-        "A_PEN": {"name": "Glc", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "A_PEN": {"name": "Pen", "config": Config.ALPHA, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,
                   "smiles": "OC1CO[C@H](O)C(O)C1O"},
-        "B_PEN": {"name": "Glc", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "B_PEN": {"name": "Pen", "config": Config.BETA, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,
                   "smiles": "OC1CO[C@@H](O)C(O)C1O"},
 
         # Glucose

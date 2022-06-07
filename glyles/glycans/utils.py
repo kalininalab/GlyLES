@@ -24,6 +24,7 @@ class Enantiomer(Enum):
     """
     D = 0
     L = 1
+    U = 2
 
 
 class Lactole(Enum):
