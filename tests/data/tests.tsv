@@ -69,7 +69,6 @@ Gal2N	C([C@@H]1[C@@H]([C@@H]([C@H](C(O1)O)N)O)O)O
 Gul2N	C([C@@H]1[C@@H]([C@H]([C@H](C(O1)O)N)O)O)O
 Glc2Fa	C([C@@H]1[C@H]([C@@H]([C@H]([C@H](O1)O)F)O)O)O
 Man2F	C([C@@H]1[C@H]([C@@H]([C@@H](C(O1)O)F)O)O)O
-Hex2F	C(C1C(C(C(C(O1)O)F)O)O)O
 Gal2Ph	OC[C@H]2OC(O)[C@H](c1ccccc1)[C@@H](O)[C@H]2O
 4dGal	OC[C@@H]1C[C@H](O)[C@@H](O)C(O)O1
 6dL-Man3Sa	C[C@H]1[C@@H]([C@H]([C@H]([C@@H](O1)O)O)OS(=O)(=O)O)O
@@ -79,7 +78,7 @@ Qui6Sa	C([C@@H]1[C@H]([C@@H]([C@H]([C@H](O1)O)O)O)O)S(=O)(=O)O
 GalNBz	O=C(N[C@H]1C(O)O[C@H](CO)[C@H](O)[C@@H]1O)c2ccccc2
 Gal2Bz	O=C(O[C@H]1C(O)O[C@H](CO)[C@H](O)[C@@H]1O)c2ccccc2
 Gal2Bn	OC[C@H]2OC(O)[C@H](Oc1ccccc1)[C@@H](O)[C@H]2O
-NeuNGc	C1[C@@H]([C@H]([C@@H](OC1(C(=O)O)O)[C@@H]([C@@H](CO)O)O)NC(=O)CO)O
+Neu5Gc	C1[C@@H]([C@H]([C@@H](OC1(C(=O)O)O)[C@@H]([C@@H](CO)O)O)NC(=O)CO)O
 Gal3Tf	O=S(=O)(O[C@@H]1[C@@H](O)C(O)O[C@H](CO)[C@@H]1O)C(F)(F)F
 Gal4Tr	OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1C(c2ccccc2)(c3ccccc3)c4ccccc4
 Gal3Ts	Cc2ccc(S(=O)(=O)O[C@@H]1[C@@H](O)C(O)O[C@H](CO)[C@@H]1O)cc2

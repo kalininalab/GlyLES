@@ -90,7 +90,7 @@ class SMILESReaktor:
                     elif n[1:] == "Bz":
                         self.side_chains[int(n[0])] = "OC(=O)c2ccccc2"
                     elif n[1:] == "Gc":
-                        self.side_chains[int(n[0])] = "OC(=O)CO"
+                        self.side_chains[int(n[0])] = ("N" if self.monomer.get_name() == "Neu" else "O") + "C(=O)CO"
                     elif n[1:] == "Ph":
                         self.side_chains[int(n[0])] = "c2ccccc2"
                     elif n[1:] == "Tf":
@@ -107,7 +107,7 @@ class SMILESReaktor:
                 elif n == "NBz":
                     self.side_chains[self.ring_c + 1] = "NC(=O)c2ccccc2"
                 elif n == "NGc":
-                    self.side_chains[self.ring_c + 1] = "NC(=O)c2ccccc2"
+                    self.side_chains[self.ring_c + 1] = "NC(=O)CO"
                 else:
                     not_implemented_message(n)
                     full = False
