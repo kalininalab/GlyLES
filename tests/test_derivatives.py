@@ -36,15 +36,6 @@ class TestDerivatives:
         assert output[0][1] != ""
         compare_smiles(output[0][1], smiles)
 
-    @pytest.mark.parametrize("line", ["Qui6Sa\tC([C@@H]1[C@H]([C@@H]([C@H]([C@H](O1)O)O)O)O)S(=O)(=O)O\n"])
-    def test_file_parsing_detail(self, line):
-        iupac, smiles = line.strip().split("\t")[:2]
-        output = convert(iupac)
-
-        assert output[0][0] == iupac
-        assert output[0][1] != ""
-        compare_smiles(output[0][1], smiles)
-
     @pytest.mark.parametrize("line", open("data/oracle.txt", "r").readlines())
     def test_oracle(self, line):
         iupac = line.strip()
@@ -58,5 +49,8 @@ class TestDerivatives:
 
         assert output is not None
 
-    def test_count(self):
-        assert Glycan("GlcNAc4Dhpa", MonomerFactory())
+    def test_fancy(self):
+        compare_smiles(
+            Glycan("LDManHep", MonomerFactory()).get_smiles(),
+            "C([C@@H]([C@@H]1[C@H]([C@@H]([C@@H](C(O1)O)O)O)O)O)O"
+        )

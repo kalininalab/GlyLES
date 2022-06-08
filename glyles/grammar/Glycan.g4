@@ -20,8 +20,7 @@ deriv:
 SAC:
     COUNT | 'Glc' | 'Man' | 'Gal' | 'Gul' | 'Alt' | 'All' | 'Tal' | 'Ido' | 'Qui' | 'Rha' | 'Fuc' | 'Oli' | 'Tyv' |
     'Abe' | 'Par' | 'Dig' | 'Col' | 'Ara' | 'Lyx' | 'Xyl' | 'Rib' | 'Kdn' | 'Neu' | 'Pse' | 'Leg' | 'Aci'| 'Bac'
-    | 'LDManHep' | 'Kdo' | 'Dha' | 'DDManHep' | 'Mur' | 'Api' | 'Fru' | 'Tag' | 'Sor' | 'Psi' | 'Ery' | 'Thre' | 'Rul'
-    | 'Xul';
+    | 'Kdo' | 'Dha' | 'Mur' | 'Api' | 'Fru' | 'Tag' | 'Sor' | 'Psi' | 'Ery' | 'Thre' | 'Rul' | 'Xul';
 MOD:
     NUM ',' NUM '-Anhydro-'
     | NUM '-O-' FG '-'
@@ -31,13 +30,12 @@ MOD:
     | '-ulosaric' | '-ulosonic' | '-uronic' | '-onic' | '-aric' | '-ol'
     | '0d' | 'D-' | 'L-' | FG;
 FG:
-    COUNT | 'SerAc' | 'ThrAc'
-    | 'Coum' | 'Prop'
+    COUNT | 'Coum' | 'Prop'
     | 'Ach' | 'Aep' | 'Ala' | 'Asp' | 'Beh' | 'But' | 'Cho' | 'Cin' | 'Cys' | 'Dco' | 'Dhp' | 'Etg' | 'Etn' | 'Fer'
     | 'Gro' | 'Glu' | 'Gly' | 'Hxo' | 'Lac' | 'Lau' | 'Leu' | 'Lin' | 'Lys' | 'Mal' | 'Mar' | 'Myr' | 'Oco' | 'Ole'
     | 'Orn' | 'Pam' | 'Pro' | 'Pyr' | 'Ser' | 'Sin' | 'Ste' | 'Suc' | 'Thr' | 'Vac' | 'Ulo' | 'ulo'
-    | 'Ac' | 'Am' | 'Bn' | 'Br' | 'Bz' | 'Cl' | 'Cm' | 'Et' | 'Fo' | 'Gc' | 'Gr' | 'Me' | 'Oc' | 'Ph' | 'Pp' | 'Tf'
-    | 'Tr' | 'Ts' | 'Vl' | 'en'
+    | 'Ac' | 'Am' | 'Bn' | 'Br' | 'Bz' | 'Cl' | 'Cm' | 'DD' | 'DL' | 'Et' | 'Fo' | 'Gc' | 'Gr' | 'LD' | 'LL' | 'Me'
+    | 'Oc' | 'Ph' | 'Pp' | 'Tf' | 'Tr' | 'Ts' | 'Vl' | 'en'
     | 'A' | 'N' | 'F' | 'I' | 'S' | 'P';
 COUNT:
     'Hep' | 'Hex' | 'Oct' | 'Pen';

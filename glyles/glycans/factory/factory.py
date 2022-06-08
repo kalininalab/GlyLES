@@ -41,7 +41,7 @@ class MonomerFactory:
             Directory containing all necessary information to initialize a monomer implementation
         """
         furanose = item in ["ERY", "THRE", "RUL", "XUL"]
-        if item[-1] == "p" and not item.endswith("manHep"):
+        if item[-1] == "p" and not item.endswith("Hep"):
             item = item[:-1]
         if item[-1] == "f":
             item = item[:-1]

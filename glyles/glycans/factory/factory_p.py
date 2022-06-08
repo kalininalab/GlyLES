@@ -255,14 +255,6 @@ class PyranoseFactory:
         "B_BAC": {"name": "Bac", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "C[C@H]1O[C@@H](O)[C@H](N)[C@@H](O)[C@@H]1N"},
 
-        # L-Glycero-D-Manno-Heptose
-        "LDMANHEP": {"name": "LDManHep", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
-                     "smiles": "OC[C@H](O)C1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O"},
-        "A_LDMANHEP": {"name": "LDManHep", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
-                       "smiles": "OC[C@H](O)C1O[C@H](O)[C@@H](O)[C@@H](O)[C@@H]1O"},
-        "B_LDMANHEP": {"name": "LDManHep", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
-                       "smiles": "OC[C@H](O)C1O[C@@H](O)[C@@H](O)[C@@H](O)[C@@H]1O"},
-
         # 2-Keto-3-Deoxy-D-Mannooctanoic acid
         "KDO": {"name": "Kdo", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                 "smiles": "O=C(O)C1(O)C[C@@H](O)[C@@H](O)C([C@H](O)CO)O1"},
@@ -278,14 +270,6 @@ class PyranoseFactory:
                   "smiles": "O=C(O)[C@H]1O[C@@](O)(C(=O)O)C[C@@H](O)[C@H]1O"},
         "B_DHA": {"name": "Dha", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "O=C(O)[C@H]1O[C@](O)(C(=O)O)C[C@@H](O)[C@H]1O"},
-
-        # D-Glycero-D-Manno-Heptose
-        "DDMANHEP": {"name": "DDManHep", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
-                     "smiles": "OC[C@@H](O)C1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O"},
-        "A_DDMANHEP": {"name": "DDManHep", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
-                       "smiles": "OC[C@@H](O)C1O[C@H](O)[C@@H](O)[C@@H](O)[C@@H]1O"},
-        "B_DDMANHEP": {"name": "DDManHep", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
-                       "smiles": "OC[C@@H](O)C1O[C@@H](O)[C@@H](O)[C@@H](O)[C@@H]1O"},
 
         # Muramic acid
         "MUR": {"name": "Mur", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,

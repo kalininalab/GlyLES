@@ -28,13 +28,20 @@ class SMILESReaktor:
     def __init__(self, monomer):
         self.monomer = monomer
         self.monomer.get_structure()
-        self.side_chains = ["" for _ in range(1 + np.count_nonzero(monomer.x[:, 0] == 6))]
+        self.side_chains = None
         self.ring_c = 2 if (monomer, monomer.get_lactole()) in ketoses2 else 1
 
     def react(self, names, types):
         full = True
+
+        # parse for sth. like LDManHep or DDManHep -> afterwards, no need to look for LD/DD/... and Hep/Hex/Pen/Oct
+        self.check_for_resizing(names, types)
+
+        self.side_chains = ["" for _ in range(1 + np.count_nonzero(self.monomer.x[:, 0] == 6))]
+
+        # parse remaining modifications
         for n, t in zip(names, types):
-            if t != GlycanLexer.MOD:
+            if t != GlycanLexer.MOD or n.count("L") + n.count("D") == len(n):
                 continue
             if len(n) == 1:
                 if n == "A":
@@ -127,6 +134,41 @@ class SMILESReaktor:
         self.assemble_chains()
 
         return self.monomer, full
+
+    def check_for_resizing(self, names, types):
+        sac_index = types.index(GlycanLexer.SAC)
+        if len(types) == sac_index + 1 or (len(types) > sac_index + 1 and types[sac_index + 1] != GlycanLexer.SAC):
+            return
+        if names[sac_index + 1] in ["Pen", "Hex", "Hep", "Oct"]:
+            len_index = sac_index + 1
+        else:
+            len_index = sac_index
+            sac_index = len_index + 1
+        if sac_index == 0:
+            orientations = ""
+        else:
+            orientations = names[sac_index - 1]
+
+        if names[len_index] == "Hep":
+            extension = "[C?H](O)CO"
+        elif names[len_index] == "Oct":
+            return
+        else:
+            return
+
+        for c in orientations[:-1]:
+            if c == "L":
+                extension = extension.replace("[C?H]", "[C@@H]", 1)
+            if c == "D":
+                extension = extension.replace("[C?H]", "[C@H]", 1)
+
+        self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(6)).SetAtomicNum(50)
+        self.monomer.structure.GetAtomWithIdx(int(np.where(self.monomer.x[:, 1] == 6)[0])).SetAtomicNum(32)
+        smiles = self.monomer.to_smiles(int(np.where(self.monomer.x[:, 1] == 10)[0]), 0)
+        smiles = smiles.replace("[SnH]", "").replace("[GeH2]", extension)
+        self.monomer.smiles = smiles
+        self.monomer.structure = None
+        self.monomer.get_structure()
 
     def assemble_chains(self):
         placeholder = [
