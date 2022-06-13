@@ -64,6 +64,7 @@ class TestSMILES:
 
         compare_smiles(computed, smiles)
 
+    @pytest.mark.slow
     @pytest.mark.parametrize("names", list(combinations([x + "p" for x in MonomerFactory().pyranoses() if x != "Api"] +
                                                         [x + "f" for x in MonomerFactory().furanoses()], 2)))
     @pytest.mark.parametrize("config1", [Config.ALPHA, Config.BETA, Config.UNDEF])

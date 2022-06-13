@@ -337,6 +337,7 @@ class TestParser:
         id_child_2 = list(g.edges(id_child_1))[0][1]
         check_child(g, id_child_1, id_child_2, "Man", "(b1-4)", 2, lactole=Lactole.PYRANOSE)
 
+    @pytest.mark.fuzzy
     @pytest.mark.parametrize("monomers",
                              np.random.choice(list(MonomerFactory().monomer_names()), size=500).reshape(100, 5))
     @pytest.mark.parametrize("orientation", [Config.ALPHA, Config.BETA, Config.UNDEF])
@@ -386,6 +387,7 @@ class TestParser:
         id_child_1 = list(g.edges(0))[0][1]
         check_child(g, 0, id_child_1, "Man", f"({config}{pos_man}-{pos_glc})", 0)
 
+    @pytest.mark.fuzzy
     @pytest.mark.parametrize("lactoles", list(zip(*(
             np.random.choice(list(MonomerFactory().pyranose_names()), size=500).reshape(100, 5),
             np.random.choice(list(MonomerFactory().furanose_names()), size=500).reshape(100, 5),
