@@ -367,6 +367,8 @@ class Glycan:
         sys.stderr = Writer()
 
         # parse the remaining structure description following the grammar, also add the dummy characters
+        if not isinstance(self.iupac, str):
+            raise ParseError("Only string input can be parsed: " + str(self.iupac))
         stream = InputStream(data='{' + self.iupac + '}')
         lexer = GlycanLexer(stream)
         token = CommonTokenStream(lexer)
