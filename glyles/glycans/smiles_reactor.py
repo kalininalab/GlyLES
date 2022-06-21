@@ -1,6 +1,7 @@
 import logging
 
 import numpy as np
+from rdkit.Chem import MolToSmiles
 from rdkit.Chem.rdchem import ChiralType
 from rdkit.Chem.rdmolops import AddHs, RemoveHs
 
@@ -22,6 +23,14 @@ def not_implemented_message(mod):
     logging.warning(
         f"ModificationNotImplementedWarning: {mod} Modification not implemented. The returned molecule will not have "
         f"this modification")
+
+
+def opposite_chirality(tag):
+    if tag == ChiralType.CHI_TETRAHEDRAL_CCW:
+        return ChiralType.CHI_TETRAHEDRAL_CW
+    elif tag == ChiralType.CHI_TETRAHEDRAL_CW:
+        return ChiralType.CHI_TETRAHEDRAL_CCW
+    return tag
 
 
 class SMILESReaktor:
@@ -47,7 +56,7 @@ class SMILESReaktor:
                 if n == "A":
                     self.side_chains[-1] = "(=O)O"
                 elif n == "N":
-                    self.side_chains[2] = "N"
+                    self.side_chains[1 if self.monomer.get_name() in ['Fru', 'Tag', 'Sor', 'Psi'] else 2] = "N"
                 else:
                     not_implemented_message(n)
                     full = False
@@ -55,14 +64,20 @@ class SMILESReaktor:
                 if n[0].isdigit():
                     if n[1] == "d":
                         self.side_chains[int(n[0])] = "H"
+                    elif n[1] == "e":  # change chirality at a single chiral carbon atom
+                        idx = int(np.where(self.monomer.x[:, 1] == int(n[0]))[0])
+                        tag = opposite_chirality(self.monomer.structure.GetAtomWithIdx(idx).GetChiralTag())
+                        self.monomer.structure.GetAtomWithIdx(idx).SetChiralTag(tag)
                     elif n[1] == "F":
                         self.side_chains[int(n[0])] = "F"
+                    elif n[1] == "I":
+                        self.side_chains[int(n[0])] = "I"
                     elif n[1] == "N":  # add a nitrogen atom to a certain position (TBT with O)
                         self.side_chains[int(n[0])] = "N"
-                    elif n[1] == "S":  # add a sulfur atom to a certain position (TBT with O)
-                        self.side_chains[int(n[0])] = "OS(=O)(=O)(O)"
                     elif n[1] == "P":  # add a phosphate atom to a certain position (TBT with O)
                         self.side_chains[int(n[0])] = "OP(=O)(O)(O)"
+                    elif n[1] == "S":  # add a sulfur atom to a certain position (TBT with O)
+                        self.side_chains[int(n[0])] = "OS(=O)(=O)(O)"
                     else:
                         not_implemented_message(n)
                         full = False
@@ -76,12 +91,17 @@ class SMILESReaktor:
                     else:
                         not_implemented_message(n)
                         full = False
+                elif n[0] == "N":
+                    if n[1] == "S":
+                        self.side_chains[self.ring_c + 1] = "NS(=O)(=O)O"
                 elif n == "D-":
                     self.to_enantiomer(Enantiomer.D)
                 elif n == "L-":
                     self.to_enantiomer(Enantiomer.L)
                 elif n == "Ac" and self.monomer.get_name() == "Neu":
                     self.side_chains[5] = "NC(C)(=O)"
+                elif n == "Gc" and self.monomer.get_name() == "Neu":
+                    self.side_chains[5] = "NC(=O)CO"
                 else:
                     not_implemented_message(n)
                     full = False
@@ -92,8 +112,12 @@ class SMILESReaktor:
                     elif n[1:] == "Ac":
                         elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol()
                         self.side_chains[int(n[0])] = elem + "C(C)(=O)"
+                    elif n[1:] == "Cl":
+                        self.side_chains[int(n[0])] = "Cl"
                     elif n[1:] == "Bn":
                         self.side_chains[int(n[0])] = "Oc2ccccc2"
+                    elif n[1:] == "Br":
+                        self.side_chains[int(n[0])] = "Br"
                     elif n[1:] == "Bz":
                         self.side_chains[int(n[0])] = "OC(=O)c2ccccc2"
                     elif n[1:] == "Gc":
@@ -115,6 +139,19 @@ class SMILESReaktor:
                     self.side_chains[self.ring_c + 1] = "NC(=O)c2ccccc2"
                 elif n == "NGc":
                     self.side_chains[self.ring_c + 1] = "NC(=O)CO"
+                else:
+                    not_implemented_message(n)
+                    full = False
+            elif len(n) == 4:
+                if n[0].isdigit():
+                    if n[1:] == "NAc":
+                        self.side_chains[int(n[0])] = "NC(C)(=O)"
+                    elif n[1:] == "Ala":
+                        elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol()
+                        self.side_chains[int(n[0])] = elem + "C(=O)[C@@H](C)N"
+            elif len(n) == 6:
+                if n[-2] == "P":
+                    self.side_chains[int(n[0])] = "OP(=O)(O)O"
                 else:
                     not_implemented_message(n)
                     full = False
@@ -203,15 +240,17 @@ class SMILESReaktor:
         for i, chain in enumerate(self.side_chains):
             if chain:
                 smiles = smiles.replace(placeholder[i][1], "" if chain == "H" else chain)
-        self.monomer.smiles = smiles
+        self.monomer.smiles = smiles.replace("()", "")
         self.monomer.structure = None
         self.monomer.get_structure()
 
     def to_enantiomer(self, form):
         if self.monomer.get_isomer() == form:
             return
-        ring_info = self.monomer.structure.GetRingInfo().AtomRings()[0]
-        for idx in ring_info:
+        for idx in [atom.GetIdx() for atom in self.monomer.structure.GetAtoms()]:
+            """self.monomer.structure.GetAtomWithIdx(idx).SetChiralTag(opposite_chirality(
+                self.monomer.structure.GetAtomWithIdx(idx).GetChiralTag()
+            ))"""
             if self.monomer.structure.GetAtomWithIdx(idx).GetChiralTag() == ChiralType.CHI_TETRAHEDRAL_CCW:
                 self.monomer.structure.GetAtomWithIdx(idx).SetChiralTag(ChiralType.CHI_TETRAHEDRAL_CW)
             elif self.monomer.structure.GetAtomWithIdx(idx).GetChiralTag() == ChiralType.CHI_TETRAHEDRAL_CW:
