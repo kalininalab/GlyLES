@@ -94,6 +94,7 @@ class TestParser:
 
         check_initial(g, "Man", 0, Config.ALPHA, lactole=Lactole.PYRANOSE)
 
+    @pytest.mark.slow
     @pytest.mark.parametrize("mono", list(MonomerFactory().pyranoses()))
     @pytest.mark.parametrize("config", [Config.ALPHA, Config.BETA, Config.UNDEF])
     @pytest.mark.parametrize("lactole", ["", "p"])
@@ -109,6 +110,7 @@ class TestParser:
 
         check_initial(g, mono, 0, config, lactole=Lactole.PYRANOSE)
 
+    @pytest.mark.slow
     @pytest.mark.parametrize("mono", list(MonomerFactory().furanoses()))
     @pytest.mark.parametrize("config", [Config.ALPHA, Config.BETA, Config.UNDEF])
     def test_parse_1_furanose(self, mono, config):

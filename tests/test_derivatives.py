@@ -18,10 +18,6 @@ def compare_smiles(computed, solution):
     Chem.Kekulize(s)
     s_rdkit = Chem.MolToSmiles(s, kekuleSmiles=True)
 
-    print()
-    print(s_rdkit)
-    print(c_rdkit)
-
     assert c_rdkit == s_rdkit
 
 
@@ -60,22 +56,19 @@ class TestDerivatives:
         )
 
     @pytest.mark.parametrize(
-        "line", open("data/pubchem_mono_2.tsv", "r").readlines() + open("data/pubchem_poly_2.tsv", "r").readlines()
+        "line", open("data/pubchem_mono_2.tsv", "r").readlines() + open("data/pubchem_poly.tsv", "r").readlines()
     )
     def test_pubchem(self, line):
-        print()
         iupac, smiles, _ = line.strip().split("\t")
         output = convert(iupac)
 
         assert output[0][0] == iupac
         assert output[0][1] != ""
-        print(smiles)
-        print(output[0][1])
         compare_smiles(output[0][1], smiles)
 
-    @pytest.mark.parametrize("line", open("data/pubchem_poly_2.tsv", "r").readlines())
-    def test_pubchem_poly(self, line):
-        iupac, smiles, _ = line.strip().split("\t")
+    @pytest.mark.todo
+    def test_en(self):
+        iupac, smiles, _ = "Neu5Ac2en\tCC(=O)N[C@@H]1[C@H](C=C(O[C@H]1[C@@H]([C@@H](CO)O)O)C(=O)O)O\t65309".split("\t")
         output = convert(iupac)
 
         assert output[0][0] == iupac

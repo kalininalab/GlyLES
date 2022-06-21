@@ -20,7 +20,6 @@ class TestNegatives:
         "Manb[(b1-4)]Glcp(a1-2)Glc", "[Manfb(b1]-4)Glcpa(a1-2)Glc", "[Manf(b1-4)Glcp](a1-2)Glc",
         "Manpa[(b1-4)Glcpb](a1-2)Glcf", "Mana[(b1-4)Glcp(a1-2)]Glcf", "Manf(b1-4)[Glcpb(a1-2)Glcfa]",
         "Manf(b1-4)Glca(a1-2)[Glcb]", "Manp(b1-4)[Glcfb(a1-2)Glc]", "[Manpa(b1-4)Glcf(a1-2)Glcb]",
-        "GalOAsp", "GalP", "0dGal", "2-O-Et-Gal"
     ])
     @pytest.mark.parametrize("config", [" a", " b", ""])
     def test_invalid_iupac_full(self, case, config):
@@ -31,12 +30,11 @@ class TestNegatives:
         assert output[0][0] == case + config
         assert output[0][1] == ""
 
-    @pytest.mark.parametrize("num", ["1", "2", "3", "4", "5", "6"])
     @pytest.mark.parametrize("monomer", ["Man", "Gal", "Glc", "NeuAc", "Gal3S", "Glc4P"])
-    @pytest.mark.parametrize("ending", ["", "-ol", "-onic", "P"])
+    @pytest.mark.parametrize("ending", ["-ol", "-onic"])
     @pytest.mark.parametrize("full", [True, False])
-    def test_not_fully_parsable(self, num, monomer, ending, full):
-        unparsable = num + "e" + monomer + ending
+    def test_not_fully_parsable(self, monomer, ending, full):
+        unparsable = monomer + ending
         output = convert(unparsable, returning=True, full=full)
         smiles = convert(monomer, returning=True, full=True)
 
