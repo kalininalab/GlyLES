@@ -81,19 +81,20 @@ class SMILESReaktor:
                     else:
                         not_implemented_message(n)
                         full = False
-                elif n[0] == "O":
+                elif n[0] in "ON":
+                    if n[1] == "F":  # add a nitrogen atom to a certain position (TBT with O)
+                        self.side_chains[self.ring_c + 1] = n[0] + "F"
+                    if n[1] == "I":  # add a nitrogen atom to a certain position (TBT with O)
+                        self.side_chains[self.ring_c + 1] = n[0] + "I"
                     if n[1] == "N":  # add a nitrogen atom to a certain position (TBT with O)
-                        self.side_chains[self.ring_c + 1] = "ON"
+                        self.side_chains[self.ring_c + 1] = n[0] + "N"
                     elif n[1] == "S":  # add a sulfur atom to a certain position (TBT with O)
-                        self.side_chains[self.ring_c + 1] = "OS(=O)(=O)(O)"
+                        self.side_chains[self.ring_c + 1] = n[0] + "S(=O)(=O)(O)"
                     elif n[1] == "P":  # add a phosphate atom to a certain position (TBT with O)
-                        self.side_chains[self.ring_c + 1] = "OP(=O)(O)(O)"
+                        self.side_chains[self.ring_c + 1] = n[0] + "P(=O)(O)(O)"
                     else:
                         not_implemented_message(n)
                         full = False
-                elif n[0] == "N":
-                    if n[1] == "S":
-                        self.side_chains[self.ring_c + 1] = "NS(=O)(=O)O"
                 elif n == "D-":
                     self.to_enantiomer(Enantiomer.D)
                 elif n == "L-":
@@ -130,15 +131,35 @@ class SMILESReaktor:
                         self.side_chains[int(n[0])] = "C(c2ccccc2)(c3ccccc3)c4ccccc4"
                     elif n[1:] == "Ts":
                         self.side_chains[int(n[0])] = "OS(=O)(=O)c2ccc(C)cc2"
-                elif n[0] == "O":
-                    if n[1:] == "Me":
-                        self.side_chains[self.ring_c] = "OC"
-                elif n == "NAc":
-                    self.side_chains[self.ring_c + 1] = "NC(C)(=O)"
-                elif n == "NBz":
-                    self.side_chains[self.ring_c + 1] = "NC(=O)c2ccccc2"
-                elif n == "NGc":
-                    self.side_chains[self.ring_c + 1] = "NC(=O)CO"
+                    else:
+                        not_implemented_message(n)
+                        full = False
+                elif n[0] in "ON":
+                    if n[1:] == "Ac":
+                        self.side_chains[self.ring_c + 1] = n[0] + "C(C)(=O)"
+                    elif n[1:] == "Cl":
+                        self.side_chains[self.ring_c + 1] = n[0] + "Cl"
+                    elif n[1:] == "Bn":
+                        self.side_chains[self.ring_c + 1] = n[0] + "c2ccccc2"
+                    elif n[1:] == "Br":
+                        self.side_chains[self.ring_c + 1] = n[0] + "Br"
+                    elif n[1:] == "Bz":
+                        self.side_chains[self.ring_c + 1] = n[0] + "C(=O)c2ccccc2"
+                    elif n[1:] == "Gc":
+                        self.side_chains[self.ring_c + 1] = n[0] + "C(=O)CO"
+                    elif n[1:] == "Me":
+                        self.side_chains[self.ring_c + 1] = n[0] + "C"
+                    elif n[1:] == "Ph":
+                        self.side_chains[self.ring_c + 1] = n[0] + "c2ccccc2"
+                    elif n[1:] == "Tf":
+                        self.side_chains[self.ring_c + 1] = n[0] + "S(=O)(=O)C(F)(F)F"
+                    elif n[1:] == "Tr":
+                        self.side_chains[self.ring_c + 1] = n[0] + "C(c2ccccc2)(c3ccccc3)c4ccccc4"
+                    elif n[1:] == "Ts":
+                        self.side_chains[self.ring_c + 1] = n[0] + "S(=O)(=O)c2ccc(C)cc2"
+                    else:
+                        not_implemented_message(n)
+                        full = False
                 else:
                     not_implemented_message(n)
                     full = False
@@ -149,6 +170,35 @@ class SMILESReaktor:
                     elif n[1:] == "Ala":
                         elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol()
                         self.side_chains[int(n[0])] = elem + "C(=O)[C@@H](C)N"
+                    else:
+                        not_implemented_message(n)
+                        full = False
+                    if n[1] in "ON":
+                        if n[2:] == "Me":
+                            self.side_chains[int(n[0])] = n[1] + "C"
+                        elif n[2:] == "Ac":
+                            self.side_chains[int(n[0])] = n[1] + "C(C)(=O)"
+                        elif n[2:] == "Cl":
+                            self.side_chains[int(n[0])] = n[1] + "Cl"
+                        elif n[2:] == "Bn":
+                            self.side_chains[int(n[0])] = n[1] + "c2ccccc2"
+                        elif n[2:] == "Br":
+                            self.side_chains[int(n[0])] = n[1] + "Br"
+                        elif n[2:] == "Bz":
+                            self.side_chains[int(n[0])] = n[1] + "C(=O)c2ccccc2"
+                        elif n[2:] == "Gc":
+                            self.side_chains[int(n[0])] = n[1] + "C(=O)CO"
+                        elif n[2:] == "Ph":
+                            self.side_chains[int(n[0])] = n[1] + "c2ccccc2"
+                        elif n[2:] == "Tf":
+                            self.side_chains[int(n[0])] = n[1] + "S(=O)(=O)C(F)(F)F"
+                        elif n[2:] == "Tr":
+                            self.side_chains[int(n[0])] = n[1] + "C(c2ccccc2)(c3ccccc3)c4ccccc4"
+                        elif n[2:] == "Ts":
+                            self.side_chains[int(n[0])] = n[1] + "S(=O)(=O)c2ccc(C)cc2"
+                        else:
+                            not_implemented_message(n)
+                            full = False
             elif len(n) == 6:
                 if n[-2] == "P":
                     self.side_chains[int(n[0])] = "OP(=O)(O)O"

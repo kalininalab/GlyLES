@@ -27,7 +27,7 @@ class TestDerivatives:
         output = convert(name)[0][1]
         compare_smiles(output, derivatives[name])
 
-    @pytest.mark.parametrize("line", open("data/tests.tsv", "r").readlines()[1:])
+    @pytest.mark.parametrize("line", open("data/general.tsv", "r").readlines()[1:])
     def test_file_parsing(self, line):
         iupac, smiles = line.strip().split("\t")
         output = convert(iupac)
@@ -36,27 +36,21 @@ class TestDerivatives:
         assert output[0][1] != ""
         compare_smiles(output[0][1], smiles)
 
-    @pytest.mark.parametrize("line", open("data/oracle.txt", "r").readlines())
+    @pytest.mark.parametrize("line", open("data/glycowork_mono.txt", "r").readlines())
     def test_oracle(self, line):
         iupac = line.strip()
         try:
             output = Glycan(iupac, MonomerFactory(), tree_only=True).get_tree()
         except ParseError:
-            with open("still_not_parsed.txt", "a") as tmp:
+            with open("data/misc/still_not_parsed.txt", "a") as tmp:
                 tmp.write(line)
                 tmp.close()
             return
 
         assert output is not None
 
-    def test_fancy(self):
-        compare_smiles(
-            Glycan("LDManHep", MonomerFactory()).get_smiles(),
-            "C([C@@H]([C@@H]1[C@H]([C@@H]([C@@H](C(O1)O)O)O)O)O)O"
-        )
-
     @pytest.mark.parametrize(
-        "line", open("data/pubchem_mono_2.tsv", "r").readlines() + open("data/pubchem_poly.tsv", "r").readlines()
+        "line", open("data/pubchem_mono.tsv", "r").readlines() + open("data/pubchem_poly.tsv", "r").readlines()
     )
     def test_pubchem(self, line):
         iupac, smiles, _ = line.strip().split("\t")

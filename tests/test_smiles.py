@@ -101,7 +101,7 @@ class TestSMILES:
 
         compare_smiles(smiles, Chem.MolToSmiles(mol))
 
-    @pytest.mark.parametrize("glycan", [x[:-1] for x in open("data/lo_glycans.txt", "r").readlines()])
+    @pytest.mark.parametrize("glycan", [x[:-1] for x in open("data/glycowork_data_1.txt", "r").readlines()])
     def test_lectinoracle(self, glycan):
         if glycan in [
             'Ara(a1-5)Ara(a1-5)Ara(a1-5)Ara(a1-5)Ara(a1-5)Ara', 'Fuc(a1-3)[Neu5Ac(a2-3)]Gal(b1-4)GlcNAc(b1-3)GalNAc',
