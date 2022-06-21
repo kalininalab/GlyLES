@@ -18,9 +18,9 @@ deriv:
     | MOD+ SAC+ RING TYPE MOD* | MOD+ SAC+ TYPE MOD* | MOD+ SAC+ RING MOD* | MOD+ SAC+ MOD*;
 
 SAC:
-    COUNT | 'Glc' | 'Man' | 'Gal' | 'Gul' | 'Alt' | 'All' | 'Tal' | 'Ido' | 'Qui' | 'Rha' | 'Fuc' | 'Oli' | 'Tyv' |
-    'Abe' | 'Par' | 'Dig' | 'Col' | 'Ara' | 'Lyx' | 'Xyl' | 'Rib' | 'Kdn' | 'Neu' | 'Pse' | 'Leg' | 'Aci'| 'Bac'
-    | 'Kdo' | 'Dha' | 'Mur' | 'Api' | 'Fru' | 'Tag' | 'Sor' | 'Psi' | 'Ery' | 'Thre' | 'Rul' | 'Xul';
+    COUNT | 'Glc' | 'Man' | 'Gal' | 'Gul' | 'Alt' | 'All' | 'Tal' | 'Ido' | 'Qui' | 'Rha' | 'Fuc' | 'Oli' | 'Tyv'
+    | 'Abe' | 'Par' | 'Dig' | 'Col' | 'Ara' | 'Lyx' | 'Xyl' | 'Rib' | 'Kdn' | 'Neu' | 'Sia' | 'Pse' | 'Leg' | 'Aci'
+    | 'Bac' | 'Kdo' | 'Dha' | 'Mur' | 'Api' | 'Fru' | 'Tag' | 'Sor' | 'Psi' | 'Ery' | 'Thre' | 'Rul' | 'Xul';
 MOD:
     NUM ',' NUM '-Anhydro-'
     | NUM '-O-' FG '-'
@@ -31,9 +31,10 @@ MOD:
     | '0d' | 'D-' | 'L-' | FG;
 FG:
     COUNT | 'Coum' | 'Prop'
-    | 'Ach' | 'Aep' | 'Ala' | 'Asp' | 'Beh' | 'But' | 'Cho' | 'Cin' | 'Cys' | 'Dco' | 'Dhp' | 'Etg' | 'Etn' | 'Fer'
-    | 'Gro' | 'Glu' | 'Gly' | 'Hxo' | 'Lac' | 'Lau' | 'Leu' | 'Lin' | 'Lys' | 'Mal' | 'Mar' | 'Myr' | 'Oco' | 'Ole'
-    | 'Orn' | 'Pam' | 'Pro' | 'Pyr' | 'Ser' | 'Sin' | 'Ste' | 'Suc' | 'Thr' | 'Vac' | 'Ulo' | 'ulo'
+    | 'Ach' | 'Aep' | 'Ala' | 'Asp' | 'Beh' | 'But' | 'Cho' | 'Cer' | 'Cet' | 'Cin' | 'Cys' | 'Dco' | 'Dhp' | 'Etg'
+    | 'Etn' | 'Fer' | 'Gro' | 'Glu' | 'Gly' | 'Hse' | 'Hxo' | 'Lac' | 'Lau' | 'Leu' | 'Lin' | 'Lys' | 'Mal' | 'Mar'
+    | 'Myr' | 'Non' | 'Oco' | 'Ole' | 'Orn' | 'Pam' | 'Pro' | 'Pyr' | 'Ser' | 'Sin' | 'Ste' | 'Suc' | 'Thr' | 'Vac'
+    | 'Ulo' | 'ulo'
     | 'Ac' | 'Am' | 'Bn' | 'Br' | 'Bz' | 'Cl' | 'Cm' | 'DD' | 'DL' | 'Et' | 'Fo' | 'Gc' | 'Gr' | 'LD' | 'LL' | 'Me'
     | 'Oc' | 'Ph' | 'Pp' | 'Tf' | 'Tr' | 'Ts' | 'Vl' | 'en'
     | 'A' | 'N' | 'F' | 'I' | 'S' | 'P';
