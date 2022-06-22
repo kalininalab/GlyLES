@@ -37,17 +37,31 @@ class TestDerivatives:
         compare_smiles(output[0][1], smiles)
 
     @pytest.mark.parametrize("line", open("data/glycowork_mono.txt", "r").readlines())
-    def test_oracle(self, line):
+    def test_glycowork_mono(self, line):
         iupac = line.strip()
         try:
             output = Glycan(iupac, MonomerFactory(), tree_only=True).get_tree()
         except ParseError:
-            with open("data/misc/still_not_parsed.txt", "a") as tmp:
+            with open("data/misc/mono_not_parsed.txt", "a") as tmp:
                 tmp.write(line)
                 tmp.close()
             return
 
         assert output is not None
+
+    @pytest.mark.parametrize("line", open("data/glycowork_poly.txt", "r").readlines())
+    def test_glycowork_poly(self, line):
+        iupac = line.strip()
+        try:
+            output = Glycan(iupac, MonomerFactory(), tree_only=True).get_tree()
+        except ParseError:
+            with open("data/misc/poly_not_parsed.txt", "a") as tmp:
+                tmp.write(line)
+                tmp.close()
+            return
+
+        assert output is not None
+
 
     @pytest.mark.parametrize(
         "line", open("data/pubchem_mono.tsv", "r").readlines() + open("data/pubchem_poly.tsv", "r").readlines()
