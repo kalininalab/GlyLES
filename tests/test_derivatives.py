@@ -36,6 +36,12 @@ class TestDerivatives:
         assert output[0][1] != ""
         compare_smiles(output[0][1], smiles)
 
+    @pytest.mark.parametrize(
+        "line", open("data/glycowork_mono.txt", "r").readlines() + open("data/glycowork_poly.txt", "r").readlines(),
+    )
+    def test_glycowork_parse(self, line):
+        assert Glycan(line.strip(), MonomerFactory(), tree_only=True).get_tree() is not None
+
     @pytest.mark.parametrize("line", open("data/glycowork_mono.txt", "r").readlines())
     def test_glycowork_mono(self, line):
         iupac = line.strip()
@@ -82,3 +88,6 @@ class TestDerivatives:
         assert output[0][0] == iupac
         assert output[0][1] != ""
         compare_smiles(output[0][1], smiles)
+
+    def test_fancy(self):
+        assert Glycan("Gal(z1-z)Man", MonomerFactory(), tree_only=True).get_tree() is not None
