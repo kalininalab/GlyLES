@@ -7,10 +7,12 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches:
-      - main, auto_test
+      - main
+      - auto_test
   pull_request:
     branches:
-      - main, auto_test
+      - main
+      - auto_test
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
