@@ -59,3 +59,6 @@ class TestDerivatives:
         assert output[0][0] == iupac
         assert output[0][1] != ""
         compare_smiles(output[0][1], smiles)
+
+    def test_quat(self):
+        assert Glycan("Man(a1-4)[Man(a1-2)][Man(a1-3)][Man(a1-5)]Man(a1-4)Man", MonomerFactory(), tree_only=True).get_tree() is not None

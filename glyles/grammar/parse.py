@@ -118,6 +118,16 @@ class Glycan:
                 self.__add_edge(node_id, node_id2, children[1])
                 return node_id2
 
+            elif len(children) == 12:  # {glycan con '[' branch ']' '[' branch ']' '[' branch ']' branch}
+                # branching in a chain, append the end to the parent and hang both branches on that
+                node_id = self.__walk(children[11], parent)
+                self.__walk(children[3], node_id)
+                self.__walk(children[6], node_id)
+                self.__walk(children[9], node_id)
+                node_id2 = self.__add_node(children[0])
+                self.__add_edge(node_id, node_id2, children[1])
+                return node_id2
+
             # there should be no case missing, but who knows...
             raise UnreachableError("Invalid branching in glycan tree")
 
