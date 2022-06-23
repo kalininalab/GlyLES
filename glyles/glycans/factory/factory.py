@@ -1,6 +1,7 @@
 from glyles.glycans.factory.factory_f import FuranoseFactory
 from glyles.glycans.factory.factory_p import PyranoseFactory
 from glyles.glycans.monomer import Monomer
+from glyles.glycans.utils import Config, Enantiomer, Lactole
 from glyles.grammar.GlycanLexer import GlycanLexer
 
 
@@ -128,6 +129,20 @@ class MonomerFactory:
                 output.add(self.furanose_fac[item]["name"])
         return list(output)
 
+    @staticmethod
+    def unknown_monomer(name):
+        """
+        Generate a dummy monosaccharide containing no information except the name as the structure and all its
+        properties are unknown.
+        Args:
+            name (str): Name of the monosaccharide whos structure and properties are unknown
+
+        Returns:
+            Dummy information about an unknown monomer
+        """
+        return {"name": name, "config": Config.UNDEF, "isomer": Enantiomer.U, "lactole": Lactole.UNKNOWN,
+                "smiles": ""}
+
     def create(self, recipe, config=None, tree_only=False):
         """
         Create a monomer from its describing IUPAC string with all added side chains.
@@ -154,15 +169,19 @@ class MonomerFactory:
             name = recipe[config_index][0] + "_" + name
 
         # get the monomer from the factory
-        if (ring_index is not None and recipe[ring_index][0] == "f" and name in self.furanose_fac) or \
-                name not in self.pyranose_fac:
+        if name in self.furanose_fac and ring_index is not None and recipe[ring_index][0] == "f":
             monomer = Monomer(**self.furanose_fac[name], recipe=recipe)
-        else:
+        elif name in self.pyranose_fac:
             monomer = Monomer(**self.pyranose_fac[name], recipe=recipe)
+        else:
+            monomer = Monomer(**self.unknown_monomer(name), recipe=recipe)
 
         full = False
         if not tree_only:
             # create the final molecule using the molecule's react-method augmented with the recipe of the molecule
             monomer, full = monomer.react(*tmp)
+
+        # set full to false in case the monomer is unknown, i.e. neither pyranose nor furanose
+        full &= (monomer.get_lactole() != Lactole.UNKNOWN)
 
         return monomer, full

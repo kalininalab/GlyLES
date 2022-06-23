@@ -234,13 +234,13 @@ class FuranoseFactory:
         "B_ERY": {"name": "Ery", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                   "smiles": "O[C@@H]1CO[C@@H](O)[C@@H]1O"},
 
-        # Erythrose
+        '''# Erythrose
         "THRE": {"name": "Thre", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                  "smiles": "O[C@@H]1COC(O)[C@H]1O"},
         "A_THRE": {"name": "Thre", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                    "smiles": "O[C@@H]1CO[C@H](O)[C@H]1O"},
         "B_THRE": {"name": "Thre", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
-                   "smiles": "O[C@@H]1CO[C@@H](O)[C@H]1O"},
+                   "smiles": "O[C@@H]1CO[C@@H](O)[C@H]1O"},'''
 
         # Ribulose
         "RUL": {"name": "Rul", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
