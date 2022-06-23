@@ -40,8 +40,9 @@ jobs:
         uses: codecov/codecov-action@v2
         with:
           fail_ci_if_error: true
-      - name: Upload to CodeCov
-        run: |
-          curl -Os https://uploader.codecov.io/latest/linux/codecov
-          chmod +x codecov
-          ./codecov
+          files: coverage.xml
+      #- name: Upload to CodeCov
+      #  run: |
+      #    curl -Os https://uploader.codecov.io/latest/linux/codecov
+      #    chmod +x codecov
+      #    ./codecov
