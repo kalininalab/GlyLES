@@ -694,7 +694,7 @@ GalAOMe
 GalAOP
 GalAOPEtN
 GalAOPyr
-GalAP3
+GalA3P
 GalASer
 GalAThr
 GalGro
@@ -806,7 +806,7 @@ GalOPyr
 GalOS
 GalPCho
 GalPGro
-GalcNAc6P
+GalNAc6P
 Galf
 Galf1Bn
 Galf1Et
@@ -843,7 +843,7 @@ GalfPGro
 Glc
 Glc-ol
 Glc-onic
-Glc1
+Glc1P
 Glc1Beh6Ac
 Glc1Cer
 Glc1Cer6Aep
@@ -1241,7 +1241,7 @@ GlcN6P
 GlcN6PCho
 GlcN6PEtN
 GlcN6S
-GlcNAC-ol
+GlcNAc-ol
 GlcNAc
 GlcNAc-ol
 GlcNAc-onic
@@ -1307,7 +1307,7 @@ GlcNAc4P-ol
 GlcNAc4PCho6P
 GlcNAc4PGro
 GlcNAc4Pyr
-GlcNAc6AEP
+GlcNAc6Aep
 GlcNAc6Ac
 GlcNAc6Aep
 GlcNAc6Cl
@@ -1820,7 +1820,7 @@ Man4N
 Man4Pyr
 Man4S
 Man5P-ol
-Man6AEP
+Man6Aep
 Man6Ac
 Man6Aep
 Man6F
@@ -1918,7 +1918,6 @@ ManPMe
 Manf
 Manf1Me
 Manf1Me5P
-Monosaccharide
 Mur
 MurN
 MurNAc

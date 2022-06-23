@@ -1,9 +1,7 @@
-import os
 import pytest
 
 from glyles.converter import convert
 from glyles.glycans.factory.factory import MonomerFactory
-from glyles.glycans.utils import ParseError
 from glyles.grammar.parse import Glycan
 from tests.utils import derivatives
 from rdkit import Chem
@@ -42,33 +40,6 @@ class TestDerivatives:
     def test_glycowork_parse(self, line):
         assert Glycan(line.strip(), MonomerFactory(), tree_only=True).get_tree() is not None
 
-    @pytest.mark.parametrize("line", open("data/glycowork_mono.txt", "r").readlines())
-    def test_glycowork_mono(self, line):
-        iupac = line.strip()
-        try:
-            output = Glycan(iupac, MonomerFactory(), tree_only=True).get_tree()
-        except ParseError:
-            with open("data/misc/mono_not_parsed.txt", "a") as tmp:
-                tmp.write(line)
-                tmp.close()
-            return
-
-        assert output is not None
-
-    @pytest.mark.parametrize("line", open("data/glycowork_poly.txt", "r").readlines())
-    def test_glycowork_poly(self, line):
-        iupac = line.strip()
-        try:
-            output = Glycan(iupac, MonomerFactory(), tree_only=True).get_tree()
-        except ParseError:
-            with open("data/misc/poly_not_parsed.txt", "a") as tmp:
-                tmp.write(line)
-                tmp.close()
-            return
-
-        assert output is not None
-
-
     @pytest.mark.parametrize(
         "line", open("data/pubchem_mono.tsv", "r").readlines() + open("data/pubchem_poly.tsv", "r").readlines()
     )
@@ -88,6 +59,3 @@ class TestDerivatives:
         assert output[0][0] == iupac
         assert output[0][1] != ""
         compare_smiles(output[0][1], smiles)
-
-    def test_fancy(self):
-        assert Glycan("Gal(z1-z)Man", MonomerFactory(), tree_only=True).get_tree() is not None
