@@ -1,12 +1,33 @@
 import logging
 
 import numpy as np
-from rdkit.Chem import MolToSmiles
 from rdkit.Chem.rdchem import ChiralType
 from rdkit.Chem.rdmolops import AddHs, RemoveHs
 
 from glyles.glycans.utils import Enantiomer, ketoses2
 from glyles.grammar.GlycanLexer import GlycanLexer
+
+
+functional_groups = {
+    "": "",
+    "F": "F",
+    "I": "I",
+    "N": "N",
+    "S": "S(=O)(=O)(O)",
+    "P": "P(=O)(O)(O)",
+    "Ac": "C(C)(=O)",
+    "Cl": "Cl",
+    "Bn": "c2ccccc2",
+    "Br": "Br",
+    "Bz": "C(=O)c2ccccc2",
+    "Gc": "C(=O)CO",
+    "Me": "C",
+    "Ph": "c2ccccc2",
+    "Tf": "S(=O)(=O)C(F)(F)F",
+    "Tr": "C(c2ccccc2)(c3ccccc3)c4ccccc4",
+    "Ts": "S(=O)(=O)c2ccc(C)cc2",
+    "Ala": "C(=O)[C@@H](C)N",
+}
 
 
 def not_implemented_message(mod):
@@ -52,168 +73,42 @@ class SMILESReaktor:
         for n, t in zip(names, types):
             if t != GlycanLexer.MOD or n.count("L") + n.count("D") == len(n):
                 continue
-            if len(n) == 1:
-                if n == "A":
-                    self.side_chains[-1] = "(=O)O"
-                elif n == "N":
-                    self.side_chains[1 if self.monomer.get_name() in ['Fru', 'Tag', 'Sor', 'Psi'] else 2] = "N"
+            if n == "A":
+                self.side_chains[-1] = "(=O)O"
+            elif n == "N":
+                self.side_chains[1 if self.monomer.get_name() in ['Fru', 'Tag', 'Sor', 'Psi'] else 2] = "N"
+            elif n == "D-":
+                self.to_enantiomer(Enantiomer.D)
+            elif n == "L-":
+                self.to_enantiomer(Enantiomer.L)
+            elif n == "Ac" and self.monomer.get_name() == "Neu":
+                self.side_chains[5] = "NC(C)(=O)"
+            elif n == "Gc" and self.monomer.get_name() == "Neu":
+                self.side_chains[5] = "NC(=O)CO"
+            elif n[0].isdigit():
+                if n[1:] == "d":
+                    self.side_chains[int(n[0])] = "H"
+                elif n[1:] == "e":  # change chirality at a single chiral carbon atom
+                    idx = int(np.where(self.monomer.x[:, 1] == int(n[0]))[0])
+                    tag = opposite_chirality(self.monomer.structure.GetAtomWithIdx(idx).GetChiralTag())
+                    self.monomer.structure.GetAtomWithIdx(idx).SetChiralTag(tag)
+                elif n[1:4] == "-O-":
+                    full &= self.set_fg(int(n[0]), "O", n[4:-1])
+                elif n[1] in "ON":
+                    full &= self.set_fg(int(n[0]), n[1], n[2:])
                 else:
-                    not_implemented_message(n)
-                    full = False
-            elif len(n) == 2:
-                if n[0].isdigit():
-                    if n[1] == "d":
-                        self.side_chains[int(n[0])] = "H"
-                    elif n[1] == "e":  # change chirality at a single chiral carbon atom
-                        idx = int(np.where(self.monomer.x[:, 1] == int(n[0]))[0])
-                        tag = opposite_chirality(self.monomer.structure.GetAtomWithIdx(idx).GetChiralTag())
-                        self.monomer.structure.GetAtomWithIdx(idx).SetChiralTag(tag)
-                    elif n[1] == "F":
-                        self.side_chains[int(n[0])] = "F"
-                    elif n[1] == "I":
-                        self.side_chains[int(n[0])] = "I"
-                    elif n[1] == "N":  # add a nitrogen atom to a certain position (TBT with O)
-                        self.side_chains[int(n[0])] = "N"
-                    elif n[1] == "P":  # add a phosphate atom to a certain position (TBT with O)
-                        self.side_chains[int(n[0])] = "OP(=O)(O)(O)"
-                    elif n[1] == "S":  # add a sulfur atom to a certain position (TBT with O)
-                        self.side_chains[int(n[0])] = "OS(=O)(=O)(O)"
-                    else:
-                        not_implemented_message(n)
-                        full = False
-                elif n[0] in "ON":
-                    if n[1] == "F":  # add a nitrogen atom to a certain position (TBT with O)
-                        self.side_chains[self.ring_c + 1] = n[0] + "F"
-                    if n[1] == "I":  # add a nitrogen atom to a certain position (TBT with O)
-                        self.side_chains[self.ring_c + 1] = n[0] + "I"
-                    if n[1] == "N":  # add a nitrogen atom to a certain position (TBT with O)
-                        self.side_chains[self.ring_c + 1] = n[0] + "N"
-                    elif n[1] == "S":  # add a sulfur atom to a certain position (TBT with O)
-                        self.side_chains[self.ring_c + 1] = n[0] + "S(=O)(=O)(O)"
-                    elif n[1] == "P":  # add a phosphate atom to a certain position (TBT with O)
-                        self.side_chains[self.ring_c + 1] = n[0] + "P(=O)(O)(O)"
-                    else:
-                        not_implemented_message(n)
-                        full = False
-                elif n == "D-":
-                    self.to_enantiomer(Enantiomer.D)
-                elif n == "L-":
-                    self.to_enantiomer(Enantiomer.L)
-                elif n == "Ac" and self.monomer.get_name() == "Neu":
-                    self.side_chains[5] = "NC(C)(=O)"
-                elif n == "Gc" and self.monomer.get_name() == "Neu":
-                    self.side_chains[5] = "NC(=O)CO"
-                else:
-                    not_implemented_message(n)
-                    full = False
-            elif len(n) == 3:
-                if n[0].isdigit():
-                    if n[1:] == "Me":
-                        self.side_chains[int(n[0])] = "OC"
-                    elif n[1:] == "Ac":
+                    if n[1:] in ["Ac", "Ala", "Bz", "Bn", "Gc", "Me", "Tf", "Ts"]:
                         elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol()
-                        self.side_chains[int(n[0])] = elem + "C(C)(=O)"
-                    elif n[1:] == "Cl":
-                        self.side_chains[int(n[0])] = "Cl"
-                    elif n[1:] == "Bn":
-                        self.side_chains[int(n[0])] = "Oc2ccccc2"
-                    elif n[1:] == "Br":
-                        self.side_chains[int(n[0])] = "Br"
-                    elif n[1:] == "Bz":
-                        self.side_chains[int(n[0])] = "OC(=O)c2ccccc2"
-                    elif n[1:] == "Gc":
-                        self.side_chains[int(n[0])] = ("N" if self.monomer.get_name() == "Neu" else "O") + "C(=O)CO"
-                    elif n[1:] == "Ph":
-                        self.side_chains[int(n[0])] = "c2ccccc2"
-                    elif n[1:] == "Tf":
-                        self.side_chains[int(n[0])] = "OS(=O)(=O)C(F)(F)F"
-                    elif n[1:] == "Tr":
-                        self.side_chains[int(n[0])] = "C(c2ccccc2)(c3ccccc3)c4ccccc4"
-                    elif n[1:] == "Ts":
-                        self.side_chains[int(n[0])] = "OS(=O)(=O)c2ccc(C)cc2"
+                        full &= self.set_fg(int(n[0]), elem, n[1:])
+                    elif n[1:] in ["P", "S"]:
+                        full &= self.set_fg(int(n[0]), "O", n[1:])
                     else:
-                        not_implemented_message(n)
-                        full = False
-                elif n[0] in "ON":
-                    if n[1:] == "Ac":
-                        self.side_chains[self.ring_c + 1] = n[0] + "C(C)(=O)"
-                    elif n[1:] == "Cl":
-                        self.side_chains[self.ring_c + 1] = n[0] + "Cl"
-                    elif n[1:] == "Bn":
-                        self.side_chains[self.ring_c + 1] = n[0] + "c2ccccc2"
-                    elif n[1:] == "Br":
-                        self.side_chains[self.ring_c + 1] = n[0] + "Br"
-                    elif n[1:] == "Bz":
-                        self.side_chains[self.ring_c + 1] = n[0] + "C(=O)c2ccccc2"
-                    elif n[1:] == "Gc":
-                        self.side_chains[self.ring_c + 1] = n[0] + "C(=O)CO"
-                    elif n[1:] == "Me":
-                        self.side_chains[self.ring_c + 1] = n[0] + "C"
-                    elif n[1:] == "Ph":
-                        self.side_chains[self.ring_c + 1] = n[0] + "c2ccccc2"
-                    elif n[1:] == "Tf":
-                        self.side_chains[self.ring_c + 1] = n[0] + "S(=O)(=O)C(F)(F)F"
-                    elif n[1:] == "Tr":
-                        self.side_chains[self.ring_c + 1] = n[0] + "C(c2ccccc2)(c3ccccc3)c4ccccc4"
-                    elif n[1:] == "Ts":
-                        self.side_chains[self.ring_c + 1] = n[0] + "S(=O)(=O)c2ccc(C)cc2"
-                    else:
-                        not_implemented_message(n)
-                        full = False
+                        full &= self.set_fg(int(n[0]), "", n[1:])
+            elif n[0] in "NO":
+                if n[1:] == "Me":
+                    full &= self.set_fg(self.ring_c, n[0], n[1:])
                 else:
-                    not_implemented_message(n)
-                    full = False
-            elif len(n) == 4:
-                if n[0].isdigit():
-                    if n[1:] == "NAc":
-                        self.side_chains[int(n[0])] = "NC(C)(=O)"
-                    elif n[1:] == "Ala":
-                        elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol()
-                        self.side_chains[int(n[0])] = elem + "C(=O)[C@@H](C)N"
-                    else:
-                        not_implemented_message(n)
-                        full = False
-                    if n[1] in "ON":
-                        if n[2:] == "Me":
-                            self.side_chains[int(n[0])] = n[1] + "C"
-                        elif n[2:] == "Ac":
-                            self.side_chains[int(n[0])] = n[1] + "C(C)(=O)"
-                        elif n[2:] == "Cl":
-                            self.side_chains[int(n[0])] = n[1] + "Cl"
-                        elif n[2:] == "Bn":
-                            self.side_chains[int(n[0])] = n[1] + "c2ccccc2"
-                        elif n[2:] == "Br":
-                            self.side_chains[int(n[0])] = n[1] + "Br"
-                        elif n[2:] == "Bz":
-                            self.side_chains[int(n[0])] = n[1] + "C(=O)c2ccccc2"
-                        elif n[2:] == "Gc":
-                            self.side_chains[int(n[0])] = n[1] + "C(=O)CO"
-                        elif n[2:] == "Ph":
-                            self.side_chains[int(n[0])] = n[1] + "c2ccccc2"
-                        elif n[2:] == "Tf":
-                            self.side_chains[int(n[0])] = n[1] + "S(=O)(=O)C(F)(F)F"
-                        elif n[2:] == "Tr":
-                            self.side_chains[int(n[0])] = n[1] + "C(c2ccccc2)(c3ccccc3)c4ccccc4"
-                        elif n[2:] == "Ts":
-                            self.side_chains[int(n[0])] = n[1] + "S(=O)(=O)c2ccc(C)cc2"
-                        else:
-                            not_implemented_message(n)
-                            full = False
-            elif len(n) == 6:
-                if n[-2] == "P":
-                    self.side_chains[int(n[0])] = "OP(=O)(O)O"
-                else:
-                    not_implemented_message(n)
-                    full = False
-            elif len(n) == 7:
-                if n[-3:] == "Me-":
-                    self.side_chains[int(n[0])] = "OC"
-                elif n[-3:] == "Ac-":
-                    elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol()
-                    self.side_chains[int(n[0])] = elem + "C(C)(=O)"
-                else:
-                    not_implemented_message(n)
-                    full = False
+                    full &= self.set_fg(self.ring_c + 1, n[0], n[1:])
             else:
                 not_implemented_message(n)
                 full = False
@@ -221,6 +116,14 @@ class SMILESReaktor:
         self.assemble_chains()
 
         return self.monomer, full
+
+    def set_fg(self, pos, bond_elem, name):
+        if name in functional_groups:
+            self.side_chains[pos] = bond_elem + functional_groups[name]
+            return True
+        else:
+            not_implemented_message(name)
+            return False
 
     def check_for_resizing(self, names, types):
         sac_index = types.index(GlycanLexer.SAC)
@@ -267,7 +170,7 @@ class SMILESReaktor:
             if chain:
                 try:
                     idx = self.monomer.find_oxygen(i)
-                    if chain == "H":  # Account for desoxygenation
+                    if chain == "H":  # account for desoxygenation
                         self.monomer.structure.GetAtomWithIdx(idx).SetAtomicNum(1)
                     else:
                         self.monomer.structure.GetAtomWithIdx(idx).SetAtomicNum(placeholder[i][0])
@@ -286,7 +189,6 @@ class SMILESReaktor:
                     if chain[0] == "O":
                         self.side_chains[i] = self.side_chains[i][1:]
         smiles = self.monomer.to_smiles(int(np.where(self.monomer.x[:, 1] == 10)[0]), 0)
-        smiles = smiles
         for i, chain in enumerate(self.side_chains):
             if chain:
                 smiles = smiles.replace(placeholder[i][1], "" if chain == "H" else chain)
