@@ -207,6 +207,14 @@ class PyranoseFactory:
         "B_RIB": {"name": "Rib", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "O[C@@H]1CO[C@@H](O)[C@H](O)[C@@H]1O"},
 
+        # ketooctonic acid
+        "KO": {"name": "Ko", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+               "smiles": "O=C(O)C1(O)O[C@H]([C@H](O)CO)[C@H](O)[C@H](O)[C@@H]1O"},
+        "A_KO": {"name": "Ko", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+                 "smiles": "O=C(O)[C@]1(O)O[C@H]([C@H](O)CO)[C@H](O)[C@H](O)[C@@H]1O"},
+        "B_KO": {"name": "Ko", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+                 "smiles": "O=C(O)[C@@]1(O)O[C@H]([C@H](O)CO)[C@H](O)[C@H](O)[C@@H]1O"},
+
         # Keto-Deoxy-Nonulonic acid
         "KDN": {"name": "Kdn", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                 "smiles": "C1[C@@H]([C@H]([C@@H](OC1(C(=O)O)O)[C@@H]([C@@H](CO)O)O)O)O"},

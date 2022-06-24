@@ -1,0 +1,16 @@
+Leg5Ac7Ala b	C[C@H]([C@H]([C@H]1[C@@H]([C@H](C[C@](O1)(C(=O)O)O)O)NC(=O)C)NC(=O)[C@@H](C)N)O
+Fruf1Ala	C[C@@H](C(=O)O)NCC1([C@H]([C@@H]([C@H](O1)CO)O)O)O
+
+Gal6Cho b	C[N+](C)(C)CCOP(=O)(O)OC[C@@H]1[C@@H]([C@@H]([C@H]([C@@H](O1)O)O)O)O
+Man1Cho a	C[N+](C)(C)CC(COP(=O)(O)O[C@@H]1[C@H]([C@H]([C@@H]([C@H](O1)CO)O)O)O)O
+Glc1Cho a	C[N+](C)(C)CC(COP(=O)(O)O[C@@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O)O)O)O
+
+HexfLys	C(CCNCC1(C(C(C(O1)CO)O)O)O)CC(C(=O)O)N
+Hexf1Lys	C(CCNCC1(C(C(C(O1)CO)O)O)O)CC(C(=O)O)N
+
+FrufThr	CC([C@@H](C(=O)O)NCC1([C@H]([C@@H]([C@H](O1)CO)O)O)O)O
+Fruf2Thr	C[C@H]([C@@H](C(=O)O)NC1([C@H]([C@@H]([C@H](O1)CO)O)O)CO)O
+ManThr	C[C@H]([C@@H](C(=O)O)NC1[C@H]([C@H]([C@@H]([C@H](O1)CO)O)O)O)O
+
+GlcCys b	C([C@@H]1[C@H]([C@@H]([C@H]([C@@H](O1)SC[C@@H](C(=O)O)N)O)O)O)O
+GalCys	C([C@@H]1[C@@H]([C@@H]([C@H](C(O1)N[C@@H](CS)C(=O)O)O)O)O)O

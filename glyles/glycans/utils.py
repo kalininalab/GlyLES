@@ -52,9 +52,9 @@ class ParseError(ValueError):
 
 
 ketoses2 = {
-    ("Kde", Lactole.PYRANOSE), ("Neu", Lactole.PYRANOSE), ("Pse", Lactole.PYRANOSE), ("Leg", Lactole.PYRANOSE),
-    ("Aci", Lactole.PYRANOSE), ("Kdo", Lactole.PYRANOSE), ("Dha", Lactole.PYRANOSE), ("Fru", Lactole.PYRANOSE),
-    ("Sor", Lactole.PYRANOSE), ("Tag", Lactole.PYRANOSE), ("Psi", Lactole.PYRANOSE),
+    ("Ko", Lactole.PYRANOSE), ("Kde", Lactole.PYRANOSE), ("Neu", Lactole.PYRANOSE), ("Pse", Lactole.PYRANOSE),
+    ("Leg", Lactole.PYRANOSE), ("Aci", Lactole.PYRANOSE), ("Kdo", Lactole.PYRANOSE), ("Dha", Lactole.PYRANOSE),
+    ("Fru", Lactole.PYRANOSE), ("Sor", Lactole.PYRANOSE), ("Tag", Lactole.PYRANOSE), ("Psi", Lactole.PYRANOSE),
 }
 
 

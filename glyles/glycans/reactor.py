@@ -20,13 +20,25 @@ functional_groups = {
     "Bn": "c2ccccc2",
     "Br": "Br",
     "Bz": "C(=O)c2ccccc2",
+    "Et": "CC",
     "Gc": "C(=O)CO",
     "Me": "C",
     "Ph": "c2ccccc2",
     "Tf": "S(=O)(=O)C(F)(F)F",
     "Tr": "C(c2ccccc2)(c3ccccc3)c4ccccc4",
     "Ts": "S(=O)(=O)c2ccc(C)cc2",
-    "Ala": "C(=O)[C@@H](C)N",
+    # "Ala": "C(=O)[C@@H](C)N",
+    "Asp": "N[C@@H](CC(=O)O)C(=O)O",
+    "But": "CCCC",
+    # "Cho": "P(=O)(O)OCC[N+](C)(C)C",
+    "Cys": "N[C@@H](CS)C(=O)O",
+    "Gly": "OCC(O)CO",
+    "Lys": "NCCCC[C@H](N)C(=O)O",
+    "Mal": "C(C(=O)O)CC(=O)O",
+    "Ole": "OC(=O)CCCCCCC/C=C\CCCCCCCC",
+    "Pro": "N1CCCC1C(=O)O",
+    "Thr": "N[C@H](C(=O)O)[C@@H](O)C",
+    "Prop": "CCC",
 }
 
 
@@ -71,7 +83,7 @@ class SMILESReaktor:
 
         # parse remaining modifications
         for n, t in zip(names, types):
-            if t != GlycanLexer.MOD or n.count("L") + n.count("D") == len(n):
+            if t != GlycanLexer.MOD or n.count("L") + n.count("D") == len(n) or n == '-':
                 continue
             if n == "A":
                 self.side_chains[-1] = "(=O)O"
@@ -97,21 +109,24 @@ class SMILESReaktor:
                 elif n[1] in "ON":
                     full &= self.set_fg(int(n[0]), n[1], n[2:])
                 else:
-                    if n[1:] in ["Ac", "Ala", "Bz", "Bn", "Gc", "Me", "Tf", "Ts"]:
+                    if n[1:] in ["Ac", "Ala", "Bz", "Bn", "But", "Cho", "Et", "Gc", "Me", "Prop", "Tf", "Ts"]:
                         elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol()
                         full &= self.set_fg(int(n[0]), elem, n[1:])
                     elif n[1:] in ["P", "S"]:
                         full &= self.set_fg(int(n[0]), "O", n[1:])
                     else:
                         full &= self.set_fg(int(n[0]), "", n[1:])
-            elif n[0] in "NO":
+            elif n[0] in "NO" and n not in ["Ole"]:
                 if n[1:] == "Me":
                     full &= self.set_fg(self.ring_c, n[0], n[1:])
                 else:
                     full &= self.set_fg(self.ring_c + 1, n[0], n[1:])
             else:
-                not_implemented_message(n)
-                full = False
+                if n in ["But", "Et", "Prop"]:
+                    elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(self.ring_c)).GetSymbol()
+                else:
+                    elem = ""
+                full &= self.set_fg(self.ring_c, elem, n)
 
         self.assemble_chains()
 

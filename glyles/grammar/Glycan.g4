@@ -30,7 +30,7 @@ MOD:
     | (NUM | 'O' | 'NH' | 'N' | 'C') FG
     | NUM ('d' | 'e') | NUM ',' NUM 'd'
     | '-ulosaric' | '-ulosonic' | '-uronic' | '-onic' | '-aric' | '-ol'
-    | '0d' | 'D-' | 'L-' | FG;
+    | '0d' | 'D-' | 'L-' | FG | '-';
 FG:
     COUNT | 'Coum' | 'Prop'
     | 'Ach' | 'Aep' | 'Ala' | 'Asp' | 'Beh' | 'But' | 'Cho' | 'Cer' | 'Cet' | 'Cin' | 'Cys' | 'Dco' | 'Dhp' | 'Etg'
