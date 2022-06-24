@@ -155,6 +155,3 @@ class TestSMILES:
 
         smiles = glycan.get_smiles()
         assert smiles != ""
-
-    def test_thre(self):
-        assert Glycan("Thref b", MonomerFactory())

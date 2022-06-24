@@ -34,9 +34,9 @@ MOD:
 FG:
     COUNT | 'Coum' | 'Prop'
     | 'Ach' | 'Aep' | 'Ala' | 'Asp' | 'Beh' | 'But' | 'Cho' | 'Cer' | 'Cet' | 'Cin' | 'Cys' | 'Dco' | 'Dhp' | 'Etg'
-    | 'Etn' | 'Fer' | 'Gro' | 'Glu' | 'Gly' | 'Hse' | 'Hxo' | 'Lac' | 'Lau' | 'Leu' | 'Lin' | 'Lys' | 'Mal' | 'Mar'
-    | 'Myr' | 'Non' | 'Oco' | 'Ole' | 'Orn' | 'Pam' | 'Pro' | 'Pyr' | 'Ser' | 'Sin' | 'Ste' | 'Thr' | 'Vac' | 'Ulo'
-    | 'ulo'
+    | 'Etn' | 'Fer' | 'Gra' | 'Gro' | 'Glu' | 'Gly' | 'Hse' | 'Hxo' | 'Lac' | 'Lau' | 'Leu' | 'Lin' | 'Lys' | 'Mal'
+    | 'Mar' | 'Myr' | 'Non' | 'Oco' | 'Ole' | 'Orn' | 'Pam' | 'Pro' | 'Pyr' | 'Ser' | 'Sin' | 'Ste' | 'Thr' | 'Vac'
+    | 'Ulo' | 'ulo'
     | 'Ac' | 'Am' | 'Bn' | 'Br' | 'Bz' | 'Cl' | 'Cm' | 'DD' | 'DL' | 'DL-' | 'Et' | 'Fo' | 'Gc' | 'LD' | 'LL' | 'Me'
     | 'Oc' | 'Ph' | 'Pp' | 'Tf' | 'Tr' | 'Ts' | 'Vl' | 'en'
     | 'A' | 'N' | 'F' | 'I' | 'S' | 'P';
