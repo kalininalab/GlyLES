@@ -32,27 +32,34 @@ MOD:
     | '-ulosaric' | '-ulosonic' | '-uronic' | '-onic' | '-aric' | '-ol'
     | '0d' | 'D-' | 'L-' | FG | '-';
 FG:
-    COUNT | 'Coum' | 'Prop'
-    | 'Ach' | 'Aep' | 'Ala' | 'Asp' | 'Beh' | 'But' | 'Cho' | 'Cer' | 'Cet' | 'Cin' | 'Cys' | 'Dco' | 'Dhp' | 'Etg'
-    | 'Etn' | 'Fer' | 'Gra' | 'Gro' | 'Glu' | 'Gly' | 'Hse' | 'Hxo' | 'Lac' | 'Lau' | 'Leu' | 'Lin' | 'Lys' | 'Mal'
-    | 'Mar' | 'Myr' | 'Non' | 'Oco' | 'Ole' | 'Orn' | 'Pam' | 'Pro' | 'Pyr' | 'Ser' | 'Sin' | 'Ste' | 'Thr' | 'Vac'
-    | 'Ulo' | 'ulo'
-    | 'Ac' | 'Am' | 'Bn' | 'Br' | 'Bz' | 'Cl' | 'Cm' | 'DD' | 'DL' | 'DL-' | 'Et' | 'Fo' | 'Gc' | 'LD' | 'LL' | 'Me'
-    | 'Oc' | 'Ph' | 'Pp' | 'Tf' | 'Tr' | 'Ts' | 'Vl' | 'en'
+    COUNT | CARB | '3oxoMyr' |
+    'Allyl'| 'aLnn' | 'gLnn' | 'eSte' | 'Ceroplastic' | 'Coum' | 'Geddic' | 'Lacceroic' | 'Prop' | 'Psyllic'
+    | 'Ach' | 'Aep' | 'Ala' | 'Ang' | 'Asp' | 'Beh' | 'But' | 'Cct' | 'Cer' | 'Cet' | 'Cho' | 'Cin' | 'Crt' | 'Cys'
+    | 'Dce' | 'Dco' | 'Dec' | 'Dhp' | 'Dod' | 'Etg' | 'EtN' | 'Etn' | 'Fer' | 'Gra' | 'Gro' | 'Glu' | 'Gly' | 'Hpo'
+    | 'Hse' | 'Hxo' | 'Lac' | 'Lau' | 'Leu' | 'Lin' | 'Lys' | 'Mal' | 'Mar' | 'Mel' | 'Mon' | 'Myr' | 'Nno' | 'Non'
+    | 'Oco' | 'Ole' | 'Orn' | 'Pam' | 'Pro' | 'Pyr' | 'Ser' | 'Sin' | 'Ste' | 'tBu' | 'Thr' | 'Tig' | 'Und' | 'Vac'
+    | 'Udo' | 'Ulo' | 'ulo'
+    | 'Ac' | 'Am' | 'Bn' | 'Br' | 'Bu' | 'Bz' | 'Cl' | 'Cm' | 'DD' | 'DL' | 'DL-' | 'Et' | 'Fo' | 'Gc' | 'Hp' | 'Hx'
+    | 'LD' | 'LL' | 'Me' | 'Nn' | 'Oc' | 'Pe' | 'Ph' | 'Pr' | 'Pp' | 'Tf' | 'Tr' | 'Ts' | 'Vl' | 'en'
     | 'A' | 'N' | 'F' | 'I' | 'S' | 'P';
+CARB:
+    'C' NUM ('=' '{' CT* NUM (',' CT* NUM) '}')*;
 COUNT:
     'Hep' | 'Hex' | 'Oct' | 'Pen' | 'Suc';
 CON:
-    '(' TYPE NUM '-' NUM ')'
-    | '(' NUM '-' NUM ')'
-    | TYPE NUM '-' NUM
-    | TYPE NUM;
-    // | '(' 'z' NUM '-' 'z' ')' | 'z' NUM '-' 'z' | 'z' NUM;
+    '(' TYPE NUM '-' (NUM | 'z') ')'
+    | '(' NUM '-' (NUM | 'z') ')'
+    | TYPE NUM '-' (NUM | 'z')
+    | TYPE (NUM | 'z');
 TYPE:
     'a' | 'b' | 'z';
+CT:
+    'c' | 't';
 RING:
     'p' | 'f';
 NUM:
-    '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12' | '13' | 'z';  // [1-9] ??
+    ('1'..'9') DIGIT*;
+DIGIT:
+    ('0'..'9');
 
 // antlr -DLanguage=Python3 Glycan.g4

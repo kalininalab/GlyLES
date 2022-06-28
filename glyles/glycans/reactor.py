@@ -16,30 +16,103 @@ functional_groups = {
     "S": "S(=O)(=O)(O)",
     "P": "P(=O)(O)(O)",
     "Ac": "C(C)(=O)",
+    "Am": "C(C)(=N)",
     "Cl": "Cl",
-    "Bn": "c2ccccc2",
+    "Bn": "OCc2ccccc2",
     "Br": "Br",
     "Bz": "C(=O)c2ccccc2",
-    "Et": "CC",
+    "Fo": "OC=O",
     "Gc": "C(=O)CO",
-    "Me": "C",
     "Ph": "c2ccccc2",
-    "Tf": "S(=O)(=O)C(F)(F)F",
+    "Pp": "OC(=O)CC",
+    "Tf": "OS(=O)(=O)C(F)(F)F",
     "Tr": "C(c2ccccc2)(c3ccccc3)c4ccccc4",
-    "Ts": "S(=O)(=O)c2ccc(C)cc2",
-    # "Ala": "C(=O)[C@@H](C)N",
+    "Ts": "OS(=O)(=O)c2ccc(C)cc2",
+    "Ang": "OC(=O)C/(C)=C\C",
     "Asp": "N[C@@H](CC(=O)O)C(=O)O",
-    "But": "CCCC",
-    # "Cho": "P(=O)(O)OCC[N+](C)(C)C",
+    "Beh": "OC(=O)" + "C" * 21,
+    "Cho": "OCC[N+](C)(C)C",
     "Cys": "N[C@@H](CS)C(=O)O",
     "Gly": "OCC(O)CO",
     "Lys": "NCCCC[C@H](N)C(=O)O",
     "Mal": "C(C(=O)O)CC(=O)O",
     "Ole": "OC(=O)CCCCCCC/C=C\CCCCCCCC",
     "Pro": "N1CCCC1C(=O)O",
+    "Tig": "OC(=O)C/(C)=C/C",
     "Thr": "N[C@H](C(=O)O)[C@@H](O)C",
-    "Prop": "CCC",
+    "Dce": "OC(=O)CCCCCCCC=C",
+    "3oxoMyr": "OC(=O)CC(=O)CCCCCCCCCCC",
+    "dPam": "OC(=O)CCCCCCCC=CCCCCCC",
+    "cdPam": "OC(=O)CCCCCCC/C=C\CCCCCC",
+    "tdPam": "OC(=O)CCCCCCC/C=C/CCCCCC",
+    "Vac": "OC(=O)CCCCCCCCCC=CCCCCCC",
+    "Lin": "OC(=O)CCCCCCC/C=C\C/C=C\CCCCC",
+    "cVac": "OC(=O)CCCCCCCCC/C=C\CCCCCC",
+    "17HOLin": "OC(=O)CCCCCCC/C=C\C/C=C\CCCC(O)C",
+    "aLnn": "OC(=O)CCCCCCCC=CCC=CCC=CCC",
+    "gLnn": "OC(=O)CCCCC=CCC=CCC=CCCCCC",
+    "eSte": "OC(=O)CCCCCCCC=CC=CC=CCCCC",
+    "d2Ach": "OC(=O)CCCCCCC=CCC=CCCCCCCCC",
+    "d3Ach": "OC(=O)CCCC=CCC=CCC=CCCCCCCCC",
+    "d4Ach": "OC(=O)CCCC=CCC=CCC=CCC=CCCCCC",
+    "NFo": "NC=O",
+    "Phyt": "OCCC(C)CCCC(C)CCCC(C)CCCC(C)C",
+    "Allyl": "CC=C",
+    "PhNO2": "Oc1ccc([N+]([O-])=O)cc1",
+    "tBu": "OC(C)(C)C",
+    "But": "OC(=O)" + "C" * 2,
+    "Vl": "OC(=O)" + "C" * 4,
+    "Hxo": "OC(=O)" + "C" * 5,
+    "Hpo": "OC(=O)" + "C" * 6,
+    "Oco": "OC(=O)" + "C" * 7,
+    "Nno": "OC(=O)" + "C" * 8,
+    "Non": "OC(=O)" + "C" * 8,
+    "Dco": "OC(=O)" + "C" * 9,
+    "Udo": "OC(=O)" + "C" * 10,
+    "Lau": "OC(=O)" + "C" * 11,
+    "Myr": "OC(=O)" + "C" * 13,
+    "Pam": "OC(=O)" + "C" * 15,
+    "Mar": "OC(=O)" + "C" * 16,
+    "Ste": "OC(=O)" + "C" * 17,
+    "Ach": "OC(=O)" + "C" * 19,
+    "Lig": "OC(=O)" + "C" * 23,
+    "Crt": "OC(=O)" + "C" * 25,
+    "Ccr": "OC(=O)" + "C" * 26,
+    "Mon": "OC(=O)" + "C" * 27,
+    "Mel": "OC(=O)" + "C" * 28,
+    "Lacceroic": "OC(=O)" + "C" * 31,
+    "Psyllic": "OC(=O)" + "C" * 32,
+    "Geddic": "OC(=O)" + "C" * 33,
+    "Ceroplastic": "OC(=O)" + "C" * 35,
+    "Me": "O" + "C" * 1,
+    "Et": "O" + "C" * 2,
+    "Pr": "O" + "C" * 3,
+    "Bu": "O" + "C" * 4,
+    "Pe": "O" + "C" * 5,
+    "Hx": "O" + "C" * 6,
+    "Hp": "O" + "C" * 7,
+    "Oc": "O" + "C" * 8,
+    "Nn": "O" + "C" * 9,
+    "Dec": "O" + "C" * 10,
+    "Und": "O" + "C" * 11,
+    "Dod": "O" + "C" * 12,
+    "Fer": "OC(=O)/C=C/c1ccc(O)c(OC)c1",
+    "Etg": "OCCO",
+    "Cin": "OC(=O)/C=C/c1ccccc1",
+    "Cm": "NC=O",
+    "Etn": "OCCN",
+    "EtN": "OCCN",
+    "Glu": "OC(=O)CC[C@H](N)C(=O)O",
+    "Hse": "OCCC(N)C(=O)O",
+    "Orn": "NCCC[C@H](N)C(=O)O",
+    "Pyr": "OC(=O)C(=O)C",
+    "Ser": "OC[C@H](N)C(=O)O",
+    "Sin": "OC(=O)/C=C/c1cc(OC)c(O)c(OC)c1",
 }
+
+preserve_elem = [
+    "Ac", "Allyl", "Am", "Bz", "Gc", "P", "S"
+]
 
 
 def not_implemented_message(mod):
@@ -108,24 +181,22 @@ class SMILESReaktor:
                     full &= self.set_fg(int(n[0]), "O", n[4:-1])
                 elif n[1] in "ON":
                     full &= self.set_fg(int(n[0]), n[1], n[2:])
+                elif n[0] == "C" and ("=" in n or n[1:].isdigit()):
+                    self.set_fg(self.ring_c, "O", self.parse_poly_carbon(n))
                 else:
-                    if n[1:] in ["Ac", "Ala", "Bz", "Bn", "But", "Cho", "Et", "Gc", "Me", "Prop", "Tf", "Ts"]:
-                        elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol()
-                        full &= self.set_fg(int(n[0]), elem, n[1:])
-                    elif n[1:] in ["P", "S"]:
-                        full &= self.set_fg(int(n[0]), "O", n[1:])
-                    else:
-                        full &= self.set_fg(int(n[0]), "", n[1:])
+                    elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol() \
+                        if n[1:] in preserve_elem else ""
+                    full &= self.set_fg(int(n[0]), elem, n[1:])
             elif n[0] in "NO" and n not in ["Ole"]:
                 if n[1:] == "Me":
                     full &= self.set_fg(self.ring_c, n[0], n[1:])
                 else:
                     full &= self.set_fg(self.ring_c + 1, n[0], n[1:])
+            elif n[0] == "C" and ("=" in n or n[1:].isdigit()):
+                self.set_fg(self.ring_c, "O", self.parse_poly_carbon(n))
             else:
-                if n in ["But", "Et", "Prop"]:
-                    elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(self.ring_c)).GetSymbol()
-                else:
-                    elem = ""
+                elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol() \
+                    if n[1:] in preserve_elem else ""
                 full &= self.set_fg(self.ring_c, elem, n)
 
         self.assemble_chains()
@@ -223,3 +294,5 @@ class SMILESReaktor:
             elif self.monomer.structure.GetAtomWithIdx(idx).GetChiralTag() == ChiralType.CHI_TETRAHEDRAL_CW:
                 self.monomer.structure.GetAtomWithIdx(idx).SetChiralTag(ChiralType.CHI_TETRAHEDRAL_CCW)
 
+    def parse_poly_carbon(self, name):
+        pass

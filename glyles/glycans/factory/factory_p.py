@@ -336,6 +336,17 @@ class PyranoseFactory:
                   "smiles": "OC[C@@]1(O)OC[C@@H](O)[C@@H](O)[C@H]1O"},
 
         # Erythrose
+        # Ribulose
+        # Xylulose
+        # Aceric acid
+
+        # Ascarylose
+        "ASC": {"name": "Asc", "config": Config.UNDEF, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                "smiles": "C[C@@H]1OC(O)[C@H](O)C[C@H]1O"},
+        "A_ASC": {"name": "Asc", "config": Config.ALPHA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                  "smiles": "C[C@@H]1O[C@@H](O)[C@H](O)C[C@H]1O"},
+        "B_ASC": {"name": "Asc", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                  "smiles": "C[C@@H]1O[C@H](O)[C@H](O)C[C@H]1O"},
     }
 
     def __contains__(self, item):

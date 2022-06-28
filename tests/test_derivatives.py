@@ -41,6 +41,26 @@ class TestDerivatives:
         assert Glycan(line.strip(), MonomerFactory(), tree_only=True).get_tree() is not None
 
     @pytest.mark.parametrize(
+        "line",
+        open("data/glycowork_mono.txt", "r").readlines() +
+        open("data/glycowork_poly.txt", "r").readlines() +
+        open("data/general.tsv", "r").readlines() +
+        open("data/pubchem_mono.tsv", "r").readlines() +
+        open("data/pubchem_poly.tsv", "r").readlines(),
+    )
+    def test_glycowork_convert(self, line):
+        if "(z" in line \
+                or '-z' in line \
+                or '-ulosaric' in line \
+                or '-ulosonic' in line \
+                or '-uronic' in line \
+                or '-onic' in line \
+                or '-aric' in line \
+                or '-ol':
+            return
+        assert Glycan(line.strip(), MonomerFactory()).get_smiles() != ""
+
+    @pytest.mark.parametrize(
         "line", open("data/pubchem_mono.tsv", "r").readlines() + open("data/pubchem_poly.tsv", "r").readlines()
     )
     def test_pubchem(self, line):
@@ -61,4 +81,5 @@ class TestDerivatives:
         compare_smiles(output[0][1], smiles)
 
     def test_quat(self):
-        assert Glycan("Man(a1-4)[Man(a1-2)][Man(a1-3)][Man(a1-5)]Man(a1-4)Man", MonomerFactory(), tree_only=True).get_tree() is not None
+        assert Glycan("Man(a1-4)[Man(a1-2)][Man(a1-3)][Man(a1-5)]Man(a1-4)Man", MonomerFactory(),
+                      tree_only=True).get_tree() is not None

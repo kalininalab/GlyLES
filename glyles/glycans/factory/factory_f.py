@@ -234,13 +234,13 @@ class FuranoseFactory:
         "B_ERY": {"name": "Ery", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                   "smiles": "O[C@@H]1CO[C@@H](O)[C@@H]1O"},
 
-        # Erythrose
-        # "THRE": {"name": "Thre", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
-        #          "smiles": "O[C@@H]1COC(O)[C@H]1O"},
-        # "A_THRE": {"name": "Thre", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
-        #            "smiles": "O[C@@H]1CO[C@H](O)[C@H]1O"},
-        # "B_THRE": {"name": "Thre", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
-        #            "smiles": "O[C@@H]1CO[C@@H](O)[C@H]1O"},'''
+        # Threose
+        "THRE": {"name": "Thre", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                 "smiles": "OC1OC[C@@H](O)[C@@H]1O"},
+        "A_THRE": {"name": "Thre", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                   "smiles": "O[C@H]1OC[C@@H](O)[C@@H]1O"},
+        "B_THRE": {"name": "Thre", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+                   "smiles": "O[C@@H]1CO[C@@H](O)[C@H]1O"},
 
         # Ribulose
         "RUL": {"name": "Rul", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
@@ -257,6 +257,14 @@ class FuranoseFactory:
                   "smiles": "OC[C@]1(O)OC[C@@H](O)[C@@H]1O"},
         "B_XUL": {"name": "Xul", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                   "smiles": "OC[C@@]1(O)OC[C@@H](O)[C@@H]1O"},
+
+        # Aceric acid
+        "ACE": {"name": "Ace", "config": Config.UNDEF, "isomer": Enantiomer.L, "lactole": Lactole.FURANOSE,
+                "smiles": "C[C@@H]1OC(O)[C@@H](O)[C@@]1(O)C(=O)O"},
+        "A_ACE": {"name": "Ace", "config": Config.ALPHA, "isomer": Enantiomer.L, "lactole": Lactole.FURANOSE,
+                  "smiles": "C[C@@H]1O[C@@H](O)[C@@H](O)[C@@]1(O)C(=O)O"},
+        "B_ACE": {"name": "Ace", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.FURANOSE,
+                  "smiles": "C[C@@H]1O[C@H](O)[C@@H](O)[C@@]1(O)C(=O)O"},
 
     }
 
