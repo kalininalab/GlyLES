@@ -43,12 +43,13 @@ class TestDerivatives:
     @pytest.mark.parametrize(
         "line",
         open("data/glycowork_mono.txt", "r").readlines() +
-        open("data/glycowork_poly.txt", "r").readlines() +
-        open("data/general.tsv", "r").readlines() +
-        open("data/pubchem_mono.tsv", "r").readlines() +
-        open("data/pubchem_poly.tsv", "r").readlines(),
+        # open("data/glycowork_poly.txt", "r").readlines()
+        open("data/general.tsv", "r").readlines()
+        # open("data/pubchem_mono.tsv", "r").readlines()
+        # open("data/pubchem_poly.tsv", "r").readlines()
     )
-    def test_glycowork_convert(self, line):
+    def test_conversion_rate(self, line):
+        line = line.strip()
         if "(z" in line \
                 or '-z' in line \
                 or '-ulosaric' in line \
@@ -56,9 +57,19 @@ class TestDerivatives:
                 or '-uronic' in line \
                 or '-onic' in line \
                 or '-aric' in line \
-                or '-ol':
+                or '-ol' in line \
+                or 'en' in line \
+                or 'Anhydro' in line:
             return
-        assert Glycan(line.strip(), MonomerFactory()).get_smiles() != ""
+        if "\t" in line:
+            iupac, smiles = line.split("\t")[:2]
+            equal = True
+        else:
+            iupac, smiles, equal = line, "", False
+        if equal:
+            compare_smiles(Glycan(iupac, MonomerFactory()).get_smiles(), smiles)
+        else:
+            assert Glycan(iupac, MonomerFactory()).get_smiles() != smiles
 
     @pytest.mark.parametrize(
         "line", open("data/pubchem_mono.tsv", "r").readlines() + open("data/pubchem_poly.tsv", "r").readlines()

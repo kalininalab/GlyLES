@@ -347,6 +347,30 @@ class PyranoseFactory:
                   "smiles": "C[C@@H]1O[C@@H](O)[C@H](O)C[C@H]1O"},
         "B_ASC": {"name": "Asc", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
                   "smiles": "C[C@@H]1O[C@H](O)[C@H](O)C[C@H]1O"},
+
+        # Ascarylose
+        "ACO": {"name": "Aco", "config": Config.UNDEF, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                "smiles": "CO[C@@H]1[C@@H](O)[C@H](C)OC(O)[C@@H]1O"},
+        "A_ACO": {"name": "Aco", "config": Config.ALPHA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                  "smiles": "CO[C@@H]1[C@@H](O)[C@H](C)O[C@@H](O)[C@@H]1O"},
+        "B_ACO": {"name": "Aco", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                  "smiles": "CO[C@@H]1[C@@H](O)[C@H](C)O[C@H](O)[C@@H]1O"},
+
+        # Perosamine (4-Amino-4,6-dideoxy-D-mannose)
+        "PER": {"name": "Per", "config": Config.UNDEF, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                "smiles": "C[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1N"},
+        "A_PER": {"name": "Per", "config": Config.ALPHA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                  "smiles": "C[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@@H]1N"},
+        "B_PER": {"name": "Per", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                  "smiles": "C[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@@H]1N"},
+
+        # Viosamine (4-Amino-4,6-dideoxy-D-glucose)
+        "VIO": {"name": "Vio", "config": Config.UNDEF, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                "smiles": "C[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1N"},
+        "A_VIO": {"name": "Vio", "config": Config.ALPHA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                  "smiles": "C[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@@H]1N"},
+        "B_VIO": {"name": "Vio", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                  "smiles": "C[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1N"},
     }
 
     def __contains__(self, item):

@@ -442,16 +442,23 @@ class Monomer:
                 from
 
         Returns:
-            id referring to the atom binding the provided carbon atom and may participate in a glycan-binding.
+            The RDKit-ID referring to the atom binding the provided carbon atom and may participate in a glycan-binding.
+            In case the carbon is bound to neither an oxygen nor a nitrogen, the RDKit-ID of the carbon is returned.
         """
         # first find the rdkit id of the carbon atom that should bind to something
         position = np.argwhere(self.x[:, 1] == binding_c_id).squeeze()
 
+        multiple = False
         for check in [8, 7]:
             # then find the candidates. There should be exactly one element in the resulting array
             candidates = np.argwhere((self.adjacency[position, :] == 1) &
                                      (self.x[:, 0] == check) & (self.x[:, 2] != 1)).squeeze()
             if candidates.size == 1:
                 return int(candidates)
+            elif candidates.size > 0:
+                multiple = True
 
-        raise ValueError(f"Multiple (or no) options for oxygen (or other atom type) found.")
+        if not multiple:
+            return int(position)
+
+        raise ValueError(f"Multiple options for oxygen (or other atom type) found.")

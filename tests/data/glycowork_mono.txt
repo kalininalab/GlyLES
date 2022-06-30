@@ -633,7 +633,7 @@ Gal6PGro
 Gal6Pyr
 Gal6S
 Gal6S-ol
-Gal6ulo
+Gal6Ulo
 GalA
 GalA-ol
 GalA1Me
