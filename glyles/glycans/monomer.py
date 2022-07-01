@@ -251,20 +251,26 @@ class Monomer:
         self.get_structure().GetAtomWithIdx(idx).SetAtomicNum(atom)
         self.x[idx, 0] = atom
 
-    def to_smiles(self, root, ring_index):
+    def to_smiles(self, ring_index, root_idx=None, root_id=None):
         """
         Convert this monomer into a SMILES string representation.
         Use the implementation of the SMILES algorithm fitted to the needs of glycans.
 
         Args:
-            root (int): index of the root atom
             ring_index (int): index of the rings in the atom
+            root_idx (int): index of the root atom
+            root_id (int): RDKit ID of root atom
 
         Returns:
             SMILES string representation of this molecule
         """
-        smiles = MolToSmiles(self.get_structure(), rootedAtAtom=root)
-        # smiles.replace("At", "O-")
+        assert root_idx is not None or root_id is not None, "Either Index or ID has to be provided"
+        if root_id is None:
+            if np.where(self.x[:, 1] == root_idx)[0].size != 0:
+                root_id = int(np.where(self.x[:, 1] == root_idx)[0])
+            else:
+                root_id = int(np.where(self.x[:, 1] == 1)[0])
+        smiles = MolToSmiles(self.get_structure(), rootedAtAtom=root_id)
         return "".join([((f"%{int(c) + ring_index}" if int(c) + ring_index >= 10
                           else f"{int(c) + ring_index}") if c.isdigit() else c) for c in smiles])
 
@@ -319,6 +325,7 @@ class Monomer:
                     ringo = i
 
             self._enumerate_c_atoms(c_atoms, ringo)
+
         return self.structure
 
     def _equidistant(self, start, end):

@@ -266,7 +266,7 @@ class Glycan:
             """
             # get my children and compute my SMILES string
             children = [x[1] for x in t.edges(node)]
-            me = t.nodes[node]["type"].to_smiles(start, ring_index)
+            me = t.nodes[node]["type"].to_smiles(ring_index, root_id=start)
 
             # check for validity of the tree, ie if it's a leaf
             if len(children) == 0:  # leaf

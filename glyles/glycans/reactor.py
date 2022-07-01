@@ -11,6 +11,7 @@ O, C = 0, 1
 
 functional_groups = {
     "": "",
+    "Aep": "NCCP([O-])([O-])=O",
     "Ala": "N[C@@H](C)C(=O)O",
     "Am": "C(C)(=N)",
     "Asp": "N[C@@H](CC(=O)O)C(=O)O",
@@ -37,6 +38,7 @@ functional_groups = {
     "Ser": "OC[C@H](N)C(=O)O",
     "Tf": "OS(=O)(=O)C(F)(F)F",
     "Thr": "N[C@H](C(=O)O)[C@@H](O)C",
+    "Ulo": "OC(c1ccccc1)(c1ccccc1(Cl))CCN(C)C",
 
     # COH land
     "Allyl": "CC=C",
@@ -47,12 +49,14 @@ functional_groups = {
     "cdPam": "OC(=O)CCCCCCC/C=C\CCCCCC",
     "Cin": "OC(=O)/C=C/c1ccccc1",
     "Dce": "OC(=O)CCCCCCCC=C",
+    "Dhap": "OC(=O)C(O)(O)CCC",
     "Etg": "OCCO",
     "Fer": "OC(=O)/C=C/c1ccc(O)c(OC)c1",
     "Fo": "OC=O",
     "Gc": "C(=O)CO",
     "Gly": "OCC(O)CO",
     "Gro": "OCC(O)CO",
+    "Lac": "OC(=O)C(O)C",
     "Lin": "OC(=O)CCCCCCC/C=C\C/C=C\CCCCC",
     "Mal": "O[C@H](C(=O)O)CC(=O)O",
     "Ole": "OC(=O)CCCCCCC/C=C\CCCCCCCC",
@@ -125,6 +129,18 @@ preserve_elem = [
     "Ac", "Allyl", "Am", "Bz", "Gc", "P", "S"
 ]
 
+n_conflict = [
+    "Nno", "Non", "Nn"
+]
+
+o_conflict = [
+    "Oco", "Ole", "Orn", "Oc"
+]
+
+c_conflict = [
+    "Cct", "Cer", "Cet", "Cho", "Cin", "Crt", "Cys", "Cl", "Cm"
+]
+
 
 def not_implemented_message(mod):
     """
@@ -191,26 +207,26 @@ class SMILESReaktor:
                 elif len(n) > 4 and n[1] == n[3] == "-" and n[2] in "ON":  # add a functional group connected with an oxygen
                     elem = "" if functional_groups[n[4:-1]][0] == n[2] else n[2]
                     full &= self.set_fg(O, int(n[0]), elem, n[4:-1])
-                elif n[1] in "ON" and n[1:] not in ["Nno", "Non", "Ole", "Oco", "Orn"]:  # connect a functional group with N or O in between
+                elif n[1] in "ON" and n[1:] not in n_conflict + o_conflict:  # connect a functional group with N or O in between
                     elem = "" if n[2:] != "" and functional_groups[n[2:]][0] == n[1] else n[1]
                     full &= self.set_fg(O, int(n[0]), elem, n[2:])
-                elif n[1] == "C" and n[1:] not in ["Cl", "Cm", "Cct", "Cer", "Cet", "Cho", "Cin", "Crt", "Cys", "Coum"]:  # add a group connected directly to the C-Atom
+                elif n[1] == "C" and n[1:] not in c_conflict:  # add a group connected directly to the C-Atom
                     full &= self.set_fg(C, int(n[0]), "", n[2:])
                 else:
                     elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol() \
                         if n[1:] in preserve_elem else ""
                     full &= self.set_fg(O, int(n[0]), elem, n[1:])
-            elif n[0] in "NO" and n not in ["Nno", "Non", "Ole", "Oco", "Orn"]:
+            elif n[0] in "NO" and n not in n_conflict + o_conflict:
                 elem = "" if functional_groups[n[1:]][0] == n[0] else n[0]
                 if n[1:] == "Me":
                     full &= self.set_fg(O, self.ring_c, elem, n[1:])
                 else:
                     full &= self.set_fg(O, self.ring_c + 1, elem, n[1:])
-            elif n[0] == "C" not in ["Cl", "Cm", "Cct", "Cer", "Cet", "Cho", "Cin", "Crt", "Cys", "Coum"]:
+            elif n[0] == "C" and n not in c_conflict:
                 if "=" in n or n[1:].isdigit():
                     self.set_fg(O, self.ring_c, "O", self.parse_poly_carbon(n))
                 else:  # add a group connected directly to the C-Atom
-                    full &= self.set_fg(C, self.ring_c, "", n[2:])
+                    full &= self.set_fg(C, self.ring_c, "", n[1:])
             else:
                 elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol() \
                     if n[1:] in preserve_elem else ""
@@ -276,7 +292,7 @@ class SMILESReaktor:
         self.monomer.structure.GetAtomWithIdx(c_id).SetAtomicNum(32)
 
         # generate SMILES from rings oxygen and replace c6's oxygen and c6 by the extension
-        smiles = self.monomer.to_smiles(int(np.where(self.monomer.x[:, 1] == 10)[0]), 0)
+        smiles = self.monomer.to_smiles(0, root_idx=10)
         smiles = smiles.replace("[SnH]", "").replace("[GeH2]", extension).replace("[GeH]", extension).replace("()", "")
 
         # update the monomer
@@ -318,7 +334,7 @@ class SMILESReaktor:
                     self.add_to_oxygen(chain, idx, placeholder[i][0])
                 else:
                     self.add_to_carbon(chain, i, placeholder[i][0])
-        smiles = self.monomer.to_smiles(int(np.where(self.monomer.x[:, 1] == 10)[0]), 0)
+        smiles = self.monomer.to_smiles(0, root_idx=10)
         for i, (chain, c_chain) in enumerate(self.side_chains):
             if chain:
                 smiles = smiles.replace(placeholder[i][1], "" if chain == "H" else chain)
