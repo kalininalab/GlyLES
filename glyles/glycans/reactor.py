@@ -1,9 +1,11 @@
+import copy
 import logging
 
 import numpy as np
 from rdkit.Chem.rdchem import ChiralType
 from rdkit.Chem.rdmolops import AddHs, RemoveHs
 
+from glyles.glycans.factory.factory_o import OpenFactory
 from glyles.glycans.utils import Enantiomer, ketoses2
 from glyles.grammar.GlycanLexer import GlycanLexer
 
@@ -49,13 +51,15 @@ functional_groups = {
     "cdPam": "OC(=O)CCCCCCC/C=C\CCCCCC",
     "Cin": "OC(=O)/C=C/c1ccccc1",
     "Dce": "OC(=O)CCCCCCCC=C",
-    "Dhap": "OC(=O)C(O)(O)CCC",
+    "Dhp": "OC(=O)C(O)(O)CCC",
+    "Dhpa": "OC(=O)C(O)(O)CCC",
     "Etg": "OCCO",
     "Fer": "OC(=O)/C=C/c1ccc(O)c(OC)c1",
     "Fo": "OC=O",
     "Gc": "C(=O)CO",
     "Gly": "OCC(O)CO",
     "Gro": "OCC(O)CO",
+    "He": "C(O)C",
     "Lac": "OC(=O)C(O)C",
     "Lin": "OC(=O)CCCCCCC/C=C\C/C=C\CCCCC",
     "Mal": "O[C@H](C(=O)O)CC(=O)O",
@@ -113,6 +117,7 @@ functional_groups = {
     "Mar": "OC(=O)" + "C" * 16,
     "Ste": "OC(=O)" + "C" * 17,
     "Ach": "OC(=O)" + "C" * 19,
+    "Hico": "OC(=O)" + "C" * 20,
     "Beh": "OC(=O)" + "C" * 21,
     "Lig": "OC(=O)" + "C" * 23,
     "Crt": "OC(=O)" + "C" * 25,
@@ -179,11 +184,13 @@ class SMILESReaktor:
         # parse for sth. like LDManHep or DDManHep -> afterwards, no need to look for LD/DD/... and Hep/Hex/Pen/Oct
         self.check_for_resizing(names, types)
 
+        self.check_for_open_form(names, types)
+
         self.side_chains = [["", ""] for _ in range(1 + np.count_nonzero(self.monomer.x[:, 0] == 6))]
 
         # parse remaining modifications
         for n, t in zip(names, types):
-            if t != GlycanLexer.MOD or n.count("L") + n.count("D") == len(n) or n == '-':
+            if t != GlycanLexer.MOD or n.count("L") + n.count("D") == len(n) or n in ['-', '-ol', '-onic']:
                 continue
             if n == "A":
                 self.side_chains[int(max(self.monomer.x[self.monomer.x[:, 0] == 6, 1]))][O] = "(=O)O"
@@ -215,6 +222,7 @@ class SMILESReaktor:
                 else:
                     elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol() \
                         if n[1:] in preserve_elem else ""
+                    elem = "" if elem == "C" else elem
                     full &= self.set_fg(O, int(n[0]), elem, n[1:])
             elif n[0] in "NO" and n not in n_conflict + o_conflict:
                 elem = "" if functional_groups[n[1:]][0] == n[0] else n[0]
@@ -297,6 +305,20 @@ class SMILESReaktor:
 
         # update the monomer
         self.monomer.smiles = smiles
+        self.monomer.structure = None
+        self.monomer.get_structure()
+
+    def check_for_open_form(self, names, types):
+        if not (("-ol" in names) ^ ("-onic" in names)):
+            return
+
+        sac_index = types.index(GlycanLexer.SAC)
+        params = copy.copy(OpenFactory()[names[sac_index] + "-ol"])
+        if "-onic" in names:
+            params["smiles"] = params["smiles"].replace("C", "C(=O)", 1)
+
+        self.monomer.smiles = params["smiles"]
+        self.monomer.c1_find = params["c1_find"]
         self.monomer.structure = None
         self.monomer.get_structure()
 

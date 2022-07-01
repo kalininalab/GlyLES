@@ -215,7 +215,10 @@ class Glycan:
             self.__mark(t, 0, f"({root_orientation}1-?)")
 
             # return the string that can be computed from connecting the monomers as marked above
-            position = int(np.argwhere(t.nodes[0]["type"].get_features()[:, 1] == start).squeeze())
+            if np.where(t.nodes[0]["type"].get_features()[:, 1] == start)[0].size != 0:
+                position = int(np.argwhere(t.nodes[0]["type"].get_features()[:, 1] == start).squeeze())
+            else:
+                position = int(np.argwhere(t.nodes[0]["type"].get_features()[:, 1] == 1).squeeze())
             return self.__merge(t, 0, position, 0)
 
         def __mark(self, t, node, p_edge):

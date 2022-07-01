@@ -348,29 +348,70 @@ class PyranoseFactory:
         "B_ASC": {"name": "Asc", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
                   "smiles": "C[C@@H]1O[C@H](O)[C@H](O)C[C@H]1O"},
 
-        # Ascarylose
-        "ACO": {"name": "Aco", "config": Config.UNDEF, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+        # Acofirose
+        "ACO": {"name": "Aco", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                 "smiles": "CO[C@@H]1[C@@H](O)[C@H](C)OC(O)[C@@H]1O"},
-        "A_ACO": {"name": "Aco", "config": Config.ALPHA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+        "A_ACO": {"name": "Aco", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "CO[C@@H]1[C@@H](O)[C@H](C)O[C@@H](O)[C@@H]1O"},
-        "B_ACO": {"name": "Aco", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+        "B_ACO": {"name": "Aco", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "CO[C@@H]1[C@@H](O)[C@H](C)O[C@H](O)[C@@H]1O"},
 
         # Perosamine (4-Amino-4,6-dideoxy-D-mannose)
-        "PER": {"name": "Per", "config": Config.UNDEF, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+        "PER": {"name": "Per", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                 "smiles": "C[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1N"},
-        "A_PER": {"name": "Per", "config": Config.ALPHA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+        "A_PER": {"name": "Per", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "C[C@H]1O[C@H](O)[C@@H](O)[C@@H](O)[C@@H]1N"},
-        "B_PER": {"name": "Per", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+        "B_PER": {"name": "Per", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "C[C@H]1O[C@@H](O)[C@@H](O)[C@@H](O)[C@@H]1N"},
 
         # Viosamine (4-Amino-4,6-dideoxy-D-glucose)
-        "VIO": {"name": "Vio", "config": Config.UNDEF, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+        "VIO": {"name": "Vio", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                 "smiles": "C[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1N"},
-        "A_VIO": {"name": "Vio", "config": Config.ALPHA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+        "A_VIO": {"name": "Vio", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "C[C@H]1O[C@H](O)[C@H](O)[C@@H](O)[C@@H]1N"},
-        "B_VIO": {"name": "Vio", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+        "B_VIO": {"name": "Vio", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "C[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1N"},
+
+        # Seduheptulose
+        "SED": {"name": "Sed", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+                "smiles": "OC[C@H]1OC(O)(CO)[C@@H](O)[C@H](O)[C@@H]1O"},
+        "A_SED": {"name": "Sed", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+                  "smiles": "OC[C@H]1O[C@@](O)(CO)[C@@H](O)[C@H](O)[C@@H]1O"},
+        "B_SED": {"name": "Sed", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+                  "smiles": "OC[C@H]1O[C@](O)(CO)[C@@H](O)[C@H](O)[C@@H]1O"},
+
+        # Erwiniose
+        "ERWINIOSE": {"name": "Erwiniose", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+                      "smiles": "OC[C@H]1OC(O)(CO)[C@@H](O)[C@H](O)[C@@H]1O"},
+        "A_ERWINIOSE": {"name": "Erwiniose", "config": Config.ALPHA, "isomer": Enantiomer.D,
+                        "lactole": Lactole.PYRANOSE,
+                        "smiles": "C[C@@H](O)C[C@H](O)[C@@]1(O)C[C@@H](O)[C@@H](O)O[C@@H]1C"},
+        "B_ERWINIOSE": {"name": "Erwiniose", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+                        "smiles": "C[C@@H](O)C[C@H](O)[C@@]1(O)C[C@@H](O)[C@H](O)O[C@@H]1C"},
+
+        # Fusaminic acid
+        "FUS": {"name": "Fus", "config": Config.UNDEF, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                "smiles": "C[C@H](O)[C@H](O)[C@@H]1OC(O)(C(=O)O)C[C@@H](O)[C@@H]1N"},
+        "A_FUS": {"name": "Fus", "config": Config.ALPHA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                  "smiles": "C[C@H](O)[C@H](O)[C@@H]1O[C@@](O)(C(=O)O)C[C@@H](O)[C@@H]1N"},
+        "B_FUS": {"name": "Fus", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                  "smiles": "C[C@H](O)[C@H](O)[C@@H]1O[C@](O)(C(=O)O)C[C@@H](O)[C@@H]1N"},
+
+        # Paulomycose
+        "PAU": {"name": "Pau", "config": Config.UNDEF, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                "smiles": "C[C@H]1OC(O)C[C@@H](O)[C@H]1O"},
+        "A_PAU": {"name": "Pau", "config": Config.ALPHA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                  "smiles": "C[C@H]1O[C@H](O)C[C@@H](O)[C@H]1O"},
+        "B_PAU": {"name": "Pau", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                  "smiles": "C[C@H]1O[C@@H](O)C[C@@H](O)[C@H]1O"},
+
+        # Yerinisiose
+        "YER": {"name": "Yer", "config": Config.UNDEF, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                "smiles": "C[C@H](O)[C@@]1(O)C[C@@H](O)C(O)O[C@@H]1C"},
+        "A_YER": {"name": "Yer", "config": Config.ALPHA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                  "smiles": "C[C@H](O)[C@@]1(O)C[C@@H](O)[C@@H](O)O[C@@H]1C"},
+        "B_YER": {"name": "Yer", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                  "smiles": "C[C@H](O)[C@@]1(O)C[C@@H](O)[C@H](O)O[C@@H]1C"},
     }
 
     def __contains__(self, item):

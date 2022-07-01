@@ -42,25 +42,23 @@ class TestDerivatives:
 
     @pytest.mark.parametrize(
         "line",
-        open("data/glycowork_mono.txt", "r").readlines()
+        # open("data/glycowork_mono.txt", "r").readlines()
         # open("data/glycowork_poly.txt", "r").readlines()
-        # open("data/general.tsv", "r").readlines()
-        # open("data/pubchem_mono.tsv", "r").readlines()
-        # open("data/pubchem_poly.tsv", "r").readlines()
+        open("data/general.tsv", "r").readlines() +
+        open("data/pubchem_mono.tsv", "r").readlines() +
+        open("data/pubchem_poly.tsv", "r").readlines()
     )
     def test_conversion_rate(self, line):
         line = line.strip()
-        if "(z" in line \
+        """if "(z" in line \
                 or '-z' in line \
                 or '-ulosaric' in line \
                 or '-ulosonic' in line \
                 or '-uronic' in line \
-                or '-onic' in line \
                 or '-aric' in line \
-                or '-ol' in line \
                 or 'en' in line \
                 or 'Anhydro' in line:
-            return
+            return"""
         if "\t" in line:
             iupac, smiles = line.split("\t")[:2]
             equal = True

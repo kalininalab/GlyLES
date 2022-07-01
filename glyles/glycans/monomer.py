@@ -28,6 +28,7 @@ class Monomer:
             self.isomer = kwargs["isomer"]
             self.lactole = kwargs["lactole"]
             self.recipe = kwargs["recipe"]
+            self.c1_find = kwargs.get("c1_find", None)
         else:
             self.name = origin.get_name()
             self.smiles = origin.get_smiles()
@@ -36,6 +37,7 @@ class Monomer:
             self.isomer = origin.get_isomer()
             self.lactole = origin.get_lactole()
             self.recipe = origin.get_recipe()
+            self.c1_find = origin.get_c1_finder()
             self.adjacency = origin.get_adjacency()
             self.ring_info = origin.get_ring_info()
             self.x = origin.get_features()
@@ -66,6 +68,14 @@ class Monomer:
             The SMILES string that was used for initialization of this monomer
         """
         return self.smiles
+
+    def get_c1_finder(self):
+        """
+
+        Returns:
+            The callable object that, given the structure, finds the RDKit ID of C1
+        """
+        return self.c1_find
 
     def alpha(self, factory):
         """
@@ -311,7 +321,7 @@ class Monomer:
 
                 # store the atom type
                 self.x[i, 0] = atom.GetAtomicNum()
-                if self.x[i, 0] == 6 and i in self.ring_info[0]:
+                if self.x[i, 0] == 6 and len(self.ring_info) > 0 and i in self.ring_info[0]:
                     c_atoms.append(int(i))
 
                 # if the atom is part of any ring, store the number of that ring
@@ -397,40 +407,42 @@ class Monomer:
         Returns:
             Nothing
         """
-        # create a tree of all carbon atoms directly connected to the main ring of the monomer
-        c_tree = Tree()
-        stack = [(-1, c_atoms[0])]
-        while len(stack) != 0:
-            p_id, c_id = stack[-1]
-            stack = stack[:-1]
-            c_tree.add_node(c_id, p_id)
+        if len(c_atoms) > 0:
+            # create a tree of all carbon atoms directly connected to the main ring of the monomer
+            c_tree = Tree()
+            stack = [(-1, c_atoms[0])]
+            while len(stack) != 0:
+                p_id, c_id = stack[-1]
+                stack = stack[:-1]
+                c_tree.add_node(c_id, p_id)
 
-            children = np.argwhere((self.adjacency[c_id, :] == 1) & (self.x[:, 0] == 6))
-            for c in children:
-                if int(c) not in c_tree.nodes:
-                    stack.append((c_id, int(c)))
+                children = np.argwhere((self.adjacency[c_id, :] == 1) & (self.x[:, 0] == 6))
+                for c in children:
+                    if int(c) not in c_tree.nodes:
+                        stack.append((c_id, int(c)))
 
-        # find the deepest node and rehang the tree to this node
-        deepest_id, _ = c_tree.deepest_node()
-        c_tree = c_tree.rehang_tree(deepest_id)
-        longest_c_chain = c_tree.longest_chain()
+            # find the deepest node and rehang the tree to this node
+            deepest_id, _ = c_tree.deepest_node()
+            c_tree = c_tree.rehang_tree(deepest_id)
+            longest_c_chain = c_tree.longest_chain()
 
-        # now the two C1 candidates can be found at the ends of the longest chain
-        start, end = longest_c_chain[0], longest_c_chain[-1]
+            # now the two C1 candidates can be found at the ends of the longest chain
+            start, end = longest_c_chain[0], longest_c_chain[-1]
 
-        # check conditions
-        start_o_conn = np.argwhere((self.adjacency[start, :] == 1) & (self.x[:, 0] == 8) &
-                                   (self.x[:, 2] != 1)).squeeze().size > 0
-        end_o_conn = np.argwhere((self.adjacency[end, :] == 1) & (self.x[:, 0] == 8) &
-                                 (self.x[:, 2] != 1)).squeeze().size > 0
+            # check conditions
+            start_o_conn = np.argwhere((self.adjacency[start, :] == 1) & (self.x[:, 0] == 8) &
+                                       (self.x[:, 2] != 1)).squeeze().size > 0
+            end_o_conn = np.argwhere((self.adjacency[end, :] == 1) & (self.x[:, 0] == 8) &
+                                     (self.x[:, 2] != 1)).squeeze().size > 0
 
-        # decide on c1
-        if start_o_conn and end_o_conn:
-            if not self._evaluate_distance(start, end, ringo):
+            # decide on c1
+            if start_o_conn and end_o_conn:
+                if not self._evaluate_distance(start, end, ringo):
+                    longest_c_chain = reversed(longest_c_chain)
+            elif end_o_conn:
                 longest_c_chain = reversed(longest_c_chain)
-        elif end_o_conn:
-            longest_c_chain = reversed(longest_c_chain)
-
+        else:
+            longest_c_chain = self.c1_find(self)
         # enumerate along chain
         c_count = 0
         for c in longest_c_chain:

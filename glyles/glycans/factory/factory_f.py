@@ -251,11 +251,11 @@ class FuranoseFactory:
                   "smiles": "OC[C@@]1(O)OC[C@@H](O)[C@H]1O"},
 
         # Xylulose
-        "XUL": {"name": "Xul", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+        "XLU": {"name": "Xul", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                 "smiles": "OCC1(O)OC[C@@H](O)[C@@H]1O"},
-        "A_XUL": {"name": "Xul", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+        "A_XLU": {"name": "Xul", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                   "smiles": "OC[C@]1(O)OC[C@@H](O)[C@@H]1O"},
-        "B_XUL": {"name": "Xul", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+        "B_XLU": {"name": "Xul", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                   "smiles": "OC[C@@]1(O)OC[C@@H](O)[C@@H]1O"},
 
         # Aceric acid

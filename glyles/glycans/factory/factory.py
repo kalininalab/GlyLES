@@ -16,6 +16,7 @@ class MonomerFactory:
         """
         self.pyranose_fac = PyranoseFactory()
         self.furanose_fac = FuranoseFactory()
+        self.open_fac = FuranoseFactory()
 
         self.keys = set(self.pyranose_fac.keys()).union(self.furanose_fac.keys())
 
@@ -52,6 +53,8 @@ class MonomerFactory:
             return self.furanose_fac[item]
         if not furanose and item in self.pyranose_fac:
             return self.pyranose_fac[item]
+        if item in self.open_fac:
+            return self.open_fac[item]
         raise NotImplementedError("Query-monomer is neither in pyranoses nor in furanoses")
 
     def keys(self):
@@ -159,6 +162,8 @@ class MonomerFactory:
         # extract key information from the input, i.e. the type, the configuration and pyranose/furanose
         tmp = list(zip(*recipe))
         name = recipe[tmp[1].index(GlycanLexer.SAC)][0]
+        if name == "Sug":
+            name = "Oct"
         config_index = tmp[1].index(GlycanLexer.TYPE) if GlycanLexer.TYPE in tmp[1] else None
         ring_index = tmp[1].index(GlycanLexer.RING) if GlycanLexer.RING in tmp[1] else None
 
@@ -173,6 +178,8 @@ class MonomerFactory:
             monomer = Monomer(**self.furanose_fac[name], recipe=recipe)
         elif name in self.pyranose_fac:
             monomer = Monomer(**self.pyranose_fac[name], recipe=recipe)
+        elif name in self.open_fac:
+            monomer = Monomer(**self.open_fac[name], recipe=recipe)
         else:
             monomer = Monomer(**self.unknown_monomer(name), recipe=recipe)
 

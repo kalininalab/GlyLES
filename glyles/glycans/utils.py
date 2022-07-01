@@ -32,6 +32,7 @@ class Lactole(Enum):
     Specification if a monomer is a pyranose (6-ring) or a furanose (5-ring)
     """
     UNKNOWN = 0
+    OPEN = 1
     FURANOSE = 5
     PYRANOSE = 6
 
