@@ -26,8 +26,8 @@ SAC:
 MOD:
     NUM ',' NUM '-Anhydro-' | NUM '-Anhydro-'
     | NUM '-' BRIDGE '-' FG '-'
-    | NUM BRIDGE* FG
-    | (NUM | BRIDGE*) FG
+    | NUM BRIDGE FG
+    | (NUM | BRIDGE) FG
     | NUM ('d' | 'e') | NUM ',' NUM 'd'
     | '-ulosaric' | '-ulosonic' | '-uronic' | '-onic' | '-aric' | '-ol'
     | '0d' | 'D-' | 'L-' | FG | '-';
@@ -43,7 +43,7 @@ FG:
     | 'LD' | 'LL' | 'Me' | 'Nn' | 'Oc' | 'Pe' | 'Ph' | 'Pr' | 'Pp' | 'Tf' | 'Tr' | 'Ts' | 'Vl' | 'en'
     | 'A' | 'N' | 'F' | 'I' | 'S' | 'P';
 BRIDGE:
-    'C' | 'N' | 'O' | 'P';
+    'C' | 'N' | 'O';
 CARB:
     'C' NUM ('=' '{' CT* NUM (',' CT* NUM) '}')*;
 COUNT:
