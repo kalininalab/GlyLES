@@ -25,9 +25,9 @@ SAC:
     | 'Ace' | 'Aco' | 'Asc' | 'Fus' | 'Ins' | 'Ko' | 'Pau' | 'Per'| 'Sed' | 'Sug' | 'Vio' | 'Xlu' | 'Yer' | 'Erwiniose';
 MOD:
     NUM ',' NUM '-Anhydro-' | NUM '-Anhydro-'
-    | NUM '-O-' FG '-'
-    | NUM ('NH' | 'N' | 'O' | 'C') FG
-    | (NUM | 'O' | 'N' | 'C') FG
+    | NUM '-' BRIDGE '-' FG '-'
+    | NUM BRIDGE* FG
+    | (NUM | BRIDGE*) FG
     | NUM ('d' | 'e') | NUM ',' NUM 'd'
     | '-ulosaric' | '-ulosonic' | '-uronic' | '-onic' | '-aric' | '-ol'
     | '0d' | 'D-' | 'L-' | FG | '-';
@@ -42,6 +42,8 @@ FG:
     | 'Ac' | 'Am' | 'Bn' | 'Br' | 'Bu' | 'Bz' | 'Cl' | 'Cm' | 'DD' | 'DL' | 'DL-' | 'Et' | 'Fo' | 'Gc' | 'Hp' | 'Hx'
     | 'LD' | 'LL' | 'Me' | 'Nn' | 'Oc' | 'Pe' | 'Ph' | 'Pr' | 'Pp' | 'Tf' | 'Tr' | 'Ts' | 'Vl' | 'en'
     | 'A' | 'N' | 'F' | 'I' | 'S' | 'P';
+BRIDGE:
+    'C' | 'N' | 'O' | 'P';
 CARB:
     'C' NUM ('=' '{' CT* NUM (',' CT* NUM) '}')*;
 COUNT:

@@ -41,9 +41,9 @@ class TestDerivatives:
         assert Glycan(line.strip(), MonomerFactory(), tree_only=True).get_tree() is not None
 
     @pytest.mark.parametrize(
-        "line",  # total                                        38617 / 60220   (?64.12%)
-        open("data/glycowork_mono.txt", "r").readlines()  # |    2278 /  2391   (?95.19%)
-        # open("data/glycowork_poly.txt", "r").readlines()  # | 28251 / 49731   ( 58.81%)
+        "line",  # total (with exceptions on (for glycowork)    60098 / 60220   ( 99.80%)
+        # open("data/glycowork_mono.txt", "r").readlines()  # |  2289 /  2391   ( 95.73%)
+        open("data/glycowork_poly.txt", "r").readlines()  # |   49721 / 49731   ( 99.98%)
         # open("data/general.tsv", "r").readlines() +  # |        103 /   103   (100.00%)
         # open("data/pubchem_mono.tsv", "r").readlines() +  # |   147 /   147   (100.00%)
         # open("data/pubchem_poly.tsv", "r").readlines()  # |    7838 /  7838   (100.00%)
@@ -60,7 +60,12 @@ class TestDerivatives:
                 or 'Anhydro' in line \
                 or 'Coum' in line \
                 or 'Cer' in line \
-                or '0dHex' in line:
+                or '0dHex' in line \
+                or 'Pau3Me7' in line \
+                or 'Ins' in line \
+                or 'Fuc1N4NBz7Et-ol' in line \
+                or 'D-9dThrAltNon-onic' in line \
+                or 'Pse5Am7Gra' in line:
             return
         if "\t" in line:
             iupac, smiles = line.split("\t")[:2]

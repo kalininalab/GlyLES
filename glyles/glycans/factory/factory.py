@@ -1,4 +1,5 @@
 from glyles.glycans.factory.factory_f import FuranoseFactory
+from glyles.glycans.factory.factory_o import c1_finder
 from glyles.glycans.factory.factory_p import PyranoseFactory
 from glyles.glycans.monomer import Monomer
 from glyles.glycans.utils import Config, Enantiomer, Lactole
@@ -146,6 +147,20 @@ class MonomerFactory:
         return {"name": name, "config": Config.UNDEF, "isomer": Enantiomer.U, "lactole": Lactole.UNKNOWN,
                 "smiles": ""}
 
+    @staticmethod
+    def succinic_acid():
+        """
+        Generate a dummy monosaccharide containing no information except the name as the structure and all its
+        properties are unknown.
+        Args:
+            name (str): Name of the monosaccharide whos structure and properties are unknown
+
+        Returns:
+            Dummy information about an unknown monomer
+        """
+        return {"name": "Suc", "config": Config.UNDEF, "isomer": Enantiomer.U, "lactole": Lactole.UNKNOWN,
+                "smiles": "OC[C@H](O)CCO", "c1_find": lambda x: c1_finder(x, "OC[C@H](O)CCO")}
+
     def create(self, recipe, config=None, tree_only=False):
         """
         Create a monomer from its describing IUPAC string with all added side chains.
@@ -180,6 +195,8 @@ class MonomerFactory:
             monomer = Monomer(**self.pyranose_fac[name], recipe=recipe)
         elif name in self.open_fac:
             monomer = Monomer(**self.open_fac[name], recipe=recipe)
+        elif name.upper() == "SUC":
+            monomer = Monomer(**self.succinic_acid(), recipe=recipe)
         else:
             monomer = Monomer(**self.unknown_monomer(name), recipe=recipe)
 

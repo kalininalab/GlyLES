@@ -1,4 +1,5 @@
 import sys
+import re
 
 import networkx as nx
 import numpy as np
@@ -243,15 +244,15 @@ class Glycan:
             # check for validity of the tree, ie if it's a leaf (return, nothing to do) or has too many children (Error)
             if len(children) == 0:  # leaf
                 return
-            if len(children) > 3:  # too many children
+            if len(children) > 4:  # too many children
                 raise NotImplementedError("Glycans with maximal branching factor greater then 3 not implemented.")
 
             # iterate over the children and the atoms used to mark binding atoms in my structure
             for child, atom in zip(children, t.nodes[node]["type"].get_dummy_atoms()[0]):
-                binding = t.get_edge_data(node, child)["type"]
+                binding = re.findall(r'\d+', t.get_edge_data(node, child)["type"])[1]
 
-                t.nodes[node]["type"].mark(int(binding[4]), atom)
-                self.__mark(t, child, binding)
+                t.nodes[node]["type"].mark(int(binding), atom)
+                self.__mark(t, child, t.get_edge_data(node, child)["type"])
 
         def __merge(self, t, node, start, ring_index):
             """
@@ -277,10 +278,9 @@ class Glycan:
 
             # iterate over the children and the atoms used to mark binding atoms
             for child, atom in zip(children, t.nodes[node]["type"].get_dummy_atoms()[1]):
-                binding = list(t.get_edge_data(node, child)["type"])
+                binding = re.findall(r'\d+', t.get_edge_data(node, child)["type"])[0]
 
-                # child_start = t.nodes[node]["type"].root_atom_id(int(binding[2]))
-                child_start = t.nodes[child]["type"].root_atom_id(int(binding[2]))
+                child_start = t.nodes[child]["type"].root_atom_id(int(binding))
                 if child_start == -1:
                     raise ValueError("No child start found.")
 

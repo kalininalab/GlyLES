@@ -229,7 +229,7 @@ class Monomer:
                 * the string representation of the atoms from above, i.e. how the atoms above will be represented in a
                   SMILES string
         """
-        return [34, 52, 84], ["[SeH]", "[TeH]", "[PoH]"]
+        return [34, 52, 84, 85], ["[SeH]", "[TeH]", "[PoH]", "[At]"]
 
     def root_atom_id(self, binding_c_id):
         """
@@ -311,7 +311,20 @@ class Monomer:
 
             # extract some further information from the molecule to not operate always on the molecule
             self.adjacency = GetAdjacencyMatrix(self.structure, useBO=True)
-            self.ring_info = self.structure.GetRingInfo().AtomRings()
+            rings = self.structure.GetRingInfo().AtomRings()
+            if len(rings) > 0:
+                self.ring_info = [None]
+                for ring in rings:
+                    found_ox = False
+                    for atom in ring:
+                        if self.structure.GetAtomWithIdx(atom).GetAtomicNum() == 8:
+                            self.ring_info[0] = ring
+                            found_ox = True
+                            break
+                    if not found_ox:
+                        self.ring_info.append(ring)
+            else:
+                self.ring_info = rings
             self.x = np.zeros((self.adjacency.shape[0], 3))
 
             c_atoms, ringo = [], -1
@@ -335,7 +348,7 @@ class Monomer:
                     ringo = i
 
             highest_c = self._enumerate_c_atoms(c_atoms, ringo)
-            for c_id in range(highest_c):
+            for c_id in range(1, highest_c):
                 try:
                     ox_id = self.find_oxygen(c_id)
                     if sum(self.adjacency[ox_id, :]) > 1:
