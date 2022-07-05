@@ -11,6 +11,9 @@ class OpenFactory:
     """
 
     __monomers = {
+        "HEX-OL": {"name": "Hexol", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.OPEN,
+                   "smiles": "OCC(O)C(O)C(O)C(O)CO",
+                   "c1_find": lambda x: c1_finder(x, "OCC(O)C(O)C(O)C(O)CO")},
         "GLC-OL": {"name": "Glucitol", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.OPEN,
                    "smiles": "OC[C@H](O)[C@@H](O)[C@H](O)[C@H](O)CO",
                    "c1_find": lambda x: c1_finder(x, "OC[C@H](O)[C@@H](O)[C@H](O)[C@H](O)CO")},
@@ -59,6 +62,9 @@ class OpenFactory:
         "KDO-OL": {"name": "Kdo alditol", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.OPEN,
                    "smiles": "OC(=O)C(O)C[C@@H](O)[C@@H](O)[C@H](O)[C@H](O)CO",
                    "c1_find": lambda x: c1_finder(x, "OC(=O)C(O)C[C@@H](O)[C@@H](O)[C@H](O)[C@H](O)CO")},
+        "MUR-OL": {"name": "Muramic alditol", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.OPEN,
+                   "smiles": "C[C@@H](O[C@H]([C@@H](N)CO)[C@H](O)[C@H](O)CO)C(=O)O",
+                   "c1_find": lambda x: c1_finder(x, "C[C@@H](O[C@H]([C@@H](N)CO)[C@H](O)[C@H](O)CO)C(=O)O")},
         "API-OL": {"name": "Apiol", "config": Config.UNDEF, "isomer": Enantiomer.L, "lactole": Lactole.OPEN,
                    "smiles": "OC[C@@H](O)C(O)(CO)CO",
                    "c1_find": lambda x: c1_finder(x, "OC[C@@H](O)C(O)(CO)CO")},
@@ -134,7 +140,7 @@ def c1_finder(structure, base_smiles):
     tmp = Chem.MolFromSmiles(base_smiles)
     tmp_chain = [a.GetIdx() for a in tmp.GetAtoms() if a.GetAtomicNum() == 6]
     for c, t in zip(longest_c_chain, tmp_chain):
-        if structure.structure.GetAtomWithIdx(c).GetChiralTag() != tmp.GetAtomWithIdx(t).GetChiralTag():
+        if structure.structure.GetAtomWithIdx(int(c)).GetChiralTag() != tmp.GetAtomWithIdx(int(t)).GetChiralTag():
             return reversed(longest_c_chain)
     return longest_c_chain
 

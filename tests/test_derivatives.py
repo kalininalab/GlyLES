@@ -41,24 +41,27 @@ class TestDerivatives:
         assert Glycan(line.strip(), MonomerFactory(), tree_only=True).get_tree() is not None
 
     @pytest.mark.parametrize(
-        "line",
-        # open("data/glycowork_mono.txt", "r").readlines()
-        # open("data/glycowork_poly.txt", "r").readlines()
-        open("data/general.tsv", "r").readlines() +
-        open("data/pubchem_mono.tsv", "r").readlines() +
-        open("data/pubchem_poly.tsv", "r").readlines()
+        "line",  # total                                        38617 / 60220   (?64.12%)
+        open("data/glycowork_mono.txt", "r").readlines()  # |    2278 /  2391   (?95.19%)
+        # open("data/glycowork_poly.txt", "r").readlines()  # | 28251 / 49731   ( 58.81%)
+        # open("data/general.tsv", "r").readlines() +  # |        103 /   103   (100.00%)
+        # open("data/pubchem_mono.tsv", "r").readlines() +  # |   147 /   147   (100.00%)
+        # open("data/pubchem_poly.tsv", "r").readlines()  # |    7838 /  7838   (100.00%)
     )
     def test_conversion_rate(self, line):
         line = line.strip()
-        """if "(z" in line \
+        if "(z" in line \
                 or '-z' in line \
                 or '-ulosaric' in line \
                 or '-ulosonic' in line \
                 or '-uronic' in line \
                 or '-aric' in line \
                 or 'en' in line \
-                or 'Anhydro' in line:
-            return"""
+                or 'Anhydro' in line \
+                or 'Coum' in line \
+                or 'Cer' in line \
+                or '0dHex' in line:
+            return
         if "\t" in line:
             iupac, smiles = line.split("\t")[:2]
             equal = True

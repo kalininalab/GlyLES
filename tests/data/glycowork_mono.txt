@@ -1030,7 +1030,7 @@ Glc6PGroAc
 Glc6S
 Glc6S-ol
 Glc6Thr
-Glc6uloN
+Glc6UloN
 GlcA
 GlcA1Cer
 GlcA1Gro
@@ -2217,7 +2217,6 @@ Sedf
 Sia
 Sor
 Sorf
-Suc
 Sug
 Sug2Ac
 Sug2Ac3Ac

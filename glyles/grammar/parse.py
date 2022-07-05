@@ -198,7 +198,7 @@ class Glycan:
             """
             self.factory = factory
 
-        def merge(self, t, root_orientation="n", start=10):
+        def merge(self, t, root_orientation="n", start=100):
             """
             Merge the provided tree of monomers enriched with the glycans in the nodes and information on the bindings
             between two monomer-nodes in the edges.
@@ -289,7 +289,7 @@ class Glycan:
                 me = me.replace(atom, child_smiles)
             return me
 
-    def __init__(self, iupac, factory, root_orientation="n", start=10, tree_only=False,
+    def __init__(self, iupac, factory, root_orientation="n", start=100, tree_only=False,
                  full=True):
         """
         Initialize the glycan from the IUPAC string.

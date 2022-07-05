@@ -27,6 +27,7 @@ functional_groups = {
     "F": "F",
     "Glu": "OC(=O)CC[C@H](N)C(=O)O",
     "Hse": "OCCC(N)C(=O)O",
+    "HSer": "OC(=O)[C@H](N)CCO",
     "I": "I",
     "Lys": "NCCCC[C@H](N)C(=O)O",
     "N": "N",
@@ -37,7 +38,7 @@ functional_groups = {
     "Pp": "OC(=O)CC",
     "S": "S(=O)(=O)(O)",
     "Pro": "N1CCCC1C(=O)O",
-    "Ser": "OC[C@H](N)C(=O)O",
+    "Ser": "OC(=O)[C@H](N)CO",
     "Tf": "OS(=O)(=O)C(F)(F)F",
     "Thr": "N[C@H](C(=O)O)[C@@H](O)C",
     "Ulo": "OC(c1ccccc1)(c1ccccc1(Cl))CCN(C)C",
@@ -49,6 +50,7 @@ functional_groups = {
     "Bz": "C(=O)c2ccccc2",
     "Bn": "OCc2ccccc2",
     "cdPam": "OC(=O)CCCCCCC/C=C\CCCCCC",
+    "Cet": "CCC(=O)O",
     "Cin": "OC(=O)/C=C/c1ccccc1",
     "Dce": "OC(=O)CCCCCCCC=C",
     "Dhp": "OC(=O)C(O)(O)CCC",
@@ -68,10 +70,17 @@ functional_groups = {
     "Phyt": "OCCC(C)CCCC(C)CCCC(C)CCCC(C)C",
     "Pyr": "OC(=O)C(=O)C",
     "Sin": "OC(=O)/C=C/c1cc(OC)c(O)c(OC)c1",
+    "Suc": "OC(=O)CCC(=O)O",
     "Tig": "OC(=O)C/(C)=C/C",
     "Tr": "C(c2ccccc2)(c3ccccc3)c4ccccc4",
     "Ts": "OS(=O)(=O)c2ccc(C)cc2",
     "Vac": "OC(=O)CCCCCCCCCC=CCCCCCC",
+
+    # Sugar rings
+    "Pen": "OC1C(O)C(O)C(O)CO1",
+    "Hex": "OC1C(O)C(O)C(O)C(CO)O1",
+    "Hep": "OC1C(O)C(O)C(O)C(C(O)CO)O1",
+    "Oct": "OC1C(O)C(O)C(O)C(C(O)C(O)CO)O1",
 
     # some special cases
     "3oxoMyr": "OC(=O)CC(=O)CCCCCCCCCCC",

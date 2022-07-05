@@ -42,9 +42,8 @@ class TestSMILES:
         ("Gal", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O"),
         ("Tal", "OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@H]1O"),
     ])
-    @pytest.mark.parametrize("source", [10, 11, 12, 13, 14, 15])
-    def test_smiles_mono(self, glycan, source):
-        computed = Glycan(glycan[0], factory=MonomerFactory(), start=10).get_smiles()
+    def test_smiles_mono(self, glycan):
+        computed = Glycan(glycan[0], factory=MonomerFactory(), start=100).get_smiles()
         solution = glycan[1]
 
         compare_smiles(computed, solution)

@@ -329,19 +329,56 @@ class Monomer:
                     if i in self.ring_info[r]:
                         self.x[i, 2] = r + 1
 
-                # identify the oxygen atom in the main ring and set its id to 10
+                # identify the oxygen atom in the main ring and set its id to 100
                 if self.x[i, 2] == 1 and self.x[i, 0] == 8:
-                    self.x[i, 1] = 10
+                    self.x[i, 1] = 100
                     ringo = i
 
-            self._enumerate_c_atoms(c_atoms, ringo)
+            highest_c = self._enumerate_c_atoms(c_atoms, ringo)
+            for c_id in range(highest_c):
+                try:
+                    ox_id = self.find_oxygen(c_id)
+                    if sum(self.adjacency[ox_id, :]) > 1:
+                        position = int(np.argwhere(self.x[:, 1] == c_id).squeeze())
+                        highest_c = self.enumerate_side_chain(ox_id, position, highest_c + 1)
+                except ValueError:
+                    pass
 
         return self.structure
 
+    def enumerate_side_chain(self, ox_id, c_id, next_c_id):
+        """
+
+        Args:
+            ox_id (int): RDKit ID of the oxygen atom the side-chain is attached to
+            c_id (int): RDKit ID of the carbon atom the oxygen (ox_id) is bound to
+            next_c_id (int): ID to assign to the next carbon atom
+
+        Returns:
+            Number (not RDKit ID) of the currently highest carbon atom in the molecule
+        """
+        c = list(np.argwhere(self.adjacency[ox_id, :] != 0).squeeze())
+        c.remove(c_id)
+        c = c[0]
+        self.x[c, 1] = next_c_id
+        next_c_id += 1
+
+        candidates = list(np.argwhere(self.adjacency[ox_id, :] != 0).squeeze())
+        candidates.remove(c_id)
+        for j, _ in sorted(
+                [(i, sum(self.x[(self.adjacency[c, :] != 0), 0]))
+                 for i, c in enumerate(candidates) if self.x[c, 0] == 6],
+                key=lambda x: x[1],
+                reverse=True
+        ):
+            self.x[candidates[j], 1] = next_c_id
+            next_c_id += 1
+
+        return next_c_id - 1
+
     def _equidistant(self, start, end):
         """
-        Decider for C1 in case the previous splitting rules were all tied. This currently only fires for
-        Fruf, Tagf, Sorf, Psif
+        Decider for C1 in case the previous splitting rules were all tied.
 
         Args:
             start (int): id of the first candidate for C1 atom
@@ -449,6 +486,8 @@ class Monomer:
             c_count += 1
             self.x[c, 1] = c_count
 
+        return c_count
+
     def find_oxygen(self, binding_c_id):
         """
         Find the oxygen atom that binds to the carbon atom with the provided id. The returned id may not refer to an
@@ -477,7 +516,7 @@ class Monomer:
             elif candidates.size > 0:
                 multiple = True
 
-        if not multiple:
+        if not multiple and position.size == 1:
             return int(position)
 
         raise ValueError(f"Multiple options for oxygen (or other atom type) found.")

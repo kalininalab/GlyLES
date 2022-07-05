@@ -27,13 +27,13 @@ MOD:
     NUM ',' NUM '-Anhydro-' | NUM '-Anhydro-'
     | NUM '-O-' FG '-'
     | NUM ('NH' | 'N' | 'O' | 'C') FG
-    | (NUM | 'O' | 'NH' | 'N' | 'C') FG
+    | (NUM | 'O' | 'N' | 'C') FG
     | NUM ('d' | 'e') | NUM ',' NUM 'd'
     | '-ulosaric' | '-ulosonic' | '-uronic' | '-onic' | '-aric' | '-ol'
     | '0d' | 'D-' | 'L-' | FG | '-';
 FG:
     COUNT | CARB | '3oxoMyr' |
-    'Allyl'| 'aLnn' | 'gLnn' | 'eSte' | 'Ceroplastic' | 'Coum' | 'Geddic' | 'Lacceroic' | 'Prop' | 'Psyllic'
+    'Allyl'| 'aLnn' | 'gLnn' | 'eSte' | 'Ceroplastic' | 'Coum' | 'Geddic' | 'Lacceroic' | 'HSer' | 'Prop' | 'Psyllic'
     | 'Ach' | 'Aep' | 'Ala' | 'Ang' | 'Asp' | 'Beh' | 'But' | 'Cct' | 'Cer' | 'Cet' | 'Cho' | 'Cin' | 'Crt' | 'Cys'
     | 'Dce' | 'Dco' | 'Dec' | 'Dhp' | 'Dod' | 'Etg' | 'EtN' | 'Etn' | 'Fer' | 'Gra' | 'Gro' | 'Glu' | 'Gly' | 'Hpo'
     | 'Hse' | 'Hxo' | 'Lac' | 'Lau' | 'Leu' | 'Lin' | 'Lys' | 'Mal' | 'Mar' | 'Mel' | 'Mon' | 'Myr' | 'Nno' | 'Non'
