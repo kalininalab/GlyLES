@@ -49,12 +49,12 @@ CARB:
 COUNT:
     'Hep' | 'Hex' | 'Oct' | 'Pen' | 'Suc';
 CON:
-    '(' TYPE NUM '-' (NUM | 'z') ')'
-    | '(' NUM '-' (NUM | 'z') ')'
-    | TYPE NUM '-' (NUM | 'z')
-    | TYPE (NUM | 'z');
+    '(' TYPE NUM '-' NUM ')'
+    | '(' NUM '-' NUM ')'
+    | TYPE NUM '-' NUM
+    | TYPE NUM;
 TYPE:
-    'a' | 'b' | 'z';
+    'a' | 'b';
 CT:
     'c' | 't';
 RING:
