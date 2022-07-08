@@ -32,12 +32,12 @@ class Monomer:
         else:
             self.name = origin.get_name()
             self.smiles = origin.get_smiles()
+            self.c1_find = origin.get_c1_finder()
             self.structure = origin.get_structure()
             self.config = origin.get_config()
             self.isomer = origin.get_isomer()
             self.lactole = origin.get_lactole()
             self.recipe = origin.get_recipe()
-            self.c1_find = origin.get_c1_finder()
             self.adjacency = origin.get_adjacency()
             self.ring_info = origin.get_ring_info()
             self.x = origin.get_features()

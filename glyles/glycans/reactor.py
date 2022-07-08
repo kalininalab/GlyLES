@@ -1,5 +1,6 @@
 import copy
 import logging
+import re
 
 import numpy as np
 from rdkit.Chem.rdchem import ChiralType
@@ -151,6 +152,10 @@ o_conflict = [
     "Oco", "Ole", "Orn", "Oc"
 ]
 
+p_conflict = [
+    "Psyllic", "Prop", "Pam", "Pro", "Pyr", "Pe", "Ph", "Pr", "Pp"
+]
+
 c_conflict = [
     "Cct", "Cer", "Cet", "Cho", "Cin", "Crt", "Cys", "Cl", "Cm"
 ]
@@ -170,6 +175,25 @@ def not_implemented_message(mod):
     logging.warning(
         f"ModificationNotImplementedWarning: {mod} Modification not implemented. The returned molecule will not have "
         f"this modification")
+
+
+def extract_bridge(n):
+    i = re.search('[a-z]', n)
+    if i is not None:
+        i = i.start()
+        if i >= 2 and n[i - 2] == "H":
+            i -= 1
+        fg = n[i - 1:]
+        bridge = n[:i - 1]
+        bridge = bridge[:-1] if functional_groups[fg][0] == bridge[-1] else bridge
+    else:
+        fg = n[-1]
+        bridge = n[:-1]
+    if len(bridge) > 0 and bridge[0].isdigit():
+        bridge = bridge[1:]
+    if len(bridge) > 0 and bridge[0] == "C":
+        bridge = bridge[1:]
+    return bridge, fg
 
 
 def opposite_chirality(tag):
@@ -223,27 +247,29 @@ class SMILESReaktor:
                 elif len(n) > 4 and n[1] == n[3] == "-" and n[2] in "ON":  # add a functional group connected with an oxygen
                     elem = "" if functional_groups[n[4:-1]][0] == n[2] else n[2]
                     full &= self.set_fg(O, int(n[0]), elem, n[4:-1])
-                elif n[1] in "ON" and n[1:] not in n_conflict + o_conflict:  # connect a functional group with N or O in between
-                    elem = "" if n[2:] != "" and functional_groups[n[2:]][0] == n[1] else n[1]
-                    full &= self.set_fg(O, int(n[0]), elem, n[2:])
+                elif n[1] in "NOP" and n[1:] not in n_conflict + o_conflict + p_conflict:  # connect a functional group with N or O in between
+                    bridge, fg = extract_bridge(n)
+                    full &= self.set_fg(O, int(n[0]), bridge, fg)
                 elif n[1] == "C" and n[1:] not in c_conflict:  # add a group connected directly to the C-Atom
-                    full &= self.set_fg(C, int(n[0]), "", n[2:])
+                    bridge, fg = extract_bridge(n)
+                    full &= self.set_fg(C, int(n[0]), bridge, fg)
                 else:
                     elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol() \
                         if n[1:] in preserve_elem else ""
                     elem = "" if elem == "C" else elem
                     full &= self.set_fg(O, int(n[0]), elem, n[1:])
-            elif n[0] in "NO" and n not in n_conflict + o_conflict:
-                elem = "" if functional_groups[n[1:]][0] == n[0] else n[0]
-                if n[1:] == "Me":
-                    full &= self.set_fg(O, self.ring_c, elem, n[1:])
+            elif n[0] in "NOP" and n not in n_conflict + o_conflict + p_conflict:
+                bridge, fg = extract_bridge(n)
+                if fg == "Me":
+                    full &= self.set_fg(O, self.ring_c, bridge, fg)
                 else:
-                    full &= self.set_fg(O, self.ring_c + 1, elem, n[1:])
+                    full &= self.set_fg(O, self.ring_c + 1, bridge, fg)
             elif n[0] == "C" and n not in c_conflict:
                 if "=" in n or n[1:].isdigit():
                     self.set_fg(O, self.ring_c, "O", self.parse_poly_carbon(n))
                 else:  # add a group connected directly to the C-Atom
-                    full &= self.set_fg(C, self.ring_c, "", n[1:])
+                    bridge, fg = extract_bridge(n)
+                    full &= self.set_fg(C, self.ring_c, bridge, fg)
             else:
                 elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol() \
                     if n[1:] in preserve_elem else ""
@@ -303,7 +329,8 @@ class SMILESReaktor:
         if self.monomer.x[c_id, 2] == 1:
             extension = extension.replace(")", ")(", 1) + ")"
         # if the original molecule has no oxygen at its last carbon, remove the first oxygen from the extension
-        if self.monomer.x[((self.monomer.adjacency[c_id] - self.monomer.x[:, 2]) > 0) & (self.monomer.x[:, 0] == 8), 0].size == 0:
+        if self.monomer.x[
+            ((self.monomer.adjacency[c_id] - self.monomer.x[:, 2]) > 0) & (self.monomer.x[:, 0] == 8), 0].size == 0:
             extension = extension.replace("(O)", "", 1)
         self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(c_count)).SetAtomicNum(50)
         self.monomer.structure.GetAtomWithIdx(c_id).SetAtomicNum(32)

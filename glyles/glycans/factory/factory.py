@@ -158,7 +158,7 @@ class MonomerFactory:
         Returns:
             Dummy information about an unknown monomer
         """
-        return {"name": "Suc", "config": Config.UNDEF, "isomer": Enantiomer.U, "lactole": Lactole.UNKNOWN,
+        return {"name": "Suc", "config": Config.UNDEF, "isomer": Enantiomer.U, "lactole": Lactole.OPEN,
                 "smiles": "OC[C@H](O)CCO", "c1_find": lambda x: c1_finder(x, "OC[C@H](O)CCO")}
 
     def create(self, recipe, config=None, tree_only=False):
@@ -195,7 +195,7 @@ class MonomerFactory:
             monomer = Monomer(**self.pyranose_fac[name], recipe=recipe)
         elif name in self.open_fac:
             monomer = Monomer(**self.open_fac[name], recipe=recipe)
-        elif name.upper() == "SUC":
+        elif name[-3:].upper() == "SUC":
             monomer = Monomer(**self.succinic_acid(), recipe=recipe)
         else:
             monomer = Monomer(**self.unknown_monomer(name), recipe=recipe)
