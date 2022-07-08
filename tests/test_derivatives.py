@@ -42,8 +42,8 @@ class TestDerivatives:
 
     @pytest.mark.parametrize(
         "line",  # total (with exceptions on (for glycowork)    40188 / 40198   ( 99.98%)
-        open("data/glycowork_mono.txt", "r").readlines()  # |  2391 /  2391   (100.00%)
-        # open("data/glycowork_poly.txt", "r").readlines()  # |   29709 / 29719   ( 99.97%)
+        # open("data/glycowork_mono.txt", "r").readlines()  # |  2391 /  2391   (100.00%)
+        open("data/glycowork_poly.txt", "r").readlines()  # |   29709 / 29719   ( 99.97%)
         # open("data/general.tsv", "r").readlines() +  # |        103 /   103   (100.00%)
         # open("data/pubchem_mono.tsv", "r").readlines() +  # |   147 /   147   (100.00%)
         # open("data/pubchem_poly.tsv", "r").readlines()  # |    7838 /  7838   (100.00%)
@@ -114,6 +114,12 @@ class TestDerivatives:
         assert output[0][0] == iupac
         assert output[0][1] != ""
         compare_smiles(output[0][1], smiles)
+
+    def test_api(self):
+        assert Glycan("RhaOMe(b1-5)ApiOMe", MonomerFactory()).get_smiles() != ""
+
+    def test_glc(self):
+        assert Glycan("Gal(a1-6)Glc", MonomerFactory()).get_smiles() != ""
 
     @pytest.mark.todo
     def test_en(self):

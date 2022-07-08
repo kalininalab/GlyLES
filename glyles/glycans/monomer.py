@@ -349,45 +349,40 @@ class Monomer:
 
             highest_c = self._enumerate_c_atoms(c_atoms, ringo)
             for c_id in range(1, highest_c):
-                try:
-                    ox_id = self.find_oxygen(c_id)
-                    if sum(self.adjacency[ox_id, :]) > 1:
-                        position = int(np.argwhere(self.x[:, 1] == c_id).squeeze())
-                        highest_c = self.enumerate_side_chain(ox_id, position, highest_c + 1)
-                except ValueError:
-                    pass
+                c_index = int(np.where(self.x[:, 1] == c_id)[0])
+                candidates = np.argwhere((self.adjacency[c_index, :] != 0) & (self.x[:, 1] == 0))
+                if candidates.size != 0:
+                    for candidate in candidates[0]:
+                        if sum(self.adjacency[candidate, :]) > 1:
+                            highest_c = self.enumerate_side_chain(c_index, candidate, highest_c + 1)
 
         return self.structure
 
-    def enumerate_side_chain(self, ox_id, c_id, next_c_id):
+    def enumerate_side_chain(self, parent, atom, next_c_id):
         """
+        Not enumerating ring atoms
 
         Args:
-            ox_id (int): RDKit ID of the oxygen atom the side-chain is attached to
-            c_id (int): RDKit ID of the carbon atom the oxygen (ox_id) is bound to
+            parent (int): RDKit ID of the parent atom of the one to look at here
+            atom (int): RDKit ID of the atom to look at in this recursive call
             next_c_id (int): ID to assign to the next carbon atom
 
         Returns:
-            Number (not RDKit ID) of the currently highest carbon atom in the molecule
+            Number (not RDKit ID) of the highest carbon atom in the molecule
         """
-        c = list(np.argwhere(self.adjacency[ox_id, :] != 0).squeeze())
-        c.remove(c_id)
-        c = c[0]
-        self.x[c, 1] = next_c_id
-        next_c_id += 1
-
-        candidates = list(np.argwhere(self.adjacency[ox_id, :] != 0).squeeze())
-        candidates.remove(c_id)
-        for j, _ in sorted(
-                [(i, sum(self.x[(self.adjacency[c, :] != 0), 0]))
-                 for i, c in enumerate(candidates) if self.x[c, 0] == 6],
-                key=lambda x: x[1],
-                reverse=True
-        ):
-            self.x[candidates[j], 1] = next_c_id
+        # if side chain starts with a carbon, put a number on it
+        if self.x[atom, 0] == 6:
+            self.x[atom, 1] = next_c_id
             next_c_id += 1
 
-        return next_c_id - 1
+        candidates = np.where((self.adjacency[atom, :] != 0) & (self.x[:, 1] == 0))[0].tolist()
+        if parent in candidates:
+            candidates.remove(parent)
+        if len(candidates) > 0:
+            for candidate in candidates:
+                next_c_id = self.enumerate_side_chain(atom, candidate, next_c_id)
+
+        return next_c_id
 
     def _equidistant(self, start, end):
         """
@@ -467,6 +462,8 @@ class Monomer:
                 c_tree.add_node(c_id, p_id)
 
                 children = np.argwhere((self.adjacency[c_id, :] == 1) & (self.x[:, 0] == 6))
+                if len(children) > 1 and any(self.x[children, 2] == 0):
+                    children = np.argwhere((self.adjacency[c_id, :] == 1) & (self.x[:, 0] == 6) & (self.x[:, 2] == 1))
                 for c in children:
                     if int(c) not in c_tree.nodes:
                         stack.append((c_id, int(c)))
@@ -494,10 +491,14 @@ class Monomer:
         else:
             longest_c_chain = self.c1_find(self)
         # enumerate along chain
+        longest_c_chain = list(longest_c_chain)
         c_count = 0
         for c in longest_c_chain:
             c_count += 1
             self.x[c, 1] = c_count
+        # TODO prolonging at c1 and what to so if there are multiple candidates for c5/6
+        child = int(np.where((self.x[:, 0] == 6) & (self.adjacency[:, longest_c_chain[-1]] != 0) & (self.x[:, 2] == 0))[0])
+        self.enumerate_side_chain(longest_c_chain[-1], child, c_count + 1)
 
         return c_count
 
