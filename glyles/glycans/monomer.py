@@ -1,6 +1,7 @@
 import numpy as np
 from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
 
+from glyles.glycans.enum_c import enumerate_carbon
 from glyles.glycans.reactor import SMILESReaktor
 from glyles.glycans.utils import UnreachableError, Tree, Config
 from glyles.grammar.GlycanLexer import GlycanLexer
@@ -15,13 +16,14 @@ class Monomer:
 
         Args:
             origin (Monomer): Other monomer to use to initialize this object
-            **kwargs: arguments to initialize monomer if object is None. Must include name, SMILES, and config
+            **kwargs: arguments to initialize monomer if object is None.
         """
         if isinstance(origin, tuple):
             origin = origin[0]
 
         if origin is None:
             self.name = kwargs["name"]
+            self.__base_name = kwargs["name"]
             self.smiles = kwargs["smiles"]
             self.structure = kwargs.get("struct", None)
             self.config = kwargs["config"]
@@ -41,6 +43,9 @@ class Monomer:
             self.adjacency = origin.get_adjacency()
             self.ring_info = origin.get_ring_info()
             self.x = origin.get_features()
+
+    def base_name(self):
+        return self.__base_name
 
     def get_name(self, full=False):
         """
@@ -325,17 +330,14 @@ class Monomer:
                         self.ring_info.append(ring)
             else:
                 self.ring_info = rings
-            self.x = np.zeros((self.adjacency.shape[0], 3))
+            self.x = np.zeros((self.adjacency.shape[0], 4), dtype=int)
 
-            c_atoms, ringo = [], -1
             # extract some information form the molecule
             for i in range(self.adjacency.shape[0]):
                 atom = self.structure.GetAtomWithIdx(i)
 
                 # store the atom type
                 self.x[i, 0] = atom.GetAtomicNum()
-                if self.x[i, 0] == 6 and len(self.ring_info) > 0 and i in self.ring_info[0]:
-                    c_atoms.append(int(i))
 
                 # if the atom is part of any ring, store the number of that ring
                 for r in range(len(self.ring_info)):
@@ -345,162 +347,10 @@ class Monomer:
                 # identify the oxygen atom in the main ring and set its id to 100
                 if self.x[i, 2] == 1 and self.x[i, 0] == 8:
                     self.x[i, 1] = 100
-                    ringo = i
 
-            highest_c = self._enumerate_c_atoms(c_atoms, ringo)
-            for c_id in range(1, highest_c):
-                c_index = int(np.where(self.x[:, 1] == c_id)[0])
-                candidates = np.argwhere((self.adjacency[c_index, :] != 0) & (self.x[:, 1] == 0))
-                if candidates.size != 0:
-                    for candidate in candidates[0]:
-                        if sum(self.adjacency[candidate, :]) > 1:
-                            highest_c = self.enumerate_side_chain(c_index, candidate, highest_c + 1)
+            enumerate_carbon(self)
 
         return self.structure
-
-    def enumerate_side_chain(self, parent, atom, next_c_id):
-        """
-        Not enumerating ring atoms
-
-        Args:
-            parent (int): RDKit ID of the parent atom of the one to look at here
-            atom (int): RDKit ID of the atom to look at in this recursive call
-            next_c_id (int): ID to assign to the next carbon atom
-
-        Returns:
-            Number (not RDKit ID) of the highest carbon atom in the molecule
-        """
-        # if side chain starts with a carbon, put a number on it
-        if self.x[atom, 0] == 6:
-            self.x[atom, 1] = next_c_id
-            next_c_id += 1
-
-        candidates = np.where((self.adjacency[atom, :] != 0) & (self.x[:, 1] == 0))[0].tolist()
-        if parent in candidates:
-            candidates.remove(parent)
-        if len(candidates) > 0:
-            for candidate in candidates:
-                next_c_id = self.enumerate_side_chain(atom, candidate, next_c_id)
-
-        return next_c_id
-
-    def _equidistant(self, start, end):
-        """
-        Decider for C1 in case the previous splitting rules were all tied.
-
-        Args:
-            start (int): id of the first candidate for C1 atom
-            end (int): id of the second candidate for C1 atom
-
-        Returns:
-            Bool indicating that the start id is the C1 atom
-        """
-        c_start_candidates = np.argwhere((self.adjacency[start, :] == 1) &
-                                         (self.x[:, 0] == 6) & (self.x[:, 2] == 1)).squeeze()
-        c_end_candidates = np.argwhere((self.adjacency[end, :] == 1) &
-                                       (self.x[:, 0] == 6) & (self.x[:, 2] == 1)).squeeze()
-        if c_start_candidates.size == 1 and c_end_candidates.size == 1:
-            start_ring_c = int(c_start_candidates)
-            end_ring_c = int(c_end_candidates)
-
-            start_ring_c_o_candidates = np.argwhere((self.adjacency[start_ring_c, :] == 1) &
-                                                    (self.x[:, 0] == 8) & (self.x[:, 2] != 1)).squeeze()
-            end_ring_c_o_candidates = np.argwhere((self.adjacency[end_ring_c, :] == 1) &
-                                                  (self.x[:, 0] == 8) & (self.x[:, 2] != 1)).squeeze()
-
-            if start_ring_c_o_candidates.size == 1 and end_ring_c_o_candidates.size == 1:
-                raise UnreachableError("C1 atom cannot be detected")
-            elif start_ring_c_o_candidates.size == 1:
-                return True
-        elif c_start_candidates.size == 1:
-            return True
-        return False
-
-    def _evaluate_distance(self, start, end, ringo):
-        """
-        Try to decide on C1 based on their distance to the oxygen in the ring
-
-        Args:
-            start (int): id of the first candidate for C1 atom
-            end (int): id of the second candidate for C1 atom
-            ringo (int): index of the oxygen atom in the ring
-
-        Returns:
-            Bool indicating that the start id is the C1 atom
-        """
-        adj = self.adjacency.copy()
-
-        # as we have an adjacency matrix, multiply it with itself until one of the fields is non-zero
-        while adj[start, ringo] == 0 and adj[end, ringo] == 0:
-            adj = adj @ self.adjacency
-
-        # if both fields are non-zero, we cannot decide here and have to go further
-        if adj[start, ringo] > 0 and adj[end, ringo] > 0:
-            return self._equidistant(start, end)
-        elif adj[start, ringo] > 0:
-            return True
-        return False
-
-    def _enumerate_c_atoms(self, c_atoms, ringo):
-        """
-        Enumerate all carbon atoms starting from the first one
-
-        Args:
-            c_atoms List[int]: List of all ids of C atoms in the ring
-            ringo (int): id of the oxygen atom in the ring of the monomer
-
-        Returns:
-            Nothing
-        """
-        if len(c_atoms) > 0:
-            # create a tree of all carbon atoms directly connected to the main ring of the monomer
-            c_tree = Tree()
-            stack = [(-1, c_atoms[0])]
-            while len(stack) != 0:
-                p_id, c_id = stack[-1]
-                stack = stack[:-1]
-                c_tree.add_node(c_id, p_id)
-
-                children = np.argwhere((self.adjacency[c_id, :] == 1) & (self.x[:, 0] == 6))
-                if len(children) > 1 and any(self.x[children, 2] == 0):
-                    children = np.argwhere((self.adjacency[c_id, :] == 1) & (self.x[:, 0] == 6) & (self.x[:, 2] == 1))
-                for c in children:
-                    if int(c) not in c_tree.nodes:
-                        stack.append((c_id, int(c)))
-
-            # find the deepest node and rehang the tree to this node
-            deepest_id, _ = c_tree.deepest_node()
-            c_tree = c_tree.rehang_tree(deepest_id)
-            longest_c_chain = c_tree.longest_chain()
-
-            # now the two C1 candidates can be found at the ends of the longest chain
-            start, end = longest_c_chain[0], longest_c_chain[-1]
-
-            # check conditions
-            start_o_conn = np.argwhere((self.adjacency[start, :] == 1) & (self.x[:, 0] == 8) &
-                                       (self.x[:, 2] != 1)).squeeze().size > 0
-            end_o_conn = np.argwhere((self.adjacency[end, :] == 1) & (self.x[:, 0] == 8) &
-                                     (self.x[:, 2] != 1)).squeeze().size > 0
-
-            # decide on c1
-            if start_o_conn and end_o_conn:
-                if not self._evaluate_distance(start, end, ringo):
-                    longest_c_chain = reversed(longest_c_chain)
-            elif end_o_conn:
-                longest_c_chain = reversed(longest_c_chain)
-        else:
-            longest_c_chain = self.c1_find(self)
-        # enumerate along chain
-        longest_c_chain = list(longest_c_chain)
-        c_count = 0
-        for c in longest_c_chain:
-            c_count += 1
-            self.x[c, 1] = c_count
-        # TODO prolonging at c1 and what to so if there are multiple candidates for c5/6
-        child = int(np.where((self.x[:, 0] == 6) & (self.adjacency[:, longest_c_chain[-1]] != 0) & (self.x[:, 2] == 0))[0])
-        self.enumerate_side_chain(longest_c_chain[-1], child, c_count + 1)
-
-        return c_count
 
     def find_oxygen(self, binding_c_id):
         """

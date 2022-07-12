@@ -1,4 +1,6 @@
 from enum import Enum
+import networkx as nx
+from networkx.algorithms import isomorphism
 
 
 class Verbosity(Enum):
@@ -57,6 +59,42 @@ ketoses2 = {
     ("Leg", Lactole.PYRANOSE), ("Aci", Lactole.PYRANOSE), ("Kdo", Lactole.PYRANOSE), ("Dha", Lactole.PYRANOSE),
     ("Fru", Lactole.PYRANOSE), ("Sor", Lactole.PYRANOSE), ("Tag", Lactole.PYRANOSE), ("Psi", Lactole.PYRANOSE),
 }
+
+
+def mol_to_nx(mol):
+    g = nx.DiGraph()
+    for atom in mol.GetAtoms():
+        # g.add_node(atom.GetIdx())
+        g.add_node(atom.GetIdx(), chiral=atom.GetChiralTag())
+    for bond in mol.GetBonds():
+        # g.add_edge(bond.GetBeginAtomIdx(), bond.GetEndAtomIdx())
+        g.add_edge(bond.GetBeginAtomIdx(), bond.GetEndAtomIdx(), type=bond.GetBondType())
+    return g
+
+
+def find_isomorphism(mol1, mol2):
+    def delete_children(mppng, graph, parent, child):
+        for c in [x for x in graph.neighbors(child) if x != parent]:
+            delete_children(mppng, graph, child, c)
+        del mppng[child]
+
+    mol1_nx = mol_to_nx(mol1)
+    mol2_nx = mol_to_nx(mol2)
+
+    matcher = isomorphism.GraphMatcher(mol1_nx, mol2_nx)
+    if not matcher.subgraph_is_isomorphic():
+        return []
+
+    mapping = matcher.mapping
+    inv_map = {v: k for k, v in mapping.items()}
+    mol2_ring = mol2.GetRingInfo().AtomRings()[0]
+    mol1_ring = [inv_map[r] for r in mol2_ring]
+
+    for a1, a2 in zip(mol1_ring, mol2_ring):
+        if mol1_nx.nodes[a1]["chiral"] != mol2_nx.nodes[a2]["chiral"]:
+            for c in set(mol1_nx.neighbors(a1)).difference(set(mol1_ring)):
+                delete_children(mapping, mol1_nx, a1, c)
+    return list(mapping.keys())
 
 
 class Node:

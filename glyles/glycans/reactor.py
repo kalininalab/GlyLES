@@ -226,7 +226,13 @@ class SMILESReaktor:
             if t != GlycanLexer.MOD or n.count("L") + n.count("D") == len(n) or n in ['-', '-ol', '-onic']:
                 continue
             if n == "A":
-                self.side_chains[int(max(self.monomer.x[self.monomer.x[:, 0] == 6, 1]))][O] = "(=O)O"
+                # c_id = int(max(self.monomer.x[(self.monomer.x[:, 2] == 1) & (self.monomer.x[:, 0] == 6), 1]))
+                c_id = int(np.where(self.monomer.x[:, 1] == sum((self.monomer.x[:, 2] == 1) & (self.monomer.x[:, 0] == 6)))[0])
+                children = np.where((self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) & (self.monomer.x[:, 2] == 0))[0].tolist()
+                while len(children) != 0:
+                    c_id = int(children[0])
+                    children = np.where((self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) & (self.monomer.x[:, 2] == 0) & (self.monomer.x[:, 1] > self.monomer.x[c_id, 1]))[0].tolist()
+                self.side_chains[self.monomer.x[c_id, 1]][O] = "(=O)O"
             elif n == "N":
                 self.side_chains[1 if self.monomer.get_name() in ['Fru', 'Tag', 'Sor', 'Psi'] else 2][O] = "N"
             elif n == "D-":
