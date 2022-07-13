@@ -3,7 +3,7 @@ from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
 
 from glyles.glycans.enum_c import enumerate_carbon
 from glyles.glycans.reactor import SMILESReaktor
-from glyles.glycans.utils import UnreachableError, Tree, Config
+from glyles.glycans.utils import UnreachableError, Tree, Config, find_isomorphism
 from glyles.grammar.GlycanLexer import GlycanLexer
 
 
@@ -23,8 +23,8 @@ class Monomer:
 
         if origin is None:
             self.name = kwargs["name"]
-            self.__base_name = kwargs["name"]
             self.smiles = kwargs["smiles"]
+            self.__root_smiles = kwargs["smiles"]
             self.structure = kwargs.get("struct", None)
             self.config = kwargs["config"]
             self.isomer = kwargs["isomer"]
@@ -34,6 +34,7 @@ class Monomer:
         else:
             self.name = origin.get_name()
             self.smiles = origin.get_smiles()
+            self.__root_smiles = origin.root_smiles()
             self.c1_find = origin.get_c1_finder()
             self.structure = origin.get_structure()
             self.config = origin.get_config()
@@ -44,8 +45,8 @@ class Monomer:
             self.ring_info = origin.get_ring_info()
             self.x = origin.get_features()
 
-    def base_name(self):
-        return self.__base_name
+    def root_smiles(self):
+        return self.__root_smiles
 
     def get_name(self, full=False):
         """
@@ -347,6 +348,14 @@ class Monomer:
                 # identify the oxygen atom in the main ring and set its id to 100
                 if self.x[i, 2] == 1 and self.x[i, 0] == 8:
                     self.x[i, 1] = 100
+
+            iso = list(find_isomorphism(self.smiles, self.root_smiles()).keys())
+            if len(iso) == 0:
+                iso = list(find_isomorphism(self.root_smiles(), self.smiles).values())
+            if len(iso) == 0:
+                self.x[:, 3] = 1
+            else:
+                self.x[iso, 3] = 1
 
             enumerate_carbon(self)
 

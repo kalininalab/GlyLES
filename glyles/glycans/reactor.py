@@ -34,7 +34,7 @@ functional_groups = {
     "N": "N",
     "NFo": "NC=O",
     "Orn": "NCCC[C@H](N)C(=O)O",
-    "P": "P(=O)(O)(O)",
+    "P": "OP(=O)(O)(O)",
     "PhNO2": "Oc2ccc([N+]([O-])=O)cc2",
     "Pp": "OC(=O)CC",
     "S": "S(=O)(=O)(O)",
@@ -226,8 +226,12 @@ class SMILESReaktor:
             if t != GlycanLexer.MOD or n.count("L") + n.count("D") == len(n) or n in ['-', '-ol', '-onic']:
                 continue
             if n == "A":
-                # c_id = int(max(self.monomer.x[(self.monomer.x[:, 2] == 1) & (self.monomer.x[:, 0] == 6), 1]))
-                c_id = int(np.where(self.monomer.x[:, 1] == sum((self.monomer.x[:, 2] == 1) & (self.monomer.x[:, 0] == 6)))[0])
+                if sum(self.monomer.x[:, 2] == 1) == 0:
+                    # TODO: Exclude functional groups by getting isomorphism to work
+                    c_id = int(max(self.monomer.x[self.monomer.x[:, 0] == 6, 1]))
+                else:
+                    c_id = int(max(self.monomer.x[(self.monomer.x[:, 0] == 6) & (self.monomer.x[:, 2] == 1), 1]))
+                    c_id = int(np.where(self.monomer.x[:, 1] == c_id)[0])
                 children = np.where((self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) & (self.monomer.x[:, 2] == 0))[0].tolist()
                 while len(children) != 0:
                     c_id = int(children[0])
@@ -255,6 +259,8 @@ class SMILESReaktor:
                     full &= self.set_fg(O, int(n[0]), elem, n[4:-1])
                 elif n[1] in "NOP" and n[1:] not in n_conflict + o_conflict + p_conflict:  # connect a functional group with N or O in between
                     bridge, fg = extract_bridge(n)
+                    if len(bridge) > 0 and functional_groups[fg][0] == bridge[-1]:
+                        bridge = bridge[:-1]
                     full &= self.set_fg(O, int(n[0]), bridge, fg)
                 elif n[1] == "C" and n[1:] not in c_conflict:  # add a group connected directly to the C-Atom
                     bridge, fg = extract_bridge(n)
@@ -266,6 +272,8 @@ class SMILESReaktor:
                     full &= self.set_fg(O, int(n[0]), elem, n[1:])
             elif n[0] in "NOP" and n not in n_conflict + o_conflict + p_conflict:
                 bridge, fg = extract_bridge(n)
+                if len(bridge) > 0 and functional_groups[fg][0] == bridge[-1]:
+                    bridge = bridge[:-1]
                 if fg == "Me":
                     full &= self.set_fg(O, self.ring_c, bridge, fg)
                 else:

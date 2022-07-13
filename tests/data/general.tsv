@@ -21,7 +21,7 @@ Glc1P	C([C@@H]1[C@H]([C@@H]([C@H](C(O1)OP(=O)(O)O)O)O)O)O
 Glc1Pb	C([C@@H]1[C@H]([C@@H]([C@H]([C@@H](O1)OP(=O)(O)O)O)O)O)O
 Gal1Pa	C([C@@H]1[C@@H]([C@@H]([C@H]([C@H](O1)OP(=O)(O)O)O)O)O)O
 GlcN1Pa	C([C@@H]1[C@H]([C@@H]([C@H]([C@H](O1)OP(=O)(O)O)N)O)O)O
-Glc1PNa	C([C@@H]1[C@H]([C@@H]([C@H]([C@H](O1)OP(=O)(O)O)N)O)O)O
+Glc1P-Na	C([C@@H]1[C@H]([C@@H]([C@H]([C@H](O1)OP(=O)(O)O)N)O)O)O
 Fru2Pfb	C([C@@H]1[C@H]([C@@H]([C@](O1)(CO)OP(=O)(O)O)O)O)O
 Man6Pb	C([C@@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)O)O)O)O)OP(=O)(O)O
 Glc3S	C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)OS(=O)(=O)O)O)O

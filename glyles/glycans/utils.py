@@ -1,6 +1,9 @@
 from enum import Enum
+from typing import List
+
 import networkx as nx
 from networkx.algorithms import isomorphism
+from rdkit.Chem import MolFromSmiles, MolToSmiles
 
 
 class Verbosity(Enum):
@@ -64,37 +67,49 @@ ketoses2 = {
 def mol_to_nx(mol):
     g = nx.DiGraph()
     for atom in mol.GetAtoms():
-        # g.add_node(atom.GetIdx())
-        g.add_node(atom.GetIdx(), chiral=atom.GetChiralTag())
+        g.add_node(atom.GetIdx(), type=atom.GetAtomicNum(), chiral=atom.GetChiralTag())
     for bond in mol.GetBonds():
-        # g.add_edge(bond.GetBeginAtomIdx(), bond.GetEndAtomIdx())
         g.add_edge(bond.GetBeginAtomIdx(), bond.GetEndAtomIdx(), type=bond.GetBondType())
     return g
 
 
-def find_isomorphism(mol1, mol2):
+def find_isomorphism(mol1: str, mol2: str):
+    mol1 = MolFromSmiles(mol1)
+    mol1_id = 0
+    for ring in mol1.GetRingInfo().AtomRings():
+        for a in ring:
+            if mol1.GetAtomWithIdx(a).GetAtomicNum() == 8:
+                mol1_id = a
+    mol1 = MolFromSmiles(MolToSmiles(mol1, rootedAtAtom=mol1_id))
+
+    mol2 = MolFromSmiles(mol2)
+    mol2_id = 0
+    for ring in mol2.GetRingInfo().AtomRings():
+        for a in ring:
+            if mol2.GetAtomWithIdx(a).GetAtomicNum() == 8:
+                mol2_id = a
+    mol2 = MolFromSmiles(MolToSmiles(mol2, rootedAtAtom=mol2_id))
+
     def delete_children(mppng, graph, parent, child):
-        for c in [x for x in graph.neighbors(child) if x != parent]:
-            delete_children(mppng, graph, child, c)
+        for ch in [x for x in graph.neighbors(child) if x != parent and x in mppng]:
+            delete_children(mppng, graph, child, ch)
         del mppng[child]
 
     mol1_nx = mol_to_nx(mol1)
     mol2_nx = mol_to_nx(mol2)
 
-    matcher = isomorphism.GraphMatcher(mol1_nx, mol2_nx)
-    if not matcher.subgraph_is_isomorphic():
-        return []
+    longest_iso = {}
+    matcher = isomorphism.GraphMatcher(mol1_nx, mol2_nx, node_match=lambda n1, n2: n1["type"] == n2["type"])
+    for mapping in matcher.subgraph_isomorphisms_iter():
+        for a1 in list(mapping.keys()):
+            if mol1_nx.nodes[a1]["chiral"] != mol2_nx.nodes[mapping[a1]]["chiral"]:
+                for c in set(mol1_nx.neighbors(a1)).difference(set(mapping.keys())):
+                    if c in mapping:
+                        delete_children(mapping, mol1_nx, a1, c)
 
-    mapping = matcher.mapping
-    inv_map = {v: k for k, v in mapping.items()}
-    mol2_ring = mol2.GetRingInfo().AtomRings()[0]
-    mol1_ring = [inv_map[r] for r in mol2_ring]
-
-    for a1, a2 in zip(mol1_ring, mol2_ring):
-        if mol1_nx.nodes[a1]["chiral"] != mol2_nx.nodes[a2]["chiral"]:
-            for c in set(mol1_nx.neighbors(a1)).difference(set(mol1_ring)):
-                delete_children(mapping, mol1_nx, a1, c)
-    return list(mapping.keys())
+        if len(mapping) > len(longest_iso):
+            longest_iso = mapping
+    return longest_iso
 
 
 class Node:
