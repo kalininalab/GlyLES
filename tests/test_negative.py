@@ -29,19 +29,3 @@ class TestNegatives:
         assert len(output[0]) == 2
         assert output[0][0] == case + config
         assert output[0][1] == ""
-
-    @pytest.mark.parametrize("monomer", ["Man", "Gal", "Glc", "NeuAc", "Gal3S", "Glc4P"])
-    @pytest.mark.parametrize("ending", ["-ol", "-onic"])
-    @pytest.mark.parametrize("full", [True, False])
-    def test_not_fully_parsable(self, monomer, ending, full):
-        unparsable = monomer + ending
-        output = convert(unparsable, returning=True, full=full)
-        smiles = convert(monomer, returning=True, full=True)
-
-        assert len(output) == 1
-        assert len(output[0]) == 2
-        assert output[0][0] == unparsable
-        if full:
-            assert output[0][1] == ""
-        else:
-            assert output[0][1] == smiles[0][1]

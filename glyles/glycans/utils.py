@@ -1,9 +1,10 @@
 from enum import Enum
-from typing import List
 
 import networkx as nx
 from networkx.algorithms import isomorphism
-from rdkit.Chem import MolFromSmiles, MolToSmiles
+from rdkit.Chem import MolFromSmiles, FindMolChiralCenters
+
+from itertools import permutations
 
 
 class Verbosity(Enum):
@@ -64,52 +65,176 @@ ketoses2 = {
 }
 
 
-def mol_to_nx(mol):
-    g = nx.DiGraph()
-    for atom in mol.GetAtoms():
-        g.add_node(atom.GetIdx(), type=atom.GetAtomicNum(), chiral=atom.GetChiralTag())
-    for bond in mol.GetBonds():
-        g.add_edge(bond.GetBeginAtomIdx(), bond.GetEndAtomIdx(), type=bond.GetBondType())
-    return g
+def find_rings(mol):
+    rings = mol.GetRingInfo().AtomRings()
+    if len(rings) > 0:
+        ring_info = [None]
+        for ring in rings:
+            found_ox = False
+            for atom in ring:
+                if mol.GetAtomWithIdx(atom).GetAtomicNum() == 8:
+                    ring_info[0] = ring
+                    found_ox = True
+                    break
+            if not found_ox:
+                ring_info.append(ring)
+    else:
+        ring_info = rings
+    return ring_info
+
+
+def get_rings(mol):
+    rings = find_rings(mol)
+    if len(rings) == 0:
+        pass
+
+    ox_id = -1
+    for a in rings[0]:
+        if mol.GetAtomWithIdx(a).GetAtomicNum() == 8:
+            ox_id = a
+            break
+    assert ox_id != -1, "Something went wrong"
+
+    ring = rings[0][rings[0].index(ox_id):] + rings[0][:rings[0].index(ox_id)]
+    return ring
+
+
+def count_chiral_matches(ring1, chiral1, ring2, chiral2):
+    return sum(chiral1.get(a1, "T") == chiral2.get(a2, "T") for a1, a2 in zip(ring1, ring2))
+
+
+def match_groups(mol1, a1, ring1, chiral1, mol2, a2, ring2, chiral2):
+    if chiral1.get(a1, "T") != chiral2.get(a2, "T"):
+        return {}
+
+    neighbors1 = [a.GetIdx() for a in mol1.GetAtomWithIdx(a1).GetNeighbors() if a.GetIdx() not in ring1]
+    neighbors2 = [a.GetIdx() for a in mol2.GetAtomWithIdx(a2).GetNeighbors() if a.GetIdx() not in ring2]
+
+    if len(neighbors1) < len(neighbors2):
+        neighbors1 += [None] * (len(neighbors2) - len(neighbors1))
+    elif len(neighbors1) > len(neighbors2):
+        neighbors2 += [None] * (len(neighbors1) - len(neighbors2))
+
+    best_map = {}
+    for neighbors2_perm in permutations(neighbors2):
+        for n1, n2 in zip(neighbors1, neighbors2_perm):
+            if mol1.GetAtomWithIdx(n1).GetAtomicNum() == mol2.GetAtomWithIdx(n2).GetAtomicNum():
+                tmp_map = {n1: n2}
+                tmp_map.update(match_groups(mol1, n1, ring1 + [a1], chiral1, mol2, n2, ring2 + [a2], chiral2))
+                if len(tmp_map) > len(best_map):
+                    best_map = tmp_map
+
+    return best_map
 
 
 def find_isomorphism(mol1: str, mol2: str):
     mol1 = MolFromSmiles(mol1)
-    mol1_id = 0
-    for ring in mol1.GetRingInfo().AtomRings():
-        for a in ring:
-            if mol1.GetAtomWithIdx(a).GetAtomicNum() == 8:
-                mol1_id = a
-    mol1 = MolFromSmiles(MolToSmiles(mol1, rootedAtAtom=mol1_id))
-
+    chiral1 = dict(FindMolChiralCenters(mol1))
     mol2 = MolFromSmiles(mol2)
-    mol2_id = 0
-    for ring in mol2.GetRingInfo().AtomRings():
-        for a in ring:
-            if mol2.GetAtomWithIdx(a).GetAtomicNum() == 8:
-                mol2_id = a
-    mol2 = MolFromSmiles(MolToSmiles(mol2, rootedAtAtom=mol2_id))
+    chiral2 = dict(FindMolChiralCenters(mol2))
 
-    def delete_children(mppng, graph, parent, child):
-        for ch in [x for x in graph.neighbors(child) if x != parent and x in mppng]:
-            delete_children(mppng, graph, child, ch)
-        del mppng[child]
+    ring1 = get_rings(mol1)
+    ring2 = get_rings(mol2)
 
-    mol1_nx = mol_to_nx(mol1)
-    mol2_nx = mol_to_nx(mol2)
+    mapping = {}
 
-    longest_iso = {}
-    matcher = isomorphism.GraphMatcher(mol1_nx, mol2_nx, node_match=lambda n1, n2: n1["type"] == n2["type"])
+    fwd = count_chiral_matches(ring1, chiral1, ring2, chiral2)
+    bwd = count_chiral_matches(ring1, chiral1, [ring2[0]] + list(reversed(ring2[1:])), chiral2)
+
+    print(fwd, "|", bwd)
+
+    ring1 = list(ring1)
+
+    if fwd >= bwd:
+        for k, v in zip(ring1, ring2):
+            mapping[k] = v
+        ring2 = list(ring2)
+    else:
+        for k, v in zip(ring1, [ring2[0]] + list(reversed(ring2[1:]))):
+            mapping[k] = v
+        ring2 = [ring2[0]] + list(reversed(ring2[1:]))
+
+    print(mapping)
+    for a in ring1:
+        mapping.update(match_groups(mol1, a, ring1, chiral1, mol2, mapping[a], ring2, chiral2))
+
+    return mapping
+
+
+def mol_to_nx(mol):
+    g = nx.Graph()
+    for atom in mol.GetAtoms():
+        g.add_node(atom.GetIdx(), type=atom.GetAtomicNum())  # , chiral=chiral[atom.GetIdx()])
+    for bond in mol.GetBonds():
+        g.add_edge(bond.GetBeginAtomIdx(), bond.GetEndAtomIdx(), type=bond.GetBondTypeAsDouble())
+    return g
+
+
+def networkx_match_rings(mol1_ring, mol2_ring):
+    matcher = isomorphism.GraphMatcher(mol1_ring, mol2_ring, node_match=lambda n1, n2: n1["type"] == n2["type"],
+                                       edge_match=lambda e1, e2: e1["type"] == e2["type"])
     for mapping in matcher.subgraph_isomorphisms_iter():
-        for a1 in list(mapping.keys()):
-            if mol1_nx.nodes[a1]["chiral"] != mol2_nx.nodes[mapping[a1]]["chiral"]:
-                for c in set(mol1_nx.neighbors(a1)).difference(set(mapping.keys())):
-                    if c in mapping:
-                        delete_children(mapping, mol1_nx, a1, c)
+        yield dict(mapping)
 
-        if len(mapping) > len(longest_iso):
-            longest_iso = mapping
+
+def networkx_fragment_isomorphism(mol1_nx, ring1, mol2_nx, ring2):
+    longest_iso = {}
+    mol1_no_ring = mol1_nx.subgraph(set(list(mol1_nx.nodes)).difference(set(ring1)))
+    mol2_no_ring = mol2_nx.subgraph(set(list(mol2_nx.nodes)).difference(set(ring2)))
+    for iso in networkx_match_rings(mol1_nx.subgraph(ring1), mol2_nx.subgraph(ring2)):
+        ring_iso = {}
+        for k, v in iso.items():
+            k_neighbors = [x for x in mol1_nx.neighbors(k) if x not in ring1]
+            v_neighbors = [x for x in mol2_nx.neighbors(v) if x not in ring2]
+            if len(k_neighbors) < len(v_neighbors):
+                k_neighbors += [None for _ in range((len(v_neighbors) - len(k_neighbors)))]
+            elif len(v_neighbors) < len(k_neighbors):
+                v_neighbors += [None for _ in range((len(k_neighbors) - len(v_neighbors)))]
+
+            pos_iso = {}
+            for v_neigh in permutations(v_neighbors):
+                fg_iso = {}
+                for k_n, v_n in zip(k_neighbors, v_neigh):
+                    if k_n is None or v_n is None:
+                        continue
+
+                    pair_iso = {}
+                    matcher = isomorphism.GraphMatcher(
+                        mol1_nx.subgraph(nx.node_connected_component(mol1_no_ring, k_n).union([k])),
+                        mol2_nx.subgraph(nx.node_connected_component(mol2_no_ring, v_n).union([v])),
+                        node_match=lambda n1, n2: n1["type"] == n2["type"],
+                        edge_match=lambda e1, e2: e1["type"] == e2["type"]
+                    )
+                    for mapping in matcher.subgraph_isomorphisms_iter():
+                        if len(mapping) > len(pair_iso):
+                            pair_iso = mapping
+
+                    fg_iso.update(pair_iso)
+
+                if len(fg_iso) > len(pos_iso):
+                    pos_iso = fg_iso
+
+            ring_iso.update(pos_iso)
+
+        ring_iso.update(iso)
+
+        if len(ring_iso) > len(longest_iso):
+            longest_iso = ring_iso
+
     return longest_iso
+
+
+def find_isomorphism_nx(mol1: str, mol2: str):
+    mol1_rd = MolFromSmiles(mol1)
+    mol2_rd = MolFromSmiles(mol2)
+
+    ring1 = get_rings(mol1_rd)
+    ring2 = get_rings(mol2_rd)
+
+    mol1_nx = mol_to_nx(mol1_rd)
+    mol2_nx = mol_to_nx(mol2_rd)
+
+    return networkx_fragment_isomorphism(mol1_nx, ring1, mol2_nx, ring2)
 
 
 class Node:

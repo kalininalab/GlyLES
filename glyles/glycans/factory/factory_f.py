@@ -8,11 +8,11 @@ class FuranoseFactory:
 
     __monomers = {
         # Heptose
-        "HEP": {"name": "Hep", "config": Config.UNDEF, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,
+        "HEP": {"name": "Hep", "config": Config.UNDEF, "isomer": Enantiomer.U, "lactole": Lactole.FURANOSE,
                 "smiles": "OCC(O)C(O)C1OC(O)C(O)C1O"},
-        "A_HEP": {"name": "Hep", "config": Config.ALPHA, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,
+        "A_HEP": {"name": "Hep", "config": Config.ALPHA, "isomer": Enantiomer.U, "lactole": Lactole.FURANOSE,
                   "smiles": "OCC(O)C(O)C1O[C@H](O)C(O)C1O"},
-        "B_HEP": {"name": "Hep", "config": Config.BETA, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,
+        "B_HEP": {"name": "Hep", "config": Config.BETA, "isomer": Enantiomer.U, "lactole": Lactole.FURANOSE,
                   "smiles": "OCC(O)C(O)C1O[C@@H](O)C(O)C1O"},
 
         # Hexose
@@ -251,11 +251,11 @@ class FuranoseFactory:
                   "smiles": "OC[C@@]1(O)OC[C@@H](O)[C@H]1O"},
 
         # Xylulose
-        "XLU": {"name": "Xul", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+        "XLU": {"name": "Xlu", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                 "smiles": "OCC1(O)OC[C@@H](O)[C@@H]1O"},
-        "A_XLU": {"name": "Xul", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+        "A_XLU": {"name": "Xlu", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                   "smiles": "OC[C@]1(O)OC[C@@H](O)[C@@H]1O"},
-        "B_XLU": {"name": "Xul", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
+        "B_XLU": {"name": "Xlu", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                   "smiles": "OC[C@@]1(O)OC[C@@H](O)[C@@H]1O"},
 
         # Aceric acid
