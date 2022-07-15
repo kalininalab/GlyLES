@@ -369,13 +369,20 @@ class TestParser:
         id_child_111 = list(g.edges(id_child_11))[0][1]
         check_child(g, id_child_11, id_child_111, monomers[1], f"({c[1]})", 0, lactole=Lactole.PYRANOSE)
 
-    @pytest.mark.parametrize("orientation", [Config.ALPHA, Config.BETA])
+    @pytest.mark.parametrize("orientation", [Config.ALPHA, Config.BETA, Config.UNDEF])
     @pytest.mark.parametrize("pos_man", [1, 2, 3, 4, 6])
     @pytest.mark.parametrize("pos_glc", [2, 3, 4, 6])
     @pytest.mark.parametrize("conf_glc", [Config.ALPHA, Config.BETA, Config.UNDEF])
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_connections(self, orientation, pos_man, pos_glc, conf_glc, mode):
-        config = "a" if orientation == Config.ALPHA else "b"
+        if orientation == Config.ALPHA:
+            config = "a"
+        elif orientation == Config.BETA:
+            config = "b"
+        else:
+            if mode != "full":
+                return
+            config = ""
         iupac = f"Man({config}{pos_man}-{pos_glc})Glc"
         factory = MonomerFactory()
         if conf_glc == Config.ALPHA:

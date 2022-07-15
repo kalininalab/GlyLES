@@ -225,9 +225,10 @@ class SMILESReaktor:
         for n, t in zip(names, types):
             if t != GlycanLexer.MOD or n.count("L") + n.count("D") == len(n) or n in ['-', '-ol', '-onic']:
                 continue
+            if n[0] == "-":
+                n = n[1:]
             if n == "A":
                 if sum(self.monomer.x[:, 2] == 1) == 0:
-                    # TODO: Exclude functional groups by getting isomorphism to work
                     c_id = int(max(self.monomer.x[self.monomer.x[:, 0] == 6, 1]))
                 else:
                     c_id = int(max(self.monomer.x[(self.monomer.x[:, 0] == 6) & (self.monomer.x[:, 2] == 1), 1]))

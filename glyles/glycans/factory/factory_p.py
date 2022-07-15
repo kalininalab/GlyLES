@@ -179,9 +179,9 @@ class PyranoseFactory:
         "ARA": {"name": "Ara", "config": Config.UNDEF, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
                 "smiles": "O[C@H]1COC(O)[C@H](O)[C@H]1O"},
         "A_ARA": {"name": "Ara", "config": Config.ALPHA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
-                  "smiles": "O[C@H]1CO[C@H](O)[C@H](O)[C@H]1O"},
-        "B_ARA": {"name": "Ara", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
                   "smiles": "O[C@H]1CO[C@@H](O)[C@H](O)[C@H]1O"},
+        "B_ARA": {"name": "Ara", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
+                  "smiles": "O[C@H]1CO[C@H](O)[C@H](O)[C@H]1O"},
 
         # Lyxose
         "LYX": {"name": "Lyx", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
