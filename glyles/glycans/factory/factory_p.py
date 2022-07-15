@@ -382,7 +382,7 @@ class PyranoseFactory:
 
         # Erwiniose
         "ERWINIOSE": {"name": "Erwiniose", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
-                      "smiles": "OC[C@H]1OC(O)(CO)[C@@H](O)[C@H](O)[C@@H]1O"},
+                      "smiles": "C[C@@H](O)C[C@H](O)[C@@]1(O)C[C@@H](O)C(O)O[C@@H]1C"},
         "A_ERWINIOSE": {"name": "Erwiniose", "config": Config.ALPHA, "isomer": Enantiomer.D,
                         "lactole": Lactole.PYRANOSE,
                         "smiles": "C[C@@H](O)C[C@H](O)[C@@]1(O)C[C@@H](O)[C@@H](O)O[C@@H]1C"},
