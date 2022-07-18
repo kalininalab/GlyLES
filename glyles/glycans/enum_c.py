@@ -78,9 +78,7 @@ def enumerate_c_atoms(monomer, c_atoms, ringo):
             stack = stack[:-1]
             c_tree.add_node(c_id, p_id)
 
-            children = np.where((monomer.adjacency[c_id, :] == 1) & (monomer.x[:, 0] == 6))[0]  #  & (monomer.x[:, 3] == 1))
-            # if len(children) > 1 and any(monomer.x[children, 2] == 0):
-            #     children = np.argwhere((monomer.adjacency[c_id, :] == 1) & (monomer.x[:, 0] == 6) & (monomer.x[:, 2] == 1))
+            children = np.where((monomer.adjacency[c_id, :] == 1) & (monomer.x[:, 0] == 6))[0]
             for c in children:
                 if int(c) not in c_tree.nodes:
                     stack.append((c_id, int(c)))
@@ -106,30 +104,14 @@ def enumerate_c_atoms(monomer, c_atoms, ringo):
         elif end_o_conn:
             longest_c_chain = reversed(longest_c_chain)
     else:
-        longest_c_chain = monomer.c1_find(monomer)
+        longest_c_chain = monomer.c1_find(monomer.structure)
     longest_c_chain = list(longest_c_chain)
-
-    # enumerate atoms attached to the lowest carbon in ring
-    # c_start_child = np.where((monomer.x[:, 0] == 6) & (monomer.adjacency[:, longest_c_chain[0]] != 0) & (monomer.x[:, 2] == 0))[0]
-    # if c_start_child.size != 0 and len(c_atoms) > 0:
-    #     enumerate_side_chain(monomer, longest_c_chain[-1], int(c_start_child), 1)
-    #     f = (monomer.x[:, 1] != 0) & (monomer.x[:, 0] == 6)
-    #     next_c_id = max(f) + 1
-    #     if next_c_id != 1:
-    #         monomer.x[f, 1] = next_c_id - monomer.x[f, 1]
-    # else:
-    #     next_c_id = 1
 
     # enumerate along chain
     next_c_id = 1
     for c in longest_c_chain:
         monomer.x[c, 1] = next_c_id
         next_c_id += 1
-
-    # enumerate atoms attached to the highest carbon in ring
-    # c_end_child = np.where((monomer.x[:, 0] == 6) & (monomer.adjacency[:, longest_c_chain[-1]] != 0) & (monomer.x[:, 2] == 0))[0]
-    # if c_end_child.size != 0 and len(c_atoms) > 0:
-    #     next_c_id = enumerate_side_chain(monomer, longest_c_chain[-1], int(c_end_child), next_c_id)
 
     return next_c_id
 

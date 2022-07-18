@@ -14,14 +14,14 @@ O, C = 0, 1
 
 functional_groups = {
     "": "",
-    "Aep": "NCCP([O-])([O-])=O",
+    "Aep": "NCCP([O-])(=O)[O-]",
     "Ala": "N[C@@H](C)C(=O)O",
-    "Am": "C(C)(=N)",
+    "Am": "C(=N)C",
     "Asp": "N[C@@H](CC(=O)O)C(=O)O",
     "Br": "Br",
     "Cho": "OCC[N+](C)(C)C",
     "Cl": "Cl",
-    "Cm": "NC=O",
+    "Cm": "NC(=O)",
     "Cys": "N[C@@H](CS)C(=O)O",
     "Etn": "OCCN",
     "EtN": "OCCN",
@@ -34,10 +34,10 @@ functional_groups = {
     "N": "N",
     "NFo": "NC=O",
     "Orn": "NCCC[C@H](N)C(=O)O",
-    "P": "OP(=O)(O)(O)",
+    "P": "OP(=O)(O)O",
     "PhNO2": "Oc2ccc([N+]([O-])=O)cc2",
     "Pp": "OC(=O)CC",
-    "S": "S(=O)(=O)(O)",
+    "S": "S(=O)(=O)O",
     "Pro": "N2CCCC2C(=O)O",
     "Ser": "OC(=O)[C@H](N)CO",
     "Tf": "OS(=O)(=O)C(F)(F)F",
@@ -45,8 +45,9 @@ functional_groups = {
     "Ulo": "OC(c2ccccc2)(c2ccccc2(Cl))CCN(C)C",
 
     # COH land
+    "A": "OC(=O)C",
     "Allyl": "CC=C",
-    "Ac": "C(C)(=O)",
+    "Ac": "C(=O)C",
     "Ang": "OC(=O)C/(C)=C\C",
     "Bz": "C(=O)c2ccccc2",
     "Bn": "OCc2ccccc2",
@@ -58,7 +59,7 @@ functional_groups = {
     "Dhpa": "OC(=O)C(O)(O)CCC",
     "Etg": "OCCO",
     "Fer": "OC(=O)/C=C/c2ccc(O)c(OC)c2",
-    "Fo": "OC=O",
+    "Fo": "OC(=O)",
     "Gc": "C(=O)CO",
     "Gly": "OCC(O)CO",
     "Gro": "OCC(O)CO",
@@ -237,20 +238,23 @@ class SMILESReaktor:
                 while len(children) != 0:
                     c_id = int(children[0])
                     children = np.where((self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) & (self.monomer.x[:, 2] == 0) & (self.monomer.x[:, 1] > self.monomer.x[c_id, 1]))[0].tolist()
-                self.side_chains[self.monomer.x[c_id, 1]][O] = "(=O)O"
+                if len(self.side_chains[self.monomer.x[c_id, 1]][O]) > 0 and self.side_chains[self.monomer.x[c_id, 1]][O][-1] == "O":
+                    self.side_chains[self.monomer.x[c_id, 1]][O] += "C(=O)O"
+                else:
+                    self.side_chains[self.monomer.x[c_id, 1]][O] += "(=O)O"
             elif n == "N":
-                self.side_chains[1 if self.monomer.get_name() in ['Fru', 'Tag', 'Sor', 'Psi'] else 2][O] = "N"
+                self.side_chains[1 if self.monomer.get_name() in ['Fru', 'Tag', 'Sor', 'Psi'] else 2][O] += "N"
             elif n == "D-":
                 self.to_enantiomer(Enantiomer.D)
             elif n == "L-":
                 self.to_enantiomer(Enantiomer.L)
             elif n == "Ac" and self.monomer.get_name() == "Neu":
-                self.side_chains[5][O] = "NC(C)(=O)"
+                self.side_chains[5][O] += "NC(=O)C"
             elif n == "Gc" and self.monomer.get_name() == "Neu":
-                self.side_chains[5][O] = "NC(=O)CO"
+                self.side_chains[5][O] += "NC(=O)CO"
             elif n[0].isdigit():
                 if n[1:] == "d":  # desoxygenation of a specific position
-                    self.side_chains[int(n[0])][O] = "H"
+                    self.side_chains[int(n[0])][O] += "H"
                 elif n[1:] == "e":  # change chirality at a single chiral carbon atom
                     idx = int(np.where(self.monomer.x[:, 1] == int(n[0]))[0])
                     tag = opposite_chirality(self.monomer.structure.GetAtomWithIdx(idx).GetChiralTag())
@@ -297,7 +301,13 @@ class SMILESReaktor:
 
     def set_fg(self, c_or_o, pos, bond_elem, name):
         if name in functional_groups:
-            self.side_chains[pos][c_or_o] = bond_elem + functional_groups[name]
+            if len(self.side_chains[pos][c_or_o]) > 0:
+                if self.side_chains[pos][c_or_o][-1] == bond_elem:
+                    bond_elem = ""
+            if len(self.side_chains[pos][c_or_o]) > 0 and self.side_chains[pos][c_or_o][-1] == functional_groups[name][0] != "C":
+                self.side_chains[pos][c_or_o] += bond_elem + functional_groups[name][1:]
+            else:
+                self.side_chains[pos][c_or_o] += bond_elem + functional_groups[name]
             return True
         else:
             not_implemented_message(name)

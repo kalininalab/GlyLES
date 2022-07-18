@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Callable
 
 import networkx as nx
 from networkx.algorithms import isomorphism
@@ -83,10 +84,16 @@ def find_rings(mol):
     return ring_info
 
 
-def get_rings(mol):
+def find_longest_c_chain(mol):
+    pass
+
+
+def get_rings(mol, c1_find=None):
     rings = find_rings(mol)
     if len(rings) == 0:
-        pass
+        if c1_find is not None:
+            return c1_find(mol)
+        raise ValueError("Molecule should either have a ring or define a method to find c1!")
 
     ox_id = -1
     for a in rings[0]:
@@ -224,12 +231,12 @@ def networkx_fragment_isomorphism(mol1_nx, ring1, mol2_nx, ring2):
     return longest_iso
 
 
-def find_isomorphism_nx(mol1: str, mol2: str):
+def find_isomorphism_nx(mol1: str, mol2: str, c1_find: Callable = None):
     mol1_rd = MolFromSmiles(mol1)
     mol2_rd = MolFromSmiles(mol2)
 
-    ring1 = get_rings(mol1_rd)
-    ring2 = get_rings(mol2_rd)
+    ring1 = get_rings(mol1_rd, c1_find)
+    ring2 = get_rings(mol2_rd, c1_find)
 
     mol1_nx = mol_to_nx(mol1_rd)
     mol2_nx = mol_to_nx(mol2_rd)

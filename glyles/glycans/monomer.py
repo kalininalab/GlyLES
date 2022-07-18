@@ -3,7 +3,7 @@ from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
 
 from glyles.glycans.enum_c import enumerate_carbon
 from glyles.glycans.reactor import SMILESReaktor
-from glyles.glycans.utils import UnreachableError, Tree, Config, find_isomorphism_nx
+from glyles.glycans.utils import Config, find_isomorphism_nx
 from glyles.grammar.GlycanLexer import GlycanLexer
 
 
@@ -349,9 +349,9 @@ class Monomer:
                 if self.x[i, 2] == 1 and self.x[i, 0] == 8:
                     self.x[i, 1] = 100
 
-            iso = list(find_isomorphism_nx(self.smiles, self.root_smiles()).keys())
+            iso = list(find_isomorphism_nx(self.smiles, self.root_smiles(), self.c1_find).keys())
             if len(iso) == 0:
-                iso = list(find_isomorphism_nx(self.root_smiles(), self.smiles).values())
+                iso = list(find_isomorphism_nx(self.root_smiles(), self.smiles, self.c1_find).values())
             if len(iso) == 0:
                 self.x[:, 3] = 1
             else:
