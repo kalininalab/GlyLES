@@ -67,180 +67,233 @@ ketoses2 = {
 
 
 def find_rings(mol):
+    """
+    Determine the rings of a molecule in RDKit.
+
+    Args:
+        mol (rdkit.Molecule): molecule to determine the rings for
+
+    Returns:
+        List (possibly empty) of rings of the input molecule. The list will contain a list of RDKit IDs of every atom
+        in the respective rings
+    """
+    # get the rings from the molecule
     rings = mol.GetRingInfo().AtomRings()
+
     if len(rings) > 0:
+
+        # if there are rings, reorder them to have the main-ring (with the oxygen) at first position
         ring_info = [None]
         for ring in rings:
             found_ox = False
+
+            # if the ring contains an oxygen atom, it's the first/main ring
             for atom in ring:
                 if mol.GetAtomWithIdx(atom).GetAtomicNum() == 8:
                     ring_info[0] = ring
                     found_ox = True
                     break
+
+            # otherwise, just append it to the list of rings
             if not found_ox:
                 ring_info.append(ring)
+
+    # if there are no rings, return an empty list
     else:
         ring_info = rings
+
     return ring_info
 
 
-def find_longest_c_chain(mol):
-    pass
-
-
 def get_rings(mol, c1_find=None):
+    """
+    Get the longest carbon chain in the molecule starting from the C1 atom based on the rings of the molecule.
+
+    Args:
+        mol (rdkit.Molecule): molecule to determine the carbon list for
+        c1_find (Callable): Optional function to determine C1 for non-ring monosaccharides
+
+    Returns:
+        List of the longest carbon chain starting with C1
+    """
+    # find the rings
     rings = find_rings(mol)
     if len(rings) == 0:
         if c1_find is not None:
             return c1_find(mol)
         raise ValueError("Molecule should either have a ring or define a method to find c1!")
 
+    # identify the oxygen in the first/main ring
     ox_id = -1
     for a in rings[0]:
         if mol.GetAtomWithIdx(a).GetAtomicNum() == 8:
             ox_id = a
             break
-    assert ox_id != -1, "Something went wrong"
+    if ox_id == -1:
+        raise UnreachableError("First/Main should always have an oxygen atom in it!")
 
+    # reorient the carbon list to start with the oxygen
     ring = rings[0][rings[0].index(ox_id):] + rings[0][:rings[0].index(ox_id)]
+
     return ring
 
 
-def count_chiral_matches(ring1, chiral1, ring2, chiral2):
-    return sum(chiral1.get(a1, "T") == chiral2.get(a2, "T") for a1, a2 in zip(ring1, ring2))
-
-
-def match_groups(mol1, a1, ring1, chiral1, mol2, a2, ring2, chiral2):
-    if chiral1.get(a1, "T") != chiral2.get(a2, "T"):
-        return {}
-
-    neighbors1 = [a.GetIdx() for a in mol1.GetAtomWithIdx(a1).GetNeighbors() if a.GetIdx() not in ring1]
-    neighbors2 = [a.GetIdx() for a in mol2.GetAtomWithIdx(a2).GetNeighbors() if a.GetIdx() not in ring2]
-
-    if len(neighbors1) < len(neighbors2):
-        neighbors1 += [None] * (len(neighbors2) - len(neighbors1))
-    elif len(neighbors1) > len(neighbors2):
-        neighbors2 += [None] * (len(neighbors1) - len(neighbors2))
-
-    best_map = {}
-    for neighbors2_perm in permutations(neighbors2):
-        for n1, n2 in zip(neighbors1, neighbors2_perm):
-            if mol1.GetAtomWithIdx(n1).GetAtomicNum() == mol2.GetAtomWithIdx(n2).GetAtomicNum():
-                tmp_map = {n1: n2}
-                tmp_map.update(match_groups(mol1, n1, ring1 + [a1], chiral1, mol2, n2, ring2 + [a2], chiral2))
-                if len(tmp_map) > len(best_map):
-                    best_map = tmp_map
-
-    return best_map
-
-
-def find_isomorphism(mol1: str, mol2: str):
-    mol1 = MolFromSmiles(mol1)
-    chiral1 = dict(FindMolChiralCenters(mol1))
-    mol2 = MolFromSmiles(mol2)
-    chiral2 = dict(FindMolChiralCenters(mol2))
-
-    ring1 = get_rings(mol1)
-    ring2 = get_rings(mol2)
-
-    mapping = {}
-
-    fwd = count_chiral_matches(ring1, chiral1, ring2, chiral2)
-    bwd = count_chiral_matches(ring1, chiral1, [ring2[0]] + list(reversed(ring2[1:])), chiral2)
-
-    print(fwd, "|", bwd)
-
-    ring1 = list(ring1)
-
-    if fwd >= bwd:
-        for k, v in zip(ring1, ring2):
-            mapping[k] = v
-        ring2 = list(ring2)
-    else:
-        for k, v in zip(ring1, [ring2[0]] + list(reversed(ring2[1:]))):
-            mapping[k] = v
-        ring2 = [ring2[0]] + list(reversed(ring2[1:]))
-
-    print(mapping)
-    for a in ring1:
-        mapping.update(match_groups(mol1, a, ring1, chiral1, mol2, mapping[a], ring2, chiral2))
-
-    return mapping
-
-
 def mol_to_nx(mol):
+    """
+    Convert a molecule to a networkx graph with atom types and bond types as only features.
+
+    Args:
+        mol (rdkit.Molecule): molecule to be converted
+
+    Returns:
+        networkx graph representing a molecule
+    """
     g = nx.Graph()
+
+    # add all the nodes/atoms
     for atom in mol.GetAtoms():
-        g.add_node(atom.GetIdx(), type=atom.GetAtomicNum())  # , chiral=chiral[atom.GetIdx()])
+        g.add_node(atom.GetIdx(), type=atom.GetAtomicNum())
+
+    # add all the bonds/edges
     for bond in mol.GetBonds():
         g.add_edge(bond.GetBeginAtomIdx(), bond.GetEndAtomIdx(), type=bond.GetBondTypeAsDouble())
     return g
 
 
 def networkx_match_rings(mol1_ring, mol2_ring):
+    """
+    Map the rings onto each other and yield every possible isomorphism between the rings
+
+    Args:
+        mol1_ring (networkx.Graph): graph representing the fist molecules ring
+        mol2_ring (networkx.Graph): graph representing the second molecules ring
+
+    Returns:
+        Mappings between both rings corresponding to isomorphisms between both rings
+    """
+    # define a matcher for both graphs with the requirement matching all bond types and edge types for an isomorphism
     matcher = isomorphism.GraphMatcher(mol1_ring, mol2_ring, node_match=lambda n1, n2: n1["type"] == n2["type"],
                                        edge_match=lambda e1, e2: e1["type"] == e2["type"])
+
+    # iterate over all possible isomorphism fulfilling previously mentioned requirement and yield them
     for mapping in matcher.subgraph_isomorphisms_iter():
         yield dict(mapping)
 
 
 def networkx_fragment_isomorphism(mol1_nx, ring1, mol2_nx, ring2):
+    """
+    Find the biggest isomorphism between the two molecules represented in the graphs.
+
+    Args:
+        mol1_nx (networkx.Graph): graph of molecule1
+        ring1 (List[int]): main-ring of molecule 1
+        mol2_nx (networkx.Graph): graph of molecule 2
+        ring2 (List[int]): ring of molecule 2
+
+    Returns:
+        Mapping from mol1's RDKIT IDs to mol2's RDKit IDs
+    """
+    # keep track of the biggest isomorphism between both molecules
     longest_iso = {}
+
+    # create the graphs of the side chains (it's actually a collection of trees)
     mol1_no_ring = mol1_nx.subgraph(set(list(mol1_nx.nodes)).difference(set(ring1)))
     mol2_no_ring = mol2_nx.subgraph(set(list(mol2_nx.nodes)).difference(set(ring2)))
+
+    # iterate over all isomorphisms between just the two rings
     for iso in networkx_match_rings(mol1_nx.subgraph(ring1), mol2_nx.subgraph(ring2)):
         ring_iso = {}
+
+        # iterate over every matched position in the isomorphism
         for k, v in iso.items():
+
+            # extract all neighbors at the given positions in the molecules
             k_neighbors = [x for x in mol1_nx.neighbors(k) if x not in ring1]
             v_neighbors = [x for x in mol2_nx.neighbors(v) if x not in ring2]
+
+            # pad the neighborhood lists with Nones to have same length
             if len(k_neighbors) < len(v_neighbors):
                 k_neighbors += [None for _ in range((len(v_neighbors) - len(k_neighbors)))]
             elif len(v_neighbors) < len(k_neighbors):
                 v_neighbors += [None for _ in range((len(k_neighbors) - len(v_neighbors)))]
 
             pos_iso = {}
+
+            # iterate over all permutation of the latter list...
             for v_neigh in permutations(v_neighbors):
                 fg_iso = {}
+
+                # ... to find the best isomorphism between the functional groups of Ck from mol1 and Cv from mol2
                 for k_n, v_n in zip(k_neighbors, v_neigh):
+
+                    # if one of the two side-chains is None, there is no isomorphism, so continue to next match
                     if k_n is None or v_n is None:
                         continue
 
                     pair_iso = {}
+
+                    # define a matcher between the side chain trees ...
                     matcher = isomorphism.GraphMatcher(
                         mol1_nx.subgraph(nx.node_connected_component(mol1_no_ring, k_n).union([k])),
                         mol2_nx.subgraph(nx.node_connected_component(mol2_no_ring, v_n).union([v])),
                         node_match=lambda n1, n2: n1["type"] == n2["type"],
                         edge_match=lambda e1, e2: e1["type"] == e2["type"]
                     )
+
+                    # ... and extract their best match
                     for mapping in matcher.subgraph_isomorphisms_iter():
                         if len(mapping) > len(pair_iso):
                             pair_iso = mapping
 
+                    # put the best match of the side chains into the matching for the position isomorphisms
                     fg_iso.update(pair_iso)
 
+                # keep track of the best isomorphisms between (potentially) different side chains at the same position
                 if len(fg_iso) > len(pos_iso):
                     pos_iso = fg_iso
 
+            # for each position, save the best isomorphism between the side chain trees
             ring_iso.update(pos_iso)
 
+        # add the isomorphism of the side chains with the isomorphism of the ring
         ring_iso.update(iso)
 
+        # save the best/biggest isomorphism between the two molecules
         if len(ring_iso) > len(longest_iso):
             longest_iso = ring_iso
 
     return longest_iso
 
 
-def find_isomorphism_nx(mol1: str, mol2: str, c1_find: Callable = None):
+def find_isomorphism_nx(mol1, mol2, c1_find=None):
+    """
+    Find an isomorphism between two molecules. The problem is an NP problem, normally. Here, we have some domain
+    knowledge based on how and when this method is called.
+    First, there is an isomorphism of at least the two rings. Second, the isomorphism can be extended by the attached
+    functional groups. These functional groups are tree-like structured and not intersecting which makes it much easier
+    to find isomorphisms between them.
+
+    Args:
+        mol1 (str): SMILES of the monosaccharide with functional groups
+        mol2 (str): SMILES of the root monosaccharide
+        c1_find (Callable): Optional method to provide to find C1 in special molecules
+
+    Returns:
+        Mapping from mol1's RDKIT IDs to mol2's RDKit IDs
+    """
+    # generate the RDKit molecules from the SMILES strings
     mol1_rd = MolFromSmiles(mol1)
     mol2_rd = MolFromSmiles(mol2)
 
+    # identify the rings or the longest carbon-cain starting with
     ring1 = get_rings(mol1_rd, c1_find)
     ring2 = get_rings(mol2_rd, c1_find)
 
+    # convert the molecules to networkx graphs for easier accessibility
     mol1_nx = mol_to_nx(mol1_rd)
     mol2_nx = mol_to_nx(mol2_rd)
 
+    # actually compute the isomorphism between the two molecules and return it
     return networkx_fragment_isomorphism(mol1_nx, ring1, mol2_nx, ring2)
 
 

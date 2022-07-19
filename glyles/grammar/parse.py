@@ -24,7 +24,7 @@ class Glycan:
     class __TreeWalker:
         def __init__(self, factory, tree_only):
             """
-            Just initialize an empty tree
+            Just initialize an empty tree.
 
             Args:
                 factory (MonomerFactory): factory instance to use to generate the monomers for the glycan tree from
@@ -38,7 +38,7 @@ class Glycan:
 
         def parse(self, t):
             """
-            Parse a parsed tree (AST) from ANTLR into this networkx graph
+            Parse a parsed tree (AST) from ANTLR into this networkx graph.
 
             Args:
                 t (antlr.ParseTree): result of the parsing step from ANTLR
@@ -76,7 +76,6 @@ class Glycan:
             Returns:
                 ID of the parent for the remaining recursive procedure after resolving this subtree
             """
-
             # security check for some nodes that should not occur, but who knows what ANTLR does (or does not) ;-)
             if isinstance(t, ErrorNode):
                 raise UnreachableError("ErrorNodes in parsing!")
@@ -289,8 +288,7 @@ class Glycan:
                 me = me.replace(atom, child_smiles)
             return me
 
-    def __init__(self, iupac, factory, root_orientation="n", start=100, tree_only=False,
-                 full=True):
+    def __init__(self, iupac, factory, root_orientation="n", start=100, tree_only=False, full=True):
         """
         Initialize the glycan from the IUPAC string.
 

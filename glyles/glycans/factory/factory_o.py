@@ -104,9 +104,22 @@ class OpenFactory:
 
 
 def c1_finder(structure, base_smiles):
+    """
+    Determine the c1 atom of monosaccharides in open form. As the "classical" method does not apply, we compare the
+    structure to the SMILES string that is generated from C1.
+
+    Args:
+        structure (rdkit.Molecule): Molecule to determine the longest carbon-chain starting at C1
+        base_smiles (str): SMILES string of the root monomer starting from the oxygen of C1
+
+    Returns:
+        List of RDKit IDs starting from C1 all the way down the longest carbon chain
+    """
+    # compute atom types and adjacency matrix of molecule for faster computations
     a_type = np.array([a.GetAtomicNum() for a in structure.GetAtoms()])
     adjacency = GetAdjacencyMatrix(structure, useBO=True)
     c_atoms = np.where(a_type == 6)[0].tolist()
+
     # create a tree of all carbon atoms directly connected to the main ring of the monomer
     c_tree = Tree()
     stack = [(-1, c_atoms[0])]
@@ -128,18 +141,22 @@ def c1_finder(structure, base_smiles):
     # now the two C1 candidates can be found at the ends of the longest chain
     start, end = longest_c_chain[0], longest_c_chain[-1]
 
-    start_acid, end_acid = check_for_acid(start, structure, adjacency, a_type), check_for_acid(end, structure, adjacency, a_type)
+    # check if exactly one of the two C1 candidates has a carboxyl group
+    start_acid = check_for_acid(start, structure, adjacency, a_type)
+    end_acid = check_for_acid(end, structure, adjacency, a_type)
     if start_acid and not end_acid:
         return longest_c_chain
     if end_acid and not start_acid:
         return reversed(longest_c_chain)
 
+    # check if exactly one of the two C1 candidates has an attached oxygen
     start_aldehyd, end_aldehyd = check_for_aldehyd(start, adjacency, a_type), check_for_aldehyd(end, adjacency, a_type)
     if start_aldehyd and not end_aldehyd:
         return longest_c_chain
     if end_aldehyd and not start_aldehyd:
         return reversed(longest_c_chain)
 
+    # compare chiral tags of molecule with SMILES string of root monomer. THIS IS INACCURATE DUE TO CHIRAL TAGS
     tmp = Chem.MolFromSmiles(base_smiles)
     tmp_chain = [a.GetIdx() for a in tmp.GetAtoms() if a.GetAtomicNum() == 6]
     for c, t in zip(longest_c_chain, tmp_chain):
@@ -149,6 +166,18 @@ def c1_finder(structure, base_smiles):
 
 
 def check_for_acid(start, structure, adjacency, a_type):
+    """
+    Check if the atom with the start ID has an acid group.
+
+    Args:
+        start (int): RDKit ID of the candidate for C1
+        structure (rdkit.Molecule): rdkit molecule object
+        adjacency (np.ndarray): adjacency matrix of the molecule
+        a_type (np.ndarray): array of the atom types of the molecule's heavy atoms
+
+    Returns:
+        bool flag indicating if the carbon atom has an acid group
+    """
     oxys = [int(x) for x in np.where((adjacency[start] != 0) & (a_type == 8))[0]]
     if len(oxys) != 2:
         return False
@@ -161,4 +190,15 @@ def check_for_acid(start, structure, adjacency, a_type):
 
 
 def check_for_aldehyd(start, adjacency, a_type):
+    """
+    Check if the atom with the start ID has an aldehyd group.
+
+    Args:
+        start (int): RDKit ID of the candidate for C1
+        adjacency (np.ndarray): adjacency matrix of the molecule
+        a_type (np.ndarray): array of the atom types of the molecule's heavy atoms
+
+    Returns:
+        bool flag indicating if the carbon atom has an aldehyd group
+    """
     return np.where((adjacency[start] == 1) & (a_type == 8))[0] != 0

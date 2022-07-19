@@ -139,7 +139,7 @@ class MonomerFactory:
         Generate a dummy monosaccharide containing no information except the name as the structure and all its
         properties are unknown.
         Args:
-            name (str): Name of the monosaccharide whos structure and properties are unknown
+            name (str): Name of the monosaccharide with structure and properties are unknown
 
         Returns:
             Dummy information about an unknown monomer
@@ -150,13 +150,10 @@ class MonomerFactory:
     @staticmethod
     def succinic_acid():
         """
-        Generate a dummy monosaccharide containing no information except the name as the structure and all its
-        properties are unknown.
-        Args:
-            name (str): Name of the monosaccharide whos structure and properties are unknown
+        This method stores the information about succinic acid in a dictionary.
 
         Returns:
-            Dummy information about an unknown monomer
+            Information about succinic acid
         """
         return {"name": "Suc", "config": Config.UNDEF, "isomer": Enantiomer.U, "lactole": Lactole.OPEN,
                 "smiles": "OC[C@H](O)CCO", "c1_find": lambda x: c1_finder(x, "OC[C@H](O)CCO")}

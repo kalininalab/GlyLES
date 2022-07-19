@@ -46,6 +46,13 @@ class Monomer:
             self.x = origin.get_features()
 
     def root_smiles(self):
+        """
+        Access the SMILES string of the root monomer. This is before any functional group is attached.
+        It is as described in the factories.
+
+        Returns:
+            SMILES string of the root monomer of this monosaccharide
+        """
         return self.__root_smiles
 
     def get_name(self, full=False):
@@ -77,6 +84,7 @@ class Monomer:
 
     def get_c1_finder(self):
         """
+        This returns a method used to identify the C1 atom in an additionally provided molecule object.
 
         Returns:
             The callable object that, given the structure, finds the RDKit ID of C1
@@ -301,7 +309,6 @@ class Monomer:
         Returns:
             New monomer with the altered structure
         """
-        # return Reactor(self).react(names, types)
         return SMILESReaktor(self).react(names, types)
 
     def get_structure(self):
@@ -349,6 +356,7 @@ class Monomer:
                 if self.x[i, 2] == 1 and self.x[i, 0] == 8:
                     self.x[i, 1] = 100
 
+            # identify isomorphic atoms. The reference for the isomorphism test is the root SMILES
             iso = list(find_isomorphism_nx(self.smiles, self.root_smiles(), self.c1_find).keys())
             if len(iso) == 0:
                 iso = list(find_isomorphism_nx(self.root_smiles(), self.smiles, self.c1_find).values())
@@ -357,6 +365,7 @@ class Monomer:
             else:
                 self.x[iso, 3] = 1
 
+            # Enumerate all carbons
             enumerate_carbon(self)
 
         return self.structure

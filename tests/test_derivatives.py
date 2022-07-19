@@ -27,12 +27,12 @@ class TestDerivatives:
 
     @pytest.mark.parametrize(
         "line",
-        open("data/glycowork_mono.txt", "r").readlines()
-        #open("data/glycowork_poly.txt", "r").readlines() +
-        #open("data/general.tsv", "r").readlines() +
-        #open("data/pubchem_mono.tsv", "r").readlines() +
-        #open("data/pubchem_poly.tsv", "r").readlines() +
-        #open("data/glycam.tsv", "r").readlines()
+        open("data/glycowork_mono.txt", "r").readlines() +
+        open("data/glycowork_poly.txt", "r").readlines() +
+        open("data/general.tsv", "r").readlines() +
+        open("data/pubchem_mono.tsv", "r").readlines() +
+        open("data/pubchem_poly.tsv", "r").readlines() +
+        open("data/glycam.tsv", "r").readlines()
     )
     def test_conversion_rate(self, line):
         line = line.strip()
@@ -60,10 +60,6 @@ class TestDerivatives:
             compare_smiles(Glycan(iupac, MonomerFactory()).get_smiles(), smiles)
         else:
             assert Glycan(iupac, MonomerFactory()).get_smiles() != smiles
-
-    @pytest.mark.todo
-    def test_rib5p(self):
-        assert Glycan("Rib5P", MonomerFactory()).get_smiles() != ""
 
     @pytest.mark.todo
     def test_en(self):

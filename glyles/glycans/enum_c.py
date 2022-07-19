@@ -5,6 +5,8 @@ from glyles.glycans.utils import UnreachableError, Tree
 
 def enumerate_carbon(monomer):
     """
+    Enumerate carbon atoms starting with the one that are also part of the root monomer and then their side chains in
+    order of the original carbon atoms.
 
     Args:
         monomer (Monomer): object of class monomer to enumerate the carbon atoms for
@@ -13,13 +15,14 @@ def enumerate_carbon(monomer):
         Nothing
     """
     # first enumerate all ring carbons and the attachments at the first and last ring atom
-    c_atoms = np.where((monomer.x[:, 0] == 6) & (monomer.x[:, 2] == 1))[0]
-    ring_o = np.where((monomer.x[:, 0] == 8) & (monomer.x[:, 2] == 1))[0]
+    c_atoms = np.where((monomer.x[:, 0] == 6) & (monomer.x[:, 2] == 1) & (monomer.x[:, 3] == 1))[0]
+    ring_o = np.where((monomer.x[:, 0] == 8) & (monomer.x[:, 2] == 1) & (monomer.x[:, 3] == 1))[0]
     if ring_o.size == 0:
         next_c_id = enumerate_c_atoms(monomer, c_atoms, -1)
     else:
         next_c_id = enumerate_c_atoms(monomer, c_atoms, ring_o)
 
+    # then iterate over all those carbons and enumerate them beginning at C1
     for c_id in range(1, next_c_id):
         c_index = int(np.where(monomer.x[:, 1] == c_id)[0])
         candidates = np.where((monomer.adjacency[c_index, :] != 0) & (monomer.x[:, 1] == 0))[0]
@@ -47,13 +50,17 @@ def enumerate_side_chain(monomer, parent, atom, next_c_id):
         monomer.x[atom, 1] = next_c_id
         next_c_id += 1
 
+    # identify children
     candidates = np.where((monomer.adjacency[atom, :] != 0) & (monomer.x[:, 1] == 0))[0].tolist()
     if parent in candidates:
         candidates.remove(parent)
+
+    # and iterate over them to enumerate them in order as they appear
     if len(candidates) > 0:
         for candidate in candidates:
             next_c_id = enumerate_side_chain(monomer, atom, candidate, next_c_id)
 
+    # return the ID of the next carbon that we see
     return next_c_id
 
 
@@ -78,7 +85,7 @@ def enumerate_c_atoms(monomer, c_atoms, ringo):
             stack = stack[:-1]
             c_tree.add_node(c_id, p_id)
 
-            children = np.where((monomer.adjacency[c_id, :] == 1) & (monomer.x[:, 0] == 6))[0]
+            children = np.where((monomer.adjacency[c_id, :] == 1) & (monomer.x[:, 0] == 6) & (monomer.x[:, 3] == 1))[0]
             for c in children:
                 if int(c) not in c_tree.nodes:
                     stack.append((c_id, int(c)))
@@ -93,9 +100,11 @@ def enumerate_c_atoms(monomer, c_atoms, ringo):
         start, end = longest_c_chain[0], longest_c_chain[-1]
 
         # check conditions
-        # TODO: filter for fgs: All connections have to be to non-fg-atoms
-        start_o_conn = np.argwhere((monomer.adjacency[start, :] == 1) & (monomer.x[:, 0] == 8) & (monomer.x[:, 2] != 1)).squeeze().size > 0
-        end_o_conn = np.argwhere((monomer.adjacency[end, :] == 1) & (monomer.x[:, 0] == 8) & (monomer.x[:, 2] != 1)).squeeze().size > 0
+        start_o_conn, end_o_conn = \
+            np.argwhere((monomer.adjacency[start, :] == 1) & (monomer.x[:, 0] == 8) & (monomer.x[:, 2] != 1) &
+                        (monomer.x[:, 3] == 1)).squeeze().size > 0, \
+            np.argwhere((monomer.adjacency[end, :] == 1) & (monomer.x[:, 0] == 8) & (monomer.x[:, 2] != 1) &
+                        (monomer.x[:, 3] == 1)).squeeze().size > 0
 
         # decide on c1
         if start_o_conn and end_o_conn:
@@ -137,7 +146,8 @@ def evaluate_distance(monomer, start, end, ringo):
 
     # if both fields are non-zero, we cannot decide here and have to go further
     if adj[start, ringo] > 0 and adj[end, ringo] > 0:
-        return equidistant(monomer, start, end)
+        raise UnreachableError("This line should be unreachable as the C1 cannot be detected.")
+        # return equidistant(monomer, start, end)
     elif adj[start, ringo] > 0:
         return True
     return False
