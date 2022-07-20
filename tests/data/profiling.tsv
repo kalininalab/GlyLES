@@ -1,56 +1,13 @@
-D-2,7-Anhydro-3dManHep-ulosonic
-DL-3,9dGalNon5NAc7NAc-ulosonic
-DL-3,9dGlcNon5NAm7Ac-ulosonic
-DL-3,9dGlcNon5NAm7Am-ulosonic
-1,5-Anhydro-D-Rha4NAc-ol
-1,5-Anhydro-D-AltNAc-ol
-1,5-Anhydro-GlcN2S6S-ol
-1,5-Anhydro-GlcNAc-onic
-2,5-Anhydro-D-Alt3S-ol
-2,6-Anhydro-Glc5NAc-ol
-2,6-Anhydro-L-Gul-onic
-2,6-Anhydro-Tal5NAc-ol
-D-3dLyxHep2Me-ulosaric
-1,5-Anhydro-D-FucN-ol
-1,5-Anhydro-GalNAc-ol
-1,5-Anhydro-GlcN2S-ol
-1,5-Anhydro-GlcNAc-ol
-1,5-Anhydro-ManNAc-ol
 Neu1Me4Ac5Ac7Ac8Ac9Ac
-1,5-Anhydro-Glc-onic
-1,5-Anhydro-Xyl2F-ol
-2,5-Anhydro-D-Alt-ol
-2,5-Anhydro-L-Man-ol
-2,5-Anhydro-Man1S-ol
-2,5-Anhydro-Man3S-ol
-2,6-Anhydro-L-Gul-ol
-3,6-Anhydro-L-Gal2Me
-4,7-Anhydro-KdoOPEtN
 Rib1P2Ala3Ala4Ala-ol
-4,7-Anhydro-KdoOPEtn
-D-3dAraHep-ulosonic
-D-3dLyxHep-ulosaric
-D-3dManHep-ulosonic
-D-3dThrHex-ulosonic
-D-7dLyxOct-ulosonic
 GlcN1PPEtN2Myr3NMyr
 GlcN1PPEtN2Ste3NPam
 GlcN2Myr3NMyr4PPEtN
-L-4dThrHexNAcA4en6N
 Man2Oco3Hxo4Hxo6Hxo
 Man2Oco3Oco4Oco6Oco
 GlcN1PPEtn2Myr3NMyr
 GlcN1PPEtn2Ste3NPam
 GlcN2Myr3NMyr4PPEtn
-1,4-Anhydro-Gal-ol
-1,5-Anhydro-Gal-ol
-1,5-Anhydro-Glc-ol
-1,5-Anhydro-Man-ol
-1,5-Anhydro-Xyl-ol
-2,5-Anhydro-Man-ol
-2,5-Anhydro-Tal-ol
-2,6-Anhydro-Man-ol
-D-9dThrAltNon-onic
 DDManHep2PEtN7PEtN
 Glc2Me3Me5Me6Me-ol
 GlcN1PPEtN2Dco3Dco
@@ -71,32 +28,20 @@ GlcN2Dco3Dco4PPEtn
 GlcN2Myr3Lau4PPEtn
 GlcN2Myr3Myr4PPEtn
 LDManHep4PEtn7PEtn
-2,5-Anhydro-D-Tal
-2,5-Anhydro-Man6S
-2,5-Anhydro-Tal6P
-3,6-Anhydro-Gal2S
-3,6-Anhydro-L-Gal
-3dLyxHep-ulosaric
-D-4dEryHexOAcN4en
-D-4dThrHexOAcN4en
 D-6dXylHexNAc4Ulo
 GlcN1PEtN2Myr3Myr
 GlcN1PEtN2Ste3Pam
 GlcN2Myr3Myr4PEtN
 GlcN2Pam3Myr-onic
 GlcN2Ste3Myr-onic
-L-4dThrHexA4enAla
 L-6dXylHexNAc4Ulo
 Qui2NAlaAc4NAlaAc
 GlcN1PEtn2Myr3Myr
 GlcN1PEtn2Ste3Pam
 GlcN2Myr3Myr4PEtn
-2,7-Anhydro-Kdof
-3,6-Anhydro-Fruf
 Gal4NAc5NAc-onic
 Galf2Ac3Ac5Ac6Ac
 Glc1Ole3Ac4Ac6Ac
-Glc2NAc3NAc-aric
 Glc2S3S5S6S-onic
 Glc6AcNMeOCm2Vac
 GlcN2Me3Cm4Cm6Cm
@@ -111,35 +56,18 @@ GlcNAcOAcOCm1Pam
 GlcNAcOAcOCm1Vac
 GlcNMe2Vac3Cm4Cm
 GlcOCm2Vac6AcNMe
-L-4dThrHexA4en6N
 L-GulNAcA3Ac6Gly
 LDManHep2PPEtN4P
 LDManHepOPOPPEtN
 Glc6AcNMeOCm1Vac
 LDManHep2PPEtn4P
 LDManHepOPOPPEtn
-2,3-Anhydro-All
-2,3-Anhydro-Man
-2,3-Anhydro-Rib
-2,5-Anhydro-Glc
-2,5-Anhydro-Man
-2,7-Anhydro-Kdo
-3,6-Anhydro-Gal
-3,6-Anhydro-Glc
-3-Anhydro-Gal2S
-4,7-Anhydro-Kdo
-4,8-Anhydro-Kdo
-4dThrHexNAcA4en
 6dAltNAc1PP4NAc
-D-4dThrHexAN4en
 D-6dXylHexN4Ulo
 D-Araf2Ac3Ac5Ac
 D-FucNAc1Prop4N
 D-Rha2Me3Me4NFo
 D-Sorf1Cl4Cl6Cl
-Fruf1CoumOAcOBz
-FrufOAcOBz1Coum
-Fuc1N4NBz7Et-ol
 Gal2Ac3Ac4Ac6Ac
 GalA3Ac4Ac6GroN
 GalNAc3Ac4Ac6Ac
@@ -156,8 +84,6 @@ GlcN2Myr3Myr4PP
 GlcN2Myr3NMyr4P
 GlcN2Pam3NMyr4P
 GlcNAc3Ac4Ac6Ac
-L-4dEryHexAN4en
-L-4dThrHexAN4en
 L-Xyl1N4Me-onic
 LDManHepOPOPEtN
 Man2Ac3Ac4Ac6Ac
@@ -170,7 +96,6 @@ LDManHepOPOPEtn
 6dTal2Ac3Me4Ac
 8eLeg5Ac7Ac8Ac
 8eLeg5Ac7AcGro
-D-4dThrHexA4en
 D-Fuc1Gro3NBut
 D-RhaNAc2Me3Me
 DDManHepOPGroA
@@ -223,8 +148,6 @@ GlcNAc3Ac4PGro
 GlcNAcA3Ac4NAc
 GlcNAcA3NAc4Ac
 GlcNAcOAcOS-ol
-L-2dThrPen4NMe
-L-4dThrHexA4en
 L-GalA2NAc3NAc
 L-GulA2NAc3NAc
 L-GulA2NAc3NAm
@@ -237,6 +160,73 @@ LDManHep6PPEtN
 LDManHepOPGroA
 LDManHepOPPEtN
 Man1S2Ac3Ac4Ac
+ManA2NAc3NAc6N
+ManNAc1P3Ac4Ac
+ManNAc2NAc6Thr
+ManNAcA2NAc4Me
+QuiNAc4NButGro
+Glc6AcNOCm1Vac
+LDManHep2PPEtn
+LDManHep4PPEtn
+LDManHep6PPEtn
+LDManHepOPPEtn
+6dAltNAc1PP4N
+6dAltNAc3PCho
+Araf2Ac3Ac5Ac
+D-3dXylHexOMe
+D-4dLyxHep1Me
+D-4dLyxHexOMe
+D-6dAltHep3Me
+D-6dAraHexNAc
+D-6dAraHexOMe
+D-6dLyxHexOMe
+D-6dManHep2Ac
+D-6dManHep3Ac
+D-6dManHepOAc
+D-6dTal2Ac3Ac
+D-6dTal2Ac4Ac
+D-6dTal3Me-ol
+D-6dTalOAcOMe
+D-6dXylHexOMe
+D-Fuc2Me3Me4N
+D-Fuc3NBut4Ac
+D-FucNAcOPEtN
+D-FucOAcNGroA
+D-Rha2Me4NBut
+DDManHep7PCho
+DDManHepOPEtN
+DDManHepPGroA
+Fruf1Cl4Br6Cl
+Fruf1Cl4Cl6Cl
+Fruf1Cl4Me6Cl
+Gal2Ac3Ac4Pyr
+Gal2Et3S4S6Et
+Gal3PCho6PEtN
+GalA2NAc3Ac6N
+GalA3Me4Ac6Me
+GalA4PEtN6Lys
+GalNAc1PP4S6S
+GalNAc3PGroAN
+Glc1Me2S3Me6S
+Glc1Ole3Ac4Ac
+Glc1Ole3Pp4Pp
+Glc1P2Lau3Dco
+Glc1P2Lau3Lau
+Glc1P2Myr3Myr
+Glc2Et3S4S6Et
+Glc2Lau3Dco4P
+Glc2Lau3Lau4P
+Glc2Myr3Myr4P
+Glc2Ole6AcNCm
+Glc2Pam6AcNCm
+Glc2S3Me4Me6S
+Glc2Vac6AcNCm
+Glc2Vac6AcNMe
+Glc3PEtN6PEtN
+Glc6AcNCm2Ole
+Glc6AcNCm2Pam
+Glc6AcNCm2Vac
+
 Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)[Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)[Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)[Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)[Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)[Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)[Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)[Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)[Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)[Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)[Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)[Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)[Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)[Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)[Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)[Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)[Qui3NAc(b1-6)Gal(b1-4)Rha(a1-3)Man(a1-4)Gal(b1-4)Glc(b1-4)]Man(a1-4)Gal(b1-4)Glc(b1-4)]Man(a1-4)Gal(b1-4)Glc(b1-4)]Man(a1-4)Gal(b1-4)Glc(b1-4)]Man(a1-4)Gal(b1-4)Glc(b1-4)]Man(a1-4)Gal(b1-4)Glc(b1-4)]Man(a1-4)Gal(b1-4)Glc(b1-4)]Man(a1-4)Gal(b1-4)Glc(b1-4)]Man(a1-4)Gal(b1-4)Glc(b1-4)]Man(a1-4)Gal(b1-4)Glc(b1-4)]Man(a1-4)Gal(b1-4)Glc(b1-4)]Man(a1-4)Gal(b1-4)Glc(b1-4)]Man(a1-4)Gal(b1-4)Glc(b1-4)]Man(a1-4)Gal(b1-4)Glc(b1-4)]Man(a1-4)Gal(b1-4)Glc(b1-4)]Man(a1-4)Gal(b1-4)Glc(b1-4)]Man(a1-4)Gal(b1-4)Glc
 Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc
 Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)Gal(b1-4)[Glc(a1-6)]ManNAc(b1-3)[ManNAc4PGroA(b1-4)]Rha(a1-3)Rha(a1-3)Rha(a1-3)Gal
@@ -261,7 +251,6 @@ Man(a1-2)Man(a1-2)Man(a1-6)Man(a1-2)[Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-5)Gal
 Rha2Me(a1-3)Rha(b1-2)Rha(a1-2)Rha(a1-3)Rha(b1-2)Rha(a1-2)Rha(a1-3)Rha(b1-2)Rha(a1-2)Rha(a1-3)Rha(b1-2)Rha(a1-2)Rha(a1-3)Rha(b1-2)Rha(a1-2)Rha(a1-3)Rha(b1-2)Rha(a1-2)Rha(a1-3)Rha(b1-2)Rha(a1-2)Rha(a1-3)Rha(b1-2)Rha(a1-2)Rha(a1-3)Rha(b1-2)Rha(a1-2)Rha(a1-3)Rha(b1-2)Rha(a1-2)Rha(a1-3)Rha(b1-2)Rha(a1-2)Rha(a1-3)Rha(b1-2)Rha(a1-2)Rha(a1-3)Rha(b1-2)Rha(a1-2)Rha(a1-3)Rha(b1-2)Rha(a1-2)Rha(a1-3)Rha(a1-3)Rha(a1-3)Gal
 Man(a1-2)Man(a1-2)Man(a1-6)Man(a1-2)[Galf(b1-6)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-3)]Man(a1-2)Man(a1-2)Man(a1-2)Man(a1-6)[Man(a1-3)]Man(a1-2)Man(a1-2)Man(a1-2)Man(a1-6)[Galf(b1-6)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-3)]Man(a1-2)Man(a1-2)Man(a1-2)Man(a1-6)Man(a1-2)Man(a1-2)Man(a1-2)Man(a1-6)[Glc(b1-3)]Man(a1-2)Man
 Man(a1-2)Man(a1-6)[Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-2)]Man(a1-2)Man(a1-2)Man(a1-2)Man(a1-6)[Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-2)]Man(a1-2)Man(a1-2)Man(a1-2)Man(a1-6)[Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-5)Galf(b1-2)]Man(a1-2)Man
-Rha(a1-2)Rha(a1-3)Rha(a1-2)[Xyl(b1-2)Rha(a1-4)Gal(a1-4)GlcNAc(b1-3)Gal(a1-4)GlcNAc(b1-3)[Xyl(b1-2)Rha(a1-3)Rha(a1-4)]Gal(a1-4)GlcNAc(b1-3)Gal(a1-3)Glc(b1-6)GlcNAc(b1-3)]Rha(a1-3)Rha(a1-3)Rha(a1-2)Rha(a1-3)Rha(a1-2)[Gal(b1-4)GlcNAc(b1-3)Gal(a1-4)GlcNAc(b1-3)[Xyl(b1-2)Rha(a1-3)Rha(a1-4)]Gal(a1-4)GlcNAc(b1-3)Gal(a1-4)GlcNAc(b1-3)Gal(a1-3)Glc(b1-6)GlcNAc(b1-3)]Rha(a1-3)Rha(a1-3)Rha(a1-3)Glc(b1-4)GlcA(a1-4)Ins
 Glc(a1-4)Glc(a1-3)Glc(a1-6)[Glc(a1-3)]Glc(a1-6)Glc(a1-3)Glc(a1-6)Glc(a1-3)[Glc(a1-3)Glc(a1-6)Glc(a1-6)Glc(a1-6)[Glc(a1-3)]Glc(a1-6)Glc(a1-6)]Glc(a1-6)Glc(a1-3)[Glc(a1-6)Glc(a1-6)]Glc(a1-6)Glc(a1-3)[Glc(a1-3)[Glc(a1-6)]Glc(a1-6)Glc(a1-6)Glc(a1-3)[Glc(a1-6)Glc(a1-6)]Glc(a1-6)Glc(a1-3)Glc(a1-6)Glc(a1-3)[Glc(a1-4)Glc(a1-3)[Glc(a1-3)Glc(a1-6)]Glc(a1-6)Glc(a1-6)Glc(a1-3)Glc(a1-6)]Glc(a1-6)Glc(a1-6)]Glc
 Glc(a1-6)Glc(a1-3)[Glc(a1-3)Glc(a1-6)]Glc(a1-6)Glc(a1-6)Glc(a1-6)Glc(a1-3)[Glc(a1-6)]Glc(a1-6)Glc(a1-3)Glc(a1-6)Glc(a1-6)Glc(a1-6)[Glc(a1-6)]Glc(a1-3)Glc(a1-6)Glc(a1-3)Glc(a1-6)[Glc(a1-3)Glc(a1-6)Glc(a1-3)]Glc(a1-6)Glc(a1-3)Glc(a1-6)Glc(a1-6)[Glc(a1-3)Glc(a1-6)Glc(a1-3)Glc(a1-6)[Glc(a1-6)Glc(a1-3)]Glc(a1-6)Glc(a1-3)Glc(a1-6)Glc(a1-3)]Glc(a1-6)Glc(a1-6)[Glc(a1-6)Glc(a1-3)]Glc(a1-6)Glc(a1-6)Glc
 Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
@@ -288,11 +277,9 @@ Glc(a1-4)[Glc(a1-4)Glc(a1-6)Glc(a1-4)Glc(a1-6)]Glc(a1-4)Glc(a1-6)Glc(a1-4)Glc(a1
 Gal(b1-4)Gal(b1-4)GlcNAc6S(b1-3)[Gal(b1-4)]Gal(b1-4)GlcNAc6S(b1-2)[Gal(b1-4)Gal(b1-4)GlcNAc6S(b1-3)[Gal(b1-4)]Gal(b1-4)GlcNAc6S(b1-4)]Man(a1-3)[Gal(b1-4)Gal(b1-4)GlcNAc6S(b1-3)[Gal(b1-4)]Gal(b1-4)GlcNAc6S(b1-2)[Gal(b1-4)Gal(b1-4)GlcNAc6S(b1-3)[Gal(b1-4)]Gal(b1-4)GlcNAc6S(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-6)Galf(b1-5)Galf(b1-4)Rha(a1-3)GlcNAc
 Man(a1-3)Man(a1-2)Man(a1-6)[Man(b1-2)Man1P(a1-6)[Man(a1-2)]Man(a1-2)Man(a1-2)]Man(a1-6)[Man(b1-2)Man(b1-2)Man(a1-2)Man(a1-2)Man(a1-2)]Man(a1-6)[Man(a1-2)[Man(a1-6)]Man(a1-3)Man(a1-2)Man(a1-2)]Man(a1-6)Man(a1-6)[Man(a1-3)Man(a1-2)Man(a1-2)]Man(a1-3)[Man(a1-2)Man(a1-6)[Man(a1-3)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]2,5-Anhydro-Man-ol
 Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Galf(a1-2)Man(a1-2)Man(a1-2)Man(a1-6)[Man(a1-2)Man(a1-2)Man(a1-2)Man(a1-2)Man(a1-2)]Man(a1-6)[Rha(a1-2)Man(a1-2)Man(a1-2)Man(a1-2)Man(a1-2)]Man(a1-6)[Rha(a1-2)Rha(a1-2)Man(a1-2)]Man(a1-6)[Galf(a1-2)Man(a1-2)Man(a1-2)Man(a1-2)]Man(a1-6)Man(a1-6)Man(a1-3)[Man(a1-3)[Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Man(b1-4)Man(b1-4)[Gal(a1-6)]Man(b1-4)[Gal(a1-6)]Man(b1-4)Man(b1-4)Man(b1-4)[Man(b1-6)]Man(b1-4)[Man(b1-6)]Man(b1-4)Man(b1-4)Man(b1-4)[Gal(a1-6)]Man(b1-4)[Gal(a1-3)Gal(a1-3)Gal(a1-6)]Man(b1-4)Man(b1-4)Man(b1-4)[Man(b1-6)]Man(b1-4)[Man(b1-6)]Man(b1-4)Man(b1-4)Man(b1-4)[Man(b1-6)]Man(b1-4)[Man(b1-6)]Man(b1-4)Man
-Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]2,5-Anhydro-Man
 Fuc(a1-3)GalNAc(b1-3)Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)GalNAc(b1-3)Gal(a1-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Fuc(a1-3)GalNAc(b1-3)Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)GalNAc(b1-3)Gal(a1-3)Gal(b1-4)GlcNAc(b1-4)][Fuc(a1-3)GalNAc(b1-3)Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Fuc(a1-3)GalNAc(b1-3)Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)GalNAc(b1-3)Gal(a1-3)Gal(b1-4)GlcNAc(b1-4)][Fuc(a1-3)GalNAc(b1-3)Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-3)[Fuc(a1-3)GalNAc(b1-3)Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)GalNAc(b1-3)Gal(a1-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Fuc(a1-3)GlcNAc(b1-3)Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)GlcNAc(b1-3)Gal(a1-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Fuc(a1-3)GlcNAc(b1-3)Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)GlcNAc(b1-3)Gal(a1-3)Gal(b1-4)GlcNAc(b1-4)][Fuc(a1-3)GlcNAc(b1-3)Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -326,13 +313,9 @@ Man(a1-6)[Galf(b1-4)Gal(b1-4)Gal(b1-2)]Man(a1-2)Man(a1-2)Man(a1-2)Man(a1-6)[Galf
 Glc2S3S4S6S(a1-4)Glc2S3S6S(a1-4)Glc2S3S6S(b1-4)Glc2Me3Me6S(a1-4)Glc2Me3Me6Me(b1-4)Glc2Me3Me6Me(a1-4)Glc2Me3Me6Me(b1-4)Glc2Me3Me6Me(a1-4)Glc2Me3Me6Me(b1-4)Glc2Me3Me6Me(a1-4)Glc2Me3Me6Me(b1-4)Glc2Me3Me6S(a1-4)GlcA2Me3Me(b1-4)Glc2S3S6S(a1-4)IdoA2Ac3Ac(a1-4)Glc2S3Me6S
 Glc2S3S4S6S(a1-4)Glc2S3S6S(a1-4)Glc2S3S6S(b1-4)Glc2Me3Me6S(a1-4)Glc2Me3Me6Me(b1-4)Glc2Me3Me6Me(a1-4)Glc2Me3Me6Me(b1-4)Glc2Me3Me6Me(a1-4)Glc2Me3Me6Me(b1-4)Glc2Me3Me6Me(a1-4)Glc2Me3Me6Me(b1-4)Glc2Me3Me6S(a1-4)GlcA2Me3Me(b1-4)Glc2S3S6S(a1-4)IdoA2Me3Me(a1-4)Glc2S3Me6S
 Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man(a1-3)Man
-Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]2,5-Anhydro-Man-ol
 FucN(b1-3)QuiN(b1-4)Glc(b1-4)QuiN(b1-2)QuiN(b1-2)Rha(a1-3)Rha(a1-3)Fuc(a1-4)[Glc(a1-2)]Fuc(a1-4)Fuc(a1-4)[Glc(a1-3)]Fuc(a1-4)[Glc(a1-2)]Fuc(a1-4)Glc(b1-4)[GlcN(a1-3)]Fuc(a1-3)QuiN(b1-4)[Man(a1-2)]Man(b1-4)[Man(a1-6)]Man(a1-5)[Kdo(a2-4)]Kdo(a2-6)GlcN(b1-6)GlcN-ol
-IdoA2S(a1-4)GlcN2S6S(a1-4)IdoA2S(a1-4)GlcN2S6S(a1-4)IdoA2S(a1-4)GlcN2S6S(a1-4)IdoA2S(a1-4)GlcN2S6S(a1-4)IdoA2S(a1-4)GlcN2S6S(a1-4)IdoA2S(a1-4)GlcN2S6S(a1-4)IdoA2S(a1-4)GlcN2S6S(a1-4)IdoA2S(a1-4)GlcN2S6S(a1-4)IdoA2S(a1-4)GlcN2S6S(a1-4)IdoA(a1-4)2,5-Anhydro-Man-ol
 Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-4)]Man(a1-3)[Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-4)][Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]2,5-Anhydro-Man
 Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)[GalNAc(b1-4)]Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)[GalNAc(b1-4)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)[GalNAc(b1-4)]Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[D-Fuc(a1-6)]GlcNAc
-Gal(a1-3)Gal(b1-4)GlcNAc(b1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)Glc1Cer
 Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)GalNAc
 GlcNAc(a1-3)[GlcNAc(b1-4)]D-Fuc(a1-2)GlcA(b1-4)[D-6dTalOAcOMe(a1-3)]D-Fuc(a1-3)GalNAc(a1-4)ManNAc(b1-4)Gal(a1-3)GalNAc(b1-3)Glc(a1-3)Man(a1-6)[Glc(a1-2)Glc(a1-3)Gal(a1-2)][Kdo(a2-3)]Man(a1-4)Man(a1-5)[AraOPN(b1-6)GlcN(a1-4)Kdo(a2-4)]Kdo(a2-6)GlcN(b1-6)GlcN1P
 Man(a1-2)[Man(a1-2)Man(a1-3)[Man(a1-3)Man(a1-2)[Man(a1-2)Man(a1-3)[Man(a1-3)Man(a1-2)Man(a1-2)[Man(a1-2)Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-3)Man(a1-2)Man(a1-2)Man(a1-2)Man(a1-6)]Man(a1-6)Man(a1-6)]Man(a1-6)]Man(a1-6)]Man(a1-6)Man(a1-6)]Man(a1-6)]Man(a1-6)Man
@@ -461,7 +444,6 @@ Glc(b1-2)[GalN(a1-2)[Glc(a1-3)][Qui4NFo(b1-4)GalA2NAc6N(a1-4)GalA2NAc6N(a1-3)Qui
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-4)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-6)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)]Man(a1-6)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Fuc(a1-2)Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)Glc1Cer
 GlcNAc(b1-2)DDManHep(a1-3)DDManHep(a1-3)DDManHep(a1-3)DDManHep(a1-3)Glc(a1-6)Glc(a1-6)Glc(a1-6)DDManHep(a1-3)Fuc(a1-3)GlcNAc(b1-2)[Glc(a1-4)Gal(b1-7)]DDManHep(a1-2)LDManHep(a1-3)LDManHepOPEtN(a1-5)Kdo(a2-6)GlcN(b1-6)GlcOPEtNN
 Neu5Ac(a2-3)Gal(b1-3)[Gal6S(b1-4)GlcNAc6S(b1-3)GalOS(b1-4)GlcNAcOS(b1-3)GalOS(b1-4)GlcNAcOS(b1-3)GalOS(b1-4)GlcNAcOS(b1-3)GalOS(b1-4)GlcNAcOS(b1-3)GalOS(b1-4)GlcNAcOS(b1-3)GalOS(b1-4)GlcNAcOS(b1-3)Gal(b1-4)GlcNAc(b1-6)]GalNAc
 Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
@@ -545,7 +527,6 @@ Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-4)]Man(a
 GlcN(b1-2)DDManHep(a1-3)DDManHep(a1-3)DDManHep(a1-3)DDManHep(a1-3)Glc(a1-6)Glc(a1-6)Glc(a1-6)DDManHep(a1-3)Fuc(a1-3)GlcN(b1-2)[Glc(a1-4)Gal(b1-7)]DDManHep(a1-2)LDManHep(a1-3)LDManHep6P(a1-5)Kdo(a2-6)GlcN(b1-6)GlcN
 GlcN(b1-2)DDManHep(a1-3)DDManHep(a1-3)DDManHep(a1-3)DDManHep(a1-3)Glc(a1-6)Glc(a1-6)Glc(a1-6)DDManHep(a1-3)Fuc(a1-3)GlcN(b1-2)[Glc(a1-4)Gal(b1-7)]DDManHep(a1-2)LDManHep(a1-3)LDManHep7P(a1-5)Kdo(a2-6)GlcN(b1-6)GlcN
 Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-6)]GlcNAc(b1-3)[GlcNAc(b1-4)GlcNAc(b1-4)]Gal(b1-4)GlcNAc(b1-4)GlcNAc(b1-3)[GlcNAc(a1-4)Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)Glc1Cer
 Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc-ol
 Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)][Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 LDManHep(a1-3)[QuiNAc(b1-7)]LDManHep(a1-2)[Gal(b1-3)Glc(a1-6)]Gal(a1-3)[Glc(b1-2)][LDManHep(a1-7)]LDManHep(a1-3)[Glc(b1-4)]LDManHep(a1-5)[Ko(a2-4)]Kdo(a2-6)[Ara1P4N(b1-4)]GlcN2Pam3Myr(b1-6)[Ara1P4N(b1-1)]GlcN2Pam
@@ -559,7 +540,6 @@ Man(b1-4)Man(b1-6)[Glc(b1-2)Manf1Me(b6-2)Manf1Me(a6-3)]Man(a1-2)D-Rha(a1-6)Glc(b
 Man(b1-4)Man(b1-6)[Glc(b1-2)Manf1Me(b6-2)Manf1Me(a6-3)]Man(a1-2)D-Rha(a1-6)Glc(b1-6)[Glc(b1-6)Gal(b1-6)Gal(a1-3)][Glc(b1-2)]Glc(b1-6)Gal(b1-6)Gal(b1-6)Glc(b1-6)[Glc(b1-2)][Glc(b1-3)]Glc(b1-6)Gal(b1-6)Gal(b1-4)Man
 Man6S(b1-4)Man6S(b1-6)[Glc6S(b1-2)Manf1Me(b6-2)Manf1Me(a6-3)]Man(a1-2)D-RhaOS(a1-6)Glc(b1-6)[Glc6S(b1-2)][Glc6S(b1-3)]Glc(b1-6)Gal(b1-6)Gal(b1-6)Glc(b1-6)[Glc6S(b1-2)][Glc6S(b1-3)]Glc(b1-6)Gal(b1-6)Gal(b1-4)Man6S
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Kdn(a2-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]2,5-Anhydro-Man-ol
 Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Kdn(a2-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)[Kdn(a2-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)[Kdn(a2-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
@@ -587,7 +567,6 @@ Kdn(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5G
 L-Gal(a1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)][Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc-ol
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)[D-Fuc(a1-3)]GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[D-Fuc(a1-6)]GlcNAc
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)[D-Fuc(a1-3)]GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[D-Fuc(a1-6)]GlcNAc
-Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]2,5-Anhydro-Man
 Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)[D-Fuc(a1-3)]GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)[D-Fuc(a1-3)]GlcNAc(b1-4)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-4)]Man(a1-3)[Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
@@ -626,7 +605,6 @@ Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Gal(a1-4)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(a
 Neu5Ac9Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac9Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac9Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac9Ac(a2-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Neu5Ac9Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac9Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac9Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5AcOAc(a2-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Neu5Ac9NAc(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac9NAc(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac9NAc(a2-3)Gal(b1-4)GlcNAc(b1-2)[KdnNAc(a2-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Gal(a1-3)Gal(b1-4)GlcNAc(b1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)Glc1Cer
 Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -919,7 +897,6 @@ Tyv(b1-3)GalNAc(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[Tyv(b1-3)GalNAc(b1-4)[Fuc(
 Tyv(b1-3)GalNAc(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Tyv(b1-3)GalNAc(b1-4)[Fuc(a1-3)]GlcNAc(b1-4)]Man(a1-3)[Tyv(b1-3)GalNAc(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 FucOMe(a1-3)DDGalHepOMe(b1-3)GlcNAc(a1-2)Man(b1-3)ManNAc(b1-4)Gal(a1-4)DDGalHep(b1-3)GlcNAc(b1-3)Gal(a1-2)Man(a1-6)[Gal(a1-2)][Kdo(a2-3)]Man(a1-4)Man(a1-5)[AraOPN(b1-6)GlcN(a1-4)Kdo(a2-4)]Kdo
 Gal(a1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Gal(b1-3)Gal(a1-3)Gal(b1-3)Gal(a1-3)Gal(b1-3)Gal(a1-3)Galf(b1-3)[Gal(a1-4)]Gal(a1-3)Galf(b1-3)[Gal(a1-4)]Gal(a1-3)Galf(b1-3)[Gal(a1-4)]Gal(a1-3)GlcNAc(b1-5)[Hep(a1-4)]Kdo(a2-6)2,5-Anhydro-Man
 Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc-ol
 Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
@@ -1143,7 +1120,6 @@ Glc(a1-2)Glc(a1-3)Gal(a1-2)[6dTal3Me(a1-3)[GlcNAc(a1-3)[GlcNAc(b1-4)]Fuc(a1-2)Gl
 Glc(b1-3)GalNAc(a1-3)GalNAc(b1-3)Rha(a1-3)[QuiNAc(b1-3)Rha(a1-2)][LDManHep(a1-7)]LDManHep(a1-3)[LDManHep(a1-6)Glc(b1-4)]LDManHep(a1-5)[Ko(a2-4)]Kdo(a2-6)[AraOPN(b1-4)]GlcN(b1-6)GlcOPN
 Glc6Me(a1-4)Glc6Me(a1-4)Glc6Me(a1-4)Glc6Me(a1-4)Glc6Me(a1-4)Glc6Me(a1-4)Glc6Me(a1-4)Glc6Me(a1-4)Glc6Me(a1-4)Glc6Me(a1-4)[Glc(b1-3)]Glc6Me(a1-4)Glc6Me(a1-4)[Glc(b1-3)]Glc(a1-6)Glc1GroA
 GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-L-4dThrHexA4en(b1-4)Neu(a2-3)GalA(b1-3)QuiN(b1-4)Sedf(b2-3)Gal(b1-3)[GlcN(a1-7)]LDManHep(a1-2)LDManHep(a1-3)[Sedf(b2-6)Glc(b1-4)][Glc(a1-6)]LDManHep(a1-5)KdoOP(a2-6)GlcN4P(b1-6)GlcN1P
 Man(a1-6)Man(a1-6)[Galf(b1-2)]Man(a1-6)Man(a1-6)Man(a1-6)Man(a1-6)Man(a1-6)[Galf(a1-2)Galf(b1-2)]Man(a1-6)Man(a1-6)Man(a1-6)Man(a1-6)Man(a1-6)[Gal(b1-4)]Man(a1-6)Man(a1-6)Man(a1-6)Man
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -1220,7 +1196,6 @@ Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Ne
 Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Araf(a1-2)[Xyl(a1-6)Glc(b1-4)[Xyl(a1-6)]Glc(b1-4)[Fuc(a1-2)Gal(b1-2)Xyl(a1-6)]Glc(b1-4)Glc(b1-4)][Xyl(a1-6)]Glc(b1-4)[Xyl(a1-6)]Glc(b1-4)[Fuc(a1-2)Gal(b1-2)Xyl(a1-6)]Glc(b1-4)Glc-ol
-D-4dThrHexOAcN4en(b1-4)ManNAcAN(b1-4)GlcNAcAN(b1-4)GalNAc(a1-4)ManNAcA(b1-3)D-FucNAcN(b1-6)GlcN(a1-4)[GalA6N(a1-6)]Glc(b1-4)[GlcA(a1-2)[GlcN(a1-7)]LDManHepOP(a1-3)]LDManHep(a1-5)Kdo
 Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)][Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)][Gal(b1-4)GlcNAc(b1-6)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)][Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)][Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -1336,8 +1311,6 @@ Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-3)[Neu5Ac(a2-6)]GlcNAc(b1-4
 Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-3)[Neu5Ac(a2-6)]GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-3)[Neu5Ac(a2-6)]GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GalNAc(b1-4)GlcNAc
 Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-3)[Neu5Ac(a2-6)]GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-3)[Neu5Ac(a2-6)]GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 AltNAcA(a1-3)D-FucNAcN(b1-4)AltNAcA(a1-3)D-FucNAcN(b1-3)Glc(b1-3)[Gal(a1-2)Gal(a1-2)]Glc(a1-3)Glc(a1-3)[GlcN(a1-7)LDManHep(a1-7)]LDManHepOP(a1-3)LDManHepOP(a1-5)[Kdo(a2-4)]Kdo
-Col(a1-2)Gal4P(b1-3)[Col(a1-3)]GlcNAc(b1-4)GalA(a1-3)QuiNAc(b1-3)[GlcN(a1-7)]LDManHep2Ac(a1-2)[LDManHep(a1-6)]LDManHep(a1-3)[Glc(b1-4)][Glc(a1-6)]LDManHep(a1-5)4,8-Anhydro-Kdo
-Fuc(a1-2)GalOAc(b1-3)[Fuc(a1-4)]GlcN(a1-4)GlcA(b1-4)GalA(a1-3)Glc(b1-6)[3dLyxHep-ulosaric(a2-3)GalA(a1-3)Glc(b1-4)]Glc(a1-5)[GalAOAc(a1-7)Kdo(a2-4)]Kdo(a2-6)GlcN4P(b1-6)GlcN1P
 Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)][Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)][Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc-ol
 Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(a1-4)GlcNAc(b1-4)GlcNAc
 Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -1559,7 +1532,6 @@ Neu5Gc(a2-6)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Kd
 Neu5Gc(a2-6)Gal(b1-4)GlcNAc(b1-2)[Neu5Gc(a2-6)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Xyl(a1-6)Glc(b1-4)[Gal(b1-2)Xyl(a1-6)]Glc(b1-4)[Fuc(a1-2)Gal(b1-2)Xyl(a1-6)]Glc(b1-4)Glc(b1-4)[Xyl(b1-2)][Xyl(a1-6)]Glc(b1-4)[Xyl(a1-6)]Glc(b1-4)[Xyl(a1-6)]Glc(b1-4)Glc
 Xyl(a1-6)Glc(b1-4)[Xyl(a1-6)]Glc(b1-4)[Xyl(b1-2)][Xyl(a1-6)]Glc(b1-4)Glc(b1-4)[Xyl(a1-6)]Glc(b1-4)[Gal(b1-2)Xyl(a1-6)]Glc(b1-4)[Fuc(a1-2)Gal(b1-2)Xyl(a1-6)]Glc(b1-4)Glc
-D-4dEryHexOAcN4en(a1-4)GlcNAcAN(b1-4)GalNAc(a1-4)ManNAcA(b1-3)D-FucNAcN(b1-6)GlcN(a1-4)[GalA6N(a1-6)]Glc(b1-4)[GlcA(a1-2)[GlcN(a1-7)]LDManHepOP(a1-3)]LDManHep(a1-5)Kdo
 DDManHep(a1-2)[GalN(a1-4)]GalA(a1-3)[LDManHep(a1-7)]LDManHepOPEtN(a1-3)[Glc(b1-4)]LDManHep(a1-5)[Kdo(a2-4)][Ara4N(b1-8)]Kdo(a2-6)[AraOPN(b1-4)]GlcNOMyr(b1-6)GlcOPNOMyr
 Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-4)]Man(a1-3)[Man(a1-3)[Man(a1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)[Gal(b1-3)[Fuc(a1-4)]GlcNAc(b1-3)]Gal(b1-4)GlcNAc(b1-6)[Gal(b1-3)GlcNAc(b1-3)Gal(b1-3)GlcNAc(b1-3)]Gal(b1-4)Glc-ol
@@ -1599,7 +1571,6 @@ Neu5Gc(a2-6)Gal(b1-4)GlcNAc(b1-2)[Kdn(a2-3)[GalNAc(b1-4)]Gal(b1-4)GlcNAc(b1-4)]M
 Fuc(a1-2)Gal(b1-3)[Fuc(a1-4)]GlcNAc(b1-3)Gal(b1-3)GlcNAc(b1-3)[Gal(b1-3)[Fuc(a1-4)]GlcNAc(b1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)Glc-ol
 Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[GalNAc(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-2)[Gal(a1-3)]Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)Glc1Cer
 Gal(a1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)][GalNAc(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)[Gal(b1-4)GlcNAc(b1-2)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
@@ -1657,7 +1628,6 @@ Araf(a1-2)[Xyl(a1-6)Glc(b1-4)[Xyl(a1-6)]Glc(b1-4)[Fuc(a1-2)Gal(b1-2)Xyl(a1-6)]Gl
 Fuc(a1-2)Gal(b1-3)[Fuc(a1-4)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-2)Gal(b1-3)[Fuc(a1-4)]GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Fuc(a1-2)[Gal(a1-3)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-2)[Gal(a1-3)]Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)Glc1Cer
 Fuc(a1-2)[GalNAcOMe(a1-3)]Gal(b1-3)GlcNAc(b1-2)Man(a1-3)[Fuc(a1-2)[GalNAcOMe(a1-3)]Gal(b1-3)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-3)][Fuc(a1-6)]GlcNAc
 Fuc(a1-3)[GalNAc(b1-4)]GlcNAc(b1-3)GalNAc(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)[GalNAc(b1-4)]GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Gal(a1-2)Man(a1-2)[Gal(a1-3)]Man(a1-2)Man(a1-3)[Gal(a1-2)[Gal(a1-3)]Man(a1-2)Man(a1-3)[Gal(a1-2)[Gal(a1-3)]Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -1713,7 +1683,6 @@ GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal
 GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)[Kdn(a2-6)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-LDManHep(a1-2)DDManHep(a1-2)L-4dThrHexA4en(b1-3)[GalA(b1-7)LDManHep(a1-7)]LDManHep(a1-3)[Glc(b1-4)]LDManHep(a1-5)[Kdo(a2-4)][Ara4N(b1-8)]Kdo(a2-6)GlcN(b1-6)GlcN1P
 Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc-ol
 Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc-ol
 Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc-ol
@@ -1816,7 +1785,6 @@ Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)[Ga
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(a1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc1N
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[D-Fuc(a1-6)]GlcNAc
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-6)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(a1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc1N
-Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]2,5-Anhydro-Man-ol
 Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)][Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal6S(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
@@ -1851,10 +1819,8 @@ Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNA
 Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-4)]Man(a1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc-ol
 Pse5Ac7Ac(a2-4)Pse5Ac7Ac(a2-6)Gal(a1-6)Glc(a1-3)[Glc(b1-2)]LDManHep(a1-3)[Man(b1-4)][Ara4N(b1-7)]LDManHep(a1-5)[Kdo(a2-4)]Kdo(a2-6)GlcN(b1-6)[Ara4N(b1-4)]GlcN1P
 Rha(a1-4)Rha(a1-4)Rha(a1-6)[Glc(b1-3)]Man(a1-6)[Gal(a1-4)Gal3Me(a1-4)Gal3Me(a1-4)Gal3Me(a1-4)Gal3Me(a1-4)Gal3Me(a1-4)Gal3Me(a1-3)]Man(a1-6)Man(a1-6)Man(a1-4)Man
-D-4dThrHexAN4en(a1-3)L-QuiN(b1-6)Glc(a1-4)GlcN(a1-4)Glc(b1-3)[Glc(a1-7)DDManHep(a1-2)[LDManHep(a1-6)]LDManHep(a1-4)]LDManHep(a1-5)KdoOP(a2-6)GlcN4P(b1-6)GlcN1P
 D-Fuc(a1-2)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[D-Fuc(a1-6)]GlcNAc
 Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Fuc(a1-3)[Fuc(a1-4)]GlcNAc(b1-2)Fuc(a1-4)[Fuc(a1-3)]GlcNAc(b1-2)Fuc(a1-4)[Fuc(a1-3)]GlcNAc(b1-2)Fuc(a1-4)[Fuc(a1-3)]GlcNAc(b1-3)GalNAc(b1-3)GalNAc(b1-4)Glc1Cer
 Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)[GalNAc(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-3)][Fuc(a1-6)]GlcNAc
 Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-6)]Man(a1-6)[Gal(b1-4)GlcNAc(b1-2)Man(a1-3)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
@@ -1887,7 +1853,6 @@ GlcN(a1-7)LDManHep(a1-2)LDManHep(a1-3)[GlcN(a1-4)Gal(b1-4)[GlcN6PCho(a1-6)LDManH
 Kdn(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-6)GalNAc(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Kdn(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Gc(a2-6)GalNAc(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Kdn(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Gc(a2-6)GalNAc(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-L-GalNAcAN(a1-4)ManNAcAN(b1-4)GlcNAcAN(b1-4)GalNAc(a1-4)ManNAcA(b1-3)D-FucNAcNMe(b1-6)GlcNAc(a1-4)ManNAcA(b1-3)D-FucNAcNMe(b1-6)[LDManHep(a1-4)]2,5-Anhydro-Man
 Man(a1-2)Man(a1-2)[Man(a1-6)Man(a1-6)Man(a1-6)Man(a1-6)Man(a1-6)Man(a1-6)Man(a1-6)]Man(a1-3)[Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
@@ -1985,7 +1950,6 @@ Fuc(a1-2)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b
 Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-3)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-6)]GalNAc
 Fuc(a1-3)[Xyl(a1-4)]Gal2Me(a1-3)Fuc(a1-3)Gal2Me(a1-3)Fuc(a1-3)[Xyl(a1-4)]Gal(a1-3)Fuc(a1-3)[Xyl(a1-4)]Gal2Me(a1-3)Fuc(a1-3)[Xyl(a1-4)]Gal2Ac(a1-3)Fuc(a1-3)Fuc
 Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Gal(b1-3)Gal(a1-3)Gal(b1-3)Gal(a1-3)Gal(b1-3)Gal(a1-3)Galf(b1-3)Gal(a1-3)Galf(b1-3)Gal(a1-3)Galf(b1-3)Gal(a1-3)GlcNAc(b1-5)[Hep(a1-4)]Kdo(a2-6)2,5-Anhydro-Man
 Gal(b1-4)GlcNAc(b1-2)[Gal(a1-4)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)][Gal(a1-4)Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)[Gal(b1-4)GlcNAc(b1-2)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)][Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -2001,7 +1965,6 @@ GalOPGro(a1-6)Gal(a1-3)GalOPGro(a1-6)Gal(a1-3)GalOPGro(a1-6)Gal(a1-3)GalOPGro(a1
 Glc2F(b1-4)Glc(b1-4)Glc(b1-4)Glc(b1-4)Glc(b1-4)Glc(b1-4)Glc(b1-4)Glc(b1-4)Glc(b1-4)Glc(b1-4)Glc(b1-4)Glc(b1-4)Glc(b1-4)Glc(b1-4)Glc(b1-4)Glc(b1-4)Glc(b1-4)Glc
 GlcA(b1-3)Gal(b1-3)GalNAc(b1-4)GlcNAc(b1-2)[GlcA(b1-3)Gal(b1-3)GalNAc(b1-4)GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Neu5Ac(a2-3)Gal(b1-4)[Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]GlcN(b1-3)Gal(b1-4)Glc(b1-6)]2,5-Anhydro-Man
 Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -2043,7 +2006,6 @@ GlcA(b1-3)Gal(b1-3)GalNAc(a1-4)GalNAc(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)ManOS(a1-3)[Gl
 GlcA(b1-3)Gal(b1-3)GalNAc(b1-4)GlcNAc(b1-2)Man(a1-3)[GlcA(b1-3)Gal(b1-3)GalNAc(b1-4)GlcNAc(b1-2)ManOS(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-3)][Fuc(a1-6)]GlcNAc
 GlcA(b1-3)Gal(b1-3)GalNAc(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[GlcA(b1-3)Gal(b1-3)GalNAc(b1-4)GlcNAc(b1-2)ManOS(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)][GalNAc(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-LDManHep(a1-2)DDManHep(a1-2)L-4dThrHexA4en(b1-3)[LDManHep(a1-7)]LDManHepOPEtN(a1-3)[Glc(b1-4)]LDManHep(a1-5)[Kdo(a2-4)][Ara4N(b1-8)]Kdo(a2-6)GlcN(b1-6)GlcN1P
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)Glc
 Neu5Ac(a2-3)[Gal(b1-4)]Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-3)[Gal(b1-4)]Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-2)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -2055,7 +2017,6 @@ Rha(a1-3)QuiNAc(b1-7)LDManHep(a1-2)[Glc(a1-6)]Gal(a1-3)[LDManHep(a1-7)]LDManHep(
 Xyl(a1-6)Glc(b1-4)[Gal(b1-2)Xyl(a1-6)]Glc(b1-4)[Gal(b1-2)Xyl(a1-6)]Glc(b1-4)Glc(b1-4)[Xyl(a1-6)]Glc(b1-4)[Xyl(a1-6)]Glc(b1-4)[Gal(b1-2)Xyl(a1-6)]Glc(b1-4)Glc
 Xyl(a1-6)Glc(b1-4)[Xyl(a1-6)]Glc(b1-4)[Gal(b1-2)Xyl(a1-6)]Glc(b1-4)Glc(b1-4)[Xyl(a1-6)]Glc(b1-4)[Gal(b1-2)Xyl(a1-6)]Glc(b1-4)[Gal(b1-2)Xyl(a1-6)]Glc(b1-4)Glc
 Araf(a1-5)Araf(a1-2)Araf(a1-5)Araf(a1-2)Araf(a1-6)Gal(b1-2)Araf(a1-6)[Glc(b1-4)]Gal(b1-4)Glc(a1-3)Gal(b1-4)Glc(a1-4)Glc(a1-4)Glc(a1-4)Glc(a1-4)Glc(a1-2)Araf
-Fuc(a1-2)GalOAc(b1-3)[Fuc(a1-4)]GlcNAc(a1-4)GlcA(b1-4)GalA(a1-3)Glc(b1-6)[3dLyxHep-ulosaric(a2-3)GalA(a1-3)Glc(b1-4)]Glc6Ac(a1-5)[GalAOAc(a1-7)Kdo(a2-4)]Kdo
 Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-3)][Fuc(a1-6)]GlcNAc
 Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)][Xyl(b1-2)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-3)][Fuc(a1-6)]GlcNAc
@@ -2136,7 +2097,6 @@ Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-4)]Man(a1-3)[Gal(b1
 Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)[Kdn(a2-3)[GalNAc(b1-4)]Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-L-4dThrHexAN4en(b1-3)QuiN(b1-3)Rha(a1-3)[Glc(a1-6)]Glc(b1-3)[Glc(a1-4)]GalN(a1-3)LDManHep4P6P(a1-3)LDManHep2P4P(a1-5)[Kdo(a2-4)]Kdo(a2-6)GlcN4P(b1-6)GlcN1P
 LDManHep(a1-2)DDManHep(a1-2)GalA(a1-3)[LDManHep(a1-7)]LDManHep(a1-3)[Glc(b1-4)]LDManHep(a1-5)[Kdo(a2-4)]Kdo(a2-6)[AraOPN(b1-4)]GlcN(b1-6)[AraOPN(b1-1)]GlcN
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -2165,7 +2125,6 @@ GlcNAc(a1-4)ManNAcA3NAc(b1-3)FucNAc4NMe(b1-6)[LDManHep(a1-4)]GlcN(a1-4)[GalAN(a1
 GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[D-Fuc(a1-6)]GlcNAc
 GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[D-Fuc(a1-6)]GlcNAc
 Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-4)]Man(a1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-LDManHep(a1-2)D-4dThrHexA4en(a1-3)[Glc6PEtN(b1-6)][LDManHep(a1-7)]LDManHep(a1-3)[Glc(b1-4)]LDManHep(a1-5)[Kdo(a2-4)][Ara4N(b1-8)]Kdo(a2-6)GlcN(b1-6)GlcN1P
 LDManHep(a1-2)DDManHep(a1-2)GalA(a1-3)[LDManHep(a1-7)]LDManHep(a1-3)[Glc(b1-4)]LDManHep(a1-5)[Ko(a2-4)]Kdo(a2-6)[AraOPN(b1-4)]GlcN(b1-6)[AraOPN(b1-1)]GlcN
 LDManHep(a1-2)LDManHep4P(a1-7)[Glc(a1-4)]LDManHep(a1-3)[LDManHep(a1-6)Glc(b1-4)][Glc4Pyr(a1-7)]LDManHep(a1-5)Kdo4P(a2-6)GlcN2Lau3Lau4P(b1-6)GlcN1P2Lau3Lau
 LDManHep(a1-6)Glc(a1-2)Glc(a1-3)[Gal(a1-6)]Glc(a1-3)[LDManHep(a1-7)]LDManHep4P(a1-3)LDManHep4P(a1-5)[Kdo(a2-4)]Kdo(a2-6)GlcN2Myr3Myr4P(b1-6)GlcN1P2Myr3Myr
@@ -2174,7 +2133,6 @@ Rha(a1-4)GalNAcAOAcN(a1-4)GalNFoAN(a1-3)QuiNAc(b1-3)Rha(a1-3)[Glc(a1-6)]Glc(b1-3
 Rha(a1-4)GalNAcAOAcN(a1-4)GalNFoAN(a1-3)QuiNAc(b1-3)Rha(a1-3)[Glc(b1-6)]Glc(b1-3)[Glc(a1-4)]GalNAla(a1-3)LDManHepOPOCm(a1-3)LDManHepOP(a1-5)[Kdo(a2-4)]Kdo
 RibOP-ol(1-5)RibOP-ol(1-5)RibOP-ol(1-5)RibOP-ol(1-5)RibOP-ol(1-5)RibOP-ol(1-5)RibOP-ol(1-5)RibOP-ol(1-5)RibOP-ol(1-5)RibOP-ol(1-5)RibOP-ol(1-5)RibOPEtN-ol
 8eLeg(a2-3)FucN(a1-3)QuiNAc(b1-3)Rha(a1-3)[Glc(a1-6)]Glc(b1-3)[Glc(a1-4)]GalN(a1-3)LDManHepOP(a1-3)LDManHepOP(a1-5)[Kdo(a2-4)]Kdo(a2-6)GlcN4P(b1-6)GlcN1P
-D-4dThrHexOAcN4en(b1-4)GalNAc(a1-4)ManNAcA(b1-3)D-FucNAcN(b1-6)GlcN(a1-4)[GalA6N(a1-6)]Glc(b1-4)[GlcA(a1-2)[GlcN(a1-7)]LDManHepOP(a1-3)]LDManHep(a1-5)Kdo
 Fruf(b2-1)Fruf(b2-1)Fruf(b2-1)Fruf(b2-1)Fruf(b2-1)Fruf(b2-1)Fruf(b2-1)Fruf(b2-1)Fruf(b2-1)Fruf(b2-1)Fruf(b2-1)Fruf(b2-1)Fruf(b2-1)Fruf(b2-1)Fruf(b2-1)Glc
 Fuc(a1-2)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Fuc(a1-2)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-6)[GlcNAc(b1-2)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -2183,7 +2141,6 @@ Fuc(a1-2)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Fuc(a1-2)Gal(b1-4
 Fuc(a1-2)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-6)[Gal(b1-4)GlcNAc(b1-2)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Fuc(a1-2)Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-4)]Man(a1-3)[Man(a1-3)[Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Fuc(a1-2)GalOAc(b1-3)[Fuc(a1-4)]GlcNAc(a1-4)GlcA(b1-4)GalA(a1-3)Glc(b1-6)[3dLyxHep-ulosaric(a2-3)GalA(a1-3)Glc(b1-4)]Glc6Ac(a1-5)[GalA(a1-7)Kdo(a2-4)]Kdo
 Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)[Fuc(a1-2)Gal(b1-3)GlcNAc(b1-3)]Gal(b1-4)GlcNAc(b1-6)[Fuc(a1-2)Gal(b1-3)GlcNAc(b1-3)]Gal(b1-4)Glc-ol
 Fuc(a1-3)[GalNAc(b1-4)]GlcNAc(b1-2)Man(a1-3)[GalNAc(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)][Xyl(b1-2)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-3)][Fuc(a1-6)]GlcNAc
 Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -2231,7 +2188,6 @@ Fuc(a1-2)[GalNAcOMe(a1-3)]Gal(b1-3)GlcNAc(b1-2)Man(a1-3)[Fuc(a1-2)[GalNAcOMe(a1-
 Gal(a1-2)Man(a1-2)[Gal(a1-3)]Man(a1-2)Man(a1-3)[Gal(a1-2)Man(a1-2)Man(a1-3)[Gal(a1-2)[Gal(a1-3)]Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(a1-3)Gal(b1-3)GlcNAc(b1-4)]Man(a1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[D-Fuc(a1-6)]GlcNAc
 Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[D-Fuc(a1-6)]GlcNAc
-Gal(a1-3)Gal(b1-4)GlcNAc(b1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)Glc1Cer
 Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc-ol
 Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[GalNAc(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 GalNAc(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[GalNAc(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
@@ -2246,10 +2202,8 @@ Neu5Ac(a2-3)[Neu5Ac(a2-6)]Gal(b1-3)GlcNAc(b1-4)Man(a1-3)[Neu5Ac(a2-3)[Neu5Ac(a2-
 Neu5Ac(a2-4)GlcNAc(b1-3)[Neu5Ac(a2-6)]Gal(b1-4)GlcNAc(b1-3)[Neu5Ac(a2-6)]Gal(b1-4)GlcNAc(b1-3)[Neu5Ac(a2-6)]Gal(b1-4)GlcNAc(b1-3)[Neu5Ac(a2-6)]GalNAc-ol
 Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)][Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 8eLeg(a2-3)FucN(a1-3)QuiN(b1-3)Rha(a1-3)[Glc(a1-6)]Glc(b1-3)[Glc(a1-4)]GalN(a1-3)LDManHepOP(a1-3)LDManHepOP(a1-5)[Kdo(a2-4)]Kdo(a2-6)GlcN4P(b1-6)GlcN1P
-D-4dThrHexAN4en(b1-3)QuiN(b1-3)Rha(a1-3)[Glc(a1-6)]Glc(b1-3)[Glc(a1-4)]GalN(a1-3)LDManHepOP(a1-3)LDManHepOP(a1-5)[Kdo(a2-4)]Kdo(a2-6)GlcN4P(b1-6)GlcN1P
 Fuc(a1-2)Gal(a1-3)Gal(a1-4)Gal(b1-4)GlcNAc(b1-6)[Fuc(a1-2)Gal(a1-3)Gal(a1-4)Gal(b1-3)]Gal(b1-3)[Fuc(a1-2)Gal(a1-3)Gal(a1-4)Gal(b1-4)GlcNAc(b1-6)]GalNAc
 Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-4)]Man(a1-3)[Man(a1-3)[Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Fuc(a1-2)GalOAc(b1-3)[Fuc(a1-4)]GlcN(a1-4)GlcA(b1-4)GalA(a1-3)Glc(b1-6)[3dLyxHep-ulosaric(a2-3)GalA(a1-3)Glc(b1-4)]Glc6Ac(a1-5)[GalA(a1-7)Kdo(a2-4)]Kdo
 Fuc(a1-3)GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[Fuc(a1-3)GlcNAc(b1-2)[Fuc(a1-3)GlcNAc(b1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -2340,7 +2294,6 @@ Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Kdn(a2-3)Gal(b1-4)GlcNAc(b1-2)[Kdn(a2-6)
 Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)[Kdn(a2-3)Gal(b1-4)[Fuc(a1-3)]Glc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)[Kdn(a2-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-4)]Man(a1-3)[Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-L-4dThrHexA4en(b1-3)QuiN(b1-3)Rha(a1-3)[Glc(a1-6)]Glc(b1-3)[Glc(a1-4)]GalN(a1-3)LDManHepOP(a1-3)LDManHepOP(a1-5)[Kdo(a2-4)]Kdo(a2-6)GlcN4P(b1-6)GlcN1P
 LDManHep(a1-3)[QuiNAc(b1-7)]LDManHep(a1-2)[Gal(b1-3)Glc(a1-6)]Gal(a1-3)[Glc(b1-2)][LDManHep(a1-7)]LDManHep(a1-3)[Glc(b1-4)]LDManHep(a1-5)[Ko(a2-4)]Kdo
 Man(a1-3)Man(a1-2)Man(a1-2)Man(a1-6)Man(a1-6)[Man(a1-3)Man(a1-2)Man(a1-2)]Man(a1-3)[Man(a1-2)Man(a1-6)[Man(a1-3)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Man(a1-3)Man(a1-2)Man(a1-2)[Man(a1-3)Man(a1-3)Man(a1-2)Man(a1-6)]Man(a1-3)[Man(a1-3)[Man(a1-3)Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -2412,8 +2365,6 @@ Fuc(a1-2)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-
 Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)[GalNAc(b1-4)]GlcNAc(b1-2)Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GalNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)Glc1Cer
-Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)Glc1Cer
 Fuc(a1-3)GlcNAc(b1-4)[Fuc(a1-3)]GlcNAc(b1-4)[Fuc(a1-3)]GlcNAc(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-6)[Man(a1-3)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[GalNAc(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-3)][Fuc(a1-6)]GlcNAc
@@ -2454,7 +2405,6 @@ GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Glc
 GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 GlcNAc(b1-4)Gal(b1-3)GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-4)Gal(b1-3)GlcNAc(b1-2)[GlcNAc(b1-4)Gal(b1-3)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 GlcNAc(b1-4)Gal(b1-3)GlcNAc(b1-2)[GlcNAc(b1-4)Gal(b1-3)GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)Gal(b1-3)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-L-4dEryHexAN4en(a1-3)QuiN(b1-3)Rha(a1-3)GlcN(a1-3)[Glc(b1-2)Glc(a1-4)]GalN(a1-3)LDManHepOP(a1-3)LDManHepOP(a1-5)[Kdo(a2-4)]Kdo(a2-6)GlcN(b1-6)GlcN1P
 Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-4)[Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -2520,7 +2470,6 @@ Xyl(a1-6)Glc(b1-4)[Xyl(a1-6)]Glc(b1-4)[Xyl(a1-6)]Glc(b1-4)Glc(b1-4)[Xyl(a1-6)]Gl
 D-RhaNAc(a1-3)Fuc(a1-4)Glc(b1-3)GalNAc(b1-4)[Glc(a1-2)]Glc(a1-2)[GlcNAc(a1-3)]Gal(a1-3)Glc(a1-3)[LDManHep(a1-7)]LDManHepOP(a1-3)LDManHepOP(a1-5)Kdo
 Fuc(a1-2)Gal(b1-3)GlcNAc(b1-3)[Fuc(a1-2)Gal(b1-3)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)[Neu5Ac(a2-6)]Gal(b1-3)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-6)]GalNAc-ol
 Fuc(a1-2)Gal(b1-3)GlcNAc(b1-3)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)[Neu5Ac(a2-6)]Gal(b1-3)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-6)]GalNAc-ol
-Fuc(a1-2)Gal(b1-3)[Fuc(a1-4)]GlcNAc(a1-4)GlcA(b1-4)GalA(a1-3)Glc(b1-6)[3dLyxHep-ulosaric(a2-3)GalA(a1-3)Glc(b1-4)]Glc(a1-5)[GalA(a1-7)Kdo(a2-4)]Kdo
 Fuc(a1-2)[GalNAcOMe(a1-3)]Gal(b1-3)GlcNAc(b1-2)ManOMe(a1-3)[Fuc(a1-2)[GalNAcOMe(a1-3)]Gal(b1-3)GlcNAc(b1-2)ManOMe(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 FucOMe(a1-3)DDGalHepOMe(b1-3)GlcNAc(a1-2)Man(b1-3)ManNAc(b1-4)Gal(a1-4)DDGalHep(b1-3)GalNAc(b1-3)Gal(a1-2)Man(a1-6)[Gal(a1-2)]Man(a1-4)Man(a1-5)Kdo
 FucOMe(a1-3)DDGalHepOMe(b1-3)GlcNAc(a1-2)Man(b1-3)ManNAc(b1-4)Gal(a1-4)DDGalHep(b1-3)GlcNAc(b1-3)Gal(a1-2)Man(a1-6)[Gal(a1-2)]Man(a1-4)Man(a1-5)Kdo
@@ -2553,6 +2502,7 @@ GlcNAc(a1-2)[Gal(b1-4)]Glc(a1-2)Glc(a1-3)[Gal(a1-6)]Glc(a1-3)[LDManHep(a1-7)]LDM
 LDManHep(a1-2)DDManHep(a1-2)GalA(a1-3)[LDManHep(a1-7)]LDManHepOPEtN(a1-3)[Glc(b1-4)]LDManHep(a1-5)[Kdo(a2-4)][Ara4N(b1-8)]Kdo(a2-6)GlcN(b1-6)GlcN1P
 LDManHep(a1-2)DDManHep(a1-2)[GalN(a1-4)]GalA(a1-3)[GalA(b1-7)LDManHep(a1-7)]LDManHep6PEtN(a1-3)[Glc(b1-4)]LDManHep(a1-5)[Kdo(a2-4)][Ara4N(b1-8)]Kdo
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
+Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-6)[Gal(b1-4)GlcNAc(b1-2)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -2701,7 +2651,6 @@ Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-3)Gal(
 Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)[Kdn(a2-6)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Araf(a1-5)Araf(a1-3)Araf(a1-3)[Rha(a1-4)GlcA(b1-6)]Gal(b1-6)[Gal(b1-3)Gal(b1-6)Gal(b1-3)]Gal(b1-3)[Araf(a1-3)Araf(a1-3)[GlcA(b1-6)]Gal(b1-6)]Gal
-D-4dThrHexA4en(a1-7)LDManHep(a1-7)[D-4dThrHexA4en(a1-3)][Glc(b1-2)]LDManHep(a1-3)[Gal(b1-4)]LDManHep(a1-5)[Kdo(a2-4)]Kdo(a2-6)GlcN4P(b1-6)GlcN1P
 Fuc(a1-2)Gal(b1-3)GlcNAc(b1-3)[Fuc(a1-2)Gal(b1-3)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)[Neu5Ac(a2-6)]Gal(b1-3)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-6)]GalNAc
 Fuc(a1-2)Gal(b1-3)GlcNAc(b1-3)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)[Neu5Ac(a2-6)]Gal(b1-3)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-6)]GalNAc
 Fuc(a1-2)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -2759,7 +2708,6 @@ Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-4)]Man(a1-3)[Neu5Ac
 Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-4)]Man(a1-3)[Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)[Kdn(a2-3)[GalNAc(b1-4)]Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-L-4dThrHexA4en(a1-7)LDManHep(a1-7)[L-4dThrHexA4en(a1-3)][Glc(b1-2)]LDManHep(a1-3)[Gal(b1-4)]LDManHep(a1-5)[Kdo(a2-4)]Kdo(a2-6)GlcN4P(b1-6)GlcN1P
 Man(a1-3)[Gal3Me(b1-6)Gal3Me(b1-3)[Gal3Me(b1-6)Gal3Me(b1-6)]GalNAc(b1-4)GlcNAc(b1-2)Man(a1-6)][Xylf(b1-2)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Man(a1-3)[Gal3Me(b1-6)Gal3Me(b1-6)Gal3Me(b1-3)[Gal3Me(b1-6)]GalNAc(b1-4)GlcNAc(b1-2)Man(a1-6)][Xylf(b1-2)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Man(b1-3)Man(b1-2)[Man(b1-4)Glc(b1-6)]Glc(b1-3)Man(b1-3)[Man(b1-6)]Man(b1-2)Man(b1-2)[Man(b1-4)Glc(b1-6)]Glc(b1-3)Man(b1-2)Man(b1-6)Man(b1-2)Man
@@ -2775,8 +2723,6 @@ Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Kdn(a2-3)Gal(b1
 Neu5Gc(a2-3)Gal(b1-4)GlcNAc(b1-2)[Kdn(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Neu5Gc(a2-6)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Rha(a1-2)Rha(a1-3)[Glc(a1-4)]Rha(a1-3)GlcNAc(b1-2)Rha(a1-2)Rha(a1-3)[Glc(a1-4)]Rha(a1-3)GlcNAc(b1-2)Rha(a1-2)Rha(a1-3)[Glc(a1-4)]Rha(a1-3)GlcNAc
-D-4dThrHexAN4en(a1-3)L-QuiN(b1-6)Glc(a1-4)GlcN(a1-4)Glc(b1-3)[Glc(a1-7)DDManHep(a1-2)LDManHep(a1-4)]LDManHep(a1-5)KdoOP(a2-6)GlcN4P(b1-6)GlcN1P
-DDManHep(a1-2)L-4dThrHexA4en(b1-3)[LDManHep(a1-7)]LDManHepOPEtN(a1-3)[Glc(b1-4)]LDManHep(a1-5)[Kdo(a2-4)][Ara4N(b1-8)]Kdo(a2-6)GlcN(b1-6)GlcN1P
 Fuc(a1-2)Gal(b1-3)GalNAc(b1-4)GlcNAc(b1-2)Man(a1-3)[Fuc(a1-2)Gal(b1-3)GalNAc(b1-4)GlcNAc(b1-2)Man(a1-6)][Xylf(b1-2)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Fuc(a1-2)Gal(b1-3)GlcNAc(b1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-6)[Fuc(a1-2)Gal(b1-3)[Fuc(a1-4)]GlcNAc(b1-3)]Gal(b1-4)Glc-ol
 Fuc(a1-2)Gal(b1-3)[Fuc(a1-4)]GlcNAc(b1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-6)[Fuc(a1-2)Gal(b1-3)GlcNAc(b1-3)]Gal(b1-4)Glc-ol
@@ -2789,7 +2735,6 @@ Gal(a1-2)Gal(a1-2)[Glc(b1-3)]Glc(a1-3)Glc(a1-3)[GlcN(a1-7)LDManHep(a1-7)]LDManHe
 Gal(a1-2)Man(a1-2)[Gal(a1-3)]Man(a1-2)Man(a1-3)[Gal(a1-2)[Gal(a1-3)]Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[GalOS(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Man(a1-3)[Man(a1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Gal(a1-3)Gal(b1-4)GlcNAc(b1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)[Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)Glc1Cer
 Gal(b1-3)GlcNAc(b1-3)Gal(b1-3)GlcNAc(b1-3)[Gal(b1-3)[Fuc(a1-4)]GlcNAc(b1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)Glc
 Gal(b1-4)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-4)][Gal(b1-4)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Gal(b1-4)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -2839,7 +2784,6 @@ Fuc(a1-2)Gal(b1-3)GalNAc(b1-4)GlcNAc(b1-2)Man(a1-3)[Fuc(a1-2)Gal(b1-3)GalNAc(b1-
 Fuc(a1-2)Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[D-Fuc(a1-6)]GlcNAc
 Fuc(a1-2)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Man(a1-3)[Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Fuc(a1-2)[Gal(a1-3)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-2)[Gal(a1-3)]Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)Glc1Cer
 Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Man(a1-2)Man(a1-6)[Man(a1-3)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Gal(a1-4)Gal(b1-4)GlcNAc(b1-4)[Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)]Man(a1-3)[Gal(a1-4)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -2849,6 +2793,7 @@ Gal(b1-4)GlcNAc(b1-2)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Gal(b1-
 Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)][Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
+Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)][Gal(b1-4)GlcNAc(b1-6)[GlcNAc(b1-2)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)[Gal(b1-3)GlcNAc(b1-3)]Gal(b1-4)GlcNAc(b1-6)[Gal(b1-3)GlcNAc(b1-3)Gal(b1-3)GlcNAc(b1-3)]Gal(b1-4)Glc
@@ -2916,7 +2861,6 @@ Kdn(a2-3)Gal(b1-4)GlcNAc(b1-2)[Kdn(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4
 Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Kdn(a2-6)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-4)]Man(a1-3)[Kdn(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Kdn(a2-6)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-LDManHep(a1-2)DDManHep(a1-2)D-4dThrHexA4en(a1-3)[LDManHep(a1-7)]LDManHep(a1-3)[Glc(b1-4)]LDManHep(a1-5)[Kdo(a2-4)]Kdo(a2-6)GlcN4P(b1-6)GlcN1P
 Leg(a2-4)FucN(a1-3)QuiNAc(b1-3)[GlcN(b1-2)]Glc(b1-3)[Glc(a1-4)]GalN(a1-3)LDManHep(a1-3)LDManHepOP(a1-5)[Kdo(a2-4)]Kdo(a2-6)GlcN4P(b1-6)GlcN1P
 Man(a1-2)Man(a1-2)Man(a1-2)[Man(a1-2)Man(a1-2)Man(a1-6)]Man(a1-3)[Man(a1-3)[Man(a1-2)Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
 Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-3)Man(a1-3)[Man(a1-3)Man(a1-2)[Man(a1-3)Man(a1-2)Man(a1-6)]Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
@@ -3013,7 +2957,6 @@ Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)[GalNAc(b1-4)]GlcNAc(b1-2)Man
 Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-4)][Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc-ol
 Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)][GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Gal4Pyr6Pyr(b1-3)Glc4Pyr(b1-4)Glc(b1-4)Glc(b1-6)Glc(a1-4)GlcA(b1-4)GlcA(b1-4)Glc(b1-4)[Gal4Pyr6Pyr(b1-3)Glc4Pyr(b1-4)Glc(b1-4)Glc(b1-6)]Glc
-GalA(b1-7)LDManHep(a1-7)[L-4dThrHexA4en(b1-3)]LDManHepOPEtN(a1-3)[Glc(b1-4)]LDManHep(a1-5)[Kdo(a2-4)][Ara4N(b1-8)]Kdo(a2-6)GlcN(b1-6)GlcN1P
 GalA4PEtN6Lys(b1-3)GlcNAc(b1-6)GlcN2Gly(a1-4)GalA(a1-3)[GalA(b1-7)LDManHep(a1-7)]LDManHep6PEtN(a1-3)[Glc(b1-4)]LDManHep(a1-5)[Kdo(a2-4)]Kdo
 GalN(b1-3)Gal(a1-4)Gal(b1-4)Glc(b1-4)Glc(b1-4)Glc(a1-4)[DDManHep(a1-2)LDManHep(a1-3)][Glc(a1-6)]LDManHep(a1-5)Kdo4P(a2-6)GlcN4P(b1-6)GlcN1P
 GalN(b1-3)Gal(a1-4)Gal(b1-4)Glc(b1-4)Glc(b1-4)Glc(a1-4)[DDManHep(a1-2)LDManHep(a1-3)][Glc(a1-6)]LDManHep(a1-5)KdoOP(a2-6)GlcN4P(b1-6)GlcN1P
@@ -3134,87 +3077,21 @@ Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc
 Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Fuc(a1-3)GlcNAc(b1-2)Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
 Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(a1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[D-Fuc(a1-6)]GlcNAc-ol
 Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-6)[GlcNAc(b1-2)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Gal4S(b1-3)[Fuc(a1-4)]GlcNAc(b1-2)[Gal4S(b1-3)[Fuc(a1-4)]GlcNAc(b1-4)]Man(a1-3)[Man(a1-3)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-GalA(a1-4)[Gal(a1-5)]Kdo(a2-4)[GalA(a1-4)[Fuc(a1-4)GlcA(a1-3)[Rha3Me(b1-4)]Fuc(a1-4)Man(a1-4)QuiNAc(b1-4)Kdo(a2-6)Gal(a1-6)]Man(a1-5)]Kdo
-GalNAc(a1-3)[Fuc(a1-2)]Gal(b1-3)GlcNAc(b1-3)[GalNAc(a1-3)[Neu5Ac(a2-6)]Gal(b1-3)GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)[Neu5Ac(a2-6)]GalNAc-ol
-GalNAc(a1-3)[Fuc(a1-2)]Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Glc(a1-3)Glc(a1-3)Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)][GlcNAcOS(a1-4)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Glc(a1-3)Glc(a1-3)Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)ManOS(a1-6)][GlcNAc(b1-4)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Glc(a1-3)Glc(a1-3)Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[ManOP(a1-2)Man(a1-6)][GlcNAc(b1-4)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Glc(a1-6)Glc(a1-6)DDManHep(a1-3)Fuc(a1-3)GlcNAc(b1-3)DDManHep(a1-2)[Glc(a1-4)Gal(b1-7)]DDManHep(a1-2)LDManHep(a1-3)LDManHep7PEtN(a1-5)Kdo
-Glc(b1-4)[Glc(b1-3)[Glc(a1-6)]Glc(b1-3)Glc(b1-6)]Glc(b1-4)Glc(b1-4)[Glc(b1-6)Glc(b1-6)]Glc(b1-4)Glc(b1-4)[Glc(b1-6)]Glc(b1-4)Glc(b1-4)Glc
-GlcA(b1-3)Gal(b1-3)GalNAc(a1-4)GalNAc(b1-4)GlcNAc(b1-2)ManOS(a1-3)[GlcA(b1-3)Gal(b1-3)GlcNAc(b1-2)ManOS(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-GlcNAc(a1-2)Glc(a1-2)Glc(a1-3)[Gal(a1-6)]Glc(a1-3)[LDManHepOPPEtN(a1-7)]LDManHepOPPEtN(a1-3)[LDManHepOPPEtN(a1-7)]LDManHepOPPEtN(a1-4)Kdo
-GlcNAc(a1-2)Glc(a1-2)Glc(a1-3)[Gal(a1-6)]Glc(a1-3)[LDManHepOPPEtN(a1-7)]LDManHepOPPEtN(a1-3)[LDManHepOPPEtN(a1-7)]LDManHepOPPEtN(a1-5)Kdo
-GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Man(a1-3)[Man(a1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-GlcNAc(b1-3)[Neu5Ac(a2-6)]Gal(b1-4)GlcNAc(b1-3)[Neu5Ac(a2-6)]Gal(b1-4)GlcNAc(b1-3)[Neu5Ac(a2-6)]Gal(b1-4)GlcNAc(b1-3)[Neu5Ac(a2-6)]GalNAc
-GlcNAc(b1-7)LDManHep(a1-6)Glc(a1-2)Glc(a1-3)[Gal(a1-6)]Glc(a1-3)[LDManHep(a1-7)]LDManHep(a1-3)LDManHep(a1-5)[Kdo(a2-4)KdoOPPEtN(a2-4)]Kdo
-GlcNAc(b1-7)LDManHep(a1-6)Glc(a1-2)Glc(a1-3)[Gal(a1-6)]Glc(a1-3)[LDManHep(a1-7)]LDManHep(a1-3)LDManHep(a1-5)[Rha(a1-5)KdoOPPEtN(a2-4)]Kdo
-LDManHep(a1-2)DDManHep(a1-2)[GalN(a1-4)]GalA(a1-3)[LDManHep(a1-7)]LDManHep6PEtN(a1-3)[Glc(b1-4)]LDManHep(a1-5)[Kdo(a2-4)][Ara4N(b1-8)]Kdo
-Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[D-Fuc(a1-6)]GlcNAc
-Neu5Ac(a2-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(a1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Neu5Ac(a2-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Neu5Ac(a2-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Neu5Ac(a2-3)[Gal(b1-4)]Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-4)][Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[GalNAc(b1-4)GlcNAc(b1-4)]Man(a1-3)[Man(a1-3)[Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Neu5Ac(a2-8)Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-8)Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Neu5Ac(a2-8)Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Neu5Gc(a2-8)Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Rha(a1-3)QuiNAc(b1-7)LDManHep(a1-2)[Glc(a1-6)]Gal(a1-3)[LDManHep(a1-7)LDManHep(a1-7)]LDManHep(a1-3)[Glc(b1-4)]LDManHep(a1-5)[Ko(a2-4)]Kdo
-AltNAcA(a1-3)D-FucNAcN(b1-3)Glc(b1-3)[Gal(a1-2)Gal(a1-2)]Glc(a1-3)Glc(a1-3)[GlcN(a1-7)LDManHep(a1-7)]LDManHepOP(a1-3)LDManHepOP(a1-5)Kdo
-D-Fuc(a1-2)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(a1-4)[D-Fuc(a1-6)]GlcNAc
-Fuc(a1-2)Gal(b1-3)GalNAc(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal3Me(b1-3)GalNAc(b1-4)GlcNAc(b1-2)Man(a1-6)][Xyl(b1-2)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)[GalNAc(b1-4)]GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-3)][Fuc(a1-6)]GlcNAc
-Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)[GalNAc(b1-4)GlcNAc(b1-4)]Man(a1-3)[Man(a1-3)[Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Fuc(a1-3)[GalNAc(b1-4)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-3)][Fuc(a1-6)]GlcNAc
-Fuc(a1-4)GalNAc(b1-3)DDManHep(a1-7)[Glc(a1-2)]DDManHep(a1-2)[Glc(a1-3)Glc(a1-4)Gal(b1-7)]DDManHep(a1-2)LDManHep(a1-3)LDManHepOP(a1-5)Kdo
-Gal(a1-3)Gal(b1-4)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(a1-3)Gal(b1-4)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Gal(b1-3)[Fuc(a1-4)]GlcNAc(b1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-6)[Gal(b1-3)[Fuc(a1-4)]GlcNAc(b1-3)]Gal(b1-4)Glc-ol
-Gal(b1-3)[Fuc(a1-4)]GlcNAc(b1-3)[Gal(b1-3)[Fuc(a1-4)]GlcNAc(b1-6)]Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-6)]Gal(b1-4)Glc-ol
-Gal(b1-3)[Fuc(a1-4)]GlcNAc(b1-3)[Gal(b1-4)GlcNAc(b1-6)]Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-6)[Gal(b1-3)[Fuc(a1-4)]GlcNAc(b1-3)]Gal(b1-4)Glc-ol
-Gal(b1-4)GalNAc(b1-3)DDManHep(a1-7)[Glc(a1-2)]DDManHep(a1-2)[Glc(a1-3)Glc(a1-4)Gal(b1-7)]DDManHep(a1-2)LDManHep(a1-3)LDManHepOP(a1-5)Kdo
-Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)][Xyl(b1-2)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-3)][Fuc(a1-6)]GlcNAc
-Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-4)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcN-ol
-Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Man(a1-3)[Man(a1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-4)][GlcNAc(b1-6)]Man(a1-6)[GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-3)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-6)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Gal(b1-4)GlcNAc(b1-4)[GlcNAc(b1-2)]Man(a1-3)[GlcNAc(b1-2)[GlcNAc(b1-4)][GlcNAc(b1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Gal(b1-4)GlcNAc(b1-4)[GlcNAc(b1-2)][GlcNAc(b1-6)]Man(a1-6)[GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Man(a1-3)[Man(a1-6)]Man(a1-6)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-Gal(b1-4)[Fuc(a1-6)]GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)[Fuc(a1-6)]GlcNAc(b1-2)Man(a1-6)][Xyl(b1-2)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-3)]GlcNAc-ol
-GalNAc(b1-3)Gal(a1-4)Gal(b1-4)Glc(b1-2)LDManHep(a1-2)[GalNAc(b1-3)Gal(a1-4)Gal(b1-4)Glc(a1-3)]LDManHep(a1-3)[Glc(b1-4)]LDManHep(a1-5)Kdo
-GalNAc(b1-4)GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[GalNAc(b1-4)GlcNAc(b1-2)[GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[D-Fuc(a1-6)]GlcNAc
-Galf(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)[Galf(a1-2)Man(a1-2)[Galf(a1-3)]Man(a1-2)Man(a1-3)]Man(b1-4)GlcNAc(b1-4)GlcNAcN
-GlcA(b1-3)Gal(b1-3)GalNAc(b1-4)GlcNAc(b1-2)Man(a1-3)[GalNAc(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-3)][Fuc(a1-6)]GlcNAc
-GlcA(b1-3)Gal(b1-3)GalNAc(b1-4)[Fuc(a1-3)]GlcNAc(b1-2)Man(a1-3)[GalNAc(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc
-GlcA6Me(b1-4)[D-6dTal3Me(a1-3)]Fuc(a1-3)Man(a1-3)QuiNAc(b1-4)Kdo(a2-6)Gal(a1-6)[GalA(a1-4)]Man(a1-5)[GalA(a1-4)[GalA(a1-5)]Kdo(a2-4)]Kdo
-GlcNAc(a1-2)Glc(a1-2)Glc(a1-3)[Gal(a1-6)]Glc(a1-3)[LDManHep(a1-7)]LDManHepOP(a1-3)LDManHepOP(a1-5)[Kdo(a2-4)]Kdo(a2-6)GlcN4P(b1-6)GlcN1P
-GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)][GlcNAc(b1-2)[GlcNAc(b1-4)][GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)][Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-4)][GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-GlcNAc(b1-2)[GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-4)][GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)][GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc
-GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc
+
 8eLeg5Ac7Ac b	C[C@@H]([C@H]([C@H]1[C@@H]([C@H](C[C@](O1)(C(=O)O)O)O)NC(=O)C)NC(=O)C)O	154573043
 GcNeu b	C1[C@@H]([C@H]([C@@H](O[C@@]1(C(=O)O)O)[C@@H]([C@@H](CO)O)O)NC(=O)CO)O	123802
 Neu5Gca	C1[C@@H]([C@H]([C@@H](O[C@]1(C(=O)O)O)[C@@H]([C@@H](CO)O)O)NC(=O)CO)O	9840259
 1-O-P-6-O-P-D-Frufb	C([C@@H]1[C@H]([C@@H]([C@](O1)(COP(=O)(O)O)O)O)O)OP(=O)(O)O	10267
+Neu5Gc	C1[C@@H]([C@H]([C@@H](OC1(C(=O)O)O)[C@@H]([C@@H](CO)O)O)NC(=O)CO)O	440001
 Kdo5P a	C1[C@H]([C@H]([C@H](O[C@]1(C(=O)O)O)[C@@H](CO)O)OP(=O)(O)O)O	45480575
+Kdo4P a	C1[C@H]([C@H]([C@H](O[C@]1(C(=O)O)O)[C@@H](CO)O)O)OP(=O)(O)O	45480576
+4eLeg b	C[C@H]([C@H]([C@H]1[C@@H]([C@@H](C[C@](O1)(C(=O)O)O)O)N)N)O	126961780
 Neu5Ac	CC(=O)N[C@@H]1[C@H](CC(O[C@H]1[C@@H]([C@@H](CO)O)O)(C(=O)O)O)O	439197
 Kdo8P a	C1[C@H]([C@H]([C@H](O[C@]1(C(=O)O)O)[C@@H](COP(=O)(O)O)O)O)O	4369556
+Aci b	C[C@@H]([C@@H]([C@H]1[C@@H]([C@H](C[C@](O1)(C(=O)O)O)O)N)N)O	126961779
 GalNAc4S b	CC(=O)N[C@@H]1[C@H]([C@H]([C@H](O[C@H]1O)CO)OS(=O)(=O)O)O	446101
 MurNGc	C[C@H](C(=O)O)O[C@H]1[C@@H]([C@H](OC([C@@H]1NC(=O)CO)O)CO)O	91810748
+
 NeuAc(a2-6)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-4)]Man(a1-3)[NeuAc(a2-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc	C[C@H]1[C@H]([C@H]([C@@H]([C@@H](O1)OC[C@@H]2[C@H]([C@@H]([C@H](C(O2)O)NC(=O)C)O)O[C@H]3[C@@H]([C@H]([C@@H]([C@H](O3)CO)O[C@H]4[C@H]([C@H]([C@@H]([C@H](O4)CO[C@@H]5[C@H]([C@H]([C@@H]([C@H](O5)CO[C@H]6[C@@H]([C@H]([C@@H]([C@H](O6)CO)O[C@H]7[C@@H]([C@H]([C@H]([C@H](O7)CO)O)O[C@H]8[C@@H]([C@H]([C@@H]([C@H](O8)CO)O[C@H]9[C@@H]([C@H]([C@H]([C@H](O9)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@@]1(C[C@@H]([C@H]([C@@H](O1)[C@@H]([C@@H](CO)O)O)NC(=O)C)O)C(=O)O)O)O[C@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)C)O)O)O)NC(=O)C)O)O[C@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)C)O)O)O)NC(=O)C)O)O)NC(=O)C)O)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O)O)O)NC(=O)C)O)O)NC(=O)C)O)O)NC(=O)C)O)O[C@@H]1[C@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O)O)O[C@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)C)O)O)O)NC(=O)C)O)O[C@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)C)O)O)O)NC(=O)C)O)O[C@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)C)O)O)O)NC(=O)C)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO[C@@]1(C[C@@H]([C@H]([C@@H](O1)[C@@H]([C@@H](CO)O)O)NC(=O)C)O)C(=O)O)O)O)O)O)NC(=O)C)O)O)NC(=O)C)O)O)NC(=O)C)O)O)NC(=O)C)O)O)O	91848175
 NeuAc(a2-6)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-4)]Man(a1-3)[NeuAc(a2-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc	C[C@H]1[C@H]([C@H]([C@@H]([C@@H](O1)OC[C@@H]2[C@H]([C@@H]([C@H](C(O2)O)NC(=O)C)O)O[C@H]3[C@@H]([C@H]([C@@H]([C@H](O3)CO)O[C@H]4[C@H]([C@H]([C@@H]([C@H](O4)CO[C@@H]5[C@H]([C@H]([C@@H]([C@H](O5)CO[C@H]6[C@@H]([C@H]([C@@H]([C@H](O6)CO)O[C@H]7[C@@H]([C@H]([C@H]([C@H](O7)CO)O)O[C@H]8[C@@H]([C@H]([C@@H]([C@H](O8)CO)O[C@H]9[C@@H]([C@H]([C@H]([C@H](O9)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@@]1(C[C@@H]([C@H]([C@@H](O1)[C@@H]([C@@H](CO)O)O)NC(=O)C)O)C(=O)O)O)O[C@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)C)O)O)O)NC(=O)C)O)O)NC(=O)C)O)O)NC(=O)C)O)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O)O)O)NC(=O)C)O)O)NC(=O)C)O)O)NC(=O)C)O)O[C@@H]1[C@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O)O)O[C@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)C)O)O)O)NC(=O)C)O)O[C@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)C)O)O)O)NC(=O)C)O)O[C@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)C)O)O)O)NC(=O)C)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO[C@@]1(C[C@@H]([C@H]([C@@H](O1)[C@@H]([C@@H](CO)O)O)NC(=O)C)O)C(=O)O)O)O)O)O)NC(=O)C)O)O)NC(=O)C)O)O)NC(=O)C)O)O)O)NC(=O)C)O)O)O	91862746
 NeuAc(a2-6)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-2)[Fuc(a1-3)[Gal(b1-4)]GlcNAc(b1-3)Gal(b1-4)[Fuc(a1-3)]GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc	C[C@H]1[C@H]([C@H]([C@@H]([C@@H](O1)OC[C@@H]2[C@H]([C@@H]([C@H](C(O2)O)NC(=O)C)O)O[C@H]3[C@@H]([C@H]([C@@H]([C@H](O3)CO)O[C@H]4[C@H]([C@H]([C@@H]([C@H](O4)CO[C@@H]5[C@H]([C@H]([C@@H]([C@H](O5)CO[C@H]6[C@@H]([C@H]([C@@H]([C@H](O6)CO)O[C@H]7[C@@H]([C@H]([C@H]([C@H](O7)CO)O)O[C@H]8[C@@H]([C@H]([C@@H]([C@H](O8)CO)O[C@H]9[C@@H]([C@H]([C@H]([C@H](O9)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O)O)O[C@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)C)O)O)O)NC(=O)C)O)O[C@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)C)O)O)O)NC(=O)C)O)O)NC(=O)C)O)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O)O)O)NC(=O)C)O)O)NC(=O)C)O)O)NC(=O)C)O)O[C@@H]1[C@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O)O)O[C@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)C)O)O)O)NC(=O)C)O)O[C@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)C)O)O)O)NC(=O)C)O)O[C@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)C)O)O)O)NC(=O)C)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO[C@@]1(C[C@@H]([C@H]([C@@H](O1)[C@@H]([C@@H](CO)O)O)NC(=O)C)O)C(=O)O)O)O)O)O)NC(=O)C)O)O)NC(=O)C)O)O)NC(=O)C)O)O)NC(=O)C)O)O)O	91852690
@@ -3998,3 +3875,4 @@ Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)[Fuc(a1-2)Gal(b1-4)GlcNAc(b1-3)]Gal(b1
 Fuc(a1-2)Gal(b1-3)GalNAc(b1-4)GlcNAc(b1-2)Man(a1-3)[Fuc(a1-2)Gal(b1-3)GalNAc(b1-4)GlcNAc(b1-2)Man(a1-6)][Xyl(b1-2)]Man(b1-4)GlcNAc(b1-4)GlcNAc	C[C@H]1[C@H]([C@H]([C@@H]([C@@H](O1)O[C@@H]2[C@H]([C@H]([C@H](O[C@H]2O[C@@H]3[C@H]([C@@H](O[C@@H]([C@@H]3O)CO)O[C@@H]4[C@H](O[C@H]([C@@H]([C@H]4O)NC(=O)C)O[C@H]5[C@H]([C@@H]([C@H](O[C@@H]5OC[C@@H]6[C@H]([C@@H]([C@@H]([C@@H](O6)O[C@@H]7[C@H](O[C@H]([C@@H]([C@H]7O)NC(=O)C)O[C@@H]8[C@H](OC([C@@H]([C@H]8O)NC(=O)C)O)CO)CO)O[C@H]9[C@@H]([C@H]([C@@H](CO9)O)O)O)O[C@@H]1[C@H]([C@H]([C@@H]([C@H](O1)CO)O)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O)O[C@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)C)O)O)O)NC(=O)C)O)NC(=O)C)O)CO)O)O)CO)NC(=O)C)CO)O)O)O)O)O	71297762
 Fuc(a1-2)Gal(b1-3)GalNAc(b1-4)GlcNAc(b1-2)Man(a1-3)[Fuc(a1-2)Gal(b1-3)GalNAc(b1-4)GlcNAc(b1-2)Man(a1-6)][Xylf(b1-2)]Man(b1-4)GlcNAc(b1-4)GlcNAc	C[C@H]1[C@H]([C@H]([C@@H]([C@@H](O1)O[C@@H]2[C@H]([C@H]([C@H](O[C@H]2O[C@@H]3[C@H]([C@@H](O[C@@H]([C@@H]3O)CO)O[C@@H]4[C@H](O[C@H]([C@@H]([C@H]4O)NC(=O)C)O[C@H]5[C@H]([C@@H]([C@H](O[C@@H]5OC[C@@H]6[C@H]([C@@H]([C@@H]([C@@H](O6)O[C@@H]7[C@H](O[C@H]([C@@H]([C@H]7O)NC(=O)C)O[C@@H]8[C@H](OC([C@@H]([C@H]8O)NC(=O)C)O)CO)CO)O[C@H]9[C@@H]([C@H]([C@H](O9)CO)O)O)O[C@@H]1[C@H]([C@H]([C@@H]([C@H](O1)CO)O)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO)O)O)O[C@H]1[C@H]([C@@H]([C@@H]([C@@H](O1)C)O)O)O)NC(=O)C)O)NC(=O)C)O)CO)O)O)CO)NC(=O)C)CO)O)O)O)O)O	91862273
 NeuAc(a2-6)Gal(b1-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)[NeuAc(a2-6)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc	C[C@H]1[C@H]([C@H]([C@@H]([C@@H](O1)OC[C@@H]2[C@H]([C@@H]([C@H](C(O2)O)NC(=O)C)O)O[C@H]3[C@@H]([C@H]([C@@H]([C@H](O3)CO)O[C@H]4[C@H]([C@H]([C@@H]([C@H](O4)CO[C@@H]5[C@H]([C@H]([C@@H]([C@H](O5)CO)O)O)O[C@H]6[C@@H]([C@H]([C@@H]([C@H](O6)CO)O[C@H]7[C@@H]([C@H]([C@H]([C@H](O7)CO)O)O[C@H]8[C@@H]([C@H]([C@H]([C@H](O8)CO[C@@]9(C[C@@H]([C@H]([C@@H](O9)[C@@H]([C@@H](CO)O)O)NC(=O)C)O)C(=O)O)O)O)O)O)O)NC(=O)C)O)O[C@@H]1[C@H]([C@H]([C@@H]([C@H](O1)CO)O)O)O[C@H]1[C@@H]([C@H]([C@@H]([C@H](O1)CO)O[C@H]1[C@@H]([C@H]([C@H]([C@H](O1)CO[C@@]1(C[C@@H]([C@H]([C@@H](O1)[C@@H]([C@@H](CO)O)O)NC(=O)C)O)C(=O)O)O)O)O)O)NC(=O)C)O)O)NC(=O)C)O)O)O	71297806
+

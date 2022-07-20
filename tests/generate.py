@@ -68,5 +68,19 @@ if __name__ == '__main__':
             "data/glycowork_mono.txt", "data/glycowork_poly.txt", "data/pubchem_mono.tsv", "data/pubchem_poly.tsv"
         ]:
             with open(filename, "r") as data:
-                lines = sorted(data.readlines(), key=lambda l: len(l), reverse=True)
+                lines = sorted([line for line in data.readlines() if not ('-ulosaric' in line
+                                                                          or '-ulosonic' in line
+                                                                          or '-uronic' in line
+                                                                          or '-aric' in line
+                                                                          or 'en' in line
+                                                                          or 'Anhydro' in line
+                                                                          or 'Coum' in line
+                                                                          or 'Cer' in line
+                                                                          or '0dHex' in line
+                                                                          or 'Pau3Me7' in line
+                                                                          or 'Ins' in line
+                                                                          or 'Fuc1N4NBz7Et-ol' in line
+                                                                          or 'D-9dThrAltNon-onic' in line
+                                                                          or 'Pse5Am7Gra' in line)
+                                ], key=lambda l: len(l), reverse=True)
                 print("".join(lines[:len(lines) // 10]), file=out)
