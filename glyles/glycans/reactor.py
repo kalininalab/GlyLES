@@ -42,7 +42,7 @@ functional_groups = {
     "Pro": "N2CCCC2C(=O)O",
     "Ser": "OC(=O)[C@H](N)CO",
     "Tf": "OS(=O)(=O)C(F)(F)F",
-    "Thr": "N[C@H](C(=O)O)[C@@H](O)C",
+    "Thr": "N[C@@H](C(=O)O)[C@@H](O)C",
     "Ulo": "OC(c2ccccc2)(c2ccccc2(Cl))CCN(C)C",
 
     # COH land

@@ -62,4 +62,11 @@ def main(mode):
 
 
 if __name__ == '__main__':
-    main(2)
+    # main(2)
+    with open("data/profiling.tsv", "w") as out:
+        for filename in [
+            "data/glycowork_mono.txt", "data/glycowork_poly.txt", "data/pubchem_mono.tsv", "data/pubchem_poly.tsv"
+        ]:
+            with open(filename, "r") as data:
+                lines = sorted(data.readlines(), key=lambda l: len(l), reverse=True)
+                print("".join(lines[:len(lines) // 10]), file=out)

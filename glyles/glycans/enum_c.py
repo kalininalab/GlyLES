@@ -146,11 +146,9 @@ def evaluate_distance(monomer, start, end, ringo):
 
     # if both fields are non-zero, we cannot decide here and have to go further
     if adj[start, ringo] > 0 and adj[end, ringo] > 0:
-        raise UnreachableError("This line should be unreachable as the C1 cannot be detected.")
-        # return equidistant(monomer, start, end)
-    elif adj[start, ringo] > 0:
-        return True
-    return False
+        return equidistant(monomer, start, end)
+
+    return adj[start, ringo] > 0
 
 
 def equidistant(monomer, start, end):
@@ -165,21 +163,23 @@ def equidistant(monomer, start, end):
     Returns:
         Bool indicating that the start id is the C1 atom
     """
-    # TODO: This check is useless: Start and end have same distance to ringo, so either both have a carbon neighbor in the ring or both don't have one
-    # TODO: Complete method is useless!!!
-    c_start_candidates = np.where((monomer.adjacency[start, :] == 1) & (monomer.x[:, 0] == 6) & (monomer.x[:, 2] == 1))[0]
+    # determine first carbon atom in the ring
+    c_start_candidates = np.where((monomer.adjacency[start, :] == 1) &
+                                  (monomer.x[:, 0] == 6) & (monomer.x[:, 2] == 1))[0]
     c_end_candidates = np.where((monomer.adjacency[end, :] == 1) & (monomer.x[:, 0] == 6) & (monomer.x[:, 2] == 1))[0]
+
     if c_start_candidates.size == 1 and c_end_candidates.size == 1:
         start_ring_c = int(c_start_candidates)
         end_ring_c = int(c_end_candidates)
 
-        start_ring_c_o_candidates = np.where((monomer.adjacency[start_ring_c, :] == 1) & (monomer.x[:, 0] == 8) & (monomer.x[:, 2] != 1))[0]
-        end_ring_c_o_candidates = np.where((monomer.adjacency[end_ring_c, :] == 1) & (monomer.x[:, 0] == 8) & (monomer.x[:, 2] != 1))[0]
+        # check if those ring carbons have an attached oxygen
+        start_ring_c_o_candidates = np.where((monomer.adjacency[start_ring_c, :] == 1) &
+                                             (monomer.x[:, 0] == 8) & (monomer.x[:, 2] != 1))[0]
+        end_ring_c_o_candidates = np.where((monomer.adjacency[end_ring_c, :] == 1) &
+                                           (monomer.x[:, 0] == 8) & (monomer.x[:, 2] != 1))[0]
 
         if start_ring_c_o_candidates.size == 1 and end_ring_c_o_candidates.size == 1:
             raise UnreachableError("C1 atom cannot be detected")
         elif start_ring_c_o_candidates.size == 1:
             return True
-    elif c_start_candidates.size == 1:
-        return True
-    return False
+    return c_start_candidates.size == 1

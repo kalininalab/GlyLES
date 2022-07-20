@@ -72,12 +72,12 @@ class TestParser:
         g = Glycan(reduce_notation("Gal(a1-4)" * 8 + "[" + "Man(b1-3)" * 8 + "]" + "Glc", mode), factory)
         check_initial(g.get_tree(), "Glc", 2, Config.UNDEF, lactole=Lactole.PYRANOSE)
 
-    @pytest.mark.parametrize("iupac", ["Man", "Man a", "Man b", "Mana", "Manb", "Manp", "Manf", "Manpa", "Manpb",
-                                       "Manfa", "Manfb", "Man(a1-2)Gal", "Man(a1-2)Gal a", "Man(a1-2)Gal b",
-                                       "Mana(a1-2)Gal", "Manb(a1-2)Gal", "Manp(a1-2)Gal", "Manf(a1-2)Gal",
-                                       "Manpa(a1-2)Gal", "Manpb(a1-2)Gal", "Manfa(a1-2)Gal", "Manfb(a1-2)Gal",
-                                       "Man(b1-2)Gala", "Man(b1-2)Galb", "Man(b1-2)Galp", "Man(b1-2)Galf",
-                                       "Man(b1-2)Galpa", "Man(b1-2)Galpb", "Man(b1-2)Galfa", "Man(b1-2)Galfb"])
+    @pytest.mark.parametrize("iupac", [
+        "Man", "Man a", "Man b", "Mana", "Manb", "Manp", "Manf", "Manpa", "Manpb", "Manfa", "Manfb", "Man(a1-2)Gal",
+        "Man(a1-2)Gal a", "Man(a1-2)Gal b", "Mana(a1-2)Gal", "Manb(a1-2)Gal", "Manp(a1-2)Gal", "Manf(a1-2)Gal",
+        "Manpa(a1-2)Gal", "Manpb(a1-2)Gal", "Manfa(a1-2)Gal", "Manfb(a1-2)Gal", "Man(b1-2)Gala", "Man(b1-2)Galb",
+        "Man(b1-2)Galp", "Man(b1-2)Galf", "Man(b1-2)Galpa", "Man(b1-2)Galpb", "Man(b1-2)Galfa", "Man(b1-2)Galfb"
+    ])
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_grammar_main(self, iupac, mode):
         assert Glycan(iupac, MonomerFactory(), tree_only=True).get_tree() is not None
@@ -340,8 +340,9 @@ class TestParser:
         check_child(g, id_child_1, id_child_2, "Man", "(b1-4)", 2, lactole=Lactole.PYRANOSE)
 
     @pytest.mark.fuzzy
-    @pytest.mark.parametrize("monomers",
-                             np.random.choice(list(MonomerFactory().monomer_names()), size=500).reshape(100, 5))
+    @pytest.mark.parametrize(
+        "monomers", np.random.choice(list(MonomerFactory().monomer_names()), size=500).reshape(100, 5)
+    )
     @pytest.mark.parametrize("orientation", [Config.ALPHA, Config.BETA, Config.UNDEF])
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_fuzzy(self, monomers, orientation, mode):

@@ -34,7 +34,7 @@ class TestDerivatives:
         open("data/pubchem_poly.tsv", "r").readlines() +
         open("data/glycam.tsv", "r").readlines()
     )
-    def test_conversion_rate(self, line):
+    def test_databases(self, line):
         line = line.strip()
         if '-ulosaric' in line \
                 or '-ulosonic' in line \

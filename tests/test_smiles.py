@@ -100,31 +100,6 @@ class TestSMILES:
 
         compare_smiles(smiles, Chem.MolToSmiles(mol))
 
-    @pytest.mark.parametrize("glycan", [x[:-1] for x in open("data/glycowork_data_1.txt", "r").readlines()])
-    def test_lectinoracle(self, glycan):
-        if glycan in [
-            'Ara(a1-5)Ara(a1-5)Ara(a1-5)Ara(a1-5)Ara(a1-5)Ara', 'Fuc(a1-3)[Neu5Ac(a2-3)]Gal(b1-4)GlcNAc(b1-3)GalNAc',
-            'Fuc(a1-2)Gal(b1-3)GlcNAc(b1-3)[Fuc(a1-3)]Gal(b1-4)GlcNAc(b1-6)[Fuc(a1-2)Gal(b1-3)GlcNAc(b1-3)]'
-            'Gal(b1-4)Glc', 'Ara(a1-5)Ara(a1-5)Ara(a1-5)Ara(a1-5)Ara(a1-5)Ara(a1-5)Ara',
-            'Fuc(a1-2)Gal(b1-3)[Fuc(a1-4)]GlcNAc(b1-2)Man(a1-3)[Fuc(a1-2)Gal(b1-3)[Fuc(a1-4)]GlcNAc(b1-2)Man(a1-3)]'
-            'Man(b1-4)GlcNAc(b1-4)GlcNAc',
-            'Gal(b1-3)GlcNAc(b1-3)[Fuc(a1-3)]Gal(b1-4)GlcNAc(b1-6)[Fuc(a1-2)Gal(b1-3)GlcNAc(b1-3)]Gal(b1-4)Glc',
-            'GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)[GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-3)]GalNAc',
-            'Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)[Man(a1-3)[Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc',
-            'Neu5Ac(a2-3)Gal(b1-3)[Fuc(a1-3)]GlcN(b1-3)Gal(b1-4)Glc', 'Neu5Gc(a2-3)Gal(b1-4)[Fuc(a1-4)]GlcNAc',
-            'Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)]Man(a1-6)[Neu5Ac(a2-3)Gal(b1-4)'
-            'GlcNAc(b1-2)Man(a1-3)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc',
-        ]:
-            return
-        output, out, err = catch_output(convert, glycan=glycan, returning=False)
-
-        assert output is None
-
-        smiles = out[-2]
-
-        mol = Chem.MolFromSmiles(smiles)
-        compare_smiles(smiles, Chem.MolToSmiles(mol))
-
     def test_dot(self):
         glycan = Glycan("Man(a1-2)[Glc(a1-3)Gul(b1-4)]Gal(b1-3)Tal", MonomerFactory(), tree_only=True)
         glycan.save_dot("test.dot")
