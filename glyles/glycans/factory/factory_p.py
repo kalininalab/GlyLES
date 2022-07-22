@@ -372,7 +372,7 @@ class PyranoseFactory:
         "B_VIO": {"name": "Vio", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                   "smiles": "C[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1N"},
 
-        # Seduheptulose
+        # Sedoheptulose
         "SED": {"name": "Sed", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
                 "smiles": "OC[C@H]1OC(O)(CO)[C@@H](O)[C@H](O)[C@@H]1O"},
         "A_SED": {"name": "Sed", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,

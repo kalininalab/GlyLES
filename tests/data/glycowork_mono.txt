@@ -252,7 +252,6 @@ D-6dXylHexN4Ulo
 D-6dXylHexNAc4Ulo
 D-6dXylHexOMe
 D-7dLyxOct-ulosonic
-D-9dThrAltNon-onic
 D-All6Ac
 D-AllN
 D-Alt
@@ -467,7 +466,6 @@ FrufOLau
 Fuc
 Fuc-ol
 Fuc1N
-Fuc1N4NBz7Et-ol
 Fuc1P
 Fuc1PP
 Fuc1PamOMe
@@ -2014,7 +2012,7 @@ Pse5Ac7AcOBut
 Pse5Ac7But
 Pse5Ac7Fo
 Pse5Am7Gc
-Pse5Am7Gra
+Pse5Am7Gro
 Pse5Am7GroA
 Pse5But7Ac
 Pse5But7Fo

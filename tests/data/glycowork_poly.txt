@@ -1207,7 +1207,6 @@ D-Rha4NFo(a1-3)D-Rha4NFo
 D-Rha4NFo(a1-3)D-Rha4NFo(a1-2)D-Rha4NFo
 D-Rha4NFo(a1-3)D-Rha4NFo(a1-2)D-Rha4NFo(a1-2)D-Rha4NFo(a1-2)D-Rha4NFo
 D-Rha4NFo(a1-3)D-Rha4NFo(a1-3)D-Rha4NFo
-D-Rha4NLac(a1-3)Fuc1N4NBz7Et-ol
 D-RhaN(a1-3)D-RhaN(a1-3)Man(b1-3)D-RhaN(a1-3)D-RhaN(a1-3)[L-GlcOMe(a1-4)]Man(b1-3)D-RhaN
 D-RhaN(a1-3)Fuc(a1-4)Glc(b1-3)GalN(b1-4)[Glc(a1-2)]Glc(a1-2)[GlcN(a1-3)]Gal(a1-3)Glc(a1-3)[GlcN(a1-7)LDManHep(a1-7)]LDManHep(a1-3)LDManHepOP(a1-5)[Kdo(a2-4)]Kdo(a2-6)GlcN4P(b1-6)GlcN1P
 D-RhaN(a1-3)Fuc(a1-4)Glc(b1-3)GalN(b1-4)[Glc(a1-2)]Glc(a1-2)[GlcN(a1-3)]Gal(a1-3)Glc(a1-3)[LDManHep(a1-7)]LDManHep(a1-3)LDManHepOP(a1-5)[Kdo(a2-4)]Kdo(a2-6)GlcN4P(b1-6)GlcN1P

@@ -40,16 +40,11 @@ class TestDerivatives:
                 or '-ulosonic' in line \
                 or '-uronic' in line \
                 or '-aric' in line \
-                or 'en' in line \
-                or 'Anhydro' in line \
-                or 'Coum' in line \
-                or 'Cer' in line \
                 or '0dHex' in line \
-                or 'Pau3Me7' in line \
-                or 'Ins' in line \
-                or 'Fuc1N4NBz7Et-ol' in line \
-                or 'D-9dThrAltNon-onic' in line \
-                or 'Pse5Am7Gra' in line:
+                or 'Anhydro' in line \
+                or 'en' in line \
+                or 'Coum' in line \
+                or 'Ins' in line:
             return
         if "\t" in line:
             iupac, smiles = line.split("\t")[:2]
@@ -69,3 +64,24 @@ class TestDerivatives:
         assert output[0][0] == iupac
         assert output[0][1] != ""
         compare_smiles(output[0][1], smiles)
+
+    @pytest.mark.todo
+    def test_ins(self):
+        compare_smiles(
+            Glycan("Ins", MonomerFactory()).get_smiles(),
+            "O[C@H]1[C@H](O)[C@@H](O)[C@H](O)[C@@H](O)[C@H]1O"
+        )
+
+    @pytest.mark.todo
+    def test_ins1s6p(self):
+        compare_smiles(
+            Glycan("Ins1S6P", MonomerFactory()).get_smiles(),
+            "O=P(O)(O)O[C@@H]1[C@@H](OS(=O)(=O)O)[C@@H](O)[C@@H](O)[C@H](O)[C@H]1O"
+        )
+
+    @pytest.mark.todo
+    def test_ins2p4sa14gal(self):
+        compare_smiles(
+            Glycan("Ins2P4S(1-4)Gal", MonomerFactory()).get_smiles(),
+            "O=P(O)(O)O[C@@H]1[C@H](O[C@H]2[C@@H](CO)OC(O)[C@H](O)[C@H]2O)[C@@H](O)[C@H](O)[C@@H](OS(=O)(=O)O)[C@@H]1O"
+        )

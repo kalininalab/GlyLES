@@ -1,5 +1,5 @@
 from glyles.glycans.factory.factory_f import FuranoseFactory
-from glyles.glycans.factory.factory_o import c1_finder
+from glyles.glycans.factory.factory_o import c1_finder, OpenFactory
 from glyles.glycans.factory.factory_p import PyranoseFactory
 from glyles.glycans.monomer import Monomer
 from glyles.glycans.utils import Config, Enantiomer, Lactole
@@ -17,7 +17,7 @@ class MonomerFactory:
         """
         self.pyranose_fac = PyranoseFactory()
         self.furanose_fac = FuranoseFactory()
-        self.open_fac = FuranoseFactory()
+        self.open_fac = OpenFactory()
 
         self.keys = set(self.pyranose_fac.keys()).union(self.furanose_fac.keys())
 
@@ -43,7 +43,7 @@ class MonomerFactory:
         Returns:
             Directory containing all necessary information to initialize a monomer implementation
         """
-        furanose = item in ["ERY", "THRE", "RUL", "XUL"]
+        furanose = item in ["ERY", "THRE", "RUL", "XUL", "XLU", "ACE"]
         if item[-1] == "p" and not item.endswith("Hep"):
             item = item[:-1]
         if item[-1] == "f":
@@ -186,10 +186,10 @@ class MonomerFactory:
             name = recipe[config_index][0] + "_" + name
 
         # get the monomer from the factory
-        if name in self.furanose_fac and ring_index is not None and recipe[ring_index][0] == "f":
-            monomer = Monomer(**self.furanose_fac[name], recipe=recipe)
-        elif name in self.pyranose_fac:
+        if name in self.pyranose_fac and (ring_index is None or recipe[ring_index][0] != "f"):
             monomer = Monomer(**self.pyranose_fac[name], recipe=recipe)
+        elif name in self.furanose_fac:
+            monomer = Monomer(**self.furanose_fac[name], recipe=recipe)
         elif name in self.open_fac:
             monomer = Monomer(**self.open_fac[name], recipe=recipe)
         elif name[-3:].upper() == "SUC":

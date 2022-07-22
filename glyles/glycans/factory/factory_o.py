@@ -75,6 +75,9 @@ class OpenFactory:
         "THRE-OL": {"name": "Threitol", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.OPEN,
                     "smiles": "OC[C@@H](O)[C@H](O)CO",
                     "c1_find": lambda x: c1_finder(x, "OC[C@@H](O)[C@H](O)CO")},
+        "INS": {"name": "Inositol", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+                "smiles": "[C@H]1(O)[C@@H](O)[C@@H](O)[C@H](O)[C@@H](O)[C@H](O)1",
+                "c1_find": lambda x: c1_ino_finder(x)},
     }
 
     def __contains__(self, item):
@@ -101,6 +104,21 @@ class OpenFactory:
             Directory containing all necessary information to initialize a monomer implementation
         """
         return OpenFactory.__monomers[item.upper()]
+
+
+def c1_ino_finder(structure):
+    """
+    For inositol, shorten that c1-finding process as this is only used for isomorphisms,
+    return the list of carbon atoms.
+
+    Args:
+        structure (rdkit.Molecule): Molecule to determine the longest carbon-chain for starting at C1
+
+    Returns:
+        List of RDKit IDs starting from C1 all the way down the longest carbon chain
+    """
+    a_type = np.array([a.GetAtomicNum() for a in structure.GetAtoms()])
+    return list(np.where(a_type == 6)[0].tolist())
 
 
 def c1_finder(structure, base_smiles):

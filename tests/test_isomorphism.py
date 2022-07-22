@@ -52,10 +52,8 @@ class TestIsomorphism:
     @pytest.mark.parametrize("line", open("data/profiling.tsv", "r").readlines())
     def test_runtime(self, line):
         line = line.strip()
-        if '-ulosaric' in line or '-ulosonic' in line or '-uronic' in line or '-aric' in line \
-                or 'en' in line or 'Anhydro' in line or 'Ins' in line \
-                or 'Coum' in line or 'Cer' in line or '0dHex' in line in line or 'Pse5Am7Gra' \
-                or 'Pau3Me7' in line or 'Fuc1N4NBz7Et-ol' in line or 'D-9dThrAltNon-onic' in line:
+        if '-ulosaric' in line or '-ulosonic' in line or '-uronic' in line or '-aric' in line or \
+                'en' in line or 'Anhydro' in line or 'Ins' in line or 'Coum' in line or '0dHex' in line:
             return
 
         if "\t" in line:

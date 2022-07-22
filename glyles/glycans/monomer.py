@@ -325,7 +325,7 @@ class Monomer:
             # extract some further information from the molecule to not operate always on the molecule
             self.adjacency = GetAdjacencyMatrix(self.structure, useBO=True)
             rings = self.structure.GetRingInfo().AtomRings()
-            if len(rings) > 0:
+            if len(rings) > 0 and self.name != "Inositol":
                 self.ring_info = [None]
                 for ring in rings:
                     found_ox = False
@@ -349,7 +349,7 @@ class Monomer:
 
                 # if the atom is part of any ring, store the number of that ring
                 for r in range(len(self.ring_info)):
-                    if i in self.ring_info[r]:
+                    if self.ring_info[r] is not None and i in self.ring_info[r]:
                         self.x[i, 2] = r + 1
 
                 # identify the oxygen atom in the main ring and set its id to 100
@@ -357,9 +357,9 @@ class Monomer:
                     self.x[i, 1] = 100
 
             # identify isomorphic atoms. The reference for the isomorphism test is the root SMILES
-            iso = list(find_isomorphism_nx(self.smiles, self.root_smiles(), self.c1_find).keys())
+            iso = list(find_isomorphism_nx(self.smiles, self.root_smiles(), self.name, self.c1_find).keys())
             if len(iso) == 0:
-                iso = list(find_isomorphism_nx(self.root_smiles(), self.smiles, self.c1_find).values())
+                iso = list(find_isomorphism_nx(self.root_smiles(), self.smiles, self.name, self.c1_find).values())
             if len(iso) == 0:
                 self.x[:, 3] = 1
             else:

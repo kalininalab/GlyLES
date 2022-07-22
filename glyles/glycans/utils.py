@@ -105,12 +105,13 @@ def find_rings(mol):
     return ring_info
 
 
-def get_rings(mol, c1_find=None):
+def get_rings(mol, name, c1_find=None):
     """
     Get the longest carbon chain in the molecule starting from the C1 atom based on the rings of the molecule.
 
     Args:
         mol (rdkit.Molecule): molecule to determine the carbon list for
+        name (str): Name of the monosaccharide we're working with
         c1_find (Callable): Optional function to determine C1 for non-ring monosaccharides
 
     Returns:
@@ -118,7 +119,7 @@ def get_rings(mol, c1_find=None):
     """
     # find the rings
     rings = find_rings(mol)
-    if len(rings) == 0:
+    if len(rings) == 0 or rings[0] is None or name == "Inositol":
         if c1_find is not None:
             return c1_find(mol)
         raise ValueError("Molecule should either have a ring or define a method to find c1!")
@@ -265,7 +266,7 @@ def networkx_fragment_isomorphism(mol1_nx, ring1, mol2_nx, ring2):
     return longest_iso
 
 
-def find_isomorphism_nx(mol1, mol2, c1_find=None):
+def find_isomorphism_nx(mol1, mol2, name, c1_find=None):
     """
     Find an isomorphism between two molecules. The problem is an NP problem, normally. Here, we have some domain
     knowledge based on how and when this method is called.
@@ -276,6 +277,7 @@ def find_isomorphism_nx(mol1, mol2, c1_find=None):
     Args:
         mol1 (str): SMILES of the monosaccharide with functional groups
         mol2 (str): SMILES of the root monosaccharide
+        name (str): Name of the monosaccharide we're working with
         c1_find (Callable): Optional method to provide to find C1 in special molecules
 
     Returns:
@@ -286,8 +288,8 @@ def find_isomorphism_nx(mol1, mol2, c1_find=None):
     mol2_rd = MolFromSmiles(mol2)
 
     # identify the rings or the longest carbon-cain starting with
-    ring1 = get_rings(mol1_rd, c1_find)
-    ring2 = get_rings(mol2_rd, c1_find)
+    ring1 = get_rings(mol1_rd, name, c1_find)
+    ring2 = get_rings(mol2_rd, name, c1_find)
 
     # convert the molecules to networkx graphs for easier accessibility
     mol1_nx = mol_to_nx(mol1_rd)

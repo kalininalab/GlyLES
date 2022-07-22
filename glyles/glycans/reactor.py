@@ -20,6 +20,7 @@ functional_groups = {
     "Am": "C(=N)C",
     "Asp": "N[C@@H](CC(=O)O)C(=O)O",
     "Br": "Br",
+    "Cer": "OC[C@H](NC=O)C(O)/C=C/" + "C" * 13,
     "Cho": "OCC[N+](C)(C)C",
     "Cl": "Cl",
     "Cm": "NC(=O)",
@@ -269,131 +270,148 @@ class SMILESReaktor:
         # check for open forms like "-ol" and "-onic"
         self.check_for_open_form(names, types)
 
-        # define list of functional groups to be attached
-        self.side_chains = [["", ""] for _ in range(1 + np.count_nonzero(self.monomer.x[:, 0] == 6))]
+        # store all functional groups that cannot be attached in the current round for the next round
+        higher_order_groups = [], []
+        while True:
+            start_len = len(names)
 
-        # parse remaining modifications
-        for n, t in zip(names, types):
-            # if it's not a modification or already parsed, continue
-            if t != GlycanLexer.MOD or n.count("L") + n.count("D") == len(n) or n in ['-', '-ol', '-onic']:
-                continue
+            # define list of functional groups to be attached
+            self.side_chains = [["", ""] for _ in range(1 + np.count_nonzero(self.monomer.x[:, 0] == 6))]
 
-            # if the name starts with a '-' char, drop this, the functional group will be independent of the previous
-            if n[0] == "-":
-                n = n[1:]
+            # parse remaining modifications
+            for n, t in zip(names, types):
+                # if it's not a modification or already parsed, continue
+                if t != GlycanLexer.MOD or n.count("L") + n.count("D") == len(n) or n in ['-', '-ol', '-onic']:
+                    continue
 
-            # parse making the monosaccharide an acid
-            if n == "A":
-                # if there's no ring take carbon with the highest number
-                if sum(self.monomer.x[:, 2] == 1) == 0:
-                    c_id = int(max(self.monomer.x[self.monomer.x[:, 0] == 6, 1]))
+                # if the name starts with a - char, drop this, the functional group will be independent of the previous
+                if n[0] == "-":
+                    n = n[1:]
 
-                # else take the last carbon in the ring
-                else:
-                    c_id = int(max(self.monomer.x[(self.monomer.x[:, 0] == 6) & (self.monomer.x[:, 2] == 1), 1]))
-                    c_id = int(np.where(self.monomer.x[:, 1] == c_id)[0])
+                # parse making the monosaccharide an acid
+                if n == "A":
+                    # if there's no ring take carbon with the highest number
+                    if sum(self.monomer.x[:, 2] == 1) == 0:
+                        c_id = int(max(self.monomer.x[self.monomer.x[:, 0] == 6, 1]))
 
-                # if the selected carbon has a carbon has a tail raging away from the monomer, iterate all the way down
-                children = np.where((self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) &
-                                    (self.monomer.x[:, 2] == 0))[0].tolist()
-                while len(children) != 0:
-                    c_id = int(children[0])
-                    children = np.where(
-                        (self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) &
-                        (self.monomer.x[:, 2] == 0) & (self.monomer.x[:, 1] > self.monomer.x[c_id, 1])
-                    )[0].tolist()
+                    # else take the last carbon in the ring
+                    else:
+                        c_id = int(max(self.monomer.x[(self.monomer.x[:, 0] == 6) & (self.monomer.x[:, 2] == 1), 1]))
+                        c_id = int(np.where(self.monomer.x[:, 1] == c_id)[0])
 
-                # attach that acid group in one way or another
-                if len(self.side_chains[self.monomer.x[c_id, 1]][O]) > 0 and \
-                        self.side_chains[self.monomer.x[c_id, 1]][O][-1] == "O":
-                    self.side_chains[self.monomer.x[c_id, 1]][O] += "C(=O)O"
-                else:
-                    self.side_chains[self.monomer.x[c_id, 1]][O] += "(=O)O"
+                    # if the selected carbon has a tail raging away from the monomer, iterate all the way down
+                    children = np.where((self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) &
+                                        (self.monomer.x[:, 2] == 0))[0].tolist()
+                    while len(children) != 0:
+                        c_id = int(children[0])
+                        children = np.where(
+                            (self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) &
+                            (self.monomer.x[:, 2] == 0) & (self.monomer.x[:, 1] > self.monomer.x[c_id, 1])
+                        )[0].tolist()
 
-            # add a nitrogen
-            elif n == "N":
-                self.side_chains[1 if self.monomer.get_name() in ['Fru', 'Tag', 'Sor', 'Psi'] else 2][O] += "N"
+                    # attach that acid group in one way or another
+                    if len(self.side_chains[self.monomer.x[c_id, 1]][O]) > 0 and \
+                            self.side_chains[self.monomer.x[c_id, 1]][O][-1] == "O":
+                        self.side_chains[self.monomer.x[c_id, 1]][O] += "C(=O)O"
+                    else:
+                        self.side_chains[self.monomer.x[c_id, 1]][O] += "(=O)O"
 
-            # change the enantiomer to the D or L form
-            elif n == "D-":
-                self.to_enantiomer(Enantiomer.D)
-            elif n == "L-":
-                self.to_enantiomer(Enantiomer.L)
+                # add a nitrogen
+                elif n == "N":
+                    self.side_chains[1 if self.monomer.get_name() in ['Fru', 'Tag', 'Sor', 'Psi'] else 2][O] += "N"
 
-            # add acid or glycoly groups to neuraminic acid
-            elif n == "Ac" and self.monomer.get_name() == "Neu":
-                self.side_chains[5][O] += "NC(=O)C"
-            elif n == "Gc" and self.monomer.get_name() == "Neu":
-                self.side_chains[5][O] += "NC(=O)CO"
+                # change the enantiomer to the D or L form
+                elif n == "D-":
+                    self.to_enantiomer(Enantiomer.D)
+                elif n == "L-":
+                    self.to_enantiomer(Enantiomer.L)
 
-            # if the side chain starts with a position specification
-            elif n[0].isdigit():
+                # add acid or glycoly groups to neuraminic acid
+                elif n == "Ac" and self.monomer.get_name() == "Neu":
+                    self.side_chains[5][O] += "NC(=O)C"
+                elif n == "Gc" and self.monomer.get_name() == "Neu":
+                    self.side_chains[5][O] += "NC(=O)CO"
 
-                # desoxygenation of a specific position
-                if n[1:] == "d":
-                    self.side_chains[int(n[0])][O] += "H"
+                # if the side chain starts with a position specification
+                elif n[0].isdigit():
+                    # if the functional group cannot be attached at the moment, wait for next round
+                    if int(n[0]) > len(self.side_chains) - 1:
+                        higher_order_groups[0].append(n)
+                        higher_order_groups[1].append(t)
+                        continue
 
-                # change chirality at a single chiral carbon atom
-                elif n[1:] == "e":
-                    idx = int(np.where(self.monomer.x[:, 1] == int(n[0]))[0])
-                    tag = opposite_chirality(self.monomer.structure.GetAtomWithIdx(idx).GetChiralTag())
-                    self.monomer.structure.GetAtomWithIdx(idx).SetChiralTag(tag)
+                    # desoxygenation of a specific position
+                    if n[1:] == "d":
+                        self.side_chains[int(n[0])][O] += "H"
 
-                # add a functional group connected with an oxygen or nitrogen
-                elif len(n) > 4 and n[1] == n[3] == "-" and n[2] in "ON":
-                    elem = "" if functional_groups[n[4:-1]][0] == n[2] else n[2]
-                    full &= self.set_fg(O, int(n[0]), elem, n[4:-1])
+                    # change chirality at a single chiral carbon atom
+                    elif n[1:] == "e":
+                        idx = int(np.where(self.monomer.x[:, 1] == int(n[0]))[0])
+                        tag = opposite_chirality(self.monomer.structure.GetAtomWithIdx(idx).GetChiralTag())
+                        self.monomer.structure.GetAtomWithIdx(idx).SetChiralTag(tag)
 
-                # connect a functional group with nitrogen, oxygen, or phosphate in between
-                elif n[1] in "NOP" and n[1:] not in n_conflict + o_conflict + p_conflict:
+                    # add a functional group connected with an oxygen or nitrogen
+                    elif len(n) > 4 and n[1] == n[3] == "-" and n[2] in "ON":
+                        elem = "" if functional_groups[n[4:-1]][0] == n[2] else n[2]
+                        full &= self.set_fg(O, int(n[0]), elem, n[4:-1])
+
+                    # connect a functional group with nitrogen, oxygen, or phosphate in between
+                    elif n[1] in "NOP" and n[1:] not in n_conflict + o_conflict + p_conflict:
+                        bridge, fg = extract_bridge(n)
+                        if len(bridge) > 0 and functional_groups[fg][0] == bridge[-1]:
+                            bridge = bridge[:-1]
+                        full &= self.set_fg(O, int(n[0]), bridge, fg)
+
+                    # add a group connected directly to the C-Atom
+                    elif n[1] == "C" and n[1:] not in c_conflict:
+                        bridge, fg = extract_bridge(n)
+                        full &= self.set_fg(C, int(n[0]), bridge, fg)
+
+                    # otherwise just add the sidechain directly to the specified position
+                    else:
+                        elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol() \
+                            if n[1:] in preserve_elem else ""
+                        elem = "" if elem == "C" else elem
+                        full &= self.set_fg(O, int(n[0]), elem, n[1:])
+
+                # if the side-chain is connected with a nitrogen/oxygen/phosphate to the monomer
+                elif n[0] in "NOP" and n not in n_conflict + o_conflict + p_conflict:
                     bridge, fg = extract_bridge(n)
                     if len(bridge) > 0 and functional_groups[fg][0] == bridge[-1]:
                         bridge = bridge[:-1]
-                    full &= self.set_fg(O, int(n[0]), bridge, fg)
 
-                # add a group connected directly to the C-Atom
-                elif n[1] == "C" and n[1:] not in c_conflict:
-                    bridge, fg = extract_bridge(n)
-                    full &= self.set_fg(C, int(n[0]), bridge, fg)
+                    # attach the monomer to the second carbon in the ring, it might be C2 or C3 (for 2-ketoses)
+                    if fg == "Me":
+                        full &= self.set_fg(O, self.ring_c, bridge, fg)
+                    else:
+                        full &= self.set_fg(O, self.ring_c + 1, bridge, fg)
 
-                # otherwise just add the sidechain directly to the specified position
+                # functional groups might be directly connected to the carbon of the ring
+                elif n[0] == "C" and n not in c_conflict:
+                    if "=" in n or n[1:].isdigit():
+                        self.set_fg(O, self.ring_c, "O", self.parse_poly_carbon(n))
+                    else:  # add a group connected directly to the C-Atom
+                        bridge, fg = extract_bridge(n)
+                        full &= self.set_fg(C, self.ring_c, bridge, fg)
+
+                # in all other cases just add the functional group
                 else:
                     elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol() \
                         if n[1:] in preserve_elem else ""
-                    elem = "" if elem == "C" else elem
-                    full &= self.set_fg(O, int(n[0]), elem, n[1:])
+                    elem = "" if functional_groups[n][0] == elem else elem
+                    full &= self.set_fg(O, self.ring_c, elem, n)
 
-            # if the side-chain is connected with a nitrogen/oxygen/phosphate to the monomer
-            elif n[0] in "NOP" and n not in n_conflict + o_conflict + p_conflict:
-                bridge, fg = extract_bridge(n)
-                if len(bridge) > 0 and functional_groups[fg][0] == bridge[-1]:
-                    bridge = bridge[:-1]
+            # after storing all functional groups in a list, iterate over them and put them into the monomers structure
+            self.assemble_chains()
 
-                # attach the monomer to the second carbon in the ring, it might be C2 or C3 (for 2-ketoses)
-                if fg == "Me":
-                    full &= self.set_fg(O, self.ring_c, bridge, fg)
-                else:
-                    full &= self.set_fg(O, self.ring_c + 1, bridge, fg)
+            if len(higher_order_groups[0]) == start_len:
+                break
 
-            # functional groups might be directly connected to the carbon of the ring
-            elif n[0] == "C" and n not in c_conflict:
-                if "=" in n or n[1:].isdigit():
-                    self.set_fg(O, self.ring_c, "O", self.parse_poly_carbon(n))
-                else:  # add a group connected directly to the C-Atom
-                    bridge, fg = extract_bridge(n)
-                    full &= self.set_fg(C, self.ring_c, bridge, fg)
+            names = higher_order_groups[0]
+            types = higher_order_groups[1]
+            higher_order_groups = [], []
 
-            # in all other cases just add the functional group
-            else:
-                elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol() \
-                    if n[1:] in preserve_elem else ""
-                elem = "" if functional_groups[n][0] == elem else elem
-                full &= self.set_fg(O, self.ring_c, elem, n)
-
-        # after storing all functional groups in a list, iterate over them and put them into the monomers structure
-        self.assemble_chains()
-
-        return self.monomer, full
+        return self.monomer, full & len(higher_order_groups[0]) == 0
 
     def set_fg(self, c_or_o, pos, bond_elem, name):
         """
