@@ -36,15 +36,15 @@ def compare_smiles(computed, solution):
 
 class TestIsomorphism:
     @pytest.mark.parametrize("data", [
-        ("OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O", "C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O)O", 12),  # Glc, Glc
-        ("OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O", "OC[C@H]1OC(O)C[C@@H](O)[C@@H]1O", 11),  # Glc, 2dGlc
-        ("OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O", "OC[C@H]1OC(O)[C@H](O)C[C@@H]1O", 11),  # Glc, 3dGlc
-        ("OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O", "OC[C@@H]1C[C@H](O)[C@@H](O)C(O)O1", 11),  # Glc, 4dGlc
-        ("OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O", "CC(=O)N[C@@H]1[C@H]([C@@H]([C@H](OC1O)CO)O)O", 11),  # Glc, GlcNAc
+        ("OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O", "C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O)O", 12, "Glc"),  # Glc, Glc
+        ("OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O", "OC[C@H]1OC(O)C[C@@H](O)[C@@H]1O", 11, "Glc"),  # Glc, 2dGlc
+        ("OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O", "OC[C@H]1OC(O)[C@H](O)C[C@@H]1O", 11, "Glc"),  # Glc, 3dGlc
+        ("OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O", "OC[C@@H]1C[C@H](O)[C@@H](O)C(O)O1", 11, "Glc"),  # Glc, 4dGlc
+        ("OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O", "CC(=O)N[C@@H]1[C@H]([C@@H]([C@H](OC1O)CO)O)O", 11, "Glc"),  # Glc, GlcNAc
     ])
     def test_isomorphism(self, data):
-        smiles1, smiles2, size = data
-        mapping = iso(smiles1, smiles2)
+        smiles1, smiles2, size, name = data
+        mapping = iso(smiles1, smiles2, name)
 
         assert len(mapping) == size
         check_map(smiles1, smiles2, mapping)

@@ -303,17 +303,17 @@ class FuranoseFactory:
         # Paratose
         "PAR": {"name": "Par", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                 "smiles": "C[C@@H](O)[C@@H]1C[C@@H](O)C(O)O1"},
-        "A_PAR": {"name": "Par", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "A_PAR": {"name": "Par", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                   "smiles": "C[C@@H](O)[C@@H]1C[C@@H](O)[C@@H](O)O1"},
-        "B_PAR": {"name": "Par", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "B_PAR": {"name": "Par", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                   "smiles": "C[C@@H](O)[C@@H]1C[C@@H](O)[C@H](O)O1"},
 
         # Sedoheptulose
         "SED": {"name": "Sed", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                 "smiles": "OC[C@@H](O)[C@H]1OC(O)(CO)[C@@H](O)[C@@H]1O"},
-        "A_SED": {"name": "Sed", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "A_SED": {"name": "Sed", "config": Config.ALPHA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                   "smiles": "OC[C@@H](O)[C@H]1O[C@@](O)(CO)[C@@H](O)[C@@H]1O"},
-        "B_SED": {"name": "Sed", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.PYRANOSE,
+        "B_SED": {"name": "Sed", "config": Config.BETA, "isomer": Enantiomer.D, "lactole": Lactole.FURANOSE,
                   "smiles": "OC[C@@H](O)[C@H]1O[C@](O)(CO)[C@@H](O)[C@@H]1O"},
     }
 

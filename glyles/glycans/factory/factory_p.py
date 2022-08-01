@@ -296,11 +296,11 @@ class PyranoseFactory:
                   "smiles": "C[C@@H](O[C@@H]1[C@@H](N)[C@H](O)O[C@H](CO)[C@H]1O)C(=O)O"},
 
         # Apiose
-        "API": {"name": "Api", "config": Config.UNDEF, "isomer": Enantiomer.L, "lactole": Lactole.FURANOSE,
+        "API": {"name": "Api", "config": Config.UNDEF, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
                 "smiles": "OC[C@@]1(O)COC(O)[C@@H]1O"},
-        "A_API": {"name": "Api", "config": Config.ALPHA, "isomer": Enantiomer.L, "lactole": Lactole.FURANOSE,
+        "A_API": {"name": "Api", "config": Config.ALPHA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
                   "smiles": "OC[C@@]1(O)CO[C@@H](O)[C@@H]1O"},
-        "B_API": {"name": "Api", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.FURANOSE,
+        "B_API": {"name": "Api", "config": Config.BETA, "isomer": Enantiomer.L, "lactole": Lactole.PYRANOSE,
                   "smiles": "OC[C@@]1(O)CO[C@H](O)[C@@H]1O"},
 
         # Fructose
