@@ -1,7 +1,10 @@
 import os
 import sys
+import logging
+import warnings
 
 from glyles.glycans.factory.factory import MonomerFactory
+from glyles.glycans.utils import ParseError
 from glyles.grammar.parse import Glycan
 
 
@@ -27,14 +30,14 @@ def preprocess_glycans(glycan, glycan_list, glycan_file):
     if glycan_file is not None:
         # check if the file is valid and read it out
         if not os.path.isfile(glycan_file):
-            pass
+            raise ValueError(f"{glycan_file} does not exists, cannot read glycans.")
         for line in open(glycan_file, "r").readlines():
             glycans.append(line.strip())
     return glycans
 
 
-def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=None, output_file=None, returning=False,
-            silent=True):
+def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=None, output_file=None, returning=True,
+            silent=True, full=True):
     """
     General user interaction interface to use this library.
 
@@ -47,6 +50,8 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
         output_file (str): File to save the converted glycans in
         returning (bool): Flag indicating to return a list of tuples
         silent (bool): Flag indicating to have no prints from this method
+        full (bool): Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
+            such as 3-Anhydro-[...] are also present in the SMILES
 
     Returns:
         List of type (IUPAC, SMILES) items giving the converted SMILES formulas. Only if returning=True is set.
@@ -56,7 +61,7 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
     glycans = preprocess_glycans(glycan, glycan_list, glycan_file)
     if len(glycans) == 0 and glycan_generator is None:
         if not silent:
-            print("List of glycans is empty", file=sys.stderr)
+            logging.info("List of glycans is empty")
         return
 
     # determine the output format
@@ -64,20 +69,19 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
         if os.path.isdir(os.path.dirname(os.path.abspath(output_file))):
             output = open(output_file, "w")
         else:
-            if not silent:
-                print("Path of output-file does not exist! Results will be printed on stdout.", file=sys.stderr)
+            warnings.warn("Path of output-file does not exist! Results will be printed on stdout.")
             output = sys.stdout
+        returning = False
     else:
         if returning:
             output = []
         else:
-            if not silent:
-                print("No output-file specified, results will be printed on stdout.")
+            warnings.warn("No output-file specified, results will be printed on stdout.")
             output = sys.stdout
 
     # convert the IUPAC strings into SMILES strings from the input list
     if len(glycans) != 0:
-        for glycan, smiles in convert_generator(glycan_list=glycans, silent=silent):
+        for glycan, smiles in convert_generator(glycan_list=glycans, silent=silent, full=full):
             if returning:
                 output.append((glycan, smiles))
             else:
@@ -85,7 +89,7 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
 
     # and from the input generator
     if glycan_generator is not None:
-        for glycan, smiles in convert_generator(glycan_generator=glycan_generator, silent=silent):
+        for glycan, smiles in convert_generator(glycan_generator=glycan_generator, silent=silent, full=full):
             if returning:
                 output.append((glycan, smiles))
             else:
@@ -97,7 +101,7 @@ def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=No
         output.close()
 
 
-def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=None, silent=True):
+def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=None, silent=True, full=True):
     """
     General user interaction interface to use this library.
 
@@ -108,6 +112,8 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
         glycan_generator (generator): generator yielding iupac representation.
             Together with output_generator=True this does not create any lists
         silent (bool): Flag indicating to have no output-messages from this method
+        full (bool): Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
+            such as 3-Anhydro-[...] are also present in the SMILES
 
     Returns:
         Generator generating pairs of type (IUPAC, SMILES) items giving the converted SMILES formulas for the IUPACs.
@@ -115,32 +121,41 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
     factory = MonomerFactory()
     glycans = preprocess_glycans(glycan, glycan_list, glycan_file)
     if len(glycans) == 0 and glycan_generator is None:
-        if not silent:
-            print("List of glycans is empty", file=sys.stderr)
+        logging.info("List of glycans is empty")
         return
 
     # Convert the glycans ...
     if len(glycans) != 0:
         for glycan in glycans:
-            try:
-                # ... by passing them to the glycan class to parse them and return them as intended
-                yield glycan, Glycan(glycan, factory).get_smiles()
-
-            # catch any exception at glycan level to not destroy the whole pipeline because of one mis-formed glycan
-            except Exception as e:
-                print(f"An exception occurred with {glycan}:", e.__class__, file=sys.stderr)
-                print("Error message:", e.__str__(), file=sys.stderr)
-                yield glycan, ""
+            yield generate(glycan, factory, full)
 
     # Convert the glycans ...
     if glycan_generator is not None:
         for glycan in glycan_generator:
-            try:
-                # ... by passing them to the glycan class to parse them and return them as intended
-                yield glycan, Glycan(glycan, factory).get_smiles()
+            yield generate(glycan, factory, full)
 
-            # catch any exception at glycan level to not destroy the whole pipeline because of one mis-formed glycan
-            except Exception as e:
-                print(f"An exception occurred with {glycan}:", e.__class__, file=sys.stderr)
-                print("Error message:", e.__str__(), file=sys.stderr)
-                yield glycan, ""
+
+def generate(glycan, factory, full):
+    """
+    Actually generate the SMILES string based on the glycan given in IUPAC notation
+
+    Parameters:
+        glycan (str): Glycan molecule described by its IUPAC string
+        factory (MonomerFactory): Factory to generate the monomers from
+        full (bool): flag indicating to only return SMILES string that include all modifications from the IUPAC
+
+    Returns:
+        A pair of glycan represented with its IUPAC string and SMILES string
+    """
+    try:
+        # ... by passing them to the glycan class to parse them and return them as intended
+        return glycan, Glycan(glycan, factory, full=full).get_smiles()
+
+    # catch any exception at glycan level to not destroy the whole pipeline because of one mis-formed glycan
+    except ParseError as e:
+        logging.error(f"An exception occurred with {glycan}: {e.__class__}\n"
+                      f"Error message: {e.__str__()}")
+        return glycan, ""
+    except Exception:
+        logging.error(f"An unexpected error occurred with with {glycan}. This glycan cannot be parsed.")
+        return glycan, ""

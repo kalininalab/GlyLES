@@ -9,17 +9,16 @@ phase; so, feel free to report any errors or issues.
 
 The exact specification we're referring to when talking about "IUPAC representations of glycan", is given in the 
 "Notes" section of this [website](https://www.ncbi.nlm.nih.gov/glycans/snfg.html). But as this package is still in the 
-development phase, not everything of the specification is implemented yet (especially not all monomers and side chains 
-you can attach to monomers).
+development phase, not everything of the specification is implemented yet (especially not all side chains you can 
+attach to monomers).
 
 This implementation currently only works for glycans that fulfill certain properties:
 
-* Linkages have to be explicit, i.e. `(a1-4)`
-* The structure of the glycan can be represented as a tree of the monomers with maximal branching factor 2.
-* All root monomers (e.g. Glc, but not GlcNAc) from this [website](https://www.ncbi.nlm.nih.gov/glycans/snfg.html) 
-  (GalNAc is seen as modification of galactose)
+* The structure of the glycan can be represented as a tree of the monosaccharides with maximal branching factor 3.
+* Only basic monomers (e.g. ``Glc``, but not ``GlcNAc``) from this [website](https://www.ncbi.nlm.nih.gov/glycans/snfg.html) 
+  (GalNAc is seen as modification of galactose). In addition to this list, Erythrose is parsable.
 * Some modifications can be added to the monomers, please see the [README](glyles/grammar/README.md) in the grammar
-folder for more information on this. 
+folder for more information on this. <br>E.g. ``GlcNAc`` is seen to be a modified version of ``Glc``. 
 
 ## Installation
 
@@ -32,9 +31,9 @@ pip install glyles
 
 and you're ready to use it as described below. Use 
 
-````shell
+``````shell
 pip install --upgrade glyles
-````
+``````
 
 to upgrade the glyles package to the most recent version.
 
@@ -66,19 +65,24 @@ for `convert` but it's the same for `convert_generator`.
   IUPAC per line.
 * for better runtime one can also provide a generator as input, e.g. `convert(glycan_generator=some_generator)`
 
-The output for `convert` can be manifold as well:
+Any output consists of tuples of the form `(input_iupac, smiles)`. `convert_generator` returns those tuples in a 
+generator. `convert`-output is a bit different:
 
-* `stdout` when specifying no output-related argument, or
-* return as list of tuples if `returning=true` is set, or
-* writing to an `output_file`, e.g. `convert(glycan="Man(a1-2)Man", output_file="./out.csv")`.
+* By default, the method returns the list of tuples.
+* You can print them to `stdout` by specifying `returning=False`.
+* The tuples can also be written `output_file`, e.g. `convert(glycan="Man(a1-2)Man", output_file="./out.csv")`.
 
-Any output consists of tuples of the form (input_iupac, smiles). The same also holds for `convert_generator` which returns 
-tuples of input and smiles strings.
+## Notation of glycans
+
+There are multiple different notations for glycans in IUPAC. So, according to the 
+[SNGF specification](https://www.ncbi.nlm.nih.gov/glycans/snfg.html), `Man(a1-4)Gal`, `Mana1-4Gal`, and `Mana4Gal` 
+all describe the same disaccharide. This is also covered in this package as all three notations will be parsed into the 
+same tree of monosaccharides and result in the same SMILES string.
 
 
 ## Poetry
 
-To develop this package, I used the poetry package manager (see [here](https://python-poetry.org/) for detailed
+To develop this package, we use the poetry package manager (see [here](https://python-poetry.org/) for detailed
 instruction). It has basically the same functionality as conda but supports the package management better and also 
 supports distinguishing packages into those that are needed to use the package and those that are needed in the 
 development of the package. To enable others to work on this repository, we also publish the exact 

@@ -13,6 +13,8 @@
 | Desoxygenation   | 3dGal                | &check;  | &cross;     |
 | ???              | 3eGal                | &check;  | &cross;     |
 | Enantiomers      | L-Gal<br>D-Gal       | &check;  | &cross;     |
+| Glycolyl groups  | GalGc                | &check;  | &cross;     |
+| Benzoyl groups   | GalNBz               | &check;  | &cross;     |
 
 ###### parsable 
 the modification might be in the input glycan and will not raise an exception when parsed. When

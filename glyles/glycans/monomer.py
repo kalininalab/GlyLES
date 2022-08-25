@@ -1,46 +1,59 @@
-from glyles.glycans.utils import Config
+import numpy as np
+from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
+
+from glyles.glycans.enum_c import enumerate_carbon
+from glyles.glycans.reactor import SMILESReaktor
+from glyles.glycans.utils import Config, find_isomorphism_nx
+from glyles.grammar.GlycanLexer import GlycanLexer
 
 
 class Monomer:
-    """
-    General interface to represent the sugar monomers in the tree.
-
-    The resulting molecule must have some properties that are especially important for the correct implementation of
-        the parser later on:
-          - The C atoms have IDs 1 to 6 according to their C1-C6 naming in a glycan.
-          - The O atom closing the ring has id 10, so that all other O-atoms have ID 10 higher than the C atom they are
-            connected to.
-          - The chirality is initial 0 and will only be set in the carbons with respect to the non-OH-group.
-          - Additionally, all members of the ring of the molecule have an according flag set to true.
-
-    Depending on the concrete implementation the actual ids of the atoms might vary, but the rest of the program will
-    use the atom ids as specified here. So, an alternative naming must internally be converted to this specification.
-    """
 
     def __init__(self, origin=None, **kwargs):
         """
-        Initialize the Monomer with the provided arguments or from another monomer
+        Initialize the monomer using the super method. Additionally, some fields are initialized to describe the
+        structure of the monomer according to the specification of the monomer-parent class
 
         Args:
             origin (Monomer): Other monomer to use to initialize this object
-            **kwargs: arguments to initialize monomer if object is None. Must include name, SMILES, and config
+            **kwargs: arguments to initialize monomer if object is None.
         """
+        if isinstance(origin, tuple):
+            origin = origin[0]
+
         if origin is None:
             self.name = kwargs["name"]
             self.smiles = kwargs["smiles"]
+            self.__root_smiles = kwargs["smiles"]
             self.structure = kwargs.get("struct", None)
             self.config = kwargs["config"]
             self.isomer = kwargs["isomer"]
             self.lactole = kwargs["lactole"]
             self.recipe = kwargs["recipe"]
+            self.c1_find = kwargs.get("c1_find", None)
         else:
             self.name = origin.get_name()
             self.smiles = origin.get_smiles()
+            self.__root_smiles = origin.root_smiles()
+            self.c1_find = origin.get_c1_finder()
             self.structure = origin.get_structure()
             self.config = origin.get_config()
             self.isomer = origin.get_isomer()
             self.lactole = origin.get_lactole()
             self.recipe = origin.get_recipe()
+            self.adjacency = origin.get_adjacency()
+            self.ring_info = origin.get_ring_info()
+            self.x = origin.get_features()
+
+    def root_smiles(self):
+        """
+        Access the SMILES string of the root monomer. This is before any functional group is attached.
+        It is as described in the factories.
+
+        Returns:
+            SMILES string of the root monomer of this monosaccharide
+        """
+        return self.__root_smiles
 
     def get_name(self, full=False):
         """
@@ -69,15 +82,14 @@ class Monomer:
         """
         return self.smiles
 
-    def get_structure(self):
+    def get_c1_finder(self):
         """
-        Returns the structure of this monomer. This might be Null in case the structure wasn't inferred from the
-        SMILES so far
+        This returns a method used to identify the C1 atom in an additionally provided molecule object.
 
         Returns:
-            Structure depending on the methods chosen to represent the structure of this monomer, might be Null
+            The callable object that, given the structure, finds the RDKit ID of C1
         """
-        return self.structure
+        return self.c1_find
 
     def alpha(self, factory):
         """
@@ -89,7 +101,9 @@ class Monomer:
         Returns:
             Monomer in alpha conformation
         """
-        return Monomer(factory["A_" + self.name])
+        recipe = [(v, t) for v, t in self.recipe if t != GlycanLexer.TYPE]
+        recipe.append(('a', GlycanLexer.TYPE))
+        return Monomer(factory.create(recipe))
 
     def beta(self, factory):
         """
@@ -101,7 +115,9 @@ class Monomer:
         Returns:
             Monomer in beta conformation
         """
-        return Monomer(factory["B_" + self.name])
+        recipe = [(v, t) for v, t in self.recipe if t != GlycanLexer.TYPE]
+        recipe.append(('b', GlycanLexer.TYPE))
+        return Monomer(factory.create(recipe))
 
     def undefined(self, factory):
         """
@@ -114,7 +130,8 @@ class Monomer:
         Returns:
             Monomer in undefined conformation
         """
-        return Monomer(factory[self.name])
+        recipe = [(v, t) for v, t in self.recipe if t != GlycanLexer.TYPE]
+        return Monomer(factory.create(recipe))
 
     def to_chirality(self, chirality, factory):
         """
@@ -179,9 +196,46 @@ class Monomer:
         """
         return self.config == Config.UNDEF
 
-    def get_dummy_atoms(self):
+    def get_adjacency(self):
+        """
+        Get the adjacency matrix of the atoms in this monomer.
+
+        Returns:
+            Adjacency matrix of all non-hydrogen atoms in this monomer
+        """
+        if self.adjacency is None:
+            self.get_structure()
+        return self.adjacency
+
+    def get_ring_info(self):
+        """
+        Get information of all atom-ids in the rings of this monomer.
+
+        Returns:
+            Tuple of tuples with the atom-ids from rdkit in the monomer
+        """
+        if self.ring_info is None:
+            self.get_structure()
+        return self.ring_info
+
+    def get_features(self):
+        """
+        Get a feature matrix from this monomer. The features contain information about atom type, ids according to the
+        specification in monomer.py, and ring memberships.
+
+        Returns:
+            A numpy array of shape Nx3 containing the extracted features for all atoms in this molecule
+        """
+        if self.x is None:
+            self.get_structure()
+        return self.x
+
+    @staticmethod
+    def get_dummy_atoms():
         """
         Specify some dummy atoms that are used to mark oxygen atoms that will participate in bindings between glycans.
+        Here, the atoms will be replaced by instances of the atom enum that are used to define the type of the atom in
+        the nodes of the networkx representation of the monomer molecules.
 
         Returns:
             Two lists:
@@ -189,7 +243,7 @@ class Monomer:
                 * the string representation of the atoms from above, i.e. how the atoms above will be represented in a
                   SMILES string
         """
-        raise NotImplementedError
+        return [34, 52, 84, 85], ["[SeH]", "[TeH]", "[PoH]", "[At]"]
 
     def root_atom_id(self, binding_c_id):
         """
@@ -200,41 +254,151 @@ class Monomer:
             binding_c_id (int): Integer at which c-position this monomer binds its parent
 
         Returns:
-            id of the atom that binds to the parent
+            id of the atom that binds to the parent, -1 if the root cannot be found
         """
-        raise NotImplementedError
+        return self.find_oxygen(binding_c_id)
 
     def mark(self, position, atom):
         """
         Mark the oxygen atom linked to the carbon atom at the given position ready to participate in the bounding.
+        Marking here works based on replacing the oxygen-group bound to the carbon atom at the given position with the
+        atom enum instance also provided in the arguments.
 
         Args:
             position (int): id of the carbon atom whose oxygen atom will from the binding
-            atom (object): atom to replace the binding oxygen with
+            atom (int): atom to replace the binding oxygen with
 
         Returns:
             Nothing
         """
-        raise NotImplementedError
+        idx = self.find_oxygen(position)
+        self.get_structure().GetAtomWithIdx(idx).SetAtomicNum(atom)
+        self.x[idx, 0] = atom
 
-    def to_smiles(self, root, ring_index):
+    def to_smiles(self, ring_index, root_idx=None, root_id=None):
         """
         Convert this monomer into a SMILES string representation.
+        Use the implementation of the SMILES algorithm fitted to the needs of glycans.
 
         Args:
-            root (int): index of the root atom
             ring_index (int): index of the rings in the atom
+            root_idx (int): index of the root atom
+            root_id (int): RDKit ID of root atom
 
         Returns:
             SMILES string representation of this molecule
         """
-        raise NotImplementedError
+        assert root_idx is not None or root_id is not None, "Either Index or ID has to be provided"
+        if root_id is None:
+            if np.where(self.x[:, 1] == root_idx)[0].size != 0:
+                root_id = int(np.where(self.x[:, 1] == root_idx)[0])
+            else:
+                root_id = int(np.where(self.x[:, 1] == 1)[0])
+        smiles = MolToSmiles(self.get_structure(), rootedAtAtom=root_id)
+        return "".join([((f"%{int(c) + ring_index}" if int(c) + ring_index >= 10
+                          else f"{int(c) + ring_index}") if c.isdigit() else c) for c in smiles])
+
+    def react(self, names, types):
+        """
+        Override the method to the call of the reactor to modify this monomer.
+
+        Args:
+            names (List[str]): name (string representation) of the modification
+            types (List[int]): Type of the parsed stings based on GlycanLexer.TYPE
+
+        Returns:
+            New monomer with the altered structure
+        """
+        return SMILESReaktor(self).react(names, types)
 
     def get_structure(self):
         """
         Compute and save the structure of this glycan.
 
         Returns:
-            Representation the structure of the glycan as a graph.
+            rdkit molecule representing the structure of the glycan as a graph of its non-hydrogen atoms.
         """
-        raise NotImplementedError
+        if self.structure is None:
+            # read the structure from the SMILES string
+            self.structure = MolFromSmiles(self.smiles)
+
+            # extract some further information from the molecule to not operate always on the molecule
+            self.adjacency = GetAdjacencyMatrix(self.structure, useBO=True)
+            rings = self.structure.GetRingInfo().AtomRings()
+            if len(rings) > 0 and self.name != "Inositol":
+                self.ring_info = [None]
+                for ring in rings:
+                    found_ox = False
+                    for atom in ring:
+                        if self.structure.GetAtomWithIdx(atom).GetAtomicNum() == 8:
+                            self.ring_info[0] = ring
+                            found_ox = True
+                            break
+                    if not found_ox:
+                        self.ring_info.append(ring)
+            else:
+                self.ring_info = rings
+            self.x = np.zeros((self.adjacency.shape[0], 4), dtype=int)
+
+            # extract some information form the molecule
+            for i in range(self.adjacency.shape[0]):
+                atom = self.structure.GetAtomWithIdx(i)
+
+                # store the atom type
+                self.x[i, 0] = atom.GetAtomicNum()
+
+                # if the atom is part of any ring, store the number of that ring
+                for r in range(len(self.ring_info)):
+                    if self.ring_info[r] is not None and i in self.ring_info[r]:
+                        self.x[i, 2] = r + 1
+
+                # identify the oxygen atom in the main ring and set its id to 100
+                if self.x[i, 2] == 1 and self.x[i, 0] == 8:
+                    self.x[i, 1] = 100
+
+            # identify isomorphic atoms. The reference for the isomorphism test is the root SMILES
+            iso = list(find_isomorphism_nx(self.smiles, self.root_smiles(), self.name, self.c1_find).keys())
+            if len(iso) == 0:
+                iso = list(find_isomorphism_nx(self.root_smiles(), self.smiles, self.name, self.c1_find).values())
+            if len(iso) == 0:
+                self.x[:, 3] = 1
+            else:
+                self.x[iso, 3] = 1
+
+            # Enumerate all carbons
+            enumerate_carbon(self)
+
+        return self.structure
+
+    def find_oxygen(self, binding_c_id):
+        """
+        Find the oxygen atom that binds to the carbon atom with the provided id. The returned id may not refer to an
+        oxygen atom in the ring of the monomer as this cannot bind anything. This method will report the atom id of the
+        first atom type that fulfils the requirements of this method, i.e. the binding atom has to be the only one of
+        its type, not in the main-ring, and connected to the given carbon atom.
+
+        Args:
+            binding_c_id (int): id of the carbon atom that participates in a binding, and we need to find the oxygen
+                from
+
+        Returns:
+            The RDKit-ID referring to the atom binding the provided carbon atom and may participate in a glycan-binding.
+            In case the carbon is bound to neither an oxygen nor a nitrogen, the RDKit-ID of the carbon is returned.
+        """
+        # first find the rdkit id of the carbon atom that should bind to something
+        position = np.argwhere(self.x[:, 1] == binding_c_id).squeeze()
+
+        multiple = False
+        for check in [8, 7]:
+            # then find the candidates. There should be exactly one element in the resulting array
+            candidates = np.argwhere((self.adjacency[position, :] == 1) &
+                                     (self.x[:, 0] == check) & (self.x[:, 2] != 1)).squeeze()
+            if candidates.size == 1:
+                return int(candidates)
+            elif candidates.size > 0:
+                multiple = True
+
+        if not multiple and position.size == 1:
+            return int(position)
+
+        raise ValueError(f"Multiple options for oxygen (or other atom type) found.")

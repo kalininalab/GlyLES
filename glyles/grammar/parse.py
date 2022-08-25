@@ -1,12 +1,12 @@
 import sys
+import re
 
 import networkx as nx
 import numpy as np
 import pydot
 from antlr4 import *
-from rdkit.Chem import MolFromSmiles
 
-from glyles.glycans.utils import Mode, UnreachableError, ParseError
+from glyles.glycans.utils import UnreachableError, ParseError, ketoses2
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
 
@@ -24,7 +24,7 @@ class Glycan:
     class __TreeWalker:
         def __init__(self, factory, tree_only):
             """
-            Just initialize an empty tree
+            Just initialize an empty tree.
 
             Args:
                 factory (MonomerFactory): factory instance to use to generate the monomers for the glycan tree from
@@ -34,14 +34,14 @@ class Glycan:
             self.factory = factory
             self.node_id = 0
             self.tree_only = tree_only
+            self.full = True
 
-        def parse(self, t, mode):
+        def parse(self, t):
             """
-            Parse a parsed tree (AST) from ANTLR into this networkx graph
+            Parse a parsed tree (AST) from ANTLR into this networkx graph.
 
             Args:
                 t (antlr.ParseTree): result of the parsing step from ANTLR
-                mode (Mode): mode determining which monomer-mode to use
 
             Returns:
                 Tree of parsed glycan with monomers in nodes
@@ -51,23 +51,20 @@ class Glycan:
             # and remove the first and last char, i.e. '{' and '}'
             children = list(t.getChildren())[1:-1]
             if len(children) == 1:  # glycan
-                self.__add_node(children[0], mode)
-                return self.g
+                self.__add_node(children[0])
             elif len(children) == 2:  # branch glycan
-                node_id = self.__add_node(children[1], mode)
-                self.__walk(children[0], node_id, mode)
-                return self.g
+                node_id = self.__add_node(children[1])
+                self.__walk(children[0], node_id)
             elif len(children) == 3:  # SAC ' ' TYPE
-                self.__add_node(children[0], mode, children[2].symbol.text)
-                return self.g
+                self.__add_node(children[0], children[2].symbol.text)
             elif len(children) == 4:  # branch SAC ' ' TYPE
-                node_id = self.__add_node(children[1], mode, children[3].symbol.text)
-                self.__walk(children[0], node_id, mode)
-                return self.g
+                node_id = self.__add_node(children[1], children[3].symbol.text)
+                self.__walk(children[0], node_id)
             else:
                 raise RuntimeError("This branch of the if-statement should be unreachable!")
+            return self.g, self.full
 
-        def __walk(self, t, parent, mode):
+        def __walk(self, t, parent):
             """
             The heart of this class. This method recursively adds nodes to the graph and connects them according to the
             connections in the input IUPAC.
@@ -75,12 +72,10 @@ class Glycan:
             Args:
                 t (antlr.ParseTree): subtree to parse in this recursive step.
                 parent (int): ID of the parent node for this (subtree)
-                mode (Mode): mode determining which monomer-mode to use
 
             Returns:
                 ID of the parent for the remaining recursive procedure after resolving this subtree
             """
-
             # security check for some nodes that should not occur, but who knows what ANTLR does (or does not) ;-)
             if isinstance(t, ErrorNode):
                 raise UnreachableError("ErrorNodes in parsing!")
@@ -90,27 +85,46 @@ class Glycan:
             children = list(t.getChildren())
             if len(children) == 2:  # {glycan con}
                 # terminal element, add the node with the connection
-                node_id = self.__add_node(children[0], mode)
+                node_id = self.__add_node(children[0])
                 self.__add_edge(parent, node_id, children[1])
                 return node_id
 
             elif len(children) == 3 and isinstance(children[2], GlycanParser.BranchContext):  # {glycan con branch}
                 # chain without branching, the parent is the parent of the parsing of the back part
-                parent = self.__walk(children[2], parent, mode)
-                node_id = self.__add_node(children[0], mode)
+                parent = self.__walk(children[2], parent)
+                node_id = self.__add_node(children[0])
                 self.__add_edge(parent, node_id, children[1])
                 return node_id
 
             elif len(children) == 3 and isinstance(children[1], GlycanParser.BranchContext):  # {'[' branch ']'}
                 # branching, hand the parent on to the next level
-                self.__walk(children[1], parent, mode)
+                self.__walk(children[1], parent)
                 return parent
 
             elif len(children) == 6:  # {glycan con '[' branch ']' branch}
                 # branching in a chain, append the end to the parent and hang both branches on that
-                node_id = self.__walk(children[5], parent, mode)
-                self.__walk(children[3], node_id, mode)
-                node_id2 = self.__add_node(children[0], mode)
+                node_id = self.__walk(children[5], parent)
+                self.__walk(children[3], node_id)
+                node_id2 = self.__add_node(children[0])
+                self.__add_edge(node_id, node_id2, children[1])
+                return node_id2
+
+            elif len(children) == 9:  # {glycan con '[' branch ']' '[' branch ']' branch}
+                # branching in a chain, append the end to the parent and hang both branches on that
+                node_id = self.__walk(children[8], parent)
+                self.__walk(children[3], node_id)
+                self.__walk(children[6], node_id)
+                node_id2 = self.__add_node(children[0])
+                self.__add_edge(node_id, node_id2, children[1])
+                return node_id2
+
+            elif len(children) == 12:  # {glycan con '[' branch ']' '[' branch ']' '[' branch ']' branch}
+                # branching in a chain, append the end to the parent and hang both branches on that
+                node_id = self.__walk(children[11], parent)
+                self.__walk(children[3], node_id)
+                self.__walk(children[6], node_id)
+                self.__walk(children[9], node_id)
+                node_id2 = self.__add_node(children[0])
                 self.__add_edge(node_id, node_id2, children[1])
                 return node_id2
 
@@ -129,15 +143,21 @@ class Glycan:
             Returns:
                 Nothing
             """
-            self.g.add_edge(parent, child, type=str(con))
+            con = str(con)
+            if "(" not in con and ")" not in con:
+                if "-" not in con:
+                    bond = ("2-" if (self.g.nodes[child]["type"].get_lactole,
+                                     self.g.nodes[child]['type'].get_name()) in ketoses2 else "1-")
+                    con = con[0] + bond + con[1:]
+                con = "(" + con + ")"
+            self.g.add_edge(parent, child, type=con)
 
-        def __add_node(self, node, mode, config=""):
+        def __add_node(self, node, config=""):
             """
             Add a new node to the network based on the name of the represented glycan.
 
             Args:
                 node: Node of the parsed tree to be parsed into a monomer
-                mode (Mode): mode determining which monomer-mode to use
                 config (str): configuration to be applied to the monomer
 
             Returns:
@@ -155,10 +175,12 @@ class Glycan:
                         recipe.append((str(c), c.symbol.type))
                 else:
                     recipe.append((str(child), child.symbol.type))
+            monomer, full = self.factory.create(recipe, config, tree_only=self.tree_only)
             self.g.add_node(
                 node_id,
-                type=self.factory.create(recipe, mode, config, tree_only=self.tree_only),
+                type=monomer,
             )
+            self.full &= full
 
             return node_id
 
@@ -176,7 +198,7 @@ class Glycan:
             """
             self.factory = factory
 
-        def merge(self, t, root_orientation="n", start=10):
+        def merge(self, t, root_orientation="n", start=100):
             """
             Merge the provided tree of monomers enriched with the glycans in the nodes and information on the bindings
             between two monomer-nodes in the edges.
@@ -190,10 +212,13 @@ class Glycan:
                 SMILES representation as string
             """
             # first mark the atoms that will be replaced in a binding of two monomers
-            self.__mark(t, 0, "({}1-?)".format(root_orientation))
+            self.__mark(t, 0, f"({root_orientation}1-?)")
 
             # return the string that can be computed from connecting the monomers as marked above
-            position = int(np.argwhere(t.nodes[0]["type"].get_features()[:, 1] == start).squeeze())
+            if np.where(t.nodes[0]["type"].get_features()[:, 1] == start)[0].size != 0:
+                position = int(np.argwhere(t.nodes[0]["type"].get_features()[:, 1] == start).squeeze())
+            else:
+                position = int(np.argwhere(t.nodes[0]["type"].get_features()[:, 1] == 1).squeeze())
             return self.__merge(t, 0, position, 0)
 
         def __mark(self, t, node, p_edge):
@@ -218,15 +243,15 @@ class Glycan:
             # check for validity of the tree, ie if it's a leaf (return, nothing to do) or has too many children (Error)
             if len(children) == 0:  # leaf
                 return
-            if len(children) > 2:  # too many children
-                raise NotImplementedError("Glycans with maximal branching factor greater then 2 not implemented.")
+            if len(children) > 4:  # too many children
+                raise NotImplementedError("Glycans with maximal branching factor greater then 3 not implemented.")
 
             # iterate over the children and the atoms used to mark binding atoms in my structure
             for child, atom in zip(children, t.nodes[node]["type"].get_dummy_atoms()[0]):
-                binding = t.get_edge_data(node, child)["type"]
+                binding = re.findall(r'\d+', t.get_edge_data(node, child)["type"])[1]
 
-                t.nodes[node]["type"].mark(int(binding[4]), atom)
-                self.__mark(t, child, binding)
+                t.nodes[node]["type"].mark(int(binding), atom)
+                self.__mark(t, child, t.get_edge_data(node, child)["type"])
 
         def __merge(self, t, node, start, ring_index):
             """
@@ -244,7 +269,7 @@ class Glycan:
             """
             # get my children and compute my SMILES string
             children = [x[1] for x in t.edges(node)]
-            me = t.nodes[node]["type"].to_smiles(start, ring_index)
+            me = t.nodes[node]["type"].to_smiles(ring_index, root_id=start)
 
             # check for validity of the tree, ie if it's a leaf
             if len(children) == 0:  # leaf
@@ -252,10 +277,9 @@ class Glycan:
 
             # iterate over the children and the atoms used to mark binding atoms
             for child, atom in zip(children, t.nodes[node]["type"].get_dummy_atoms()[1]):
-                binding = list(t.get_edge_data(node, child)["type"])
+                binding = re.findall(r'\d+', t.get_edge_data(node, child)["type"])[0]
 
-                # child_start = t.nodes[node]["type"].root_atom_id(int(binding[2]))
-                child_start = t.nodes[child]["type"].root_atom_id(int(binding[2]))
+                child_start = t.nodes[child]["type"].root_atom_id(int(binding))
                 if child_start == -1:
                     raise ValueError("No child start found.")
 
@@ -264,26 +288,28 @@ class Glycan:
                 me = me.replace(atom, child_smiles)
             return me
 
-    def __init__(self, iupac, factory, mode=Mode.DEFAULT_MODE, root_orientation="n", start=10, tree_only=False):
+    def __init__(self, iupac, factory, root_orientation="n", start=100, tree_only=False, full=True):
         """
         Initialize the glycan from the IUPAC string.
 
         Args:
             iupac (str): IUPAC string representation of the glycan to represent
             factory (MonomerFactory): factory instance to use to generate the monomers for the glycan tree from
-            mode (Mode): Glycan mode to use. This controls the representation used (either networkx or RDKit)
             root_orientation (str): orientation of the root monomer in the glycan (choose from 'a', 'b', 'n')
             start (int): ID of the atom to start with in the root monomer when generating the SMILES
             tree_only (bool): Flag indicating to only parse the tree of glycans and not the modifications
+            full (bool): Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
+                such as 3-Anhydro-[...] are also present in the SMILES
         """
         self.iupac = iupac
-        self.mode = mode
         self.parse_tree = None
         self.glycan_smiles = None
         self.root_orientation = root_orientation
         self.start = start
         self.tree_only = tree_only
         self.factory = factory
+        self.full = full
+        self.tree_full = True
         self.__parse()
 
     def get_smiles(self):
@@ -293,6 +319,10 @@ class Glycan:
         Returns:
             Generated SMILES string
         """
+        # return an empty SMILES if the output is required to represent all modifications, but it actually wouldn't
+        if not self.tree_only and self.tree_full != self.full:
+            return ""
+
         if self.glycan_smiles is None:
             self.glycan_smiles = Glycan.__Merger(self.factory).merge(self.parse_tree, self.root_orientation,
                                                                      start=self.start)
@@ -307,19 +337,6 @@ class Glycan:
             The parsed tree with the single monomers in the nodes
         """
         return self.parse_tree
-
-    def to_pdb(self, output):
-        """
-        Compute a 3-dimensional conformation of the molecule using ForceFields. The result will be stored in a PDB file.
-
-        Args:
-            output (str): Path to store the PDB file in
-
-        Returns:
-            Nothing
-        """
-        mol = MolFromSmiles(self.glycan_smiles)
-        raise NotImplementedError("PDB conversion planned, but not implemented yet.")
 
     def save_dot(self, output, horizontal=False):
         """
@@ -339,8 +356,8 @@ class Glycan:
         for node in range(len(self.parse_tree.nodes)):
             graph.add_node(pydot.Node(node, label=self.parse_tree.nodes[node]["type"].get_name(full=True)))
         for edge in self.parse_tree.edges():
-            graph.add_edge(pydot.Edge(*edge, label=self.parse_tree.get_edge_data(*edge)["type"]))
-        graph.write(output + ".dot")
+            graph.add_edge(pydot.Edge(*edge[::-1], label=self.parse_tree.get_edge_data(*edge)["type"]))
+        graph.write(output)
 
     def __parse(self):
         """
@@ -352,15 +369,17 @@ class Glycan:
         # catch the prints of antlr to stderr to check if during parsing an error occurred and the glycan is invalid
         log = []
 
-        class writer(object):
+        class Writer(object):
             @staticmethod
             def write(data):
                 log.append(data)
 
         old_err = sys.stderr
-        sys.stderr = writer()
+        sys.stderr = Writer()
 
         # parse the remaining structure description following the grammar, also add the dummy characters
+        if not isinstance(self.iupac, str):
+            raise ParseError("Only string input can be parsed: " + str(self.iupac))
         stream = InputStream(data='{' + self.iupac + '}')
         lexer = GlycanLexer(stream)
         token = CommonTokenStream(lexer)
@@ -376,9 +395,9 @@ class Glycan:
             raise ParseError("Glycan cannot be parsed:\n" + log[0])
 
         # walk through the AST and parse the AST into a networkx representation of the glycan.
-        self.parse_tree = Glycan.__TreeWalker(self.factory, self.tree_only).parse(tree, self.mode)
+        self.parse_tree, self.tree_full = Glycan.__TreeWalker(self.factory, self.tree_only).parse(tree)
 
         # if the glycan should be parsed immediately, do so
-        if not self.tree_only:
+        if not self.tree_only and self.tree_full == self.full:
             self.glycan_smiles = Glycan.__Merger(self.factory).merge(self.parse_tree, self.root_orientation,
                                                                      start=self.start)

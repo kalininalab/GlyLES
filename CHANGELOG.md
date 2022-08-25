@@ -1,5 +1,33 @@
 # Change Log
 
+## v0.4.0 - 2022-08-?? - to be released
+
+### Added
+
+- Ternary and Quarternary branching is now possible. Monomers may have up to four children in the tree-like structure 
+of a glycan.
+- More tests for the new functionality
+- Support for two new IUPAC representations (full and simplified according to 
+[SNFG](https://www.ncbi.nlm.nih.gov/glycans/snfg.html)) beside the current IUPAC-condensed
+- Now supporting most of the functional groups in [CSDB]() and [glycowork](https://pypi.org/project/glycowork/). 
+
+### Changed
+
+- Monomers only in RDKit representation possible. NetworkX-implementation has been removed
+- Adding of functional groups completely reworked
+- Comments and code style improved, also a bit of a cleanup
+- Default output-type is ``return`` instead of commandline prints
+
+---
+
+## v0.3.1 - 2022-05-18
+
+### Fixed
+
+- Bug fixed in ANTLR4 package version requirement
+
+---
+
 ## v0.3.0 - 2022-02-10
 
 Release for 17th German Conference on Cheminformatics and EuroSAMPL Satellite Workshop
