@@ -7,6 +7,7 @@ from rdkit.Chem.rdchem import ChiralType
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import find_isomorphism_nx as iso
 from glyles.grammar.parse import Glycan
+from tests.test_derivatives import valid_atomic_nums
 
 CHIRALITY = [ChiralType.CHI_TETRAHEDRAL_CW, ChiralType.CHI_TETRAHEDRAL_CCW]
 
@@ -24,6 +25,7 @@ def check_map(smiles1, smiles2, mapping):
 
 def compare_smiles(computed, solution):
     c = Chem.MolFromSmiles(computed)
+    assert all([a.GetAtomicNum() in valid_atomic_nums for a in c.GetAtoms()])
     Chem.Kekulize(c)
     c_rdkit = Chem.MolToSmiles(c, kekuleSmiles=True)
 
