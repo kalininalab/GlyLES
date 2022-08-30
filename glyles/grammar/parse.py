@@ -285,7 +285,7 @@ class Glycan:
 
                 # get the SMILES of this child and plug it in the current own SMILES
                 child_smiles = self.__merge(t, child, child_start, ring_index + 1)
-                me = me.replace(atom, child_smiles)
+                me = me.replace(atom, child_smiles)  # [1:])
             return me
 
     def __init__(self, iupac, factory, root_orientation="n", start=100, tree_only=False, full=True):

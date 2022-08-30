@@ -8,7 +8,7 @@ from rdkit import Chem
 
 
 valid_atomic_nums = [
-    1, 6, 7, 8, 9, 15, 16, 17, 53
+    1, 6, 7, 8, 9, 15, 16, 17, 35, 53,
 ]
 
 
@@ -62,8 +62,25 @@ class TestDerivatives:
         else:
             computed = Glycan(iupac, MonomerFactory()).get_smiles()
             c = Chem.MolFromSmiles(computed)
+            if c is not None:
+                assert all([a.GetAtomicNum() in valid_atomic_nums for a in c.GetAtoms()])
+                assert computed != smiles
+
+    def test_fg_bond(self):
+        iupac = "Fuc(a1-2)GalNAc"
+        smiles = Glycan(iupac, MonomerFactory()).get_smiles()
+        assert smiles.count("C") == 14
+        c = Chem.MolFromSmiles(smiles)
+        if c is not None:
             assert all([a.GetAtomicNum() in valid_atomic_nums for a in c.GetAtoms()])
-            assert computed != smiles
+
+    def test_detail_1(self):
+        iupac = "Gal4P(b1-3)[Col(a1-3)]GlcNAc"
+        smiles = Glycan(iupac, MonomerFactory()).get_smiles()
+        print(smiles)
+        c = Chem.MolFromSmiles(smiles)
+        if c is not None:
+            assert all([a.GetAtomicNum() in valid_atomic_nums for a in c.GetAtoms()])
 
     @pytest.mark.todo
     def test_en(self):

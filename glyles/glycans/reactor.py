@@ -606,9 +606,9 @@ class SMILESReaktor:
 
         # TODO: Add more phs to be able to have both, carbon and oxygen attached functional groups at the same position
         placeholder = [
-            (31, "[GaH2]"), (32, "[GeH3]"),
-            (49, "[InH2]"), (50, "[SnH]"), (51, "[SbH2]"), (52, "[TeH]"),
-            (81, "[TlH2]"), (82, "[PbH]"), (83, "[BiH2]"), (84, "[PoH]"),
+            (31, r"\[GaH?\d*\]"), (32, r"\[GeH?\d*\]"),
+            (49, r"\[InH?\d*\]"), (50, r"\[SnH?\d*\]"), (51, r"\[SbH?\d*\]"), (52, r"\[TeH?\d*\]"),
+            (81, r"\[TlH?\d*\]"), (82, r"\[PbH?\d*\]"), (83, r"\[BiH?\d*\]"), (84, r"\[PoH?\d*\]"),
         ]
 
         # iterate over all functional groups, ...
@@ -629,7 +629,9 @@ class SMILESReaktor:
         # replace all placeholders by their actual functional group
         for i, (chain, c_chain) in enumerate(self.side_chains):
             if chain:
-                smiles = smiles.replace(placeholder[i][1], "" if chain == "H" else chain)
+                smiles = re.sub(placeholder[i][1], "" if chain == "H" else chain, smiles)
+            if c_chain:
+                smiles = re.sub(placeholder[i][1], c_chain, smiles)
 
         # update the monomer accordingly
         self.monomer.smiles = smiles.replace("()", "")

@@ -1,5 +1,5 @@
 import numpy as np
-from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
+from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix, AddHs, RemoveHs
 
 from glyles.glycans.enum_c import enumerate_carbon
 from glyles.glycans.reactor import SMILESReaktor
@@ -272,8 +272,25 @@ class Monomer:
             Nothing
         """
         idx = self.find_oxygen(position)
-        self.get_structure().GetAtomWithIdx(idx).SetAtomicNum(atom)
-        self.x[idx, 0] = atom
+        tmp = AddHs(self.structure)
+        h = None
+        stack = [idx]
+        seen = {int(np.where(self.x[:, 1] == position)[0])}
+        while h is None and stack:
+            cid = stack.pop(0)
+            seen.add(cid)
+            for n in tmp.GetAtomWithIdx(cid).GetNeighbors():
+                if n.GetAtomicNum() == 1:
+                    h = n.GetIdx()
+                    break
+                elif n.GetIdx() not in seen:
+                    stack.append(n.GetIdx())
+        if h is None:
+            raise ValueError(f"Atom for linkage has no hydrogen for condensation reaction.")
+
+        tmp.GetAtomWithIdx(h).SetAtomicNum(atom)
+        self.structure = RemoveHs(tmp)
+        self.get_structure()
 
     def to_smiles(self, ring_index, root_idx=None, root_id=None):
         """
