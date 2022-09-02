@@ -1,7 +1,6 @@
 import os
 import sys
 import logging
-from enum import Enum
 
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import ParseError
@@ -44,7 +43,7 @@ def convert(
         output_file=None,
         returning=True,
         verbose=logging.INFO,
-        full=True
+        full=True,
 ):
     """
     General user interaction interface to use this library.
@@ -116,7 +115,7 @@ def convert_generator(
         glycan_file=None,
         glycan_generator=None,
         verbose=logging.INFO,
-        full=True
+        full=True,
 ):
     """
     General user interaction interface to use this library.
