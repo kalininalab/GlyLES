@@ -1,10 +1,23 @@
 import numpy as np
-from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix, AddHs, RemoveHs
+from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix, AddHs, RemoveHs, GetPeriodicTable
+from rdkit.Chem.rdchem import BondType
 
 from glyles.glycans.enum_c import enumerate_carbon
 from glyles.glycans.reactor import SMILESReaktor
 from glyles.glycans.utils import Config, find_isomorphism_nx
 from glyles.grammar.GlycanLexer import GlycanLexer
+
+
+def getBondVal(bondtype):
+    if bondtype == BondType.SINGLE:
+        return 1
+    if bondtype == BondType.DOUBLE:
+        return 2
+    if bondtype == BondType.TRIPLE:
+        return 3
+    if bondtype == BondType.AROMATIC:
+        return 1.5
+    return 4
 
 
 class Monomer:
@@ -256,7 +269,28 @@ class Monomer:
         Returns:
             id of the atom that binds to the parent, -1 if the root cannot be found
         """
-        return self.find_oxygen(binding_c_id)
+        idx = self.find_oxygen(binding_c_id)
+        if idx == int(np.where(self.x[:, 1] == binding_c_id)[0]):
+            raise ValueError("No oxygen or nitrogen attached to this position.")
+        if self.structure.GetAtomWithIdx(idx).GetAtomicNum() in [7, 8] and (GetPeriodicTable().GetDefaultValence(self.structure.GetAtomWithIdx(idx).GetSymbol()) - sum([getBondVal(b.GetBondType()) for b in self.structure.GetAtomWithIdx(idx).GetBonds()])) != 0:
+            return idx
+        h = None
+        stack = [idx]
+        seen = {int(np.where(self.x[:, 1] == binding_c_id)[0])}
+        while h is None and stack:
+            cid = stack.pop(0)
+            seen.add(cid)
+            for n in self.structure.GetAtomWithIdx(cid).GetNeighbors():
+                if n.GetAtomicNum() in [7, 8] and \
+                        (GetPeriodicTable().GetDefaultValence(n.GetSymbol()) - sum([getBondVal(b.GetBondType()) for b in n.GetBonds()])) != 0:
+                    h = n.GetIdx()
+                    break
+                elif n.GetIdx() not in seen:
+                    stack.append(n.GetIdx())
+        if h is None:
+            raise ValueError(f"Atom for linkage has no hydrogen for condensation reaction.")
+        # return self.find_oxygen(binding_c_id)
+        return h
 
     def mark(self, position, atom):
         """
@@ -289,7 +323,8 @@ class Monomer:
             raise ValueError(f"Atom for linkage has no hydrogen for condensation reaction.")
 
         tmp.GetAtomWithIdx(h).SetAtomicNum(atom)
-        self.get_structure(mol=RemoveHs(tmp))
+        # self.get_structure(mol=RemoveHs(tmp))
+        self.structure = RemoveHs(tmp)
 
     def to_smiles(self, ring_index, root_idx=None, root_id=None, is_root=True):
         """
@@ -314,12 +349,14 @@ class Monomer:
                 root_id = int(np.where(self.x[:, 1] == root_idx)[0])
             else:
                 root_id = int(np.where(self.x[:, 1] == 1)[0])
+
+        candidate_atom = self.structure.GetAtomWithIdx(root_id)
         if not is_root and \
-                (self.get_structure().GetAtomWithIdx(root_id).GetImplicitValence() == 0 or
-                 self.get_structure().GetAtomWithIdx(root_id).GetAtomicNum() not in [7, 8]):
+                ((GetPeriodicTable().GetDefaultValence(candidate_atom.GetSymbol()) - candidate_atom.GetDegree()) == 0 or
+                 candidate_atom.GetAtomicNum() not in [7, 8]):
             raise ValueError("In order to create an N-glycosidic bond or an O-glycosidic bond, "
                              "the binding atom needs to be a nitrogen or an oxygen with a bound hydrogen")
-        smiles = MolToSmiles(self.get_structure(), rootedAtAtom=root_id)
+        smiles = MolToSmiles(self.structure, rootedAtAtom=root_id)
         return "".join([((f"%{int(c) + ring_index}" if int(c) + ring_index >= 10
                           else f"{int(c) + ring_index}") if c.isdigit() else c) for c in smiles])
 

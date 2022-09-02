@@ -34,10 +34,10 @@ class TestDerivatives:
     @pytest.mark.parametrize(
         "line",
         # open("data/glycowork_mono.txt", "r").readlines() +
-        open("data/glycowork_poly.txt", "r").readlines()  # +
-        # open("data/general.tsv", "r").readlines() +
-        # open("data/pubchem_mono.tsv", "r").readlines() +
-        # open("data/pubchem_poly.tsv", "r").readlines() +
+        # open("data/glycowork_poly.txt", "r").readlines()  # +
+        # open("data/general.tsv", "r").readlines() # +
+        # open("data/pubchem_mono.tsv", "r").readlines()  # +
+        open("data/pubchem_poly.tsv", "r").readlines()  # +
         # open("data/glycam.tsv", "r").readlines()
     )
     def test_databases(self, line):
@@ -65,15 +65,11 @@ class TestDerivatives:
             assert all([a.GetAtomicNum() in valid_atomic_nums for a in Chem.MolFromSmiles(computed).GetAtoms()])
 
     def test_detail(self):
-        iupac = "5dAraf(a1-5)Araf(a1-5)Araf"
+        iupac = "6dTal(a1-2)Rhaf"
         smiles = Glycan(iupac, MonomerFactory()).get_smiles()
         print(smiles)
         assert smiles != ""
         assert all([a.GetAtomicNum() in valid_atomic_nums for a in Chem.MolFromSmiles(smiles).GetAtoms()])
-
-    def test_full(self):
-        smiles = convert("2,3-Anhydro-Gal", returning=True, full=True)[0][1]
-        assert smiles == ""
 
     @pytest.mark.todo
     def test_en(self):
