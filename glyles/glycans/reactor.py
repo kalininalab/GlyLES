@@ -39,6 +39,7 @@ functional_groups = {
     "P": "OP(=O)(O)O",
     "PhNO2": "Oc2ccc([N+]([O-])=O)cc2",
     "Pp": "OC(=O)CC",
+    "PP": "OC(=O)CC",
     "S": "S(=O)(=O)O",
     "Pro": "N2CCCC2C(=O)O",
     "Ser": "OC(=O)[C@H](N)CO",
@@ -145,27 +146,27 @@ functional_groups = {
 
 # list of functional groups that preserve the atom it is attached to instead of replacing it
 preserve_elem = [
-    "Ac", "Allyl", "Am", "Bz", "Gc", "P", "S"
+    "Ac", "Allyl", "Am", "Bz", "Gc", "P", "S",
 ]
 
 # list of functional groups that start with an N and might be confused with a nitrogen-bridge
 n_conflict = [
-    "Nno", "Non", "Nn"
+    "Nno", "Non", "Nn",
 ]
 
 # list of functional groups that start with an O and might be confused with an oxygen-bridge
 o_conflict = [
-    "Oco", "Ole", "Orn", "Oc"
+    "Oco", "Ole", "Orn", "Oc",
 ]
 
 # list of functional groups that start with a P and might be confused with a phosphate-bridge
 p_conflict = [
-    "Psyllic", "Prop", "Pam", "Pro", "Pyr", "Pe", "Ph", "Pr", "Pp"
+    "Psyllic", "Prop", "Pam", "Pro", "Pyr", "Pe", "Ph", "Pr", "Pp", "PP",
 ]
 
 # list of functional groups that start with a C and might be confused with a carbon-bridge
 c_conflict = [
-    "Cct", "Cer", "Cet", "Cho", "Cin", "Crt", "Cys", "Cl", "Cm"
+    "Cct", "Cer", "Cet", "Cho", "Cin", "Crt", "Cys", "Cl", "Cm",
 ]
 
 

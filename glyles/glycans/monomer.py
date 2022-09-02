@@ -289,10 +289,9 @@ class Monomer:
             raise ValueError(f"Atom for linkage has no hydrogen for condensation reaction.")
 
         tmp.GetAtomWithIdx(h).SetAtomicNum(atom)
-        self.structure = RemoveHs(tmp)
-        self.get_structure()
+        self.get_structure(mol=RemoveHs(tmp))
 
-    def to_smiles(self, ring_index, root_idx=None, root_id=None):
+    def to_smiles(self, ring_index, root_idx=None, root_id=None, is_root=True):
         """
         Convert this monomer into a SMILES string representation.
         Use the implementation of the SMILES algorithm fitted to the needs of glycans.
@@ -301,16 +300,25 @@ class Monomer:
             ring_index (int): index of the rings in the atom
             root_idx (int): index of the root atom
             root_id (int): RDKit ID of root atom
+            is_root (bool): Flag indicating that the SMILES generated here will bind to another molecule and therefore
+                has to have according binding possibilities
 
         Returns:
             SMILES string representation of this molecule
         """
-        assert root_idx is not None or root_id is not None, "Either Index or ID has to be provided"
+        if root_idx is None and root_id is None:
+            raise ValueError("Either Index or ID has to be provided")
+
         if root_id is None:
             if np.where(self.x[:, 1] == root_idx)[0].size != 0:
                 root_id = int(np.where(self.x[:, 1] == root_idx)[0])
             else:
                 root_id = int(np.where(self.x[:, 1] == 1)[0])
+        if not is_root and \
+                (self.get_structure().GetAtomWithIdx(root_id).GetImplicitValence() == 0 or
+                 self.get_structure().GetAtomWithIdx(root_id).GetAtomicNum() not in [7, 8]):
+            raise ValueError("In order to create an N-glycosidic bond or an O-glycosidic bond, "
+                             "the binding atom needs to be a nitrogen or an oxygen with a bound hydrogen")
         smiles = MolToSmiles(self.get_structure(), rootedAtAtom=root_id)
         return "".join([((f"%{int(c) + ring_index}" if int(c) + ring_index >= 10
                           else f"{int(c) + ring_index}") if c.isdigit() else c) for c in smiles])
@@ -328,16 +336,19 @@ class Monomer:
         """
         return SMILESReaktor(self).react(names, types)
 
-    def get_structure(self):
+    def get_structure(self, mol=None):
         """
         Compute and save the structure of this glycan.
 
         Returns:
             rdkit molecule representing the structure of the glycan as a graph of its non-hydrogen atoms.
         """
-        if self.structure is None:
+        if self.structure is None or mol is not None:
             # read the structure from the SMILES string
-            self.structure = MolFromSmiles(self.smiles)
+            if mol is None:
+                self.structure = MolFromSmiles(self.smiles)
+            else:
+                self.structure = mol
 
             # extract some further information from the molecule to not operate always on the molecule
             self.adjacency = GetAdjacencyMatrix(self.structure, useBO=True)

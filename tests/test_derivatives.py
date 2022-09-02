@@ -53,34 +53,23 @@ class TestDerivatives:
                 or 'Ins' in line:
             return
         if "\t" in line:
-            iupac, smiles = line.split("\t")[:2]
-            equal = True
+            (iupac, smiles), equal = line.split("\t")[:2], True
         else:
             iupac, smiles, equal = line, "", False
+
+        computed = convert(iupac, returning=True)[0][1]
         if equal:
-            compare_smiles(Glycan(iupac, MonomerFactory()).get_smiles(), smiles)
+            compare_smiles(computed, smiles)
         else:
-            computed = Glycan(iupac, MonomerFactory()).get_smiles()
-            c = Chem.MolFromSmiles(computed)
-            if c is not None:
-                assert all([a.GetAtomicNum() in valid_atomic_nums for a in c.GetAtoms()])
-                assert computed != smiles
+            assert computed != smiles
+            assert all([a.GetAtomicNum() in valid_atomic_nums for a in Chem.MolFromSmiles(computed).GetAtoms()])
 
-    def test_fg_bond(self):
-        iupac = "Fuc(a1-2)GalNAc"
-        smiles = Glycan(iupac, MonomerFactory()).get_smiles()
-        assert smiles.count("C") == 14
-        c = Chem.MolFromSmiles(smiles)
-        if c is not None:
-            assert all([a.GetAtomicNum() in valid_atomic_nums for a in c.GetAtoms()])
-
-    def test_detail_1(self):
-        iupac = "Gal4P(b1-3)[Col(a1-3)]GlcNAc"
+    def test_detail(self):
+        iupac = "5dAraf(a1-5)Araf(a1-5)Araf"
         smiles = Glycan(iupac, MonomerFactory()).get_smiles()
         print(smiles)
-        c = Chem.MolFromSmiles(smiles)
-        if c is not None:
-            assert all([a.GetAtomicNum() in valid_atomic_nums for a in c.GetAtoms()])
+        assert smiles != ""
+        assert all([a.GetAtomicNum() in valid_atomic_nums for a in Chem.MolFromSmiles(smiles).GetAtoms()])
 
     @pytest.mark.todo
     def test_en(self):
