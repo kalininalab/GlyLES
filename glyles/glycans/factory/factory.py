@@ -202,7 +202,7 @@ class MonomerFactory:
             # create the final molecule using the molecule's react-method augmented with the recipe of the molecule
             monomer, full = monomer.react(*tmp)
 
-        # set full to false in case the monomer is unknown, i.e. neither pyranose nor furanose
+        # set full to false in case the monomer is unknown, i.e. neither pyranose nor furanose nor open-form
         full &= (monomer.get_lactole() != Lactole.UNKNOWN)
 
         return monomer, full

@@ -1,6 +1,13 @@
 # Change Log
 
-## v0.4.0 - 2022-08-?? - to be released
+## v0.4.1 - 2022-09-02
+
+### Changed
+
+- Patch for full representation mode of glycans
+- Logging levels based on python logging module introduced instead of own logging mix
+
+## v0.4.0 - 2022-08-25
 
 ### Added
 

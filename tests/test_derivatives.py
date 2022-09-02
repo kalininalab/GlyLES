@@ -71,6 +71,10 @@ class TestDerivatives:
         assert smiles != ""
         assert all([a.GetAtomicNum() in valid_atomic_nums for a in Chem.MolFromSmiles(smiles).GetAtoms()])
 
+    def test_full(self):
+        smiles = convert("2,3-Anhydro-Gal", returning=True, full=True)[0][1]
+        assert smiles == ""
+
     @pytest.mark.todo
     def test_en(self):
         iupac, smiles, _ = "Neu5Ac2en\tCC(=O)N[C@@H]1[C@H](C=C(O[C@H]1[C@@H]([C@@H](CO)O)O)C(=O)O)O\t65309".split("\t")

@@ -182,8 +182,9 @@ def not_implemented_message(mod):
         Nothing
     """
     logging.warning(
-        f"ModificationNotImplementedWarning: {mod} Modification not implemented. The returned molecule will not have "
-        f"this modification")
+        f"ModificationNotImplementedWarning: {mod} Modification not implemented. "
+        f"The returned molecule will not have this modification."
+    )
 
 
 def extract_bridge(n):
@@ -273,7 +274,7 @@ class SMILESReaktor:
 
         # store all functional groups that cannot be attached in the current round for the next round
         higher_order_groups = [], []
-        while True:
+        while len(names) > 0:
             start_len = len(names)
 
             # define list of functional groups to be attached
@@ -335,6 +336,7 @@ class SMILESReaktor:
 
                 # if the side chain starts with a position specification
                 elif n[0].isdigit():
+
                     # if the functional group cannot be attached at the moment, wait for next round
                     if int(n[0]) > len(self.side_chains) - 1:
                         higher_order_groups[0].append(n)
@@ -412,7 +414,7 @@ class SMILESReaktor:
             types = higher_order_groups[1]
             higher_order_groups = [], []
 
-        return self.monomer, full & len(higher_order_groups[0]) == 0
+        return self.monomer, full and len(higher_order_groups[0]) == 0
 
     def set_fg(self, c_or_o, pos, bond_elem, name):
         """
