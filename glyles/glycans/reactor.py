@@ -181,8 +181,9 @@ def not_implemented_message(mod):
         Nothing
     """
     logging.warning(
-        f"ModificationNotImplementedWarning: {mod} Modification not implemented. The returned molecule will not have "
-        f"this modification")
+        f"ModificationNotImplementedWarning: {mod} Modification not implemented. "
+        f"The returned molecule will not have this modification."
+    )
 
 
 def extract_bridge(n):
@@ -334,10 +335,6 @@ class SMILESReaktor:
 
                 # if the side chain starts with a position specification
                 elif n[0].isdigit():
-                    if "Anhydro" in n or "en" in n or '-ulosaric' in n or '-ulosonic' in n or '-uronic' in n or \
-                            '-aric' in n:
-                        full = False
-                        continue
 
                     # if the functional group cannot be attached at the moment, wait for next round
                     if int(n[0]) > len(self.side_chains) - 1:

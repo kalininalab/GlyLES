@@ -1,7 +1,7 @@
 import os
 import sys
 import logging
-import warnings
+from enum import Enum
 
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import ParseError
@@ -43,7 +43,7 @@ def convert(
         glycan_generator=None,
         output_file=None,
         returning=True,
-        silent=True,
+        verbose=logging.INFO,
         full=True
 ):
     """
@@ -57,7 +57,7 @@ def convert(
             Together with output_generator=True this does not create any lists
         output_file (str): File to save the converted glycans in
         returning (bool): Flag indicating to return a list of tuples
-        silent (bool): Flag indicating to have no prints from this method
+        verbose (int): Flag indicating to have no prints from this method
         full (bool): Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
             such as 3-Anhydro-[...] are also present in the SMILES
 
@@ -65,11 +65,12 @@ def convert(
         List of type (IUPAC, SMILES) items giving the converted SMILES formulas. Only if returning=True is set.
     """
 
+    logging.basicConfig(level=verbose)
+
     # collect all data and return if no data were provided
     glycans = preprocess_glycans(glycan, glycan_list, glycan_file)
     if len(glycans) == 0 and glycan_generator is None:
-        if not silent:
-            logging.info("List of glycans is empty")
+        logging.info("List of glycans is empty")
         return
 
     # determine the output format
@@ -77,19 +78,19 @@ def convert(
         if os.path.isdir(os.path.dirname(os.path.abspath(output_file))):
             output = open(output_file, "w")
         else:
-            warnings.warn("Path of output-file does not exist! Results will be printed on stdout.")
+            logging.warning("Path of output-file does not exist! Results will be printed on stdout.")
             output = sys.stdout
         returning = False
     else:
         if returning:
             output = []
         else:
-            warnings.warn("No output-file specified, results will be printed on stdout.")
+            logging.warning("No output-file specified, results will be printed on stdout.")
             output = sys.stdout
 
     # convert the IUPAC strings into SMILES strings from the input list
     if len(glycans) != 0:
-        for glycan, smiles in convert_generator(glycan_list=glycans, silent=silent, full=full):
+        for glycan, smiles in convert_generator(glycan_list=glycans, verbose=verbose, full=full):
             if returning:
                 output.append((glycan, smiles))
             else:
@@ -97,7 +98,7 @@ def convert(
 
     # and from the input generator
     if glycan_generator is not None:
-        for glycan, smiles in convert_generator(glycan_generator=glycan_generator, silent=silent, full=full):
+        for glycan, smiles in convert_generator(glycan_generator=glycan_generator, verbose=verbose, full=full):
             if returning:
                 output.append((glycan, smiles))
             else:
@@ -109,7 +110,14 @@ def convert(
         output.close()
 
 
-def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=None, silent=True, full=True):
+def convert_generator(
+        glycan=None,
+        glycan_list=None,
+        glycan_file=None,
+        glycan_generator=None,
+        verbose=logging.INFO,
+        full=True
+):
     """
     General user interaction interface to use this library.
 
@@ -119,13 +127,15 @@ def convert_generator(glycan=None, glycan_list=None, glycan_file=None, glycan_ge
         glycan_file (str): File to read the glycans from
         glycan_generator (generator): generator yielding iupac representation.
             Together with output_generator=True this does not create any lists
-        silent (bool): Flag indicating to have no output-messages from this method
+        verbose (int): Flag indicating to have no output-messages from this method
         full (bool): Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
             such as 3-Anhydro-[...] are also present in the SMILES
 
     Returns:
         Generator generating pairs of type (IUPAC, SMILES) items giving the converted SMILES formulas for the IUPACs.
     """
+    logging.basicConfig(level=verbose)
+
     factory = MonomerFactory()
     glycans = preprocess_glycans(glycan, glycan_list, glycan_file)
     if len(glycans) == 0 and glycan_generator is None:
