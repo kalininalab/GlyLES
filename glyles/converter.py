@@ -36,8 +36,16 @@ def preprocess_glycans(glycan, glycan_list, glycan_file):
     return glycans
 
 
-def convert(glycan=None, glycan_list=None, glycan_file=None, glycan_generator=None, output_file=None, returning=True,
-            silent=True, full=True):
+def convert(
+        glycan=None,
+        glycan_list=None,
+        glycan_file=None,
+        glycan_generator=None,
+        output_file=None,
+        returning=True,
+        silent=True,
+        full=True
+):
     """
     General user interaction interface to use this library.
 

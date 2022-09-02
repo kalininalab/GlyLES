@@ -272,7 +272,7 @@ class SMILESReaktor:
 
         # store all functional groups that cannot be attached in the current round for the next round
         higher_order_groups = [], []
-        while True:
+        while len(names) > 0:
             start_len = len(names)
 
             # define list of functional groups to be attached
@@ -334,6 +334,11 @@ class SMILESReaktor:
 
                 # if the side chain starts with a position specification
                 elif n[0].isdigit():
+                    if "Anhydro" in n or "en" in n or '-ulosaric' in n or '-ulosonic' in n or '-uronic' in n or \
+                            '-aric' in n:
+                        full = False
+                        continue
+
                     # if the functional group cannot be attached at the moment, wait for next round
                     if int(n[0]) > len(self.side_chains) - 1:
                         higher_order_groups[0].append(n)
@@ -411,7 +416,7 @@ class SMILESReaktor:
             types = higher_order_groups[1]
             higher_order_groups = [], []
 
-        return self.monomer, full & len(higher_order_groups[0]) == 0
+        return self.monomer, full and len(higher_order_groups[0]) == 0
 
     def set_fg(self, c_or_o, pos, bond_elem, name):
         """
