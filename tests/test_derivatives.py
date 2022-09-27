@@ -35,10 +35,10 @@ class TestDerivatives:
         "line",
         # open("data/glycowork_mono.txt", "r").readlines() +
         # open("data/glycowork_poly.txt", "r").readlines()  # +
-        # open("data/general.tsv", "r").readlines() # +
-        # open("data/pubchem_mono.tsv", "r").readlines()  # +
-        open("data/pubchem_poly.tsv", "r").readlines()  # +
-        # open("data/glycam.tsv", "r").readlines()
+        open("data/general.tsv", "r").readlines() +
+        open("data/pubchem_mono.tsv", "r").readlines() +
+        open("data/pubchem_poly.tsv", "r").readlines() +
+        open("data/glycam.tsv", "r").readlines()
     )
     def test_databases(self, line):
         line = line.strip()

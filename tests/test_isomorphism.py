@@ -51,7 +51,7 @@ class TestIsomorphism:
         assert len(mapping) == size
         check_map(smiles1, smiles2, mapping)
 
-    @pytest.mark.parametrize("line", open("data/profiling.tsv", "r").readlines())
+    """@pytest.mark.parametrize("line", open("data/profiling.tsv", "r").readlines())
     def test_runtime(self, line):
         line = line.strip()
         if '-ulosaric' in line or '-ulosonic' in line or '-uronic' in line or '-aric' in line or \
@@ -67,4 +67,4 @@ class TestIsomorphism:
         if equal:
             compare_smiles(Glycan(iupac, MonomerFactory()).get_smiles(), smiles)
         else:
-            assert Glycan(iupac, MonomerFactory()).get_smiles() != smiles
+            assert Glycan(iupac, MonomerFactory()).get_smiles() != smiles"""
