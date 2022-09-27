@@ -1,11 +1,29 @@
 # Change Log
 
+## to be released - v0.4.3 - 2022-??-??
+
+### Added
+
+- ?,?-Anhydro configurations of glycan implemented for structural representation
+
+---
+
+## v0.4.2 - 2022-09-06
+
+### Fixed
+
+- Bug fixed
+
+---
+
 ## v0.4.1 - 2022-09-02
 
-### Changed
+### Fixed
 
 - Patch for full representation mode of glycans
 - Logging levels based on python logging module introduced instead of own logging mix
+
+---
 
 ## v0.4.0 - 2022-08-25
 

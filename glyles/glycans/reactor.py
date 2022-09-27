@@ -3,6 +3,7 @@ import logging
 import re
 
 import numpy as np
+from rdkit import Chem
 from rdkit.Chem.rdchem import ChiralType
 from rdkit.Chem.rdmolops import AddHs, RemoveHs
 
@@ -272,6 +273,9 @@ class SMILESReaktor:
         # check for open forms like "-ol" and "-onic"
         self.check_for_open_form(names, types)
 
+        # check for anhydro forms in the recipe
+        self.check_for_anhydro(names, types)
+
         # store all functional groups that cannot be attached in the current round for the next round
         higher_order_groups = [], []
         while len(names) > 0:
@@ -283,7 +287,9 @@ class SMILESReaktor:
             # parse remaining modifications
             for n, t in zip(names, types):
                 # if it's not a modification or already parsed, continue
-                if t != GlycanLexer.MOD or n.count("L") + n.count("D") == len(n) or n in ['-', '-ol', '-onic']:
+                if t != GlycanLexer.MOD or \
+                        n.count("L") + n.count("D") == len(n) or n in ['-', '-ol', '-onic'] \
+                        or "Anhydro" in n:
                     continue
 
                 # if the name starts with a - char, drop this, the functional group will be independent of the previous
@@ -546,6 +552,34 @@ class SMILESReaktor:
         self.monomer.c1_find = params["c1_find"]
         self.monomer.structure = None
         self.monomer.get_structure()
+
+    def check_for_anhydro(self, names, types):
+        """
+        This method checks and inserts Anhydro-groups into the molecule.
+
+        Args:
+            names (List[str]): List of the names of the functional groups
+            types (List[int]): List of type definitions from the recipe of a monosaccharide
+
+        Returns:
+            Nothing
+        """
+        for n, t in zip(names, types):
+            if t == GlycanLexer.MOD and "Anhydro" in n:
+                nums = [int(x) for x in re.findall(r'\d+', n)]
+                if len(nums) != 2:
+                    raise ValueError("Anhydro functional groups should have exaclty two numbers: X,Y-Anhydro-...")
+                y_c = int(np.where(self.monomer.x[:, 1] == nums[1])[0])
+                x_o = self.monomer.find_oxygen(nums[0])
+                y_o = self.monomer.find_oxygen(nums[1])
+
+                mol = Chem.EditableMol(self.monomer.structure)
+                mol.AddBond(x_o, y_c, Chem.rdchem.BondType.SINGLE)
+                mol.RemoveAtom(y_o)
+
+                self.monomer.smiles = Chem.MolToSmiles(mol.GetMol())
+                self.monomer.structure = None
+                self.monomer.get_structure()
 
     def add_to_oxygen(self, chain, idx, placeholder):
         """

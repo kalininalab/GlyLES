@@ -38,17 +38,27 @@ class TestSMILES:
         assert smiles is not None
         assert smiles != ""
 
-    @pytest.mark.parametrize("glycan", [
+    @pytest.mark.parametrize("data", [
+        ("3,6-Anhydro-L-Gal a", "C1[C@H]2[C@H]([C@@H](O1)[C@@H]([C@@H](O2)O)O)O"),
+    ])
+    def test_smiles_anh(self, data):
+        iupac, sol = data
+        computed = Glycan(iupac, factory=MonomerFactory(), start=100).get_smiles()
+
+        compare_smiles(computed, sol)
+
+    @pytest.mark.parametrize("data", [
         ("Glc", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"),
         ("Man", "OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O"),
         ("Gal", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O"),
         ("Tal", "OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@H]1O"),
+        ("3,6-Anhydro-L-Gal a", "C1[C@H]2[C@H]([C@@H](O1)[C@@H]([C@@H](O2)O)O)O"),
     ])
-    def test_smiles_mono(self, glycan):
-        computed = Glycan(glycan[0], factory=MonomerFactory(), start=100).get_smiles()
-        solution = glycan[1]
+    def test_smiles_mono(self, data):
+        iupac, sol = data
+        computed = Glycan(iupac, factory=MonomerFactory(), start=100).get_smiles()
 
-        compare_smiles(computed, solution)
+        compare_smiles(computed, sol)
 
     @pytest.mark.parametrize("root_orientation", ["n", "a", "b"])
     @pytest.mark.parametrize("iupac, plain, alpha, beta", smiles_samples_simple)
