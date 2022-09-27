@@ -27,14 +27,12 @@ class TestDerivatives:
 
     @pytest.mark.parametrize(
         "line",
-        open("data/glycowork_mono.txt", "r").readlines() +
-        open("data/glycowork_poly.txt", "r").readlines() +
         open("data/general.tsv", "r").readlines() +
         open("data/pubchem_mono.tsv", "r").readlines() +
         open("data/pubchem_poly.tsv", "r").readlines() +
         open("data/glycam.tsv", "r").readlines()
     )
-    def test_databases(self, line):
+    def test_smiles_databases(self, line):
         line = line.strip()
         if '-ulosaric' in line \
                 or '-ulosonic' in line \
@@ -46,16 +44,31 @@ class TestDerivatives:
                 or 'Coum' in line \
                 or 'Ins' in line:
             return
-        if "\t" in line:
-            iupac, smiles = line.split("\t")[:2]
-            equal = True
-        else:
-            iupac, smiles, equal = line, "", False
-        if equal:
-            compare_smiles(Glycan(iupac, MonomerFactory()).get_smiles(), smiles)
-        else:
-            assert Glycan(iupac, MonomerFactory()).get_smiles() != smiles
+        iupac, smiles = line.split("\t")[:2]
+        compare_smiles(Glycan(iupac, MonomerFactory()).get_smiles(), smiles)
 
+    @pytest.mark.slow
+    @pytest.mark.todo
+    @pytest.mark.parametrize(
+        "line",
+        open("data/glycowork_mono.txt", "r").readlines() +
+        open("data/glycowork_poly.txt", "r").readlines()
+    )
+    def test_iupac_databases(self, line):
+        iupac = line.strip()
+        if '-ulosaric' in iupac \
+                or '-ulosonic' in iupac \
+                or '-uronic' in iupac \
+                or '-aric' in iupac \
+                or '0dHex' in iupac \
+                or 'Anhydro' in iupac \
+                or 'en' in iupac \
+                or 'Coum' in iupac \
+                or 'Ins' in iupac:
+            return
+        assert Glycan(iupac, MonomerFactory()).get_smiles() != ""
+
+    @pytest.mark.todo
     def test_full(self):
         smiles = convert("2,3-Anhydro-Gal", returning=True, full=True)[0][1]
         assert smiles == ""
