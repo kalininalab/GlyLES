@@ -35,7 +35,7 @@ jobs:
       - name: Run tests
         run: |
           cd tests
-          poetry run python -m pytest --cov=./ --cov-report=xml
+          poetry run python -m pytest --cov=./ --cov-report=xml -m "not todo and not slow"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
