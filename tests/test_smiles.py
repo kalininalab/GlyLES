@@ -38,6 +38,7 @@ class TestSMILES:
 
     @pytest.mark.parametrize("data", [
         ("3,6-Anhydro-L-Gal a", "C1[C@H]2[C@H]([C@@H](O1)[C@@H]([C@@H](O2)O)O)O"),
+        ("1,6-Anhydro-D-Gal a", "C1[C@@H]2[C@@H]([C@@H]([C@H]([C@@H](O1)O2)O)O)O")
     ])
     def test_smiles_anh(self, data):
         iupac, sol = data

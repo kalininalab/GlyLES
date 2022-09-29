@@ -15,8 +15,8 @@ def enumerate_carbon(monomer):
         Nothing
     """
     # first enumerate all ring carbons and the attachments at the first and last ring atom
-    c_atoms = np.where((monomer.x[:, 0] == 6) & (monomer.x[:, 2] == 1) & (monomer.x[:, 3] == 1))[0]
-    ring_o = np.where((monomer.x[:, 0] == 8) & (monomer.x[:, 2] == 1) & (monomer.x[:, 3] == 1))[0]
+    c_atoms = np.where((monomer.x[:, 0] == 6) & (monomer.x[:, 2] & 0b1) & (monomer.x[:, 3] == 1))[0]
+    ring_o = np.where((monomer.x[:, 0] == 8) & (monomer.x[:, 2] & 0b1) & (monomer.x[:, 3] == 1))[0]
     if ring_o.size == 0:
         next_c_id = enumerate_c_atoms(monomer, c_atoms, -1)
     else:
@@ -165,8 +165,8 @@ def equidistant(monomer, start, end):
     """
     # determine first carbon atom in the ring
     c_start_candidates = np.where((monomer.adjacency[start, :] == 1) &
-                                  (monomer.x[:, 0] == 6) & (monomer.x[:, 2] == 1))[0]
-    c_end_candidates = np.where((monomer.adjacency[end, :] == 1) & (monomer.x[:, 0] == 6) & (monomer.x[:, 2] == 1))[0]
+                                  (monomer.x[:, 0] == 6) & (monomer.x[:, 2] & 0b1))[0]
+    c_end_candidates = np.where((monomer.adjacency[end, :] == 1) & (monomer.x[:, 0] == 6) & (monomer.x[:, 2] & 0b1))[0]
 
     if c_start_candidates.size == 1 and c_end_candidates.size == 1:
         start_ring_c = int(c_start_candidates)

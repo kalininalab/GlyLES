@@ -31,6 +31,7 @@ class Monomer:
             self.lactole = kwargs["lactole"]
             self.recipe = kwargs["recipe"]
             self.c1_find = kwargs.get("c1_find", None)
+            self.ring_size = kwargs.get("ring_size", -1)
         else:
             self.name = origin.get_name()
             self.smiles = origin.get_smiles()
@@ -44,6 +45,7 @@ class Monomer:
             self.adjacency = origin.get_adjacency()
             self.ring_info = origin.get_ring_info()
             self.x = origin.get_features()
+            self.ring_size = origin.ring_size
 
     def root_smiles(self):
         """
@@ -328,17 +330,22 @@ class Monomer:
             if len(rings) > 0 and self.name != "Inositol":
                 self.ring_info = [None]
                 for ring in rings:
-                    found_ox = False
-                    for atom in ring:
-                        if self.structure.GetAtomWithIdx(atom).GetAtomicNum() == 8:
-                            self.ring_info[0] = ring
-                            found_ox = True
-                            break
-                    if not found_ox:
+                    ox_count = sum(self.structure.GetAtomWithIdx(atom).GetAtomicNum() == 8 for atom in ring)
+                    # found_ox = False
+                    # for atom in ring:
+                    #     if self.structure.GetAtomWithIdx(atom).GetAtomicNum() == 8:
+                    #         self.ring_info[0] = ring
+                    #         found_ox = True
+                    #         break
+                    if ox_count == 1 and (self.ring_size == -1 or self.ring_size == len(ring)):
+                        self.ring_info[0] = ring
+                    else:
                         self.ring_info.append(ring)
             else:
                 self.ring_info = rings
             self.x = np.zeros((self.adjacency.shape[0], 4), dtype=int)
+            if self.ring_size == -1:
+                self.ring_size = len(self.ring_info[0])
 
             # extract some information form the molecule
             for i in range(self.adjacency.shape[0]):
@@ -350,10 +357,10 @@ class Monomer:
                 # if the atom is part of any ring, store the number of that ring
                 for r in range(len(self.ring_info)):
                     if self.ring_info[r] is not None and i in self.ring_info[r]:
-                        self.x[i, 2] = r + 1
+                        self.x[i, 2] += 2 ** min(r, 1)
 
                 # identify the oxygen atom in the main ring and set its id to 100
-                if self.x[i, 2] == 1 and self.x[i, 0] == 8:
+                if self.x[i, 2] & 0b1 and self.x[i, 0] == 8:
                     self.x[i, 1] = 100
 
             # identify isomorphic atoms. The reference for the isomorphism test is the root SMILES

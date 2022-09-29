@@ -53,7 +53,7 @@ functional_groups = {
     "Ac": "C(=O)C",
     "Ang": "OC(=O)C/(C)=C\C",
     "Bz": "C(=O)c2ccccc2",
-    "Bn": "OCc2ccccc2",
+    "Bn": "Cc2ccccc2",
     "cdPam": "OC(=O)CCCCCCC/C=C\CCCCCC",
     "Cet": "CCC(=O)O",
     "Cin": "OC(=O)/C=C/c2ccccc2",
@@ -146,7 +146,7 @@ functional_groups = {
 
 # list of functional groups that preserve the atom it is attached to instead of replacing it
 preserve_elem = [
-    "Ac", "Allyl", "Am", "Bz", "Gc", "P", "S"
+    "Ac", "Allyl", "Am", "Bn", "Bz", "Gc", "P", "S"
 ]
 
 # list of functional groups that start with an N and might be confused with a nitrogen-bridge
@@ -298,22 +298,22 @@ class SMILESReaktor:
                 # parse making the monosaccharide an acid
                 if n == "A":
                     # if there's no ring take carbon with the highest number
-                    if sum(self.monomer.x[:, 2] == 1) == 0:
+                    if sum(self.monomer.x[:, 2] & 0b1) == 0:
                         c_id = int(max(self.monomer.x[self.monomer.x[:, 0] == 6, 1]))
 
                     # else take the last carbon in the ring
                     else:
-                        c_id = int(max(self.monomer.x[(self.monomer.x[:, 0] == 6) & (self.monomer.x[:, 2] == 1), 1]))
+                        c_id = int(max(self.monomer.x[(self.monomer.x[:, 0] == 6) & (self.monomer.x[:, 2] & 0b1), 1]))
                         c_id = int(np.where(self.monomer.x[:, 1] == c_id)[0])
 
                     # if the selected carbon has a tail raging away from the monomer, iterate all the way down
                     children = np.where((self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) &
-                                        (self.monomer.x[:, 2] == 0))[0].tolist()
+                                        (1 - self.monomer.x[:, 2] & 0b1))[0].tolist()
                     while len(children) != 0:
                         c_id = int(children[0])
                         children = np.where(
                             (self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) &
-                            (self.monomer.x[:, 2] == 0) & (self.monomer.x[:, 1] > self.monomer.x[c_id, 1])
+                            (1 - self.monomer.x[:, 2] & 0b1) & (self.monomer.x[:, 1] > self.monomer.x[c_id, 1])
                         )[0].tolist()
 
                     # attach that acid group in one way or another
@@ -507,7 +507,7 @@ class SMILESReaktor:
         # find oxygen of c6 to delete it and find c6 to replace it
         c_id = int(np.where(self.monomer.x[:, 1] == int(max(self.monomer.x[self.monomer.x[:, 0] == 6, 1])))[0])
         # if the carbon to be extended is part of the ring, put the extension into a side_chain
-        if self.monomer.x[c_id, 2] == 1:
+        if self.monomer.x[c_id, 2] & 0b1:
             extension = extension.replace(")", ")(", 1) + ")"
         # if the original molecule has no oxygen at its last carbon, remove the first oxygen from the extension
         if self.monomer.x[((self.monomer.adjacency[c_id] - self.monomer.x[:, 2]) > 0) &
@@ -662,9 +662,11 @@ class SMILESReaktor:
         # create SMILES from molecule with placeholders
         smiles = self.monomer.to_smiles(0, root_idx=100)
 
+        ring_offset = len(self.monomer.ring_info) - 1
         # replace all placeholders by their actual functional group
         for i, (chain, c_chain) in enumerate(self.side_chains):
             if chain:
+                chain = re.sub('({})'.format(2), lambda x: str(int(x.group(1)) + ring_offset), chain)
                 smiles = smiles.replace(placeholder[i][1], "" if chain == "H" else chain)
 
         # update the monomer accordingly
