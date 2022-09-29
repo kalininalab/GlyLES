@@ -7,8 +7,14 @@ from tests.utils import derivatives
 from rdkit import Chem
 
 
+valid_atomic_nums = [
+    1, 6, 7, 8, 9, 15, 16, 17, 35, 53,
+]
+
+
 def compare_smiles(computed, solution):
     c = Chem.MolFromSmiles(computed)
+    assert all([a.GetAtomicNum() in valid_atomic_nums for a in c.GetAtoms()])
     Chem.Kekulize(c)
     c_rdkit = Chem.MolToSmiles(c, kekuleSmiles=True)
 
@@ -27,10 +33,13 @@ class TestDerivatives:
 
     @pytest.mark.parametrize(
         "line",
-        open("data/general.tsv", "r").readlines() +
-        open("data/pubchem_mono.tsv", "r").readlines() +
-        open("data/pubchem_poly.tsv", "r").readlines() +
-        open("data/glycam.tsv", "r").readlines()
+        # open("data/glycowork_mono.txt", "r").readlines() +
+        # open("data/glycowork_poly.txt", "r").readlines()  # +
+        # open("data/general.tsv", "r").readlines() +
+        # open("data/pubchem_mono.tsv", "r").readlines() +
+        # open("data/pubchem_poly.tsv", "r").readlines() +
+        # open("data/glycam.tsv", "r").readlines() +
+        open("data/anhydro.tsv", "r").readlines()
     )
     def test_smiles_databases(self, line):
         line = line.strip()
@@ -39,7 +48,6 @@ class TestDerivatives:
                 or '-uronic' in line \
                 or '-aric' in line \
                 or '0dHex' in line \
-                or 'Anhydro' in line \
                 or 'en' in line \
                 or 'Coum' in line \
                 or 'Ins' in line:
@@ -72,6 +80,13 @@ class TestDerivatives:
     def test_full(self):
         smiles = convert("2,3-Anhydro-Gal", returning=True, full=True)[0][1]
         assert smiles == ""
+
+    def test_detail(self):
+        iupac = "6dTal(a1-2)Rhaf"
+        smiles = Glycan(iupac, MonomerFactory()).get_smiles()
+        print(smiles)
+        assert smiles != ""
+        assert all([a.GetAtomicNum() in valid_atomic_nums for a in Chem.MolFromSmiles(smiles).GetAtoms()])
 
     @pytest.mark.todo
     def test_en(self):
