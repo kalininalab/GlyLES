@@ -7,7 +7,6 @@ from rdkit.Chem.rdchem import ChiralType
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import find_isomorphism_nx as iso
 from glyles.grammar.parse import Glycan
-from tests.test_derivatives import valid_atomic_nums
 
 CHIRALITY = [ChiralType.CHI_TETRAHEDRAL_CW, ChiralType.CHI_TETRAHEDRAL_CCW]
 
@@ -25,7 +24,6 @@ def check_map(smiles1, smiles2, mapping):
 
 def compare_smiles(computed, solution):
     c = Chem.MolFromSmiles(computed)
-    assert all([a.GetAtomicNum() in valid_atomic_nums for a in c.GetAtoms()])
     Chem.Kekulize(c)
     c_rdkit = Chem.MolToSmiles(c, kekuleSmiles=True)
 
@@ -51,7 +49,7 @@ class TestIsomorphism:
         assert len(mapping) == size
         check_map(smiles1, smiles2, mapping)
 
-    """@pytest.mark.parametrize("line", open("data/profiling.tsv", "r").readlines())
+    @pytest.mark.parametrize("line", open("data/profiling.tsv", "r").readlines())
     def test_runtime(self, line):
         line = line.strip()
         if '-ulosaric' in line or '-ulosonic' in line or '-uronic' in line or '-aric' in line or \
@@ -67,4 +65,4 @@ class TestIsomorphism:
         if equal:
             compare_smiles(Glycan(iupac, MonomerFactory()).get_smiles(), smiles)
         else:
-            assert Glycan(iupac, MonomerFactory()).get_smiles() != smiles"""
+            assert Glycan(iupac, MonomerFactory()).get_smiles() != smiles

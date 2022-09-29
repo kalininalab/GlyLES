@@ -7,14 +7,8 @@ from tests.utils import derivatives
 from rdkit import Chem
 
 
-valid_atomic_nums = [
-    1, 6, 7, 8, 9, 15, 16, 17, 35, 53,
-]
-
-
 def compare_smiles(computed, solution):
     c = Chem.MolFromSmiles(computed)
-    assert all([a.GetAtomicNum() in valid_atomic_nums for a in c.GetAtoms()])
     Chem.Kekulize(c)
     c_rdkit = Chem.MolToSmiles(c, kekuleSmiles=True)
 
@@ -33,14 +27,12 @@ class TestDerivatives:
 
     @pytest.mark.parametrize(
         "line",
-        # open("data/glycowork_mono.txt", "r").readlines() +
-        # open("data/glycowork_poly.txt", "r").readlines()  # +
         open("data/general.tsv", "r").readlines() +
         open("data/pubchem_mono.tsv", "r").readlines() +
         open("data/pubchem_poly.tsv", "r").readlines() +
         open("data/glycam.tsv", "r").readlines()
     )
-    def test_databases(self, line):
+    def test_smiles_databases(self, line):
         line = line.strip()
         if '-ulosaric' in line \
                 or '-ulosonic' in line \
@@ -52,24 +44,34 @@ class TestDerivatives:
                 or 'Coum' in line \
                 or 'Ins' in line:
             return
-        if "\t" in line:
-            (iupac, smiles), equal = line.split("\t")[:2], True
-        else:
-            iupac, smiles, equal = line, "", False
+        iupac, smiles = line.split("\t")[:2]
+        compare_smiles(Glycan(iupac, MonomerFactory()).get_smiles(), smiles)
 
-        computed = convert(iupac, returning=True)[0][1]
-        if equal:
-            compare_smiles(computed, smiles)
-        else:
-            assert computed != smiles
-            assert all([a.GetAtomicNum() in valid_atomic_nums for a in Chem.MolFromSmiles(computed).GetAtoms()])
+    @pytest.mark.slow
+    @pytest.mark.todo
+    @pytest.mark.parametrize(
+        "line",
+        open("data/glycowork_mono.txt", "r").readlines() +
+        open("data/glycowork_poly.txt", "r").readlines()
+    )
+    def test_iupac_databases(self, line):
+        iupac = line.strip()
+        if '-ulosaric' in iupac \
+                or '-ulosonic' in iupac \
+                or '-uronic' in iupac \
+                or '-aric' in iupac \
+                or '0dHex' in iupac \
+                or 'Anhydro' in iupac \
+                or 'en' in iupac \
+                or 'Coum' in iupac \
+                or 'Ins' in iupac:
+            return
+        assert Glycan(iupac, MonomerFactory()).get_smiles() != ""
 
-    def test_detail(self):
-        iupac = "6dTal(a1-2)Rhaf"
-        smiles = Glycan(iupac, MonomerFactory()).get_smiles()
-        print(smiles)
-        assert smiles != ""
-        assert all([a.GetAtomicNum() in valid_atomic_nums for a in Chem.MolFromSmiles(smiles).GetAtoms()])
+    @pytest.mark.todo
+    def test_full(self):
+        smiles = convert("2,3-Anhydro-Gal", returning=True, full=True)[0][1]
+        assert smiles == ""
 
     @pytest.mark.todo
     def test_en(self):

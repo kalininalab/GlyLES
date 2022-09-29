@@ -8,13 +8,11 @@ from glyles.converter import convert
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import Config
 from glyles.grammar.parse import Glycan
-from tests.test_derivatives import valid_atomic_nums
 from tests.utils import catch_output, smiles_samples_simple
 
 
 def compare_smiles(computed, solution, equal=True):
     c = Chem.MolFromSmiles(computed)
-    assert all([a.GetAtomicNum() in valid_atomic_nums for a in c.GetAtoms()])
     Chem.Kekulize(c)
     c_rdkit = Chem.MolToSmiles(c, kekuleSmiles=True)
 

@@ -40,7 +40,6 @@ functional_groups = {
     "P": "OP(=O)(O)O",
     "PhNO2": "Oc2ccc([N+]([O-])=O)cc2",
     "Pp": "OC(=O)CC",
-    "PP": "OC(=O)CC",
     "S": "S(=O)(=O)O",
     "Pro": "N2CCCC2C(=O)O",
     "Ser": "OC(=O)[C@H](N)CO",
@@ -147,27 +146,27 @@ functional_groups = {
 
 # list of functional groups that preserve the atom it is attached to instead of replacing it
 preserve_elem = [
-    "Ac", "Allyl", "Am", "Bz", "Gc", "P", "S",
+    "Ac", "Allyl", "Am", "Bz", "Gc", "P", "S"
 ]
 
 # list of functional groups that start with an N and might be confused with a nitrogen-bridge
 n_conflict = [
-    "Nno", "Non", "Nn",
+    "Nno", "Non", "Nn"
 ]
 
 # list of functional groups that start with an O and might be confused with an oxygen-bridge
 o_conflict = [
-    "Oco", "Ole", "Orn", "Oc",
+    "Oco", "Ole", "Orn", "Oc"
 ]
 
 # list of functional groups that start with a P and might be confused with a phosphate-bridge
 p_conflict = [
-    "Psyllic", "Prop", "Pam", "Pro", "Pyr", "Pe", "Ph", "Pr", "Pp", "PP",
+    "Psyllic", "Prop", "Pam", "Pro", "Pyr", "Pe", "Ph", "Pr", "Pp"
 ]
 
 # list of functional groups that start with a C and might be confused with a carbon-bridge
 c_conflict = [
-    "Cct", "Cer", "Cet", "Cho", "Cin", "Crt", "Cys", "Cl", "Cm",
+    "Cct", "Cer", "Cet", "Cho", "Cin", "Crt", "Cys", "Cl", "Cm"
 ]
 
 
@@ -643,9 +642,9 @@ class SMILESReaktor:
 
         # TODO: Add more phs to be able to have both, carbon and oxygen attached functional groups at the same position
         placeholder = [
-            (31, r"\[GaH?\d*\]"), (32, r"\[GeH?\d*\]"),
-            (49, r"\[InH?\d*\]"), (50, r"\[SnH?\d*\]"), (51, r"\[SbH?\d*\]"), (52, r"\[TeH?\d*\]"),
-            (81, r"\[TlH?\d*\]"), (82, r"\[PbH?\d*\]"), (83, r"\[BiH?\d*\]"), (84, r"\[PoH?\d*\]"),
+            (31, "[GaH2]"), (32, "[GeH3]"),
+            (49, "[InH2]"), (50, "[SnH]"), (51, "[SbH2]"), (52, "[TeH]"),
+            (81, "[TlH2]"), (82, "[PbH]"), (83, "[BiH2]"), (84, "[PoH]"),
         ]
 
         # iterate over all functional groups, ...
@@ -666,9 +665,7 @@ class SMILESReaktor:
         # replace all placeholders by their actual functional group
         for i, (chain, c_chain) in enumerate(self.side_chains):
             if chain:
-                smiles = re.sub(placeholder[i][1], "" if chain == "H" else chain, smiles)
-            if c_chain:
-                smiles = re.sub(placeholder[i][1], c_chain, smiles)
+                smiles = smiles.replace(placeholder[i][1], "" if chain == "H" else chain)
 
         # update the monomer accordingly
         self.monomer.smiles = smiles.replace("()", "")

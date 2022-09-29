@@ -1,23 +1,10 @@
 import numpy as np
-from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix, AddHs, RemoveHs, GetPeriodicTable
-from rdkit.Chem.rdchem import BondType
+from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
 
 from glyles.glycans.enum_c import enumerate_carbon
 from glyles.glycans.reactor import SMILESReaktor
 from glyles.glycans.utils import Config, find_isomorphism_nx
 from glyles.grammar.GlycanLexer import GlycanLexer
-
-
-def getBondVal(bondtype):
-    if bondtype == BondType.SINGLE:
-        return 1
-    if bondtype == BondType.DOUBLE:
-        return 2
-    if bondtype == BondType.TRIPLE:
-        return 3
-    if bondtype == BondType.AROMATIC:
-        return 1.5
-    return 4
 
 
 class Monomer:
@@ -269,28 +256,7 @@ class Monomer:
         Returns:
             id of the atom that binds to the parent, -1 if the root cannot be found
         """
-        idx = self.find_oxygen(binding_c_id)
-        if idx == int(np.where(self.x[:, 1] == binding_c_id)[0]):
-            raise ValueError("No oxygen or nitrogen attached to this position.")
-        if self.structure.GetAtomWithIdx(idx).GetAtomicNum() in [7, 8] and (GetPeriodicTable().GetDefaultValence(self.structure.GetAtomWithIdx(idx).GetSymbol()) - sum([getBondVal(b.GetBondType()) for b in self.structure.GetAtomWithIdx(idx).GetBonds()])) != 0:
-            return idx
-        h = None
-        stack = [idx]
-        seen = {int(np.where(self.x[:, 1] == binding_c_id)[0])}
-        while h is None and stack:
-            cid = stack.pop(0)
-            seen.add(cid)
-            for n in self.structure.GetAtomWithIdx(cid).GetNeighbors():
-                if n.GetAtomicNum() in [7, 8] and \
-                        (GetPeriodicTable().GetDefaultValence(n.GetSymbol()) - sum([getBondVal(b.GetBondType()) for b in n.GetBonds()])) != 0:
-                    h = n.GetIdx()
-                    break
-                elif n.GetIdx() not in seen:
-                    stack.append(n.GetIdx())
-        if h is None:
-            raise ValueError(f"Atom for linkage has no hydrogen for condensation reaction.")
-        # return self.find_oxygen(binding_c_id)
-        return h
+        return self.find_oxygen(binding_c_id)
 
     def mark(self, position, atom):
         """
@@ -306,27 +272,10 @@ class Monomer:
             Nothing
         """
         idx = self.find_oxygen(position)
-        tmp = AddHs(self.structure)
-        h = None
-        stack = [idx]
-        seen = {int(np.where(self.x[:, 1] == position)[0])}
-        while h is None and stack:
-            cid = stack.pop(0)
-            seen.add(cid)
-            for n in tmp.GetAtomWithIdx(cid).GetNeighbors():
-                if n.GetAtomicNum() == 1:
-                    h = n.GetIdx()
-                    break
-                elif n.GetIdx() not in seen:
-                    stack.append(n.GetIdx())
-        if h is None:
-            raise ValueError(f"Atom for linkage has no hydrogen for condensation reaction.")
+        self.get_structure().GetAtomWithIdx(idx).SetAtomicNum(atom)
+        self.x[idx, 0] = atom
 
-        tmp.GetAtomWithIdx(h).SetAtomicNum(atom)
-        # self.get_structure(mol=RemoveHs(tmp))
-        self.structure = RemoveHs(tmp)
-
-    def to_smiles(self, ring_index, root_idx=None, root_id=None, is_root=True):
+    def to_smiles(self, ring_index, root_idx=None, root_id=None):
         """
         Convert this monomer into a SMILES string representation.
         Use the implementation of the SMILES algorithm fitted to the needs of glycans.
@@ -335,28 +284,17 @@ class Monomer:
             ring_index (int): index of the rings in the atom
             root_idx (int): index of the root atom
             root_id (int): RDKit ID of root atom
-            is_root (bool): Flag indicating that the SMILES generated here will bind to another molecule and therefore
-                has to have according binding possibilities
 
         Returns:
             SMILES string representation of this molecule
         """
-        if root_idx is None and root_id is None:
-            raise ValueError("Either Index or ID has to be provided")
-
+        assert root_idx is not None or root_id is not None, "Either Index or ID has to be provided"
         if root_id is None:
             if np.where(self.x[:, 1] == root_idx)[0].size != 0:
                 root_id = int(np.where(self.x[:, 1] == root_idx)[0])
             else:
                 root_id = int(np.where(self.x[:, 1] == 1)[0])
-
-        candidate_atom = self.structure.GetAtomWithIdx(root_id)
-        if not is_root and \
-                ((GetPeriodicTable().GetDefaultValence(candidate_atom.GetSymbol()) - candidate_atom.GetDegree()) == 0 or
-                 candidate_atom.GetAtomicNum() not in [7, 8]):
-            raise ValueError("In order to create an N-glycosidic bond or an O-glycosidic bond, "
-                             "the binding atom needs to be a nitrogen or an oxygen with a bound hydrogen")
-        smiles = MolToSmiles(self.structure, rootedAtAtom=root_id)
+        smiles = MolToSmiles(self.get_structure(), rootedAtAtom=root_id)
         return "".join([((f"%{int(c) + ring_index}" if int(c) + ring_index >= 10
                           else f"{int(c) + ring_index}") if c.isdigit() else c) for c in smiles])
 
@@ -373,19 +311,16 @@ class Monomer:
         """
         return SMILESReaktor(self).react(names, types)
 
-    def get_structure(self, mol=None):
+    def get_structure(self):
         """
         Compute and save the structure of this glycan.
 
         Returns:
             rdkit molecule representing the structure of the glycan as a graph of its non-hydrogen atoms.
         """
-        if self.structure is None or mol is not None:
+        if self.structure is None:
             # read the structure from the SMILES string
-            if mol is None:
-                self.structure = MolFromSmiles(self.smiles)
-            else:
-                self.structure = mol
+            self.structure = MolFromSmiles(self.smiles)
 
             # extract some further information from the molecule to not operate always on the molecule
             self.adjacency = GetAdjacencyMatrix(self.structure, useBO=True)

@@ -1,7 +1,6 @@
 import os
 
 from glyles.converter import convert, convert_generator
-from tests.test_derivatives import valid_atomic_nums
 from tests.utils import setup_test, smiles_samples
 from rdkit import Chem
 
@@ -22,7 +21,6 @@ def check_results(output):
 
 def compare_smiles(computed, solution):
     c = Chem.MolFromSmiles(computed)
-    assert all([a.GetAtomicNum() in valid_atomic_nums for a in c.GetAtoms()])
     Chem.Kekulize(c)
     c_rdkit = Chem.MolToSmiles(c, kekuleSmiles=True)
 

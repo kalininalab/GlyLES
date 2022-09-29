@@ -261,7 +261,7 @@ class Glycan:
             Args:
                 t (networkx.DiGraph): Graph representing the glycan to compute the whole SMILES representation for.
                 node (int): ID of the node to work on in this method
-                start (int): RDKit ID of the atom in the inner graph to start from when generating the SMILES string
+                start (int): ID of the atom in the inner graph to start from when generating the SMILES string
                 ring_index (int): Index of the ring to use when generating the SMILES strings
 
             Returns:
@@ -269,7 +269,7 @@ class Glycan:
             """
             # get my children and compute my SMILES string
             children = [x[1] for x in t.edges(node)]
-            me = t.nodes[node]["type"].to_smiles(ring_index, root_id=start, is_root=node == 0)
+            me = t.nodes[node]["type"].to_smiles(ring_index, root_id=start)
 
             # check for validity of the tree, ie if it's a leaf
             if len(children) == 0:  # leaf
@@ -285,10 +285,7 @@ class Glycan:
 
                 # get the SMILES of this child and plug it in the current own SMILES
                 child_smiles = self.__merge(t, child, child_start, ring_index + 1)
-                if child_smiles[0] in "NO":
-                    me = me.replace(atom, child_smiles[1:])
-                else:
-                    raise ValueError("Can only build either N-glycosidic bonds or O-glycosidic bonds")
+                me = me.replace(atom, child_smiles)
             return me
 
     def __init__(self, iupac, factory, root_orientation="n", start=100, tree_only=False, full=True):
