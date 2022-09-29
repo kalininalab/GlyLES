@@ -49,6 +49,7 @@ class TestIsomorphism:
         assert len(mapping) == size
         check_map(smiles1, smiles2, mapping)
 
+    @pytest.mark.slow
     @pytest.mark.parametrize("line", open("data/profiling.tsv", "r").readlines())
     def test_runtime(self, line):
         line = line.strip()
