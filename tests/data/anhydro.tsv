@@ -13,3 +13,4 @@
 1,6-Anhydro-3-N-Bn-4-O-Bn-D-2BrGlc b	C1[C@@H]2[C@H]([C@@H]([C@H]([C@H](O1)O2)Br)NCC3=CC=CC=C3)OCC4=CC=CC=C4
 1,6-Anhydro-3-O-Bn-4-O-Bn-D-Gal b	C1[C@@H]2[C@@H]([C@@H]([C@H]([C@H](O1)O2)O)OCC3=CC=CC=C3)OCC4=CC=CC=C4
 1,6-Anhydro-2-N-Bn-4-O-Bn-D-Glc b	C1[C@@H]2[C@H]([C@@H]([C@H]([C@H](O1)O2)NCC3=CC=CC=C3)O)OCC4=CC=CC=C4
+1,6-Anhydro-2-O-Bn-4-O-Bn-D-All b	C1[C@@H]2[C@H]([C@H]([C@H]([C@H](O1)O2)OCC3=CC=CC=C3)O)OCC4=CC=CC=C4

@@ -126,7 +126,6 @@ GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)[Gal(b1-3)]GalNAc	CC(=O)N[C@@H]1[C@H]([C@@H]([C
 Fuc3S(b1-4)Fuc3S(a1-3)Gal(b1-4)[L-Gal3S(b1-6)Gal3S(b1-6)]Gal3S	C[C@H]1[C@H]([C@H]([C@@H]([C@H](O1)O[C@@H]2[C@@H](O[C@H]([C@H]([C@@H]2OS(=O)(=O)O)O)O[C@H]3[C@H]([C@H](O[C@H]([C@@H]3O)O[C@H]4[C@H](OC([C@@H]([C@H]4OS(=O)(=O)O)O)O)CO[C@H]5[C@@H]([C@H]([C@H]([C@H](O5)CO[C@@H]6[C@H]([C@@H]([C@@H]([C@@H](O6)CO)O)OS(=O)(=O)O)O)O)OS(=O)(=O)O)O)CO)O)C)O)OS(=O)(=O)O)O	10214192
 GalNAc(b1-4)GlcA(b1-3)GalNAc	CC(=O)N[C@@H]1[C@H]([C@H]([C@H](O[C@H]1O[C@H]2[C@@H]([C@H]([C@@H](O[C@@H]2C(=O)O)O[C@H]3[C@H]([C@H](OC([C@@H]3NC(=O)C)O)CO)O)O)O)CO)O)O	10218717
 GalNAc(b1-4)GlcA(b1-3)GalNAc(b1-4)GlcA(b1-3)GalNAc	CC(=O)N[C@@H]1[C@H]([C@H]([C@H](O[C@H]1O[C@H]2[C@@H]([C@H]([C@@H](O[C@@H]2C(=O)O)O[C@@H]3[C@H]([C@@H](O[C@@H]([C@@H]3O)CO)O[C@H]4[C@@H]([C@H]([C@@H](O[C@@H]4C(=O)O)O[C@H]5[C@H]([C@H](OC([C@@H]5NC(=O)C)O)CO)O)O)O)NC(=O)C)O)O)CO)O)O	10219215
-Alt	C([C@H]1[C@@H]([C@@H]([C@H](C(O1)O)O)O)O)O	10219674
 GlcNAc(b1-2)Man	CC(=O)N[C@@H]1[C@H]([C@@H]([C@H](O[C@H]1O[C@H]2[C@H]([C@@H]([C@H](OC2O)CO)O)O)CO)O)O	10221549
 GlcNAc(b1-3)Gal	CC(=O)N[C@@H]1[C@H]([C@@H]([C@H](O[C@H]1O[C@H]2[C@H]([C@H](OC([C@@H]2O)O)CO)O)CO)O)O	10221550
 GlcNAcb1-3Galb1-4Glcb	CC(=O)N[C@@H]1[C@H]([C@@H]([C@H](O[C@H]1O[C@H]2[C@H]([C@H](O[C@H]([C@@H]2O)O[C@@H]3[C@H](O[C@H]([C@@H]([C@H]3O)O)O)CO)CO)O)CO)O)O	10230777
