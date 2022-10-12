@@ -1,15 +1,12 @@
 import json
-from typing import Union
 
 from glyles.grammar.parse import Glycan
-from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import ParseError
 
 
 def filter_done(json_query, test_stream, look_stream):
     data = json.load(open(json_query, "r"))
     print("JSON read in completed")
-    f = MonomerFactory()
     for i, d in enumerate(data):
         print(f"\r{i} / {len(data)}", end="")
         try:
@@ -19,7 +16,7 @@ def filter_done(json_query, test_stream, look_stream):
             found = False
             for n in names:
                 try:
-                    if Glycan(n, f, tree_only=True).get_tree() is not None:
+                    if Glycan(n, tree_only=True).get_tree() is not None:
                         print("\t".join([n, d["isosmiles"], d['cid']]), file=test_stream)
                         test_stream.flush()
                         found = True

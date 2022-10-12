@@ -2,7 +2,6 @@ import os
 import sys
 import logging
 
-from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import ParseError
 from glyles.grammar.parse import Glycan
 
@@ -135,7 +134,6 @@ def convert_generator(
     """
     logging.basicConfig(level=verbose)
 
-    factory = MonomerFactory()
     glycans = preprocess_glycans(glycan, glycan_list, glycan_file)
     if len(glycans) == 0 and glycan_generator is None:
         logging.info("List of glycans is empty")
@@ -144,21 +142,20 @@ def convert_generator(
     # Convert the glycans ...
     if len(glycans) != 0:
         for glycan in glycans:
-            yield generate(glycan, factory, full)
+            yield generate(glycan, full)
 
     # Convert the glycans ...
     if glycan_generator is not None:
         for glycan in glycan_generator:
-            yield generate(glycan, factory, full)
+            yield generate(glycan, full)
 
 
-def generate(glycan, factory, full):
+def generate(glycan, full):
     """
     Actually generate the SMILES string based on the glycan given in IUPAC notation
 
     Parameters:
         glycan (str): Glycan molecule described by its IUPAC string
-        factory (MonomerFactory): Factory to generate the monomers from
         full (bool): flag indicating to only return SMILES string that include all modifications from the IUPAC
 
     Returns:
@@ -166,13 +163,14 @@ def generate(glycan, factory, full):
     """
     try:
         # ... by passing them to the glycan class to parse them and return them as intended
-        return glycan, Glycan(glycan, factory, full=full).get_smiles()
+        return glycan, Glycan(glycan, full=full).get_smiles()
 
     # catch any exception at glycan level to not destroy the whole pipeline because of one mis-formed glycan
     except ParseError as e:
-        logging.error(f"An exception occurred with {glycan}: {e.__class__}\n"
+        logging.error(f"A parsing error occurred with {glycan}: {e.__class__}\n"
                       f"Error message: {e.__str__()}")
         return glycan, ""
-    except Exception:
-        logging.error(f"An unexpected error occurred with with {glycan}. This glycan cannot be parsed.")
+    except Exception as e:
+        logging.error(f"An unexpected exception occurred with with {glycan}. This glycan cannot be parsed."
+                      f"Error message: {e.__str__()}")
         return glycan, ""

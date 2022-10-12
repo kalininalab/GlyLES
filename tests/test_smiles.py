@@ -4,11 +4,10 @@ from itertools import combinations
 import pytest
 from rdkit import Chem
 
-from glyles.converter import convert
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import Config
 from glyles.grammar.parse import Glycan
-from tests.utils import catch_output, smiles_samples_simple
+from tests.utils import smiles_samples_simple
 
 
 def compare_smiles(computed, solution, equal=True):
@@ -32,7 +31,7 @@ class TestSMILES:
                        equal=False)
 
     def test_1_1_bond(self):
-        smiles = Glycan("Gal(a1-1)Gal", factory=MonomerFactory()).get_smiles()
+        smiles = Glycan("Gal(a1-1)Gal").get_smiles()
         assert smiles is not None
         assert smiles != ""
 
@@ -42,7 +41,7 @@ class TestSMILES:
     ])
     def test_smiles_anh(self, data):
         iupac, sol = data
-        computed = Glycan(iupac, factory=MonomerFactory(), start=100).get_smiles()
+        computed = Glycan(iupac, start=100).get_smiles()
 
         compare_smiles(computed, sol)
 
@@ -55,14 +54,14 @@ class TestSMILES:
     ])
     def test_smiles_mono(self, data):
         iupac, sol = data
-        computed = Glycan(iupac, factory=MonomerFactory(), start=100).get_smiles()
+        computed = Glycan(iupac, start=100).get_smiles()
 
         compare_smiles(computed, sol)
 
     @pytest.mark.parametrize("root_orientation", ["n", "a", "b"])
     @pytest.mark.parametrize("iupac, plain, alpha, beta", smiles_samples_simple)
     def test_smiles_poly(self, iupac, plain, alpha, beta, root_orientation):
-        computed = Glycan(iupac, factory=MonomerFactory(), root_orientation=root_orientation).get_smiles()
+        computed = Glycan(iupac, root_orientation=root_orientation).get_smiles()
 
         if root_orientation == "a":
             smiles = alpha
@@ -80,7 +79,6 @@ class TestSMILES:
     @pytest.mark.parametrize("config2", [Config.ALPHA, Config.BETA, Config.UNDEF])
     def test_check_different_smiles(self, names, config1, config2):
         name1, name2 = names
-        factory = MonomerFactory()
         if config1 == Config.ALPHA:
             name1 += " a"
         elif config1 == Config.BETA:
@@ -91,7 +89,7 @@ class TestSMILES:
         elif config2 == Config.BETA:
             name2 += " b"
 
-        compare_smiles(Glycan(name1, factory).get_smiles(), Glycan(name2, factory).get_smiles(), equal=False)
+        compare_smiles(Glycan(name1).get_smiles(), Glycan(name2).get_smiles(), equal=False)
 
     @pytest.mark.parametrize("structure", ["X?", "XX?", "?(a1-2)[X]?", "?(a1-2)[Y]?(a1-4)?", "Y?(a1-2)[X]?",
                                            "Z?(a1-2)[Y]X?"])
@@ -99,7 +97,7 @@ class TestSMILES:
         arm = "?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)"
         structure = structure.replace("X", arm).replace("Y", arm[:-7]).replace("Z", arm[:-14])
 
-        smiles = Glycan(structure.replace("?", "Gal"), MonomerFactory()).get_smiles()
+        smiles = Glycan(structure.replace("?", "Gal")).get_smiles()
         mol = Chem.MolFromSmiles(smiles)
         rings = mol.GetRingInfo().AtomRings()
 
@@ -112,7 +110,7 @@ class TestSMILES:
         compare_smiles(smiles, Chem.MolToSmiles(mol))
 
     def test_dot(self):
-        glycan = Glycan("Man(a1-2)[Glc(a1-3)Gul(b1-4)]Gal(b1-3)Tal", MonomerFactory(), tree_only=True)
+        glycan = Glycan("Man(a1-2)[Glc(a1-3)Gul(b1-4)]Gal(b1-3)Tal", tree_only=True)
         glycan.save_dot("test.dot")
 
         with open("test.dot", "r") as dot:

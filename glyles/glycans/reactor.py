@@ -57,6 +57,7 @@ functional_groups = {
     "cdPam": "OC(=O)CCCCCCC/C=C\CCCCCC",
     "Cet": "CCC(=O)O",
     "Cin": "OC(=O)/C=C/c2ccccc2",
+    "Coum": "OC(=O)/C=C/c1ccc(O)ccc",
     "Dce": "OC(=O)CCCCCCCC=C",
     "Dhp": "OC(=O)C(O)(O)CCC",
     "Dhpa": "OC(=O)C(O)(O)CCC",
@@ -296,7 +297,7 @@ class SMILESReaktor:
                     n = n[1:]
 
                 # parse making the monosaccharide an acid
-                if n == "A":
+                if n == "A" or n == "-uronic":
                     # if there's no ring take carbon with the highest number
                     if sum(self.monomer.x[:, 2] & 0b1) == 0:
                         c_id = int(max(self.monomer.x[self.monomer.x[:, 0] == 6, 1]))

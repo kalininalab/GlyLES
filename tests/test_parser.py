@@ -55,21 +55,18 @@ def split_ternary_children(g, id_children, child_1, child_2):
 
 class TestParser:
     def test_grammar_simple(self):
-        factory = MonomerFactory()
-        g = Glycan("3dMan5S6Pfa", factory).get_tree()
+        g = Glycan("3dMan5S6Pfa").get_tree()
 
         check_initial(g, "Man", 0, Config.ALPHA, lactole=Lactole.FURANOSE)
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_extreme_1(self, mode):
-        factory = MonomerFactory()
-        g = Glycan(reduce_notation("Gal(a1-4)" * 9 + "Glc", mode), factory)
+        g = Glycan(reduce_notation("Gal(a1-4)" * 9 + "Glc", mode))
         check_initial(g.get_tree(), "Glc", 1, Config.UNDEF, lactole=Lactole.PYRANOSE)
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_extreme_2(self, mode):
-        factory = MonomerFactory()
-        g = Glycan(reduce_notation("Gal(a1-4)" * 8 + "[" + "Man(b1-3)" * 8 + "]" + "Glc", mode), factory)
+        g = Glycan(reduce_notation("Gal(a1-4)" * 8 + "[" + "Man(b1-3)" * 8 + "]" + "Glc", mode))
         check_initial(g.get_tree(), "Glc", 2, Config.UNDEF, lactole=Lactole.PYRANOSE)
 
     @pytest.mark.parametrize("iupac", [
@@ -80,17 +77,15 @@ class TestParser:
     ])
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_grammar_main(self, iupac, mode):
-        assert Glycan(iupac, MonomerFactory(), tree_only=True).get_tree() is not None
+        assert Glycan(iupac, tree_only=True).get_tree() is not None
 
     def test_parse_1(self):
-        factory = MonomerFactory()
-        g = Glycan("Man", factory).get_tree()
+        g = Glycan("Man").get_tree()
 
         check_initial(g, "Man", 0, Config.UNDEF, lactole=Lactole.PYRANOSE)
 
     def test_parse_1_2(self):
-        factory = MonomerFactory()
-        g = Glycan("Manpa", factory).get_tree()
+        g = Glycan("Manpa").get_tree()
 
         check_initial(g, "Man", 0, Config.ALPHA, lactole=Lactole.PYRANOSE)
 
@@ -99,14 +94,13 @@ class TestParser:
     @pytest.mark.parametrize("config", [Config.ALPHA, Config.BETA, Config.UNDEF])
     @pytest.mark.parametrize("lactole", ["", "p"])
     def test_parse_1_multi(self, mono, config, lactole):
-        factory = MonomerFactory()
         iupac = mono + lactole
 
         if config == Config.ALPHA:
             iupac += " a"
         elif config == Config.BETA:
             iupac += " b"
-        g = Glycan(iupac, factory, tree_only=True).get_tree()
+        g = Glycan(iupac, tree_only=True).get_tree()
 
         check_initial(g, mono, 0, config, lactole=Lactole.PYRANOSE)
 
@@ -114,22 +108,20 @@ class TestParser:
     @pytest.mark.parametrize("mono", list(MonomerFactory().furanoses()))
     @pytest.mark.parametrize("config", [Config.ALPHA, Config.BETA, Config.UNDEF])
     def test_parse_1_furanose(self, mono, config):
-        factory = MonomerFactory()
         iupac = mono + "f"
 
         if config == Config.ALPHA:
             iupac += " a"
         elif config == Config.BETA:
             iupac += " b"
-        g = Glycan(iupac, factory, tree_only=True).get_tree()
+        g = Glycan(iupac, tree_only=True).get_tree()
 
         check_initial(g, mono, 0, config, lactole=Lactole.FURANOSE)
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_2(self, mode):
-        factory = MonomerFactory()
         iupac = "Man(a1-4)Glc"
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Glc", 1, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
@@ -137,9 +129,8 @@ class TestParser:
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_3(self, mode):
-        factory = MonomerFactory()
         iupac = "Man(a1-4)Glc(a1-3)Tal"
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Tal", 1, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
@@ -149,9 +140,8 @@ class TestParser:
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_4(self, mode):
-        factory = MonomerFactory()
         iupac = "Man(a1-4)[Glc(a1-3)]Tal"
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Tal", 2, lactole=Lactole.PYRANOSE)
         id_children_1 = [x[1] for x in list(g.edges(0))]
@@ -162,9 +152,8 @@ class TestParser:
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_5(self, mode):
-        factory = MonomerFactory()
         iupac = "Man(a1-2)[Glc(a1-3)Tal(b1-4)]Gal"
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Gal", 2, lactole=Lactole.PYRANOSE)
         id_children_1 = [x[1] for x in list(g.edges(0))]
@@ -178,9 +167,8 @@ class TestParser:
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_6(self, mode):
-        factory = MonomerFactory()
         iupac = "Man(a1-2)Glc(a1-3)[Tal(b1-4)]Gal"
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Gal", 2, lactole=Lactole.PYRANOSE)
         id_children_1 = [x[1] for x in list(g.edges(0))]
@@ -194,9 +182,8 @@ class TestParser:
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_7(self, mode):
-        factory = MonomerFactory()
         iupac = "Man(a1-4)Glc(a1-2)[Tal(b1-4)Gal(b1-3)]Tal"
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Tal", 2, lactole=Lactole.PYRANOSE)
         id_children_1 = [x[1] for x in list(g.edges(0))]
@@ -213,9 +200,8 @@ class TestParser:
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_8(self, mode):
-        factory = MonomerFactory()
         iupac = "Man(a1-2)[Glc(a1-3)Tal(b1-4)]Gal(b1-3)Tal"
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Tal", 1, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
@@ -231,23 +217,20 @@ class TestParser:
         check_child(g, id_child_11, id_child_111, "Glc", "(a1-3)", 0, lactole=Lactole.PYRANOSE)
 
     def test_parse_9(self):
-        factory = MonomerFactory()
         iupac = "Man a"
-        g = Glycan(iupac, factory).get_tree()
+        g = Glycan(iupac).get_tree()
 
         check_initial(g, "Man", 0, Config.ALPHA, lactole=Lactole.PYRANOSE)
 
     def test_parse_10(self):
-        factory = MonomerFactory()
-        g = Glycan("Man b", factory).get_tree()
+        g = Glycan("Man b").get_tree()
 
         check_initial(g, "Man", 0, Config.BETA, lactole=Lactole.PYRANOSE)
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_11(self, mode):
-        factory = MonomerFactory()
         iupac = "Man(a1-4)Glc a"
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Glc", 1, Config.ALPHA, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
@@ -255,9 +238,8 @@ class TestParser:
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_12(self, mode):
-        factory = MonomerFactory()
         iupac = "Man(a1-4)Glc b"
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Glc", 1, Config.BETA, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
@@ -265,9 +247,8 @@ class TestParser:
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_13(self, mode):
-        factory = MonomerFactory()
         iupac = "Fuc(a1-2)Gal(b1-3)GalNAc"
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Gal", 1, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
@@ -277,9 +258,8 @@ class TestParser:
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_14(self, mode):
-        factory = MonomerFactory()
         iupac = "Fuc(a1-2)Gal(b1-3)GlcNAc6S"
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Glc", 1, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
@@ -289,9 +269,8 @@ class TestParser:
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_15(self, mode):
-        factory = MonomerFactory()
         iupac = "Fuc(a1-2)Gal(b1-4)Gal6S"
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Gal", 1, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
@@ -301,9 +280,8 @@ class TestParser:
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_16(self, mode):
-        factory = MonomerFactory()
         iupac = "Fuc(a1-2)Gal(a1-3)[Fuc(a1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc"
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Glc", 1, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
@@ -325,9 +303,8 @@ class TestParser:
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_17(self, mode):
-        factory = MonomerFactory()
         iupac = "Fuc(a1-2)Gal(a1-3)[Fuc(a1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc"
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Glc", 2, lactole=Lactole.PYRANOSE)
         id_children_1 = [x[1] for x in list(g.edges(0))]
@@ -354,8 +331,7 @@ class TestParser:
         elif orientation == Config.BETA:
             iupac += " b"
 
-        factory = MonomerFactory()
-        g = Glycan(reduce_notation(iupac, mode), factory, tree_only=True).get_tree()
+        g = Glycan(reduce_notation(iupac, mode), tree_only=True).get_tree()
 
         check_initial(g, monomers[4], 1, orientation, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
@@ -385,13 +361,12 @@ class TestParser:
                 return
             config = ""
         iupac = f"Man({config}{pos_man}-{pos_glc})Glc"
-        factory = MonomerFactory()
         if conf_glc == Config.ALPHA:
             iupac += " a"
         elif conf_glc == Config.BETA:
             iupac += " b"
 
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Glc", 1, conf_glc, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]
@@ -417,8 +392,7 @@ class TestParser:
         elif orientation == Config.BETA:
             iupac += " b"
 
-        factory = MonomerFactory()
-        g = Glycan(reduce_notation(iupac, mode), factory, tree_only=True).get_tree()
+        g = Glycan(reduce_notation(iupac, mode), tree_only=True).get_tree()
 
         check_initial(g, monomers[4][:-1], 1, orientation, lactole=lactoles[2][4])
         id_child_1 = list(g.edges(0))[0][1]
@@ -435,9 +409,8 @@ class TestParser:
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_ternary_branching_1(self, mode):
-        factory = MonomerFactory()
         iupac = "Alt(a1-2)[Glc(a1-4)][Gal(a1-6)]Man"
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Man", 3, lactole=Lactole.PYRANOSE)
 
@@ -449,9 +422,8 @@ class TestParser:
 
     @pytest.mark.parametrize("mode", ["full", "condensed", "simple"])
     def test_parse_ternary_branching_2(self, mode):
-        factory = MonomerFactory()
         iupac = "Alt(a1-2)[Glc(a1-4)][Gal(a1-6)]Gul(a1-4)Man"
-        g = Glycan(reduce_notation(iupac, mode), factory).get_tree()
+        g = Glycan(reduce_notation(iupac, mode)).get_tree()
 
         check_initial(g, "Man", 1, lactole=Lactole.PYRANOSE)
         id_child_1 = list(g.edges(0))[0][1]

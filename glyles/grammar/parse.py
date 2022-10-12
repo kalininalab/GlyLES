@@ -6,6 +6,7 @@ import numpy as np
 import pydot
 from antlr4 import *
 
+from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import UnreachableError, ParseError, ketoses2
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
@@ -288,13 +289,12 @@ class Glycan:
                 me = me.replace(atom, child_smiles)
             return me
 
-    def __init__(self, iupac, factory, root_orientation="n", start=100, tree_only=False, full=True):
+    def __init__(self, iupac, root_orientation="n", start=100, tree_only=False, full=True):
         """
         Initialize the glycan from the IUPAC string.
 
         Args:
             iupac (str): IUPAC string representation of the glycan to represent
-            factory (MonomerFactory): factory instance to use to generate the monomers for the glycan tree from
             root_orientation (str): orientation of the root monomer in the glycan (choose from 'a', 'b', 'n')
             start (int): ID of the atom to start with in the root monomer when generating the SMILES
             tree_only (bool): Flag indicating to only parse the tree of glycans and not the modifications
@@ -307,7 +307,7 @@ class Glycan:
         self.root_orientation = root_orientation
         self.start = start
         self.tree_only = tree_only
-        self.factory = factory
+        self.factory = MonomerFactory()
         self.full = full
         self.tree_full = True
         self.__parse()

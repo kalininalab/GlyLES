@@ -1,7 +1,6 @@
 import pytest
 
 from glyles.converter import convert
-from glyles.glycans.factory.factory import MonomerFactory
 from glyles.grammar.parse import Glycan
 from tests.utils import derivatives
 from rdkit import Chem
@@ -51,7 +50,7 @@ class TestDerivatives:
                 or 'Ins' in line:
             return
         iupac, smiles = line.split("\t")[:2]
-        compare_smiles(Glycan(iupac, MonomerFactory()).get_smiles(), smiles)
+        compare_smiles(Glycan(iupac).get_smiles(), smiles)
 
     @pytest.mark.slow
     @pytest.mark.todo
@@ -62,17 +61,21 @@ class TestDerivatives:
     )
     def test_iupac_databases(self, line):
         iupac = line.strip()
-        if '-ulosaric' in iupac \
+        """if '-ulosaric' in iupac \
                 or '-ulosonic' in iupac \
                 or '-uronic' in iupac \
                 or '-aric' in iupac \
                 or '0dHex' in iupac \
-                or 'Anhydro' in iupac \
                 or 'en' in iupac \
                 or 'Coum' in iupac \
                 or 'Ins' in iupac:
-            return
-        assert Glycan(iupac, MonomerFactory()).get_smiles() != ""
+            return"""
+        smiles = Glycan(iupac).get_smiles()
+        assert smiles != ""
+
+        mol = Chem.MolFromSmiles(smiles)
+        assert mol is not None
+        assert all([a.GetAtomicNum() in valid_atomic_nums for a in mol.GetAtoms()])
 
     @pytest.mark.todo
     def test_full(self):
@@ -81,7 +84,7 @@ class TestDerivatives:
 
     def test_detail(self):
         iupac = "6dTal(a1-2)Rhaf"
-        smiles = Glycan(iupac, MonomerFactory()).get_smiles()
+        smiles = Glycan(iupac).get_smiles()
         print(smiles)
         assert smiles != ""
         assert all([a.GetAtomicNum() in valid_atomic_nums for a in Chem.MolFromSmiles(smiles).GetAtoms()])
@@ -98,20 +101,20 @@ class TestDerivatives:
     @pytest.mark.todo
     def test_ins(self):
         compare_smiles(
-            Glycan("Ins", MonomerFactory()).get_smiles(),
+            Glycan("Ins").get_smiles(),
             "O[C@H]1[C@H](O)[C@@H](O)[C@H](O)[C@@H](O)[C@H]1O"
         )
 
     @pytest.mark.todo
     def test_ins1s6p(self):
         compare_smiles(
-            Glycan("Ins1S6P", MonomerFactory()).get_smiles(),
+            Glycan("Ins1S6P").get_smiles(),
             "O=P(O)(O)O[C@@H]1[C@@H](OS(=O)(=O)O)[C@@H](O)[C@@H](O)[C@H](O)[C@H]1O"
         )
 
     @pytest.mark.todo
     def test_ins2p4sa14gal(self):
         compare_smiles(
-            Glycan("Ins2P4S(1-4)Gal", MonomerFactory()).get_smiles(),
+            Glycan("Ins2P4S(1-4)Gal").get_smiles(),
             "O=P(O)(O)O[C@@H]1[C@H](O[C@H]2[C@@H](CO)OC(O)[C@H](O)[C@H]2O)[C@@H](O)[C@H](O)[C@@H](OS(=O)(=O)O)[C@@H]1O"
         )

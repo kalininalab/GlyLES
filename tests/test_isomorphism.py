@@ -4,7 +4,6 @@ from rdkit import Chem
 from rdkit.Chem import MolFromSmiles
 from rdkit.Chem.rdchem import ChiralType
 
-from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import find_isomorphism_nx as iso
 from glyles.grammar.parse import Glycan
 
@@ -64,6 +63,6 @@ class TestIsomorphism:
             iupac, smiles, equal = line, "", False
 
         if equal:
-            compare_smiles(Glycan(iupac, MonomerFactory()).get_smiles(), smiles)
+            compare_smiles(Glycan(iupac).get_smiles(), smiles)
         else:
-            assert Glycan(iupac, MonomerFactory()).get_smiles() != smiles
+            assert Glycan(iupac).get_smiles() != smiles
