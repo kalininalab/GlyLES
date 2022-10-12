@@ -4,6 +4,7 @@
 __pycache__/
 .vscode/
 dist/
+.ipynb_checkpoints/
 
 *.dot
 /.vscode/settings.json
