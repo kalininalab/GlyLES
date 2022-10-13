@@ -5,7 +5,7 @@ from rdkit.Chem import MolFromSmiles
 from rdkit.Chem.rdchem import ChiralType
 
 from glyles.glycans.utils import find_isomorphism_nx as iso
-from glyles.grammar.parse import Glycan
+from glyles import Glycan
 
 CHIRALITY = [ChiralType.CHI_TETRAHEDRAL_CW, ChiralType.CHI_TETRAHEDRAL_CCW]
 

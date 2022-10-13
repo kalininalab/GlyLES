@@ -3,7 +3,7 @@ import sys
 import logging
 
 from glyles.glycans.utils import ParseError
-from glyles.grammar.parse import Glycan
+from glyles.glycans.poly.glycan import Glycan
 
 
 def preprocess_glycans(glycan, glycan_list, glycan_file):

@@ -1,8 +1,8 @@
 import numpy as np
 from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
 
-from glyles.glycans.enum_c import enumerate_carbon
-from glyles.glycans.reactor import SMILESReaktor
+from glyles.glycans.mono.enum_c import enumerate_carbon
+from glyles.glycans.mono.reactor import SMILESReaktor
 from glyles.glycans.utils import Config, find_isomorphism_nx
 from glyles.grammar.GlycanLexer import GlycanLexer
 

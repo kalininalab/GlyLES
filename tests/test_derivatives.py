@@ -1,7 +1,6 @@
 import pytest
 
-from glyles.converter import convert
-from glyles.grammar.parse import Glycan
+from glyles.converter import convert, Glycan
 from tests.utils import derivatives
 from rdkit import Chem
 

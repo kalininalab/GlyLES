@@ -3,7 +3,7 @@ import pytest
 
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import Config, Lactole
-from glyles.grammar.parse import Glycan
+from glyles import Glycan
 from tests.utils import reduce_notation
 
 

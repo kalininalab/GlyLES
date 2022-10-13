@@ -6,7 +6,7 @@ from rdkit import Chem
 
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.utils import Config
-from glyles.grammar.parse import Glycan
+from glyles import Glycan
 from tests.utils import smiles_samples_simple
 
 

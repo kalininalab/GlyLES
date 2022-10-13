@@ -1,7 +1,7 @@
 from glyles.glycans.factory.factory_f import FuranoseFactory
 from glyles.glycans.factory.factory_o import c1_finder, OpenFactory
 from glyles.glycans.factory.factory_p import PyranoseFactory
-from glyles.glycans.monomer import Monomer
+from glyles.glycans.mono.monomer import Monomer
 from glyles.glycans.utils import Config, Enantiomer, Lactole
 from glyles.grammar.GlycanLexer import GlycanLexer
 
@@ -182,6 +182,7 @@ class MonomerFactory:
         # generate the full name that is looked up in the factory
         if config is not None and len(config) > 0:
             name = config + "_" + name
+            recipe.append((config, GlycanLexer.TYPE))
         elif config_index is not None:
             name = recipe[config_index][0] + "_" + name
 

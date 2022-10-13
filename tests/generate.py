@@ -1,6 +1,6 @@
 import json
 
-from glyles.grammar.parse import Glycan
+from glyles import Glycan
 from glyles.glycans.utils import ParseError
 
 
