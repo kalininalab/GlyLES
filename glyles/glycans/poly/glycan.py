@@ -23,7 +23,7 @@ def compare_smiles(c, s):
     return csmiles == ssmiles
 
 
-def recipe_equality(x, y, full=False):
+def recipe_equality(x, y, no=False, some=False, every=False):
     """
 
     Note:
@@ -32,22 +32,24 @@ def recipe_equality(x, y, full=False):
     Args:
         x:
         y:
-        full:
+        no:
+        some:
+        every:
 
     Returns:
 
     """
-    if not full:
+    if sum([no, some, every]) != 1:
+        raise ValueError("Exactly one of arguments no, some, every has to be set to True.")
+    if no:
         recipe_x, recipe_y = x.get_recipe(), y.get_recipe()
         return recipe_x[list(zip(*recipe_x))[1].index(GlycanLexer.SAC)] == \
                recipe_y[list(zip(*recipe_y))[1].index(GlycanLexer.SAC)]
-    """elif len(recipe_x) == len(recipe_y):
-        for x in recipe_x:
-            if x not in recipe_y:
-                return False
-        return True
-    return False"""
-    return compare_smiles(x.get_structure(), y.get_structure())
+    if some:
+        pass
+    if every:
+        return compare_smiles(x.get_structure(), y.get_structure())
+    return False
 
 
 class Glycan:
@@ -83,19 +85,92 @@ class Glycan:
         self.tree_full = True
         self.__parse()
 
-    def count(self, glycan: Union[object, str], exact_nodes=False, exact_edges=False):
+    def count(
+            self,
+            glycan: Union[object, str],
+            match_all_fg=False,
+            match_some_fg=False,
+            match_edges=False,
+            match_nodes=True,
+            match_leaves=False,
+            match_root=False,
+    ):
+        """
+
+        Args:
+            glycan:
+            match_all_fg:
+            match_some_fg:
+            match_edges:
+            match_nodes:
+            match_leaves:
+            match_root:
+
+        Returns:
+
+        """
+        if sum([match_nodes, match_leaves, match_root]) != 1:
+            raise ValueError("Exactly one of match_nodes, match_leaves, match_root has to be True.")
+
         if not isinstance(glycan, Glycan):
             glycan = Glycan(glycan, full=False)
 
+        if len(glycan.parse_tree.nodes) != 1 and (match_leaves or match_root):
+            raise ValueError("Cannot match polymeric glycan against leaves of glycan. Leaves are monomers.")
+
         kwargs = {
-            "node_match": lambda x, y: recipe_equality(x["type"], y["type"]),
+            "node_match": lambda x, y: recipe_equality(x["type"], y["type"], no=True),
         }
-        if exact_nodes:
-            kwargs["node_match"] = lambda x, y: recipe_equality(x["type"], y["type"], True)
-        if exact_edges:
+        if match_some_fg:
+            kwargs["node_match"] = lambda x, y: recipe_equality(x["type"], y["type"], some=True)
+        elif match_all_fg:
+            kwargs["node_match"] = lambda x, y: recipe_equality(x["type"], y["type"], every=True)
+        elif match_edges:
             kwargs["edge_match"] = lambda e, f: e["type"] == f["type"]
-        matcher = DiGraphMatcher(self.parse_tree, glycan.parse_tree, **kwargs)
-        return len(list(matcher.subgraph_isomorphisms_iter()))
+
+        if match_nodes:
+            matcher = DiGraphMatcher(self.parse_tree, glycan.parse_tree, **kwargs)
+            return len(list(matcher.subgraph_isomorphisms_iter()))
+        if match_leaves:
+            q = glycan.parse_tree.nodes[0]
+            return sum([kwargs["node_match"](n, q) for n, d in enumerate(self.parse_tree.out_degree()) if d == 0])
+        if match_root:
+            return sum([kwargs["node_match"](self.parse_tree.nodes[0], glycan.parse_tree.nodes[0])])
+
+    def count_protonation(self, groups):
+        """
+
+        Args:
+            groups: If True, count functional groups that can be deprotonated: otherwise, count possible deprotonations
+
+        Returns:
+
+        """
+        smiles = self.get_smiles()
+        if smiles == "":
+            raise ValueError("SMILES string for this glycan is empty, check if the IUPAC is convertable.")
+
+        mol = Chem.MolFromSmiles(smiles)
+        if mol is None:
+            raise ValueError("Generated SMILES is invalid, rdkit couldn't read it in.")
+
+        factor = 0 if groups else 1
+
+        count = 0
+        for core, group in [
+            (6, [("C(O)=O", 1)]),
+            (15, [("P(=O)(O)O", 3), ("P(=O)O", 2), ("P=O", 1)]),
+            (16, [("S(=O)(=O)O", 2), ("S(=O)(=O)", 1)])
+        ]:
+            matched_atoms = set()
+            for g, val in group:
+                matches = mol.GetSubstructureMatches(Chem.MolFromSmiles(g))
+                for match in matches:
+                    for aid in match:
+                        if mol.GetAtomWithIdx(aid).GetAtomicNum() == core and aid not in matched_atoms:
+                            matched_atoms.add(aid)
+                            count += val ** factor
+        return count
 
     def get_smiles(self):
         """
@@ -131,7 +206,7 @@ class Glycan:
             horizontal (bool): Show graph in horizontal orientation from left to right
 
         Returns:
-            Nothing
+            pydot graph object containing the graph
         """
         if horizontal:
             graph = pydot.Dot("iupac_tree", rankdir="LR")
@@ -142,6 +217,7 @@ class Glycan:
         for edge in self.parse_tree.edges():
             graph.add_edge(pydot.Edge(*edge[::-1], label=self.parse_tree.get_edge_data(*edge)["type"]))
         graph.write(output)
+        return graph
 
     def __parse(self):
         """
