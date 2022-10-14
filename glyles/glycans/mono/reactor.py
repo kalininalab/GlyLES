@@ -50,7 +50,7 @@ functional_groups = {
     # COH land
     "A": "OC(=O)C",
     "Allyl": "CC=C",
-    "Ac": "C(=O)O",
+    "Ac": "C(=O)C",
     "Ang": "OC(=O)C/(C)=C\C",
     "Bz": "C(=O)c2ccccc2",
     "Bn": "Cc2ccccc2",
@@ -336,7 +336,7 @@ class SMILESReaktor:
 
                 # add acid or glycoly groups to neuraminic acid
                 elif n == "Ac" and self.monomer.get_name() == "Neu":
-                    self.side_chains[5][O] += "NC(=O)O"
+                    self.side_chains[5][O] += "NC(=O)C"
                 elif n == "Gc" and self.monomer.get_name() == "Neu":
                     self.side_chains[5][O] += "NC(=O)CO"
 
