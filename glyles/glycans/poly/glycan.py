@@ -1,5 +1,5 @@
 import sys
-from typing import Union
+from typing import Union, List
 
 from networkx.algorithms.isomorphism import DiGraphMatcher
 import pydot
@@ -94,27 +94,29 @@ class Glycan:
 
     def count(
             self,
-            glycan: Union[object, str],
-            match_all_fg=False,
-            match_some_fg=False,
-            match_edges=False,
-            match_nodes=False,
-            match_leaves=False,
-            match_root=False,
+            glycan: Union[str, object],
+            match_all_fg: bool = False,
+            match_some_fg: bool = False,
+            match_edges: bool = False,
+            match_nodes: bool = False,
+            match_leaves: bool = False,
+            match_root: bool = False,
     ):
         """
+        Match a glycan against a query molecule and return the number of hits. This matching can be restricted by 
+        setting some flags introducing additional conditions of the matches.
 
         Args:
-            glycan:
-            match_all_fg:
-            match_some_fg:
-            match_edges:
-            match_nodes:
-            match_leaves:
-            match_root:
+            glycan: query glycan to be matched against the monomers of this glycan
+            match_all_fg: flag indicating to match all fgs of the query glycan to all fgs of a monomer
+            match_some_fg: flag indicating to match all fgs of the query glycan to some fgs of a monomer
+            match_edges: flag indicating to also match edges
+            match_nodes: flag indicating to match against all nodes
+            match_leaves: flag indicating to match against the leaf monomers only
+            match_root: flag indicating to match against the root monomer only
 
         Returns:
-
+            The number of matches of the query in this glycan under the given conditions
         """
         if sum([match_nodes, match_leaves, match_root]) != 1:
             raise ValueError("Exactly one of match_nodes, match_leaves, match_root has to be True.")
@@ -145,25 +147,27 @@ class Glycan:
         if match_root:
             return sum([kwargs["node_match"](self.parse_tree.nodes[0], glycan.parse_tree.nodes[0])])
 
-    def count_protonation(self, groups):
+    def count_protonation(self, groups: str):
         """
+        Count the possible deprotonation sites in the final molecule.
 
         Args:
-            groups: If True, count functional groups that can be deprotonated: otherwise, count possible deprotonations
+            groups: If True, count functional groups that can be deprotonated; otherwise, count possible deprotonations
 
         Returns:
-
+            The number of possible deprotonations in the molecule.
         """
+        # generate smiles for this molecule and check it's not empty
         smiles = self.get_smiles()
         if smiles == "":
             raise ValueError("SMILES string for this glycan is empty, check if the IUPAC is convertable.")
 
+        # generate molecule with RDKit and check it's not None
         mol = Chem.MolFromSmiles(smiles)
         if mol is None:
             raise ValueError("Generated SMILES is invalid, rdkit couldn't read it in.")
 
-        factor = 0 if groups else 1
-
+        # iterate over deprotonatable functional groups in every form
         count = 0
         for core, group in [
             (6, [("C(O)=O", 1)]),
@@ -172,13 +176,44 @@ class Glycan:
         ]:
             matched_atoms = set()
             for g, val in group:
+                # compute the matches against this glycan
                 matches = mol.GetSubstructMatches(Chem.MolFromSmiles(g))
                 for match in matches:
                     for aid in match:
+                        # find the core atom of each match, add it to the list of  covered atoms and increase the count
                         if mol.GetAtomWithIdx(aid).GetAtomicNum() == core and aid not in matched_atoms:
                             matched_atoms.add(aid)
-                            count += val ** factor
+                            # do some trick to either count groups to be deprotonated or possibly chargable atoms
+                            count += val ** groups
         return count
+
+    def count_functional_groups(self, groups: Union[str, List[str]]):
+        """
+        Count the number of the provided functional group in the final molecule.
+
+        Args:
+            groups: string of a specific group to find or a list of strings.
+                    Those strings have to be valid SMILES strings.
+
+        Returns:
+            The number of matches of all functional groups. This count might overlap in the matched atoms.
+        """
+        # in case of string input, put it into a one-element list
+        if not isinstance(groups, list):
+            groups = [groups]
+
+        # generate smiles for this molecule and check it's not empty
+        smiles = self.get_smiles()
+        if smiles == "":
+            raise ValueError("SMILES string for this glycan is empty, check if the IUPAC is convertable.")
+
+        # generate molecule with RDKit and check it's not None
+        mol = Chem.MolFromSmiles(smiles)
+        if mol is None:
+            raise ValueError("Generated SMILES is invalid, rdkit couldn't read it in.")
+
+        # sum over matches of functional groups
+        return sum([len(mol.GetSubstructMatches(Chem.MolFromSmiles(g))) for g in groups])
 
     def get_smiles(self):
         """
