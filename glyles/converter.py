@@ -63,7 +63,11 @@ def convert(
         List of type (IUPAC, SMILES) items giving the converted SMILES formulas. Only if returning=True is set.
     """
 
-    logging.basicConfig(level=verbose)
+    if verbose is None:
+        logger = logging.getLogger()
+        logger.disabled = True
+    else:
+        logging.basicConfig(level=verbose)
 
     # collect all data and return if no data were provided
     glycans = preprocess_glycans(glycan, glycan_list, glycan_file)
@@ -107,6 +111,9 @@ def convert(
     elif output_file is not None:
         output.close()
 
+    if verbose is None:
+        logger.disabled = False
+
 
 def convert_generator(
         glycan=None,
@@ -132,7 +139,11 @@ def convert_generator(
     Returns:
         Generator generating pairs of type (IUPAC, SMILES) items giving the converted SMILES formulas for the IUPACs.
     """
-    logging.basicConfig(level=verbose)
+    if verbose is None:
+        logger = logging.getLogger()
+        logger.disabled = True
+    else:
+        logging.basicConfig(level=verbose)
 
     glycans = preprocess_glycans(glycan, glycan_list, glycan_file)
     if len(glycans) == 0 and glycan_generator is None:
@@ -148,6 +159,9 @@ def convert_generator(
     if glycan_generator is not None:
         for glycan in glycan_generator:
             yield generate(glycan, full)
+
+    if verbose is None:
+        logger.disabled = False
 
 
 def generate(glycan, full):

@@ -31,8 +31,8 @@ class TestDerivatives:
 
     @pytest.mark.parametrize(
         "line",
-        # open("data/general.tsv", "r").readlines() +
-        # open("data/pubchem_mono.tsv", "r").readlines() +
+        open("data/general.tsv", "r").readlines() +
+        open("data/pubchem_mono.tsv", "r").readlines() +
         open("data/pubchem_poly.tsv", "r").readlines() +
         open("data/glycam.tsv", "r").readlines() +
         open("data/anhydro.tsv", "r").readlines()
