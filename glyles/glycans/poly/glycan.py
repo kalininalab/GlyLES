@@ -9,7 +9,7 @@ from rdkit import Chem
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.poly.merger import Merger
 from glyles.glycans.poly.walker import TreeWalker
-from glyles.glycans.utils import ParseError
+from glyles.glycans.utils import ParseError, find_isomorphism_nx
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
 
@@ -23,11 +23,13 @@ def compare_smiles(c, s):
     return csmiles == ssmiles
 
 
-def recipe_equality(x, y, no=False, some=False, every=False):
+def recipe_equality(glycan, query, no=False, some=False, every=False):
     """
 
     Note:
         Neu5Ac and NeuAc and NeuAc are not the same
+
+        node-match's first argument is always from first node, second argument always from second graph
 
     Args:
         x:
@@ -42,13 +44,18 @@ def recipe_equality(x, y, no=False, some=False, every=False):
     if sum([no, some, every]) != 1:
         raise ValueError("Exactly one of arguments no, some, every has to be set to True.")
     if no:
-        recipe_x, recipe_y = x.get_recipe(), y.get_recipe()
-        return recipe_x[list(zip(*recipe_x))[1].index(GlycanLexer.SAC)] == \
-               recipe_y[list(zip(*recipe_y))[1].index(GlycanLexer.SAC)]
+        recipe_glycan, recipe_query = glycan.get_recipe(), query.get_recipe()
+        return recipe_glycan[list(zip(*recipe_glycan))[1].index(GlycanLexer.SAC)] == \
+               recipe_query[list(zip(*recipe_query))[1].index(GlycanLexer.SAC)]
     if some:
-        pass
+        # x's fgs have to be a superset of y's fgs
+        recipe_glycan, recipe_query = glycan.get_recipe(), query.get_recipe()
+        if recipe_glycan[list(zip(*recipe_glycan))[1].index(GlycanLexer.SAC)] != \
+                recipe_query[list(zip(*recipe_query))[1].index(GlycanLexer.SAC)]:
+            return False
+        iso = find_isomorphism_nx(glycan, query, query.name, query.c1_find)
     if every:
-        return compare_smiles(x.get_structure(), y.get_structure())
+        return compare_smiles(glycan.get_structure(), query.get_structure())
     return False
 
 
@@ -91,7 +98,7 @@ class Glycan:
             match_all_fg=False,
             match_some_fg=False,
             match_edges=False,
-            match_nodes=True,
+            match_nodes=False,
             match_leaves=False,
             match_root=False,
     ):
@@ -118,6 +125,7 @@ class Glycan:
         if len(glycan.parse_tree.nodes) != 1 and (match_leaves or match_root):
             raise ValueError("Cannot match polymeric glycan against leaves of glycan. Leaves are monomers.")
 
+        # node-match's first argument is always from first node, second argument always from second graph
         kwargs = {
             "node_match": lambda x, y: recipe_equality(x["type"], y["type"], no=True),
         }
@@ -125,7 +133,7 @@ class Glycan:
             kwargs["node_match"] = lambda x, y: recipe_equality(x["type"], y["type"], some=True)
         elif match_all_fg:
             kwargs["node_match"] = lambda x, y: recipe_equality(x["type"], y["type"], every=True)
-        elif match_edges:
+        if match_edges:
             kwargs["edge_match"] = lambda e, f: e["type"] == f["type"]
 
         if match_nodes:
@@ -133,7 +141,7 @@ class Glycan:
             return len(list(matcher.subgraph_isomorphisms_iter()))
         if match_leaves:
             q = glycan.parse_tree.nodes[0]
-            return sum([kwargs["node_match"](n, q) for n, d in enumerate(self.parse_tree.out_degree()) if d == 0])
+            return sum([kwargs["node_match"](self.parse_tree.nodes[n], q) for n, d in self.parse_tree.out_degree() if d == 0])
         if match_root:
             return sum([kwargs["node_match"](self.parse_tree.nodes[0], glycan.parse_tree.nodes[0])])
 
@@ -164,7 +172,7 @@ class Glycan:
         ]:
             matched_atoms = set()
             for g, val in group:
-                matches = mol.GetSubstructureMatches(Chem.MolFromSmiles(g))
+                matches = mol.GetSubstructMatches(Chem.MolFromSmiles(g))
                 for match in matches:
                     for aid in match:
                         if mol.GetAtomWithIdx(aid).GetAtomicNum() == core and aid not in matched_atoms:

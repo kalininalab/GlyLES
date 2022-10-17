@@ -284,8 +284,14 @@ def find_isomorphism_nx(mol1, mol2, name, c1_find=None):
         Mapping from mol1's RDKIT IDs to mol2's RDKit IDs
     """
     # generate the RDKit molecules from the SMILES strings
-    mol1_rd = MolFromSmiles(mol1)
-    mol2_rd = MolFromSmiles(mol2)
+    if isinstance(mol1, str):
+        mol1_rd = MolFromSmiles(mol1)
+    else:
+        mol1_rd = mol1
+    if isinstance(mol2, str):
+        mol2_rd = MolFromSmiles(mol2)
+    else:
+        mol2_rd = mol2
 
     # identify the rings or the longest carbon-cain starting with
     ring1 = get_rings(mol1_rd, name, c1_find)
