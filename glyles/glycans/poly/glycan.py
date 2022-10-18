@@ -1,4 +1,5 @@
 import sys
+from collections import Counter
 from typing import Union, List
 
 import networkx as nx
@@ -99,6 +100,17 @@ class Glycan:
         self.__parse()
 
     def summary(self):
+        """
+        Aggregate some statistics of the glycan. This includes in the following order [the key in the output dictionary
+        in brackets]:
+        molecular formula [formula], number of atoms [atoms], number of bonds [bonds], number of rings [rings], number
+        of monomers [monomers], max depth of the tree [depth], the root monomer [root], list of all leaf monomers
+        [leaves], molecular weight [weight].
+
+        Returns:
+            The above named statistics are
+        """
+        # generate smiles for this molecule and check it's not empty
         smiles = self.get_smiles()
         if smiles == "":
             raise ValueError("SMILES string for this glycan is empty, check if the IUPAC is convertable.")
@@ -108,15 +120,18 @@ class Glycan:
         if mol is None:
             raise ValueError("Generated SMILES is invalid, rdkit couldn't read it in.")
 
+        # compute the statistics and return the results inplace
         return {
+            "formula": Chem.rdMolDescriptors.CalcMolFormula(mol),
+            "weight": ExactMolWt(mol),
             "atoms": len(mol.GetAtoms()),
             "bonds": len(mol.GetBonds()),
             "rings": len(mol.GetRingInfo().AtomRings()),
-            "glycans": len(self.parse_tree.nodes),
-            "depth": max([v for k, v in nx.shortest_path_length(self.parse_tree, 0).items()]),
+            "monomers": len(self.parse_tree.nodes),
+            "types": dict(Counter([self.parse_tree.nodes[n]["type"].get_name(True) for n in self.parse_tree.nodes])),
             "root": self.parse_tree.nodes[0]["type"].get_name(),
             "leaves": [self.parse_tree.nodes[n]["type"].get_name(True) for n, d in self.parse_tree.out_degree() if d == 0],
-            "weight": ExactMolWt(mol),
+            "depth": max([v for k, v in nx.shortest_path_length(self.parse_tree, 0).items()]),
         }
 
     def count(

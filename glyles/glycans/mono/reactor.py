@@ -644,11 +644,13 @@ class SMILESReaktor:
 
         placeholder = [
             [
-                (31, "[GaH2]"), (32, "[GeH3]"), (33, "[AsH2]"), (34, "[SeH]"),
-                (49, "[InH2]"), (50, "[SnH]"), (51, "[SbH2]"), (52, "[TeH]"),
+                (0, ""), (31, r"\[GaH*\d*\]"), (32, r"\[GeH*\d*\]"), (33, r"\[AsH*\d*\]"), (34, r"\[SeH*\d*\]"),
+                (49, r"\[InH*\d*\]"), (50, r"\[SnH*\d*\]"), (51, r"\[SbH*\d*\]"), (52, r"\[TeH*\d*\]"),
+                (118, r"\[OgH*\d*\]"),
             ], [
-                (81, "[TlH2]"), (82, "[PbH]"), (83, "[BiH2]"), (84, "[PoH]"),
-                (113, "[NhH2]"), (114, "[FlH]"), (115, "[McH2]"), (116, "[LvH]"),
+                (0, ""), (81, r"\[TlH*\d*\]"), (82, r"\[PbH*\d*\]"), (83, r"\[BiH*\d*\]"), (84, r"\[PoH*\d*\]"),
+                (113, r"\[NhH*\d*\]"), (114, r"\[FlH*\d*\]"), (115, r"\[McH*\d*\]"), (116, r"\[LvH*\d*\]"),
+                (117, r"\[TsH*\d*\]"),
             ]
         ]
 
@@ -672,9 +674,11 @@ class SMILESReaktor:
         for i, (chain, c_chain) in enumerate(self.side_chains):
             chain = re.sub('({})'.format(2), lambda x: str(int(x.group(1)) + ring_offset), chain)
             if chain:
-                smiles = smiles.replace(placeholder[O][i][1], "" if chain == "H" else chain)
+                smiles = re.sub(placeholder[O][i][1], "" if chain == "H" else chain, smiles)
+                # smiles = smiles.replace(placeholder[O][i][1], "" if chain == "H" else chain)
             if c_chain:
-                smiles = smiles.replace(placeholder[C][i][1], chain)
+                smiles = re.sub(placeholder[C][i][1], chain, smiles)
+                # smiles = smiles.replace(placeholder[C][i][1], chain)
 
         # update the monomer accordingly
         self.monomer.smiles = smiles.replace("()", "")
