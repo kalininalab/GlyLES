@@ -45,7 +45,9 @@ def convert(
         full=True,
 ):
     """
-    General user interaction interface to use this library.
+    Convert glycans of different input formats. All glycans have to be in IUPAC-condensed notation, but how they're
+    organized, can change. Either as single glycan, list or tuples of glycans, a file, or a generator. All will be
+    converted to SMILES.
 
     Args:
         glycan (str): Single glycan to be converted from IUPAC to SMILES
@@ -55,7 +57,7 @@ def convert(
             Together with output_generator=True this does not create any lists
         output_file (str): File to save the converted glycans in
         returning (bool): Flag indicating to return a list of tuples
-        verbose (int): Flag indicating to have no prints from this method
+        verbose (Union[int, None]): Flag indicating to have no prints from this method
         full (bool): Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
             such as 3-Anhydro-[...] are also present in the SMILES
 
@@ -124,7 +126,9 @@ def convert_generator(
         full=True,
 ):
     """
-    General user interaction interface to use this library.
+    Convert glycans of different input formats. All glycans have to be in IUPAC-condensed notation, but how they're
+    organized, can change. Either as single glycan, list or tuples of glycans, a file, or a generator. All will be
+    converted to SMILES, output by a generator.
 
     Args:
         glycan (str): Single glycan to be converted from IUPAC to SMILES
@@ -132,7 +136,7 @@ def convert_generator(
         glycan_file (str): File to read the glycans from
         glycan_generator (generator): generator yielding iupac representation.
             Together with output_generator=True this does not create any lists
-        verbose (int): Flag indicating to have no output-messages from this method
+        verbose (Union[int, None]): Flag indicating to have no output-messages from this method
         full (bool): Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
             such as 3-Anhydro-[...] are also present in the SMILES
 
@@ -166,7 +170,7 @@ def convert_generator(
 
 def generate(glycan, full):
     """
-    Actually generate the SMILES string based on the glycan given in IUPAC notation
+    Actually generate the SMILES string based on the glycan given in IUPAC notation.
 
     Parameters:
         glycan (str): Glycan molecule described by its IUPAC string

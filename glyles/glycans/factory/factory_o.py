@@ -1,9 +1,9 @@
+import numpy as np
 from rdkit import Chem
 from rdkit.Chem import GetAdjacencyMatrix
 from rdkit.Chem.rdchem import BondType
 
-from glyles.glycans.utils import *
-import numpy as np
+from glyles.glycans.utils import Config, Enantiomer, Lactole
 
 
 class OpenFactory:
@@ -112,7 +112,7 @@ def c1_ino_finder(structure):
     return the list of carbon atoms.
 
     Args:
-        structure (rdkit.Molecule): Molecule to determine the longest carbon-chain for starting at C1
+        structure (rdkit.Chem.rdchem.Molecule): Molecule to determine the longest carbon-chain for starting at C1
 
     Returns:
         List of RDKit IDs starting from C1 all the way down the longest carbon chain
@@ -127,7 +127,7 @@ def c1_finder(structure, base_smiles):
     structure to the SMILES string that is generated from C1.
 
     Args:
-        structure (rdkit.Molecule): Molecule to determine the longest carbon-chain starting at C1
+        structure (rdkit.Chem.rdchem.Molecule): Molecule to determine the longest carbon-chain starting at C1
         base_smiles (str): SMILES string of the root monomer starting from the oxygen of C1
 
     Returns:
@@ -189,7 +189,7 @@ def check_for_acid(start, structure, adjacency, a_type):
 
     Args:
         start (int): RDKit ID of the candidate for C1
-        structure (rdkit.Molecule): rdkit molecule object
+        structure (rdkit.Chem.rdchem.Molecule): rdkit molecule object
         adjacency (np.ndarray): adjacency matrix of the molecule
         a_type (np.ndarray): array of the atom types of the molecule's heavy atoms
 

@@ -13,7 +13,7 @@ class MonomerFactory:
 
     def __init__(self):
         """
-        Initialize this factory by creating instances of all "sub-"factories
+        Initialize this factory by creating instances of all "sub-"factories.
         """
         self.pyranose_fac = PyranoseFactory()
         self.furanose_fac = FuranoseFactory()
@@ -41,15 +41,19 @@ class MonomerFactory:
             item (str): name of the query monomer
 
         Returns:
-            Directory containing all necessary information to initialize a monomer implementation
+            Directory containing all necessary information to initialize a monomer
         """
+        # check if it's implicitly a furanose
         furanose = item in ["ERY", "THRE", "RUL", "XUL", "XLU", "ACE"]
+
+        # remove lactole identifier from name and store flag for furanoses
         if item[-1] == "p" and not item.endswith("Hep"):
             item = item[:-1]
         if item[-1] == "f":
             item = item[:-1]
             furanose = True
 
+        # look the structure up and raise an error if it's not contained
         if furanose and item in self.furanose_fac:
             return self.furanose_fac[item]
         if not furanose and item in self.pyranose_fac:
@@ -63,7 +67,7 @@ class MonomerFactory:
         Get all monomers that are included in this package by their extended name.
 
         Returns:
-            Set of names for all monomers, their available derivatives and configurations (alpha/beta/undefined)
+            Set of names for all monomers, their available derivatives and configurations (alpha/beta/undefined).
         """
         return self.keys
 
@@ -78,7 +82,7 @@ class MonomerFactory:
 
     def furanoses(self):
         """
-        Get the names of all monomers available as furanoses in this package ignoring the alpha/beta conformations
+        Get the names of all monomers available as furanoses in this package ignoring the alpha/beta conformations.
 
         Returns:
             List, sorted from long to short, of all furanose names in upper case
@@ -87,7 +91,7 @@ class MonomerFactory:
 
     def pyranoses(self):
         """
-        Get the names of all monomers available as pyranoses in this package ignoring the alpha/beta conformations
+        Get the names of all monomers available as pyranoses in this package ignoring the alpha/beta conformations.
 
         Returns:
             List, sorted from long to short, of all pyranose names in upper case
@@ -96,7 +100,7 @@ class MonomerFactory:
 
     def monomer_names(self):
         """
-        Get the names of all monomers in this package ignoring the alpha/beta conformations
+        Get the names of all monomers in this package ignoring the alpha/beta conformations.
 
         Returns:
             List, sorted from long to short, of all monomer names in IUPAC notation
@@ -109,7 +113,7 @@ class MonomerFactory:
 
     def pyranose_names(self):
         """
-        Get the names of all pyranoses in this package ignoring the alpha/beta conformations
+        Get the names of all pyranoses in this package ignoring the alpha/beta conformations.
 
         Returns:
             List, sorted from long to short, of all monomer names in IUPAC notation
@@ -122,7 +126,7 @@ class MonomerFactory:
 
     def furanose_names(self):
         """
-        Get the names of all furanoses in this package ignoring the alpha/beta conformations
+        Get the names of all furanoses in this package ignoring the alpha/beta conformations.
 
         Returns:
             List, sorted from long to short, of all monomer names in IUPAC notation
@@ -138,6 +142,7 @@ class MonomerFactory:
         """
         Generate a dummy monosaccharide containing no information except the name as the structure and all its
         properties are unknown.
+
         Args:
             name (str): Name of the monosaccharide with structure and properties are unknown
 

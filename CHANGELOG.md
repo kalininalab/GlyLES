@@ -1,6 +1,8 @@
 # Change Log
 
-## to be released - v0.4.3 - 2022-??-??
+## to be released - v0.5.0 - 2022-??-??
+
+Release for publication in Journal of Cheminformatics 
 
 ### Added
 

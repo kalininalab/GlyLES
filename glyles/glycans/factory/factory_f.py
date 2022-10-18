@@ -1,4 +1,4 @@
-from glyles.glycans.utils import *
+from glyles.glycans.utils import Config, Enantiomer, Lactole
 
 
 class FuranoseFactory:

@@ -4,6 +4,7 @@
 __pycache__/
 .vscode/
 dist/
+tests/data/misc/
 .ipynb_checkpoints/
 
 *.dot

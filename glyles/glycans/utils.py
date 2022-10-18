@@ -1,16 +1,15 @@
 from enum import Enum
-from typing import Callable
 
 import networkx as nx
 from networkx.algorithms import isomorphism
-from rdkit.Chem import MolFromSmiles, FindMolChiralCenters
+from rdkit.Chem import MolFromSmiles
 
 from itertools import permutations
 
 
 class Verbosity(Enum):
     """
-    define Levels of verbosity for printing different important messages
+    Define levels of verbosity for printing different important messages.
     """
     QUIET = 0
     NORMAL = 1
@@ -36,7 +35,7 @@ class Enantiomer(Enum):
 
 class Lactole(Enum):
     """
-    Specification if a monomer is a pyranose (6-ring) or a furanose (5-ring)
+    Specification if a monomer is a pyranose (6-ring) or a furanose (5-ring).
     """
     UNKNOWN = 0
     OPEN = 1
@@ -47,18 +46,19 @@ class Lactole(Enum):
 class UnreachableError(NotImplementedError):
     """
     Represent exceptions that should arise in case a piece of code is reached that under normal circumstances should
-    not be reached
+    not be reached.
     """
     pass
 
 
 class ParseError(ValueError):
     """
-    Represent parsing errors when reading in a glycan
+    Represent parsing errors when reading in a glycan.
     """
     pass
 
 
+# set of all 2-ketoses in this package
 ketoses2 = {
     ("Ko", Lactole.PYRANOSE), ("Kde", Lactole.PYRANOSE), ("Neu", Lactole.PYRANOSE), ("Pse", Lactole.PYRANOSE),
     ("Leg", Lactole.PYRANOSE), ("Aci", Lactole.PYRANOSE), ("Kdo", Lactole.PYRANOSE), ("Dha", Lactole.PYRANOSE),
@@ -110,7 +110,7 @@ def get_rings(mol, name, c1_find=None):
     Get the longest carbon chain in the molecule starting from the C1 atom based on the rings of the molecule.
 
     Args:
-        mol (rdkit.Molecule): molecule to determine the carbon list for
+        mol (rdkit.Chem.rdchem.Molecule): molecule to determine the carbon list for
         name (str): Name of the monosaccharide we're working with
         c1_find (Callable): Optional function to determine C1 for non-ring monosaccharides
 
@@ -144,7 +144,7 @@ def mol_to_nx(mol):
     Convert a molecule to a networkx graph with atom types and bond types as only features.
 
     Args:
-        mol (rdkit.Molecule): molecule to be converted
+        mol (rdkit.Chem.rdchem.Molecule): molecule to be converted
 
     Returns:
         networkx graph representing a molecule
@@ -307,12 +307,13 @@ def find_isomorphism_nx(mol1, mol2, name, c1_find=None):
 
 class Node:
     """
-    Represent a node in a tree
+    Represent a node in a tree.
     """
 
     def __init__(self, node_id, parent_id, depth, tree):
         """
-        Initialize a node in of a tree
+        Initialize a node in of a tree.
+
         Args:
             node_id (int): id of the node itself in the tree
             parent_id (int): id of the parent in the tree
@@ -327,7 +328,7 @@ class Node:
 
     def add_child(self, child_id):
         """
-        Add a child node to this node
+        Add a child node to this node.
 
         Args:
             child_id (int): id of the added child node
@@ -339,7 +340,7 @@ class Node:
 
     def is_leaf(self):
         """
-        Check if this node is a leaf
+        Check if this node is a leaf.
 
         Returns:
             true if this node has no children
@@ -348,7 +349,7 @@ class Node:
 
     def __str__(self):
         """
-        Convert the node into a string representation
+        Convert the node into a string representation.
 
         Returns:
             String representation of this node and all its children
@@ -359,19 +360,19 @@ class Node:
 
 class Tree:
     """
-    Represent a tree with nodes
+    Represent a tree with nodes.
     """
 
     def __init__(self):
         """
-        Initialize the tree as empty tree without any node
+        Initialize the tree as empty tree without any node.
         """
         self.nodes = {}
         self.root = None
 
     def __str__(self):
         """
-        Convert this tree into a string representation of all its nodes
+        Convert this tree into a string representation of all its nodes.
 
         Returns:
             String representation of the tree seen from its root node
@@ -380,7 +381,7 @@ class Tree:
 
     def add_node(self, node_id, parent_id=-1):
         """
-        Add a node to the tree
+        Add a node to the tree.
 
         Args:
             node_id (int): id of the new node
@@ -408,7 +409,7 @@ class Tree:
 
     def deepest_node(self):
         """
-        Find the deepest node in the tree (most distant to root)
+        Find the deepest node in the tree (most distant to root).
 
         Returns:
             ID of the deepest node and its depth in the tree
@@ -422,7 +423,7 @@ class Tree:
 
     def rehang_tree(self, node_id):
         """
-        Reorder the tree to start with the node with the given id in the root
+        Reorder the tree to start with the node with the given id in the root.
 
         Args:
             node_id (int): is of the node to be used as new root node

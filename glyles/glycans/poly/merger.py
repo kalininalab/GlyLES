@@ -11,7 +11,7 @@ class Merger:
 
     def __init__(self, factory):
         """
-        Create a merger class to merge a parsed glycan tree into a SMILES string
+        Create a merger class to merge a parsed glycan tree into a SMILES string.
 
         Args:
             factory (MonomerFactory): factory instance to use to generate the monomers for the glycan tree from
@@ -32,7 +32,7 @@ class Merger:
         Returns:
             SMILES representation as string
         """
-
+        # deep-copy the tree to not modify the provided argument
         t = copy.deepcopy(t)
 
         # first mark the atoms that will be replaced in a binding of two monomers

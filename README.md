@@ -1,6 +1,9 @@
 # GlyLES
 
-![testing](https://github.com/kalininalab/glyles/actions/workflows/test.yaml/badge.svg) ![piwheels](https://img.shields.io/piwheels/v/glyles) ![PyPI - Downloads](https://img.shields.io/pypi/dm/glyles) [![codecov](https://codecov.io/gh/kalininalab/GlyLES/branch/main/graph/badge.svg)](https://codecov.io/gh/kalininalab/glyles)
+![testing](https://github.com/kalininalab/glyles/actions/workflows/test.yaml/badge.svg) 
+![piwheels](https://img.shields.io/piwheels/v/glyles) 
+![PyPI - Downloads](https://img.shields.io/pypi/dm/glyles) 
+[![codecov](https://codecov.io/gh/kalininalab/GlyLES/branch/main/graph/badge.svg)](https://codecov.io/gh/kalininalab/glyles)
 
 A tool to convert IUPAC representation of Glycans into SMILES representation. This repo is still in the development 
 phase; so, feel free to report any errors or issues.
@@ -10,15 +13,8 @@ phase; so, feel free to report any errors or issues.
 The exact specification we're referring to when talking about "IUPAC representations of glycan", is given in the 
 "Notes" section of this [website](https://www.ncbi.nlm.nih.gov/glycans/snfg.html). But as this package is still in the 
 development phase, not everything of the specification is implemented yet (especially not all side chains you can 
-attach to monomers).
-
-This implementation currently only works for glycans that fulfill certain properties:
-
-* The structure of the glycan can be represented as a tree of the monosaccharides with maximal branching factor 3.
-* Only basic monomers (e.g. ``Glc``, but not ``GlcNAc``) from this [website](https://www.ncbi.nlm.nih.gov/glycans/snfg.html) 
-  (GalNAc is seen as modification of galactose). In addition to this list, Erythrose is parsable.
-* Some modifications can be added to the monomers, please see the [README](glyles/grammar/README.md) in the grammar
-folder for more information on this. <br>E.g. ``GlcNAc`` is seen to be a modified version of ``Glc``. 
+attach to monomers). The structure of the glycan can be represented as a tree of the monosaccharides with maximal 
+branching factor 4, i.e., each monomer in the glycan has at most 4 children.
 
 ## Installation
 
@@ -42,7 +38,7 @@ to upgrade the glyles package to the most recent version.
 Convert the IUPAC into a SMILES representation using the handy `convert` method
 
 ``````python
-from glyles.converter import convert
+from glyles import convert
 
 convert(glycan="Man(a1-2)Man", output_file="./test.txt")
 ``````
@@ -50,27 +46,13 @@ convert(glycan="Man(a1-2)Man", output_file="./test.txt")
 You can also use the `convert_generator` method to get a generator for all SMILES:
 
 ``````python
-from glyles.converter import convert_generator
+from glyles import convert_generator
 
 for smiles in convert_generator(glycan_list=["Man(a1-2)Man a", "Man(a1-2)Man b"]):
     print(smiles)
 ``````
 
-In general, the `convert` and `convert_generator` methods support the same types of input. The samples are shown
-for `convert` but it's the same for `convert_generator`.
-
-* single glycan, e.g. `convert(glycan="Man(a1-2)Man)"`,
-* a list of glycans, e.g. `convert(glycan_list=["Man(a1-2)Man a", "Man(a1-2)Man"])`, and
-* a file of glycans, e.g. `convert(glycan_file="./glycans.txt")`. Here its important that the file many only contain one
-  IUPAC per line.
-* for better runtime one can also provide a generator as input, e.g. `convert(glycan_generator=some_generator)`
-
-Any output consists of tuples of the form `(input_iupac, smiles)`. `convert_generator` returns those tuples in a 
-generator. `convert`-output is a bit different:
-
-* By default, the method returns the list of tuples.
-* You can print them to `stdout` by specifying `returning=False`.
-* The tuples can also be written `output_file`, e.g. `convert(glycan="Man(a1-2)Man", output_file="./out.csv")`.
+For more examples of how to use this package, please see the notebooks in the [examples](examples) folder. 
 
 ## Notation of glycans
 

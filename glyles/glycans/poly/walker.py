@@ -141,7 +141,7 @@ class TreeWalker:
         Add a new node to the network based on the name of the represented glycan.
 
         Args:
-            node: Node of the parsed tree to be parsed into a monomer
+            node (antlr.Node): Node of the parsed tree to be parsed into a monomer
             config (str): configuration to be applied to the monomer
 
         Returns:

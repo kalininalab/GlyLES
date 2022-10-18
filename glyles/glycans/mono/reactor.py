@@ -174,7 +174,7 @@ c_conflict = [
 def not_implemented_message(mod):
     """
     Print a message if some modification is parsable but not implemented yet. So, the grammar might accept some
-    modifications but the reactor is yet not capable to attach that functional group to the monomer
+    modifications but the reactor is yet not capable to attach that functional group to the monomer.
 
     Args
         mod (str): name of the modification that cannot be converted
@@ -227,7 +227,7 @@ def extract_bridge(n):
 
 def opposite_chirality(tag):
     """
-    Invert chriality based on the given ChiralType
+    Invert chirality based on the given ChiralType.
 
     Args:
         tag (rdkit.Chem.rdchem.ChiralType): ChiralType to be inverted
@@ -245,7 +245,8 @@ def opposite_chirality(tag):
 class SMILESReaktor:
     def __init__(self, monomer):
         """
-        Initialize the reaktor with the monosaccharide to attach functional groups to
+        Initialize the reaktor with the monosaccharide to attach functional groups to.
+
         Args:
             monomer (Monomer): monosaccharide object
         """
@@ -641,11 +642,14 @@ class SMILESReaktor:
         if not "".join("".join(x) for x in self.side_chains):
             return
 
-        # TODO: Add more phs to be able to have both, carbon and oxygen attached functional groups at the same position
         placeholder = [
-            (31, "[GaH2]"), (32, "[GeH3]"),
-            (49, "[InH2]"), (50, "[SnH]"), (51, "[SbH2]"), (52, "[TeH]"),
-            (81, "[TlH2]"), (82, "[PbH]"), (83, "[BiH2]"), (84, "[PoH]"),
+            [
+                (31, "[GaH2]"), (32, "[GeH3]"), (33, "[AsH2]"), (34, "[SeH]"),
+                (49, "[InH2]"), (50, "[SnH]"), (51, "[SbH2]"), (52, "[TeH]"),
+            ], [
+                (81, "[TlH2]"), (82, "[PbH]"), (83, "[BiH2]"), (84, "[PoH]"),
+                (113, "[NhH2]"), (114, "[FlH]"), (115, "[McH2]"), (116, "[LvH]"),
+            ]
         ]
 
         # iterate over all functional groups, ...
@@ -654,11 +658,11 @@ class SMILESReaktor:
             if chain:
                 idx = self.monomer.find_oxygen(i)
                 if self.monomer.structure.GetAtomWithIdx(idx).GetSymbol() != "C":
-                    self.add_to_oxygen(chain, idx, placeholder[i][0])
+                    self.add_to_oxygen(chain, idx, placeholder[O][i][0])
                 else:
-                    self.add_to_carbon(chain, i, placeholder[i][0])
+                    self.add_to_carbon(chain, i, placeholder[C][i][0])
             if c_chain:
-                self.add_to_carbon(c_chain, i, placeholder[i][0])
+                self.add_to_carbon(c_chain, i, placeholder[C][i][0])
 
         # create SMILES from molecule with placeholders
         smiles = self.monomer.to_smiles(0, root_idx=100)
@@ -666,9 +670,11 @@ class SMILESReaktor:
         ring_offset = len(self.monomer.ring_info) - 1
         # replace all placeholders by their actual functional group
         for i, (chain, c_chain) in enumerate(self.side_chains):
+            chain = re.sub('({})'.format(2), lambda x: str(int(x.group(1)) + ring_offset), chain)
             if chain:
-                chain = re.sub('({})'.format(2), lambda x: str(int(x.group(1)) + ring_offset), chain)
-                smiles = smiles.replace(placeholder[i][1], "" if chain == "H" else chain)
+                smiles = smiles.replace(placeholder[O][i][1], "" if chain == "H" else chain)
+            if c_chain:
+                smiles = smiles.replace(placeholder[C][i][1], chain)
 
         # update the monomer accordingly
         self.monomer.smiles = smiles.replace("()", "")
@@ -696,10 +702,6 @@ class SMILESReaktor:
                     self.monomer.structure.GetAtomWithIdx(idx).GetChiralTag()
                 )
             )
-            """if self.monomer.structure.GetAtomWithIdx(idx).GetChiralTag() == ChiralType.CHI_TETRAHEDRAL_CCW:
-                self.monomer.structure.GetAtomWithIdx(idx).SetChiralTag(ChiralType.CHI_TETRAHEDRAL_CW)
-            elif self.monomer.structure.GetAtomWithIdx(idx).GetChiralTag() == ChiralType.CHI_TETRAHEDRAL_CW:
-                self.monomer.structure.GetAtomWithIdx(idx).SetChiralTag(ChiralType.CHI_TETRAHEDRAL_CCW)"""
 
     def parse_poly_carbon(self, name):
         """

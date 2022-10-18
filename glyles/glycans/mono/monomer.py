@@ -12,7 +12,7 @@ class Monomer:
     def __init__(self, origin=None, **kwargs):
         """
         Initialize the monomer using the super method. Additionally, some fields are initialized to describe the
-        structure of the monomer according to the specification of the monomer-parent class
+        structure of the monomer according to the specification of the monomer-parent class.
 
         Args:
             origin (Monomer): Other monomer to use to initialize this object
@@ -77,7 +77,7 @@ class Monomer:
         Returns the SMILES representation of this monomer. Attention: These methods return the SMILES that is used to
         initialize this monomer. This is different from the to_smiles method of this class that returns the SMILES
         string with added place-holders that is used for the generation of the SMILES representation of the complete
-        glycan
+        glycan.
 
         Returns:
             The SMILES string that was used for initialization of this monomer
@@ -123,7 +123,7 @@ class Monomer:
 
     def undefined(self, factory):
         """
-        Return this monosaccharide in undefined conformation, the first carbon ring-atom will have unspecified.
+        Return this monosaccharide in undefined conformation, the first carbon ring-atom will have unspecified
         chirality.
 
         Args:
@@ -331,12 +331,6 @@ class Monomer:
                 self.ring_info = [None]
                 for ring in rings:
                     ox_count = sum(self.structure.GetAtomWithIdx(atom).GetAtomicNum() == 8 for atom in ring)
-                    # found_ox = False
-                    # for atom in ring:
-                    #     if self.structure.GetAtomWithIdx(atom).GetAtomicNum() == 8:
-                    #         self.ring_info[0] = ring
-                    #         found_ox = True
-                    #         break
                     if ox_count == 1 and (self.ring_size == -1 or self.ring_size == len(ring)):
                         self.ring_info[0] = ring
                     else:

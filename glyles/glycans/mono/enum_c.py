@@ -34,7 +34,7 @@ def enumerate_carbon(monomer):
 
 def enumerate_side_chain(monomer, parent, atom, next_c_id):
     """
-    Not enumerating ring atoms
+    Not enumerating ring atoms but the side chains in case of functional groups attached to functional groups.
 
     Args:
         monomer (Monomer): object of class monomer to enumerate the carbon atoms for
@@ -66,7 +66,7 @@ def enumerate_side_chain(monomer, parent, atom, next_c_id):
 
 def enumerate_c_atoms(monomer, c_atoms, ringo):
     """
-    Enumerate all carbon atoms starting from the first one
+    Enumerate all carbon atoms starting from the first one.
 
     Args:
         monomer (Monomer): object of class monomer to enumerate the carbon atoms for
@@ -127,7 +127,7 @@ def enumerate_c_atoms(monomer, c_atoms, ringo):
 
 def evaluate_distance(monomer, start, end, ringo):
     """
-    Try to decide on C1 based on their distance to the oxygen in the ring
+    Try to decide on C1 based on their distance to the oxygen in the ring.
 
     Args:
         monomer (Monomer): object of class monomer to enumerate the carbon atoms for

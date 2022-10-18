@@ -26,36 +26,39 @@ def compare_smiles(c, s):
 
 def recipe_equality(glycan, query, no=False, some=False, every=False):
     """
-
+    Checking if two monomers are considered isomorphic under the given mode of isomorphism.
     Note:
-        Neu5Ac and NeuAc and NeuAc are not the same
-
         node-match's first argument is always from first node, second argument always from second graph
 
     Args:
-        x:
-        y:
-        no:
-        some:
-        every:
+        glycan (Monomer):
+        query (Monomer):
+        no (bool):
+        some (bool):
+        every (bool):
 
     Returns:
 
     """
+    # check if exactly one isomorphism mode is activated
     if sum([no, some, every]) != 1:
         raise ValueError("Exactly one of arguments no, some, every has to be set to True.")
+
     if no:
+        # if functional groups should not be considered for isomorphism, just check the root monomer of both nodes
         recipe_glycan, recipe_query = glycan.get_recipe(), query.get_recipe()
         return recipe_glycan[list(zip(*recipe_glycan))[1].index(GlycanLexer.SAC)] == \
                recipe_query[list(zip(*recipe_query))[1].index(GlycanLexer.SAC)]
     if some:
-        # x's fgs have to be a superset of y's fgs
+        raise NotImplementedError("Matching to a subset of functional groups is not yet implemented. Coming soon.")
+        # if a query's fgs have to be a subset of glycan's fgs, do some magic
         recipe_glycan, recipe_query = glycan.get_recipe(), query.get_recipe()
         if recipe_glycan[list(zip(*recipe_glycan))[1].index(GlycanLexer.SAC)] != \
                 recipe_query[list(zip(*recipe_query))[1].index(GlycanLexer.SAC)]:
             return False
         iso = find_isomorphism_nx(glycan, query, query.name, query.c1_find)
     if every:
+        # if all functional groups have to be matched, compare the smiles strings of both
         return compare_smiles(glycan.get_structure(), query.get_structure())
     return False
 
@@ -95,13 +98,13 @@ class Glycan:
 
     def count(
             self,
-            glycan: Union[str, object],
-            match_all_fg: bool = False,
-            match_some_fg: bool = False,
-            match_edges: bool = False,
-            match_nodes: bool = False,
-            match_leaves: bool = False,
-            match_root: bool = False,
+            glycan,
+            match_all_fg=False,
+            match_some_fg=False,
+            match_edges=False,
+            match_nodes=False,
+            match_leaves=False,
+            match_root=False,
     ):
         """
         Match a glycan against a query molecule and return the number of hits. This matching can be restricted by 
@@ -111,13 +114,13 @@ class Glycan:
         query "Gal" will result a hit in "GalNAc6S b" but neither do "Gal a" or "Gal b".
 
         Args:
-            glycan: query glycan to be matched against the monomers of this glycan
-            match_all_fg: flag indicating to match all fgs of the query glycan to all fgs of a monomer
-            match_some_fg: flag indicating to match all fgs of the query glycan to some fgs of a monomer
-            match_edges: flag indicating to also match edges
-            match_nodes: flag indicating to match against all nodes
-            match_leaves: flag indicating to match against the leaf monomers only
-            match_root: flag indicating to match against the root monomer only
+            glycan (Union[str, Glycan]): query glycan to be matched against the monomers of this glycan
+            match_all_fg (bool): flag indicating to match all fgs of the query glycan to all fgs of a monomer
+            match_some_fg (bool): flag indicating to match all fgs of the query glycan to some fgs of a monomer
+            match_edges (bool): flag indicating to also match edges
+            match_nodes (bool): flag indicating to match against all nodes
+            match_leaves (bool): flag indicating to match against the leaf monomers only
+            match_root (bool): flag indicating to match against the root monomer only
 
         Returns:
             The number of matches of the query in this glycan under the given conditions
@@ -125,7 +128,7 @@ class Glycan:
         if sum([match_nodes, match_leaves, match_root]) != 1:
             raise ValueError("Exactly one of match_nodes, match_leaves, match_root has to be True.")
 
-        if not isinstance(glycan, Glycan):
+        if isinstance(glycan, str):
             glycan = Glycan(glycan, full=False)
 
         if len(glycan.parse_tree.nodes) != 1 and (match_leaves or match_root):
@@ -156,7 +159,8 @@ class Glycan:
         Count the possible deprotonation sites in the final molecule.
 
         Args:
-            groups (bool): If True, count functional groups that can be deprotonated; otherwise, count possible deprotonations
+            groups (bool): If True, count functional groups that can be deprotonated; otherwise, count possible
+                deprotonations
 
         Returns:
             The number of possible deprotonations in the molecule.
@@ -197,7 +201,7 @@ class Glycan:
 
         Args:
             groups: string of a specific group to find or a list of strings.
-                    Those strings have to be valid SMILES strings.
+                Those strings have to be valid SMILES strings.
 
         Returns:
             The number of matches of all functional groups. This count might overlap in the matched atoms.
@@ -281,7 +285,7 @@ class Glycan:
 
     def __parse(self):
         """
-        Adapter on the Lexer and Parser generated by ANTLR based on Grammar.g4.
+        Adapter on the Lexer and Parser generated by ANTLR based on glyles/grammar/Glycan.g4.
 
         Returns:
             Nothing
