@@ -1,10 +1,12 @@
 import sys
 from typing import Union, List
 
+import networkx as nx
 from networkx.algorithms.isomorphism import DiGraphMatcher
 import pydot
 from antlr4 import InputStream, CommonTokenStream
 from rdkit import Chem
+from rdkit.Chem.Descriptors import ExactMolWt
 
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.mono.reactor import functional_groups
@@ -96,6 +98,27 @@ class Glycan:
         self.tree_full = True
         self.__parse()
 
+    def summary(self):
+        smiles = self.get_smiles()
+        if smiles == "":
+            raise ValueError("SMILES string for this glycan is empty, check if the IUPAC is convertable.")
+
+        # generate molecule with RDKit and check it's not None
+        mol = Chem.MolFromSmiles(smiles)
+        if mol is None:
+            raise ValueError("Generated SMILES is invalid, rdkit couldn't read it in.")
+
+        return {
+            "atoms": len(mol.GetAtoms()),
+            "bonds": len(mol.GetBonds()),
+            "rings": len(mol.GetRingInfo().AtomRings()),
+            "glycans": len(self.parse_tree.nodes),
+            "depth": max([v for k, v in nx.shortest_path_length(self.parse_tree, 0).items()]),
+            "root": self.parse_tree.nodes[0]["type"].get_name(),
+            "leaves": [self.parse_tree.nodes[n]["type"].get_name(True) for n, d in self.parse_tree.out_degree() if d == 0],
+            "weight": ExactMolWt(mol),
+        }
+
     def count(
             self,
             glycan,
@@ -129,7 +152,7 @@ class Glycan:
             raise ValueError("Exactly one of match_nodes, match_leaves, match_root has to be True.")
 
         if isinstance(glycan, str):
-            glycan = Glycan(glycan, full=False)
+            glycan = Glycan(glycan, tree_only=True)
 
         if len(glycan.parse_tree.nodes) != 1 and (match_leaves or match_root):
             raise ValueError("Cannot match polymeric glycan against leaves of glycan. Leaves are monomers.")
@@ -249,7 +272,7 @@ class Glycan:
 
         if self.glycan_smiles is None:
             self.glycan_smiles = Merger(self.factory).merge(self.parse_tree, self.root_orientation, start=self.start)
-        self.glycan_smiles = self.glycan_smiles.replace("At", "O-")
+        # self.glycan_smiles = self.glycan_smiles.replace("At", "O-")
         return self.glycan_smiles
 
     def get_tree(self):
