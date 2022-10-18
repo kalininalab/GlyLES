@@ -7,6 +7,7 @@ from antlr4 import InputStream, CommonTokenStream
 from rdkit import Chem
 
 from glyles.glycans.factory.factory import MonomerFactory
+from glyles.glycans.mono.reactor import functional_groups
 from glyles.glycans.poly.merger import Merger
 from glyles.glycans.poly.walker import TreeWalker
 from glyles.glycans.utils import ParseError, find_isomorphism_nx
@@ -106,6 +107,9 @@ class Glycan:
         Match a glycan against a query molecule and return the number of hits. This matching can be restricted by 
         setting some flags introducing additional conditions of the matches.
 
+        This matching does not include the configuration (alpha/beta/undefined) of the root monomer of the query. So
+        query "Gal" will result a hit in "GalNAc6S b" but neither do "Gal a" or "Gal b".
+
         Args:
             glycan: query glycan to be matched against the monomers of this glycan
             match_all_fg: flag indicating to match all fgs of the query glycan to all fgs of a monomer
@@ -147,12 +151,12 @@ class Glycan:
         if match_root:
             return sum([kwargs["node_match"](self.parse_tree.nodes[0], glycan.parse_tree.nodes[0])])
 
-    def count_protonation(self, groups: str):
+    def count_protonation(self, groups):
         """
         Count the possible deprotonation sites in the final molecule.
 
         Args:
-            groups: If True, count functional groups that can be deprotonated; otherwise, count possible deprotonations
+            groups (bool): If True, count functional groups that can be deprotonated; otherwise, count possible deprotonations
 
         Returns:
             The number of possible deprotonations in the molecule.
@@ -212,8 +216,21 @@ class Glycan:
         if mol is None:
             raise ValueError("Generated SMILES is invalid, rdkit couldn't read it in.")
 
+        fgs = []
+        for group in groups:
+            # convert the functional group into a RDKit molecule
+            if group in functional_groups:
+                tmp = Chem.MolFromSmiles(functional_groups[group])
+            else:
+                tmp = Chem.MolFromSmiles(group)
+            # check the functional groups for validity
+            if tmp is None:
+                raise ValueError(f"The functional group {group} cannot be parsed into a molecule. "
+                                 f"Please make sure, it's a valid SMILES string or an implemented functional group.")
+            fgs.append(tmp)
+
         # sum over matches of functional groups
-        return sum([len(mol.GetSubstructMatches(Chem.MolFromSmiles(g))) for g in groups])
+        return sum([len(mol.GetSubstructMatches(g)) for g in fgs])
 
     def get_smiles(self):
         """

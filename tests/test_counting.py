@@ -6,7 +6,7 @@ from glyles import Glycan
 @pytest.fixture(scope="session")
 def glycan():
     return Glycan("Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)"
-           "GlcNAc(b1-6)]Gal(b1-3)[GlcNAc(a1-4)Gal(b1-4)GlcNAc6S(b1-6)]GalNAc")
+                  "GlcNAc(b1-6)]Gal(b1-3)[GlcNAc(a1-4)Gal(b1-4)GlcNAc6S(b1-6)]GalNAc")
 
 
 def test_count_match_nodes(glycan):
@@ -143,3 +143,14 @@ def test_count_match_edges_some_fg(glycan):
     assert glycan.count("GlcNAc(b1-6)Gal", match_edges=True, match_some_fg=True, match_nodes=True) == 2
     assert glycan.count("GlcNAc(b1-3)Gal", match_edges=True, match_some_fg=True, match_nodes=True) == 1
     assert glycan.count("GlcNAc(a1-4)Gal", match_edges=True, match_some_fg=True, match_nodes=True) == 1
+
+
+def test_count_functional_groups(glycan):
+    assert glycan.count_functional_groups("S") == 2
+    assert glycan.count_functional_groups("Ac") == 7
+    assert glycan.count_functional_groups("NC(=O)C") == 7
+
+
+def test_count_protonation(glycan):
+    assert glycan.count_protonation(groups=False) == 1
+    assert glycan.count_protonation(groups=True) == 2
