@@ -31,25 +31,17 @@ class TestDerivatives:
 
     @pytest.mark.parametrize(
         "line",
+        open("data/anhydro.tsv", "r").readlines() +
+        open("data/carbons.tsv", "r").readlines() +
         open("data/general.tsv", "r").readlines() +
-        open("data/pubchem_mono.tsv", "r").readlines() +
-        open("data/pubchem_poly.tsv", "r").readlines() +
         open("data/glycam.tsv", "r").readlines() +
-        open("data/anhydro.tsv", "r").readlines()
+        open("data/pubchem_mono.tsv", "r").readlines() +
+        open("data/pubchem_poly.tsv", "r").readlines()
     )
     def test_smiles_databases(self, line):
         line = line.strip()
         if '0dHex' in line or 'en' in line or 'Ins' in line:
             return
-        iupac, smiles = line.split("\t")[:2]
-        compare_smiles(Glycan(iupac).get_smiles(), smiles)
-
-    @pytest.mark.todo
-    @pytest.mark.parametrize(
-        "line",
-        open("data/carbons.tsv", "r").readlines()
-    )
-    def test_carbons(self, line):
         iupac, smiles = line.split("\t")[:2]
         compare_smiles(Glycan(iupac).get_smiles(), smiles)
 
