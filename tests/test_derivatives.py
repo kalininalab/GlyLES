@@ -39,20 +39,18 @@ class TestDerivatives:
     )
     def test_smiles_databases(self, line):
         line = line.strip()
-        if '-ulosaric' in line \
-                or '-ulosonic' in line \
-                or '-uronic' in line \
-                or '-aric' in line \
-                or '0dHex' in line \
-                or 'en' in line \
-                or 'Coum' in line \
-                or 'Ins' in line:
+        if '0dHex' in line or 'en' in line or 'Ins' in line:
             return
         iupac, smiles = line.split("\t")[:2]
         compare_smiles(Glycan(iupac).get_smiles(), smiles)
 
-    def test_dummy_xiaus(self):
-        iupac, smiles = "Qui6S a", "C([C@@H]1[C@H]([C@@H]([C@H]([C@H](O1)O)O)O)O)S(=O)(=O)O"
+    @pytest.mark.todo
+    @pytest.mark.parametrize(
+        "line",
+        open("data/carbons.tsv", "r").readlines()
+    )
+    def test_carbons(self, line):
+        iupac, smiles = line.split("\t")[:2]
         compare_smiles(Glycan(iupac).get_smiles(), smiles)
 
     @pytest.mark.slow
@@ -63,16 +61,9 @@ class TestDerivatives:
         open("data/glycowork_poly.txt", "r").readlines()
     )
     def test_iupac_databases(self, line):
+        if '0dHex' in line or 'en' in line or 'Ins' in line:
+            return
         iupac = line.strip()
-        """if '-ulosaric' in iupac \
-                or '-ulosonic' in iupac \
-                or '-uronic' in iupac \
-                or '-aric' in iupac \
-                or '0dHex' in iupac \
-                or 'en' in iupac \
-                or 'Coum' in iupac \
-                or 'Ins' in iupac:
-            return"""
         smiles = Glycan(iupac).get_smiles()
         assert smiles != ""
 

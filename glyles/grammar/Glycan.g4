@@ -32,20 +32,20 @@ MOD:
     | '-ulosaric' | '-ulosonic' | '-uronic' | '-onic' | '-aric' | '-ol'
     | '0d' | 'D-' | 'L-';
 FG:
-    COUNT | CARB | '3oxoMyr'
-    | 'Allyl'| 'aLnn' | 'gLnn' | 'eSte' | 'Ceroplastic' | 'Coum' | 'Geddic' | 'Lacceroic' | 'HSer' | 'Prop' | 'Psyllic'
+    COUNT | CARB | 'Ceroplastic' | 'Lacceroic' | '3oxoMyr' | 'Psyllic' | 'Geddic' | 'Allyl' | 'Phthi'
+    | 'aLnn' | 'gLnn' | 'eSte' | 'Coum' | 'HSer' | 'Prop'
     | 'Ach' | 'Aep' | 'Ala' | 'Ang' | 'Asp' | 'Beh' | 'But' | 'Cct' | 'Cer' | 'Cet' | 'Cho' | 'Cin' | 'Crt' | 'Cys'
     | 'Dce' | 'Dco' | 'Dec' | 'Dhp' | 'Dod' | 'Etg' | 'EtN' | 'Etn' | 'Fer' | 'Gro' | 'Glu' | 'Gly' | 'Hpo' | 'Hse'
-    | 'Hxo' | 'Lac' | 'Lau' | 'Leu' | 'Lin' | 'Lys' | 'Mal' | 'Mar' | 'Mel' | 'Mon' | 'Myr' | 'Nno' | 'Non' | 'Oco'
-    | 'Ole' | 'Orn' | 'Pam' | 'Pro' | 'Pyr' | 'Ser' | 'Sin' | 'Ste' | 'tBu' | 'Thr' | 'Tig' | 'Und' | 'Vac' | 'Udo'
-    | 'Ulo' | 'ulo'
+    | 'Hxo' | 'Lac' | 'Lau' | 'Leu' | 'Lin' | 'Lys' | 'Mal' | 'Mar' | 'Mel' | 'Mon' | 'Myr' | 'Ner' | 'Nno' | 'Non'
+    | 'Oco' | 'Ole' | 'Orn' | 'Pam' | 'Pro' | 'Pyr' | 'Ser' | 'Sin' | 'Ste' | 'tBu' | 'Thr' | 'Tig' | 'Und' | 'Vac'
+    | 'Udo' | 'Ulo' | 'ulo'
     | 'Ac' | 'Am' | 'Bn' | 'Br' | 'Bu' | 'Bz' | 'Cl' | 'Cm' | 'DD' | 'DL' | 'DL-' | 'Et' | 'Fo' | 'Gc' | 'Hp' | 'Hx'
     | 'LD' | 'LL' | 'Me' | 'Nn' | 'Oc' | 'Pe' | 'Ph' | 'Pr' | 'Pp' | 'Tf' | 'Tr' | 'Ts' | 'Vl' | 'en'
     | 'A' | 'N' | 'F' | 'I' | 'S' | 'P';
 BRIDGE:
     'C' | 'N' | 'O' | 'P';
 CARB:
-    'C' NUM ('=' '{' CT* NUM (',' CT* NUM) '}')*;
+    'a'? 'i'? 'C' NUM (('=' | 'c') '{' CT? NUM (',' CT? NUM) '}')?;
 COUNT:
     'Hep' | 'Hex' | 'Oct' | 'Pen' | 'Suc';
 CON:

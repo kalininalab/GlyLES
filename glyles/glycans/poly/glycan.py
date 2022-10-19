@@ -29,19 +29,21 @@ def compare_smiles(c, s):
 
 def recipe_equality(glycan, query, no=False, some=False, every=False):
     """
-    Checking if two monomers are considered isomorphic under the given mode of isomorphism.
+    Checking if two monomers are considered isomorphic under the given mode of isomorphism. One of the bool-flags has
+    to be set.
+
     Note:
         node-match's first argument is always from first node, second argument always from second graph
 
     Args:
-        glycan (Monomer):
-        query (Monomer):
-        no (bool):
-        some (bool):
-        every (bool):
+        glycan (Monomer): monomer to search in
+        query (Monomer): monomer to find in glycan
+        no (bool): If True, only match basic monosaccharide, no functional groups
+        some (bool): If True, match all of query's groups but not all of glycan's groups
+        every (bool): If True, glycans must match exactly, i.e., modifications have to be the same
 
     Returns:
-
+        True if glycan and query are considered equal under given circumstances
     """
     # check if exactly one isomorphism mode is activated
     if sum([no, some, every]) != 1:

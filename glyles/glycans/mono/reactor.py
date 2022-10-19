@@ -724,4 +724,57 @@ class SMILESReaktor:
         Returns:
             String for functional group based on the given name
         """
-        raise NotImplementedError()
+        # extract key information about the carbon string, such as terminal end and number of carbon atoms
+        ante = name[0] == "a"
+        iso = name[1 if ante else 0] == "i"
+        count = re.findall(r'\d+', name)[0]
+
+        # generate start and end of carbon strand and a plain carbon strand of remaining carbon atoms
+        start = "OC(=O)"
+        if ante and iso:
+            end = "(C)CC"
+            count -= 3
+        elif ante:
+            raise NotImplementedError()
+        elif iso:
+            end = "(C)C"
+            count -= 2
+        else:
+            end = ""
+        chain = "C" * count - 1
+
+        # extract information on double bonds and rings in carbon strand and fill them in a mods list
+        parts = re.findall(r'\{[\w|,]*}', name)
+        mods = []
+        for part in parts:
+            pre = name[name.index(part) - 1]
+            idx = part[1:-1].split(",")
+            if pre == "c":
+                for i in idx:
+                    mods.append((int(i), "2"))
+            if pre == "=":
+                for i in idx:
+                    if i[0] == "c":  # cis C=C bond
+                        pos = int(i[1:])
+                        mods.append((pos - 1, "/"))
+                        mods.append((pos, "="))
+                        mods.append((pos + 1, "\\"))
+                    elif i[0] == "t":  # trans C=C bond
+                        pos = int(i[1:])
+                        mods.append((pos - 1, "/"))
+                        mods.append((pos, "="))
+                        mods.append((pos + 1, "/"))
+                    else:
+                        mods.append((int(i), "="))
+
+        # check if only modifiable carbon atoms are contained in the modification list
+        if (max(mods, key=lambda x: x[0]) - 1) > len(chain):
+            raise ValueError(f"{name} defines modifications for carbon atoms that are not modifiable.")
+
+        # sort the modifications in descending order based on their indices
+        for pos, mod in sorted(mods, key=lambda x: x[0], reverse=True):
+            pos = pos - 1  # as C1 is covered up in start
+            chain = chain[:pos] + mod + chain[pos:]
+
+        # glue everything together and return it
+        return start + chain + end
