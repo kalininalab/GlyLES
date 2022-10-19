@@ -26,13 +26,14 @@ SAC:
 MOD:
     NUM ',' NUM '-Anhydro-' | NUM '-Anhydro-'
     | NUM '-' BRIDGE '-' FG '-'
+    | NUM CARB
     | NUM BRIDGE* FG
     | (NUM | BRIDGE* | '-') FG
     | NUM ('d' | 'e') | NUM ',' NUM 'd'
     | '-ulosaric' | '-ulosonic' | '-uronic' | '-onic' | '-aric' | '-ol'
     | '0d' | 'D-' | 'L-';
 FG:
-    COUNT | CARB | 'Ceroplastic' | 'Lacceroic' | '3oxoMyr' | 'Psyllic' | 'Geddic' | 'Allyl' | 'Phthi'
+    COUNT | 'Ceroplastic' | 'Lacceroic' | '3oxoMyr' | 'Psyllic' | 'Geddic' | 'Allyl' | 'Phthi'
     | 'aLnn' | 'gLnn' | 'eSte' | 'Coum' | 'HSer' | 'Prop'
     | 'Ach' | 'Aep' | 'Ala' | 'Ang' | 'Asp' | 'Beh' | 'But' | 'Cct' | 'Cer' | 'Cet' | 'Cho' | 'Cin' | 'Crt' | 'Cys'
     | 'Dce' | 'Dco' | 'Dec' | 'Dhp' | 'Dod' | 'Etg' | 'EtN' | 'Etn' | 'Fer' | 'Gro' | 'Glu' | 'Gly' | 'Hpo' | 'Hse'
@@ -45,7 +46,9 @@ FG:
 BRIDGE:
     'C' | 'N' | 'O' | 'P';
 CARB:
-    'a'? 'i'? 'C' NUM (('=' | 'c') '{' CT? NUM (',' CT? NUM) '}')?;
+    ('ai' | 'a' | 'i')? 'C' NUM ADD*;
+ADD:
+    '=' '{' CT? NUM (',' CT? NUM)* '}' | 'c' '{' NUM (',' NUM)* '}';
 COUNT:
     'Hep' | 'Hex' | 'Oct' | 'Pen' | 'Suc';
 CON:

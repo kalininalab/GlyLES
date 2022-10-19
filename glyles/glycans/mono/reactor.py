@@ -374,6 +374,12 @@ class SMILESReaktor:
                             bridge = bridge[:-1]
                         full &= self.set_fg(O, int(n[0]), bridge, fg)
 
+                    # add a poly carbon group
+                    elif (n[1] == "C" and n[2:4].isnumeric()) or \
+                            (n[1:3] in "aCiC" and n[3:5].isnumeric()) or \
+                            (n[1:4] == "aiC" and n[4:6].isnumeric()):
+                        full &= self.set_fg(O, int(n[0]), "", n)
+
                     # add a group connected directly to the C-Atom
                     elif n[1] == "C" and n[1:] not in c_conflict:
                         bridge, fg = extract_bridge(n)
@@ -450,6 +456,13 @@ class SMILESReaktor:
                 self.side_chains[pos][c_or_o] += bond_elem + functional_groups[name][1:]
             else:
                 self.side_chains[pos][c_or_o] += bond_elem + functional_groups[name]
+            return True
+
+        # in case of a carbon chain
+        elif (name[1] == "C" and name[2:4].isnumeric()) or \
+                (name[1:3] in "aCiC" and name[3:5].isnumeric()) or \
+                (name[1:4] == "aiC" and name[4:6].isnumeric()):
+            self.side_chains[pos][c_or_o] += bond_elem + self.parse_poly_carbon(name)
             return True
 
         # otherwise print message and return accordingly
@@ -680,7 +693,8 @@ class SMILESReaktor:
                 # chain = re.sub("[\d+]", lambda x: str(int(x.group()) + ring_offset, chain))
                 chain = re.sub('({})'.format(2), lambda x: str(int(x.group(1)) + ring_offset), chain)
                 # smiles = re.sub(placeholder[O][i][1], "" if chain == "H" else chain, smiles)
-                smiles = re.sub(placeholder[O][i][1], ("" if chain == "H" else chain).replace("\\", "\\\\"), smiles).replace("\\\\", "\\")
+                smiles = re.sub(placeholder[O][i][1], ("" if chain == "H" else chain).replace("\\", "\\\\"),
+                                smiles).replace("\\\\", "\\")
                 # smiles = smiles.replace(placeholder[O][i][1], "" if chain == "H" else chain)
             if c_chain:
                 c_chain = re.sub('({})'.format(2), lambda x: str(int(x.group(1)) + ring_offset), c_chain)
@@ -725,9 +739,9 @@ class SMILESReaktor:
             String for functional group based on the given name
         """
         # extract key information about the carbon string, such as terminal end and number of carbon atoms
-        ante = name[0] == "a"
-        iso = name[1 if ante else 0] == "i"
-        count = re.findall(r'\d+', name)[0]
+        ante = name[1] == "a"
+        iso = name[2 if ante else 1] == "i"
+        count = int(re.findall(r'\d+', name)[1])
 
         # generate start and end of carbon strand and a plain carbon strand of remaining carbon atoms
         start = "OC(=O)"
@@ -741,40 +755,41 @@ class SMILESReaktor:
             count -= 2
         else:
             end = ""
-        chain = "C" * count - 1
+        chain = "C" * (count - 1)
 
         # extract information on double bonds and rings in carbon strand and fill them in a mods list
         parts = re.findall(r'\{[\w|,]*}', name)
-        mods = []
-        for part in parts:
-            pre = name[name.index(part) - 1]
-            idx = part[1:-1].split(",")
-            if pre == "c":
-                for i in idx:
-                    mods.append((int(i), "2"))
-            if pre == "=":
-                for i in idx:
-                    if i[0] == "c":  # cis C=C bond
-                        pos = int(i[1:])
-                        mods.append((pos - 1, "/"))
-                        mods.append((pos, "="))
-                        mods.append((pos + 1, "\\"))
-                    elif i[0] == "t":  # trans C=C bond
-                        pos = int(i[1:])
-                        mods.append((pos - 1, "/"))
-                        mods.append((pos, "="))
-                        mods.append((pos + 1, "/"))
-                    else:
-                        mods.append((int(i), "="))
+        if len(parts) != 0:
+            mods = []
+            for part in parts:
+                pre = name[name.index(part) - 1]
+                idx = part[1:-1].split(",")
+                if pre == "c":
+                    for i in idx:
+                        mods.append((int(i), "2"))
+                if pre == "=":
+                    for i in idx:
+                        if i[0] == "c":  # cis C=C bond
+                            pos = int(i[1:])
+                            mods.append((pos - 1, "/"))
+                            mods.append((pos, "="))
+                            mods.append((pos + 1, "\\"))
+                        elif i[0] == "t":  # trans C=C bond
+                            pos = int(i[1:])
+                            mods.append((pos - 1, "/"))
+                            mods.append((pos, "="))
+                            mods.append((pos + 1, "/"))
+                        else:
+                            mods.append((int(i), "="))
 
-        # check if only modifiable carbon atoms are contained in the modification list
-        if (max(mods, key=lambda x: x[0]) - 1) > len(chain):
-            raise ValueError(f"{name} defines modifications for carbon atoms that are not modifiable.")
+            # check if only modifiable carbon atoms are contained in the modification list
+            if (max(mods, key=lambda x: x[0])[0] - 1) > len(chain):
+                raise ValueError(f"{name} defines modifications for carbon atoms that are not modifiable.")
 
-        # sort the modifications in descending order based on their indices
-        for pos, mod in sorted(mods, key=lambda x: x[0], reverse=True):
-            pos = pos - 1  # as C1 is covered up in start
-            chain = chain[:pos] + mod + chain[pos:]
+            # sort the modifications in descending order based on their indices
+            for pos, mod in sorted(mods, key=lambda x: x[0], reverse=True):
+                pos = pos - 1  # as C1 is covered up in start
+                chain = chain[:pos] + mod + chain[pos:]
 
         # glue everything together and return it
-        return start + chain + end
+        return (start + chain + end).replace("//", "/")
