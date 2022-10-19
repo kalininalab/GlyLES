@@ -90,6 +90,7 @@ class Glycan:
         """
         self.iupac = iupac
         self.parse_tree = None
+        self.grammar_tree = None
         self.glycan_smiles = None
         self.root_orientation = root_orientation
         self.start = start
@@ -167,7 +168,7 @@ class Glycan:
             raise ValueError("Exactly one of match_nodes, match_leaves, match_root has to be True.")
 
         if isinstance(glycan, str):
-            glycan = Glycan(glycan, tree_only=True)
+            glycan = Glycan(glycan)
 
         if len(glycan.parse_tree.nodes) != 1 and (match_leaves or match_root):
             raise ValueError("Cannot match polymeric glycan against leaves of glycan. Leaves are monomers.")
@@ -286,6 +287,7 @@ class Glycan:
             return ""
 
         if self.glycan_smiles is None:
+            self.parse_tree, self.tree_full = TreeWalker(self.factory, False).parse(self.grammar_tree)
             self.glycan_smiles = Merger(self.factory).merge(self.parse_tree, self.root_orientation, start=self.start)
         # self.glycan_smiles = self.glycan_smiles.replace("At", "O-")
         return self.glycan_smiles
@@ -346,7 +348,7 @@ class Glycan:
         lexer = GlycanLexer(stream)
         token = CommonTokenStream(lexer)
         parser = GlycanParser(token)
-        tree = parser.start()
+        self.grammar_tree = parser.start()
 
         sys.stderr = old_err
 
@@ -357,7 +359,7 @@ class Glycan:
             raise ParseError("Glycan cannot be parsed:\n" + log[0])
 
         # walk through the AST and parse the AST into a networkx representation of the glycan.
-        self.parse_tree, self.tree_full = TreeWalker(self.factory, self.tree_only).parse(tree)
+        self.parse_tree, self.tree_full = TreeWalker(self.factory, self.tree_only).parse(self.grammar_tree)
 
         # if the glycan should be parsed immediately, do so
         if not self.tree_only and self.tree_full == self.full:

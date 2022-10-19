@@ -143,6 +143,8 @@ functional_groups = {
     "Psyllic": "OC(=O)" + "C" * 32,
     "Geddic": "OC(=O)" + "C" * 33,
     "Ceroplastic": "OC(=O)" + "C" * 35,
+    "Phthi": "OC(=O)C(C)=CC(C)CC(C)" + "C" * 18,
+    "Ner": "OC(=O)" + "C" * 13 + "/C=C\C" + "C" * 7,
 }
 
 # list of functional groups that preserve the atom it is attached to instead of replacing it
@@ -152,7 +154,7 @@ preserve_elem = [
 
 # list of functional groups that start with an N and might be confused with a nitrogen-bridge
 n_conflict = [
-    "Nno", "Non", "Nn"
+    "Ner", "Nno", "Non", "Nn"
 ]
 
 # list of functional groups that start with an O and might be confused with an oxygen-bridge
