@@ -51,6 +51,10 @@ class TestDerivatives:
         iupac, smiles = line.split("\t")[:2]
         compare_smiles(Glycan(iupac).get_smiles(), smiles)
 
+    def test_dummy_xiaus(self):
+        iupac, smiles = "Qui6S a", "C([C@@H]1[C@H]([C@@H]([C@H]([C@H](O1)O)O)O)O)S(=O)(=O)O"
+        compare_smiles(Glycan(iupac).get_smiles(), smiles)
+
     @pytest.mark.slow
     @pytest.mark.todo
     @pytest.mark.parametrize(

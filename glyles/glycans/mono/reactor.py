@@ -381,8 +381,10 @@ class SMILESReaktor:
                     else:
                         elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol() \
                             if n[1:] in preserve_elem else ""
-                        elem = "" if elem == "C" else elem
-                        full &= self.set_fg(O, int(n[0]), elem, n[1:])
+                        if elem == "C":
+                            full &= self.set_fg(C, int(n[0]), "", n[1:])
+                        else:
+                            full &= self.set_fg(O, int(n[0]), elem, n[1:])
 
                 # if the side-chain is connected with a nitrogen/oxygen/phosphate to the monomer
                 elif n[0] in "NOP" and n not in n_conflict + o_conflict + p_conflict:
@@ -672,12 +674,15 @@ class SMILESReaktor:
         ring_offset = len(self.monomer.ring_info) - 1
         # replace all placeholders by their actual functional group
         for i, (chain, c_chain) in enumerate(self.side_chains):
-            chain = re.sub('({})'.format(2), lambda x: str(int(x.group(1)) + ring_offset), chain)
             if chain:
-                smiles = re.sub(placeholder[O][i][1], "" if chain == "H" else chain, smiles)
+                # chain = re.sub("[\d+]", lambda x: str(int(x.group()) + ring_offset, chain))
+                chain = re.sub('({})'.format(2), lambda x: str(int(x.group(1)) + ring_offset), chain)
+                # smiles = re.sub(placeholder[O][i][1], "" if chain == "H" else chain, smiles)
+                smiles = re.sub(placeholder[O][i][1], ("" if chain == "H" else chain).replace("\\", "\\\\"), smiles).replace("\\\\", "\\")
                 # smiles = smiles.replace(placeholder[O][i][1], "" if chain == "H" else chain)
             if c_chain:
-                smiles = re.sub(placeholder[C][i][1], chain, smiles)
+                c_chain = re.sub('({})'.format(2), lambda x: str(int(x.group(1)) + ring_offset), c_chain)
+                smiles = re.sub(placeholder[C][i][1], c_chain.replace("\\", "\\\\"), smiles).replace("\\\\", "\\")
                 # smiles = smiles.replace(placeholder[C][i][1], chain)
 
         # update the monomer accordingly
