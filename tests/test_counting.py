@@ -76,32 +76,32 @@ def test_count_match_leaves_all_fg(glycan):
 
 @pytest.mark.todo
 def test_count_match_nodes_some_fg(glycan):
-    assert glycan.count("Gal", match_all_fg=True, match_nodes=True) == 7
-    assert glycan.count("GalNAc", match_all_fg=True, match_nodes=True) == 3
-    assert glycan.count("Glc", match_all_fg=True, match_nodes=True) == 4
-    assert glycan.count("GlcNAc", match_all_fg=True, match_nodes=True) == 4
-    assert glycan.count("GlcNAc6S", match_all_fg=True, match_nodes=True) == 1
-    assert glycan.count("Fuc", match_all_fg=True, match_nodes=True) == 2
+    assert glycan.count("Gal", match_some_fg=True, match_nodes=True) == 7
+    assert glycan.count("GalNAc", match_some_fg=True, match_nodes=True) == 3
+    assert glycan.count("Glc", match_some_fg=True, match_nodes=True) == 4
+    assert glycan.count("GlcNAc", match_some_fg=True, match_nodes=True) == 4
+    assert glycan.count("GlcNAc6S", match_some_fg=True, match_nodes=True) == 1
+    assert glycan.count("Fuc", match_some_fg=True, match_nodes=True) == 2
 
 
 @pytest.mark.todo
 def test_count_match_root_some_fg(glycan):
-    assert glycan.count("Gal", match_all_fg=True, match_root=True) == 1
-    assert glycan.count("GalNAc", match_all_fg=True, match_root=True) == 1
-    assert glycan.count("Glc", match_all_fg=True, match_root=True) == 0
-    assert glycan.count("GlcNAc", match_all_fg=True, match_root=True) == 0
-    assert glycan.count("GlcNAc6S", match_all_fg=True, match_root=True) == 0
-    assert glycan.count("Fuc", match_all_fg=True, match_root=True) == 0
+    assert glycan.count("Gal", match_some_fg=True, match_root=True) == 1
+    assert glycan.count("GalNAc", match_some_fg=True, match_root=True) == 1
+    assert glycan.count("Glc", match_some_fg=True, match_root=True) == 0
+    assert glycan.count("GlcNAc", match_some_fg=True, match_root=True) == 0
+    assert glycan.count("GlcNAc6S", match_some_fg=True, match_root=True) == 0
+    assert glycan.count("Fuc", match_some_fg=True, match_root=True) == 0
 
 
 @pytest.mark.todo
 def test_count_match_leaves_some_fg(glycan):
-    assert glycan.count("Gal", match_all_fg=True, match_leaves=True) == 2
-    assert glycan.count("GalNAc", match_all_fg=True, match_leaves=True) == 2
-    assert glycan.count("Glc", match_all_fg=True, match_leaves=True) == 0
-    assert glycan.count("GlcNAc", match_all_fg=True, match_leaves=True) == 1
-    assert glycan.count("GlcNAc6S", match_all_fg=True, match_leaves=True) == 0
-    assert glycan.count("Fuc", match_all_fg=True, match_leaves=True) == 2
+    assert glycan.count("Gal", match_some_fg=True, match_leaves=True) == 2
+    assert glycan.count("GalNAc", match_some_fg=True, match_leaves=True) == 2
+    assert glycan.count("Glc", match_some_fg=True, match_leaves=True) == 1
+    assert glycan.count("GlcNAc", match_some_fg=True, match_leaves=True) == 1
+    assert glycan.count("GlcNAc6S", match_some_fg=True, match_leaves=True) == 0
+    assert glycan.count("Fuc", match_some_fg=True, match_leaves=True) == 2
 
 
 def test_count_match_nodes_poly(glycan):

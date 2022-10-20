@@ -55,8 +55,8 @@ def recipe_equality(glycan, query, no=False, some=False, every=False):
         return recipe_glycan[list(zip(*recipe_glycan))[1].index(GlycanLexer.SAC)] == \
                recipe_query[list(zip(*recipe_query))[1].index(GlycanLexer.SAC)]
     if some:
-        raise NotImplementedError("Matching to a subset of functional groups is not yet implemented. Coming soon.")
-        # if query's fgs have to be a subset of glycan's fgs, do some magic
+        # raise NotImplementedError("Matching to a subset of functional groups is not yet implemented. Coming soon.")
+        """# if query's fgs have to be a subset of glycan's fgs, do some magic
         recipe_glycan, recipe_query = glycan.get_recipe(), query.get_recipe()
         if recipe_glycan[list(zip(*recipe_glycan))[1].index(GlycanLexer.SAC)] != \
                 recipe_query[list(zip(*recipe_query))[1].index(GlycanLexer.SAC)]:
@@ -65,7 +65,8 @@ def recipe_equality(glycan, query, no=False, some=False, every=False):
         inv = dict([(v, k) for k, v in iso])
         ring_o = query.x[querx.x[:, 1] == 100]
         if ring_o not in inv:
-            return False
+            return False"""
+        return len(set(query.get_recipe()).difference(set(glycan.get_recipe()))) == 0
     if every:
         # if all functional groups have to be matched, compare the smiles strings of both
         return compare_smiles(glycan.get_structure(), query.get_structure())
