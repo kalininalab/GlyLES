@@ -1,6 +1,9 @@
 # GlyLES
 
-![testing](https://github.com/kalininalab/glyles/actions/workflows/test.yaml/badge.svg) ![piwheels](https://img.shields.io/piwheels/v/glyles) ![PyPI - Downloads](https://img.shields.io/pypi/dm/glyles) [![codecov](https://codecov.io/gh/kalininalab/GlyLES/branch/main/graph/badge.svg)](https://codecov.io/gh/kalininalab/glyles)
+![testing](https://github.com/kalininalab/glyles/actions/workflows/test.yaml/badge.svg) 
+![piwheels](https://img.shields.io/piwheels/v/glyles) 
+![PyPI - Downloads](https://img.shields.io/pypi/dm/glyles) 
+[![codecov](https://codecov.io/gh/kalininalab/GlyLES/branch/main/graph/badge.svg)](https://codecov.io/gh/kalininalab/glyles)
 
 A tool to convert IUPAC representation of Glycans into SMILES representation. This repo is still in the development 
 phase; so, feel free to report any errors or issues.
