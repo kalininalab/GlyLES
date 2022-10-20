@@ -25,7 +25,7 @@ class TreeWalker:
         Parse a parsed tree (AST) from ANTLR into this networkx graph.
 
         Args:
-            t (antlr.ParseTree): result of the parsing step from ANTLR
+            t (GlycanParser.StartContext): result of the parsing step from ANTLR
 
         Returns:
             Tree of parsed glycan with monomers in nodes
@@ -54,7 +54,7 @@ class TreeWalker:
         connections in the input IUPAC.
 
         Args:
-            t (antlr.ParseTree): subtree to parse in this recursive step.
+            t (GlycanParser.StartContext): subtree to parse in this recursive step.
             parent (int): ID of the parent node for this (subtree)
 
         Returns:
@@ -141,7 +141,7 @@ class TreeWalker:
         Add a new node to the network based on the name of the represented glycan.
 
         Args:
-            node (antlr.Node): Node of the parsed tree to be parsed into a monomer
+            node (GlycanParser.GlycanContext): Node of the parsed tree to be parsed into a monomer
             config (str): configuration to be applied to the monomer
 
         Returns:

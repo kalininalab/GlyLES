@@ -11,6 +11,7 @@ from rdkit.Chem.Descriptors import ExactMolWt
 
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.mono.reactor import functional_groups
+from glyles.glycans.mono.monomer import Monomer
 from glyles.glycans.poly.merger import Merger
 from glyles.glycans.poly.walker import TreeWalker
 from glyles.glycans.utils import ParseError, find_isomorphism_nx
@@ -18,7 +19,20 @@ from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
 
 
-def compare_smiles(c, s):
+def compare_smiles(
+        c: Chem.Mol,
+        s: Chem.Mol
+):
+    """
+    Compare two molecules if they are equal.
+
+    Args:
+        c: molecule 1
+        s: molecule 2
+
+    Returns:
+        True if their kekulized, canonical SMILES string is equal; False otherwise
+    """
     Chem.Kekulize(c)
     Chem.Kekulize(s)
 
@@ -27,7 +41,13 @@ def compare_smiles(c, s):
     return csmiles == ssmiles
 
 
-def recipe_equality(glycan, query, no=False, some=False, every=False):
+def recipe_equality(
+        glycan: Monomer,
+        query: Monomer,
+        no: bool = False,
+        some: bool = False,
+        every: bool = False
+):
     """
     Checking if two monomers are considered isomorphic under the given mode of isomorphism. One of the bool-flags has
     to be set.
@@ -36,11 +56,11 @@ def recipe_equality(glycan, query, no=False, some=False, every=False):
         node-match's first argument is always from first node, second argument always from second graph
 
     Args:
-        glycan (Monomer): monomer to search in
-        query (Monomer): monomer to find in glycan
-        no (bool): If True, only match basic monosaccharide, no functional groups
-        some (bool): If True, match all of query's groups but not all of glycan's groups
-        every (bool): If True, glycans must match exactly, i.e., modifications have to be the same
+        glycan: monomer to search in
+        query: monomer to find in glycan
+        no: If True, only match basic monosaccharide, no functional groups
+        some: If True, match all of query's groups but not all of glycan's groups
+        every: If True, glycans must match exactly, i.e., modifications have to be the same
 
     Returns:
         True if glycan and query are considered equal under given circumstances
@@ -83,16 +103,23 @@ class Glycan:
     resulting abstract syntax trees (AST)s are not intuitive.
     """
 
-    def __init__(self, iupac, root_orientation="n", start=100, tree_only=False, full=True):
+    def __init__(
+            self,
+            iupac: str,
+            root_orientation: str = "n",
+            start: int = 100,
+            tree_only: bool = False,
+            full: bool = True
+    ):
         """
         Initialize the glycan from the IUPAC string.
 
         Args:
-            iupac (str): IUPAC string representation of the glycan to represent
-            root_orientation (str): orientation of the root monomer in the glycan (choose from 'a', 'b', 'n')
-            start (int): ID of the atom to start with in the root monomer when generating the SMILES
-            tree_only (bool): Flag indicating to only parse the tree of glycans and not the modifications
-            full (bool): Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
+            iupac: IUPAC string representation of the glycan to represent
+            root_orientation: orientation of the root monomer in the glycan (choose from 'a', 'b', 'n')
+            start: ID of the atom to start with in the root monomer when generating the SMILES
+            tree_only: Flag indicating to only parse the tree of glycans and not the modifications
+            full: Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
                 such as 3-Anhydro-[...] are also present in the SMILES
         """
         self.iupac = iupac
@@ -116,7 +143,7 @@ class Glycan:
         [leaves], molecular weight [weight].
 
         Returns:
-            The above named statistics are
+            The above named statistics are returned as dictionary with the given keys.
         """
         # generate smiles for this molecule and check it's not empty
         smiles = self.get_smiles()
@@ -144,13 +171,13 @@ class Glycan:
 
     def count(
             self,
-            glycan,
-            match_all_fg=False,
-            match_some_fg=False,
-            match_edges=False,
-            match_nodes=False,
-            match_leaves=False,
-            match_root=False,
+            glycan: Union[str, 'Glycan'],
+            match_all_fg: bool = False,
+            match_some_fg: bool = False,
+            match_edges: bool = False,
+            match_nodes: bool = False,
+            match_leaves: bool = False,
+            match_root: bool = False,
     ):
         """
         Match a glycan against a query molecule and return the number of hits. This matching can be restricted by 
@@ -160,13 +187,13 @@ class Glycan:
         query "Gal" will result a hit in "GalNAc6S b" but neither do "Gal a" or "Gal b".
 
         Args:
-            glycan (Union[str, Glycan]): query glycan to be matched against the monomers of this glycan
-            match_all_fg (bool): flag indicating to match all fgs of the query glycan to all fgs of a monomer
-            match_some_fg (bool): flag indicating to match all fgs of the query glycan to some fgs of a monomer
-            match_edges (bool): flag indicating to also match edges
-            match_nodes (bool): flag indicating to match against all nodes
-            match_leaves (bool): flag indicating to match against the leaf monomers only
-            match_root (bool): flag indicating to match against the root monomer only
+            glycan: query glycan to be matched against the monomers of this glycan
+            match_all_fg: flag indicating to match all fgs of the query glycan to all fgs of a monomer
+            match_some_fg: flag indicating to match all fgs of the query glycan to some fgs of a monomer
+            match_edges: flag indicating to also match edges
+            match_nodes: flag indicating to match against all nodes
+            match_leaves: flag indicating to match against the leaf monomers only
+            match_root: flag indicating to match against the root monomer only
 
         Returns:
             The number of matches of the query in this glycan under the given conditions
@@ -200,13 +227,15 @@ class Glycan:
         if match_root:
             return sum([kwargs["node_match"](self.parse_tree.nodes[0], glycan.parse_tree.nodes[0])])
 
-    def count_protonation(self, groups):
+    def count_protonation(
+            self,
+            groups: bool
+    ):
         """
         Count the possible deprotonation sites in the final molecule.
 
         Args:
-            groups (bool): If True, count functional groups that can be deprotonated; otherwise, count possible
-                deprotonations
+            groups: If True, count functional groups that can be deprotonated; otherwise, count possible deprotonations.
 
         Returns:
             The number of possible deprotonations in the molecule.
@@ -241,13 +270,15 @@ class Glycan:
                             count += val ** groups
         return count
 
-    def count_functional_groups(self, groups: Union[str, List[str]]):
+    def count_functional_groups(
+            self,
+            groups: Union[str, List[str]]
+    ):
         """
         Count the number of the provided functional group in the final molecule.
 
         Args:
-            groups: string of a specific group to find or a list of strings.
-                Those strings have to be valid SMILES strings.
+            groups: string of a specific group to find or a list of strings, which have to be valid SMILES strings.
 
         Returns:
             The number of matches of all functional groups. This count might overlap in the matched atoms.
