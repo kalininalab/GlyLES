@@ -1,20 +1,16 @@
-.. GlyLES documentation master file, created by
-   sphinx-quickstart on Thu Oct 20 13:12:58 2022.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Welcome to the documentation of GlyLES
+====
 
-Welcome to GlyLES's documentation!
-==================================
+:github_url: https://github.com/kalininalab/glyles
+
+GlyLES documentation
+====
+
+Welcome to the documentation of GlyLES!
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+    :glob:
+    :maxdepth: 1
+    :caption: Notes
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+    notes/installation
