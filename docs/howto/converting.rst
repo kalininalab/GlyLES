@@ -23,6 +23,9 @@ The output will be a list with one tuple containing the input IUPAC-condensed st
 .. code:: python
 
     convert("Gal")
+
+Output:
+
 .. code:: console
 
     [('Gal', 'O1C(O)[C@H](O)[C@@H](O)[C@@H](O)[C@H]1CO')]
@@ -35,6 +38,8 @@ The output will be a list with as many tuples as structures are given. All tuple
 .. code:: python
 
     convert(glycan_list=["Gal", "Man", "GalNAc", "NeuAc"])
+
+Output:
 
 .. code:: console
 
@@ -51,6 +56,8 @@ Input can also be a file where each file contains one glycan per line.
 .. code:: python
 
     convert(glycan_file="files/general.txt")
+
+Output:
 
 .. code:: console
 
@@ -73,6 +80,8 @@ The output will be the same as if the input is a list of glycans.
 
 
     convert(glycan_generator=gen())
+
+Output:
 
 .. code:: console
 
@@ -97,6 +106,8 @@ As output one can select to have a generator which is especially helpful if the 
     print(type(output))
     for g in output:
         print(g)
+
+Output:
 
 .. code:: console
 
@@ -124,6 +135,8 @@ If file-output is not selected and returning the list is actively rejected, the 
 
     convert(glycan_list=["Gal", "Man", "GalNAc", "NeuAc", "Ne{u"], returning=False)
 
+Output:
+
 .. code:: console
 
     WARNING:root:No output-file specified, results will be printed on stdout.
@@ -145,6 +158,8 @@ As we see form the code-cell above, the program might print some messages. This 
 
     convert(glycan_list=["Gal", "Man", "GalNAc", "NeuAc", "Ne{u"], verbose=logging.WARNING)
 
+Output:
+
 .. code:: console
 
     ERROR:root:A parsing error occurred with Ne{u: <class 'glyles.glycans.utils.ParseError'>
@@ -161,6 +176,8 @@ As pythons built-in logging library does not support for turning off all logging
 .. code:: python
 
     convert(glycan_list=["Gal", "Man", "GalNAc", "NeuAc", "Ne{u"], verbose=None)
+
+Output:
 
 .. code:: python
 
