@@ -3,7 +3,7 @@ from rdkit import Chem
 from rdkit.Chem import GetAdjacencyMatrix
 from rdkit.Chem.rdchem import BondType
 
-from glyles.glycans.utils import Config, Enantiomer, Lactole
+from glyles.glycans.utils import Config, Enantiomer, Lactole, Tree
 
 
 class OpenFactory:
