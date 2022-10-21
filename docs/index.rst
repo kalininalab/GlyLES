@@ -1,8 +1,9 @@
 Welcome to the documentation of GlyLES
 ====
 
-:github_url: https://github.com/kalininalab/glyles
-:pypi_url: https://pypi.org/project/glyles/
+A tool to convert IUPAC representation of Glycans into SMILES representation.
+The code is available onf github: https://github.com/kalininalab/glyles
+and can be installed with `pip`: https://pypi.org/project/glyles/
 
 GlyLES documentation
 ====
