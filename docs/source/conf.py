@@ -31,8 +31,8 @@ author = "Roman Joeres"
 project = "GlyLES"
 copyright = f"{datetime.datetime.now().year}, {author}"
 
-version = "0.4.1"
-release = "0.4.1"
+version = list(open("../pyproject.toml", "r").readlines())[2].strip().split("\"")[1].split("\"")[0]
+release = version
 
 html_theme = "sphinx_rtd_theme"
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
