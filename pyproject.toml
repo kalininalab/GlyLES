@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "glyles"
-version = "0.5.0"
+version = "0.4.2"
 repository = "https://github.com/kalininalab/GlyLES"
 readme = "README.md"
 description = "A tool to convert IUPAC representation of glycans into SMILES strings"
@@ -21,6 +21,7 @@ pydot = "^1.4.2"
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
 notebook = "^6.4.12"
+sphinx-rtd-theme = "^1.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
