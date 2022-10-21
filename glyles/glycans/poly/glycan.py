@@ -179,24 +179,31 @@ class Glycan:
             match_leaves: bool = False,
             match_root: bool = False,
     ):
-        """
-        Match a glycan against a query molecule and return the number of hits. This matching can be restricted by 
+        """Match a glycan against a query molecule and return the number of hits. This matching can be restricted by
         setting some flags introducing additional conditions of the matches.
 
         This matching does not include the configuration (alpha/beta/undefined) of the root monomer of the query. So
         query "Gal" will result a hit in "GalNAc6S b" but neither do "Gal a" or "Gal b".
 
-        Args:
-            glycan: query glycan to be matched against the monomers of this glycan
-            match_all_fg: flag indicating to match all fgs of the query glycan to all fgs of a monomer
-            match_some_fg: flag indicating to match all fgs of the query glycan to some fgs of a monomer
-            match_edges: flag indicating to also match edges
-            match_nodes: flag indicating to match against all nodes
-            match_leaves: flag indicating to match against the leaf monomers only
-            match_root: flag indicating to match against the root monomer only
+        :param glycan: query glycan to be matched against the monomers of this glycan
+        :type glycan: class: `glyles.glycans.poly.glycan.Glycan`
+        :param match_all_fg: flag indicating to match all fgs of the query glycan to all fgs of a monomer,
+            defaults to False
+        :type match_all_fg: bool, optional
+        :param match_some_fg: flag indicating to match all fgs of the query glycan to some fgs of a monomer,
+            defaults to False
+        :type match_all_fg: bool, optional
+        :param match_edges: flag indicating to also match edges, defaults to False
+        :type match_all_fg: bool, optional
+        :param match_nodes: flag indicating to match against all nodes, defaults to False
+        :type match_all_fg: bool, optional
+        :param match_leaves: flag indicating to match against the leaf monomers only, defaults to False
+        :type match_all_fg: bool, optional
+        :param match_root: flag indicating to match against the root monomer only, defaults to False
+        :type match_all_fg: bool, optional
 
-        Returns:
-            The number of matches of the query in this glycan under the given conditions
+        :return: The number of matches of the query in this glycan under the given conditions
+        :rtype: int
         """
         if sum([match_nodes, match_leaves, match_root]) != 1:
             raise ValueError("Exactly one of match_nodes, match_leaves, match_root has to be True.")

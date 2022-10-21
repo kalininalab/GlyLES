@@ -5,7 +5,7 @@ import sys
 
 import sphinx_rtd_theme
 
-sys.path.append(os.path.abspath(".."))
+sys.path.insert(0, os.path.abspath("./.."))
 
 import glyles
 
