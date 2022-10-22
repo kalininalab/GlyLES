@@ -1,6 +1,8 @@
 import os
 import sys
 import logging
+from multiprocessing import cpu_count as av_cpus
+from multiprocessing.pool import ThreadPool
 
 from glyles.glycans.utils import ParseError
 from glyles.glycans.poly.glycan import Glycan
@@ -42,6 +44,7 @@ def convert(
         output_file=None,
         returning=True,
         verbose=logging.INFO,
+        cpu_count=1,
         full=True,
 ):
     """
@@ -58,6 +61,8 @@ def convert(
         output_file (str): File to save the converted glycans in
         returning (bool): Flag indicating to return a list of tuples
         verbose (Union[int, None]): Flag indicating to have no prints from this method
+        cpu_count (int): Number of processes to use. Values >1 activates multiprocessing.
+            This does not work for generator input.
         full (bool): Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
             such as 3-Anhydro-[...] are also present in the SMILES
 
@@ -94,15 +99,29 @@ def convert(
 
     # convert the IUPAC strings into SMILES strings from the input list
     if len(glycans) != 0:
-        for glycan, smiles in convert_generator(glycan_list=glycans, verbose=verbose, full=full):
-            if returning:
-                output.append((glycan, smiles))
-            else:
-                print(glycan, smiles, file=output, sep=",")
+        if cpu_count > 1:
+            pool = ThreadPool(processes=min(cpu_count, av_cpus()))
+            tasks = [None for _ in range(len(glycans))]
+            for i, glycan in enumerate(glycans):
+                tasks[i] = pool.apply_async(convert, (glycan, full))
+            for i in range(len(tasks)):
+                glycan, smiles = tasks[i].get()
+                if returning:
+                    output.append((glycan, smiles))
+                else:
+                    print(glycan, smiles, file=output, sep=",")
+        else:
+            for iupac in glycans:
+                glycan, smiles = generate(iupac, full)
+                if returning:
+                    output.append((glycan, smiles))
+                else:
+                    print(glycan, smiles, file=output, sep=",")
 
     # and from the input generator
     if glycan_generator is not None:
-        for glycan, smiles in convert_generator(glycan_generator=glycan_generator, verbose=verbose, full=full):
+        for iupac in glycan_generator:
+            glycan, smiles = convert(iupac, full)
             if returning:
                 output.append((glycan, smiles))
             else:
@@ -123,6 +142,7 @@ def convert_generator(
         glycan_file=None,
         glycan_generator=None,
         verbose=logging.INFO,
+        cpu_count=1,
         full=True,
 ):
     """
@@ -137,6 +157,8 @@ def convert_generator(
         glycan_generator (generator): generator yielding iupac representation.
             Together with output_generator=True this does not create any lists
         verbose (Union[int, None]): Flag indicating to have no output-messages from this method
+        cpu_count (int): Number of processes to use. Values >1 activates multiprocessing.
+            This does not work for generator input.
         full (bool): Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
             such as 3-Anhydro-[...] are also present in the SMILES
 
@@ -156,8 +178,16 @@ def convert_generator(
 
     # Convert the glycans ...
     if len(glycans) != 0:
-        for glycan in glycans:
-            yield generate(glycan, full)
+        if cpu_count > 1:
+            pool = ThreadPool(processes=min(cpu_count, av_cpus()))
+            tasks = [None for _ in range(len(glycans))]
+            for i, glycan in enumerate(glycans):
+                tasks[i] = pool.apply_async(convert, (glycan, full))
+            for i in range(len(tasks)):
+                yield tasks[i].get()
+        else:
+            for glycan in glycans:
+                yield generate(glycan, full)
 
     # Convert the glycans ...
     if glycan_generator is not None:
