@@ -242,7 +242,8 @@ class Glycan:
         Count the possible deprotonation sites in the final molecule.
 
         Args:
-            groups: If True, count functional groups that can be deprotonated; otherwise, count possible deprotonations.
+            groups: If True, count functional groups based on their common atom, so an SO2 group will count as 1.
+                Otherwise, count groups based on the protonizable oxygen atoms, so an SO2 group will count as 2.
 
         Returns:
             The number of possible deprotonations in the molecule.
@@ -274,7 +275,7 @@ class Glycan:
                         if mol.GetAtomWithIdx(aid).GetAtomicNum() == core and aid not in matched_atoms:
                             matched_atoms.add(aid)
                             # do some trick to either count groups to be deprotonated or possibly chargable atoms
-                            count += val ** groups
+                            count += val ** (1 - groups)
         return count
 
     def count_functional_groups(
@@ -285,7 +286,8 @@ class Glycan:
         Count the number of the provided functional group in the final molecule.
 
         Args:
-            groups: string of a specific group to find or a list of strings, which have to be valid SMILES strings.
+            groups: each string has to be a valid functional group representable by this tool, a valid SMILES string or
+                a valid SMARTS string
 
         Returns:
             The number of matches of all functional groups. This count might overlap in the matched atoms.
@@ -310,7 +312,8 @@ class Glycan:
             if group in functional_groups:
                 tmp = Chem.MolFromSmiles(functional_groups[group])
             else:
-                tmp = Chem.MolFromSmiles(group)
+                tmp = Chem.MolFromSmiles(group, sanitize=False)
+
             # check the functional groups for validity
             if tmp is None:
                 raise ValueError(f"The functional group {group} cannot be parsed into a molecule. "
@@ -318,7 +321,20 @@ class Glycan:
             fgs.append(tmp)
 
         # sum over matches of functional groups
-        return sum([len(mol.GetSubstructMatches(g)) for g in fgs])
+        count = 0
+        hydro_mol = Chem.rdmolops.AddHs(mol)
+        for g in fgs:
+            matched = set()
+            if 1 in set(a.GetAtomicNum() for a in g.GetAtoms()):
+                matches = hydro_mol.GetSubstructMatches(g)
+            else:
+                matches = mol.GetSubstructMatches(g)
+            for match in matches:
+                match = set(match)
+                if len(matched.intersection(match)) == 0:
+                    count += 1
+                    matched = matched.union(match)
+        return count
 
     def get_smiles(self):
         """

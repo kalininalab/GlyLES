@@ -103,7 +103,7 @@ def convert(
             pool = ThreadPool(processes=min(cpu_count, av_cpus()))
             tasks = [None for _ in range(len(glycans))]
             for i, glycan in enumerate(glycans):
-                tasks[i] = pool.apply_async(convert, (glycan, full))
+                tasks[i] = pool.apply_async(generate, (glycan, full))
             for i in range(len(tasks)):
                 glycan, smiles = tasks[i].get()
                 if returning:
@@ -121,7 +121,7 @@ def convert(
     # and from the input generator
     if glycan_generator is not None:
         for iupac in glycan_generator:
-            glycan, smiles = convert(iupac, full)
+            glycan, smiles = generate(iupac, full)
             if returning:
                 output.append((glycan, smiles))
             else:
@@ -182,7 +182,7 @@ def convert_generator(
             pool = ThreadPool(processes=min(cpu_count, av_cpus()))
             tasks = [None for _ in range(len(glycans))]
             for i, glycan in enumerate(glycans):
-                tasks[i] = pool.apply_async(convert, (glycan, full))
+                tasks[i] = pool.apply_async(generate, (glycan, full))
             for i in range(len(tasks)):
                 yield tasks[i].get()
         else:
