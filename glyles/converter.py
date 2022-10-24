@@ -101,6 +101,7 @@ def convert(
     if len(glycans) != 0:
         if cpu_count > 1:
             pool = ThreadPool(processes=min(cpu_count, av_cpus()))
+            print(min(cpu_count, av_cpus()))
             tasks = [None for _ in range(len(glycans))]
             for i, glycan in enumerate(glycans):
                 tasks[i] = pool.apply_async(generate, (glycan, full))

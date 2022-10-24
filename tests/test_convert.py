@@ -1,4 +1,5 @@
 import os
+import time
 
 from glyles import Glycan
 from glyles.converter import convert, convert_generator
@@ -68,12 +69,25 @@ class TestConverter:
         assert output[0][0] == "Glc b"
         compare_smiles(output[0][1], "OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O")
 
-    def test_dummy(self):
-        glycan = Glycan("Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-6)]Gal(b1-3)[GlcNAc(a1-4)Gal(b1-4)GlcNAc6S(b1-6)]GalNAc")
-        # assert glycan.count_functional_groups("CO") > 0  # count carboxy groups
-        assert glycan.count_functional_groups("[#6]-[#8]-[#1]") > 0  # or insert it as SMARTS to get the matches you meant
-        # assert glycan.count_functional_groups("S") > 0  # find the sulfate group
-        # assert glycan.count_functional_groups("NC(=O)C") > 0  # count NAc groups
+    def test_parallel(self):
+        with open("data/runtime.tsv", "r") as runtime:
+            glycans = [line.strip().split("\t")[0] for line in runtime.readlines()]
+        start = time.time()
+        smiles = convert(glycan_list=glycans, cpu_count=14)
+        end = time.time()
+        print(end - start)
+
+        assert len(smiles) == len(smiles)
+
+    def test_parallel_2(self):
+        with open("data/runtime.tsv", "r") as runtime:
+            glycans = [line.strip().split("\t")[0] for line in runtime.readlines()]
+        start = time.time()
+        smiles = convert(glycan_list=glycans)
+        end = time.time()
+        print(end - start)
+
+        assert len(smiles) == len(smiles)
 
     """def test_convert_1_1_1(self):
         output, log_out, log_err = catch_output(method=convert, silent=False)
