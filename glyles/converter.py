@@ -1,8 +1,6 @@
 import os
 import sys
 import logging
-from multiprocessing import cpu_count as av_cpus
-from multiprocessing.pool import ThreadPool
 
 from glyles.glycans.utils import ParseError
 from glyles.glycans.poly.glycan import Glycan
@@ -99,25 +97,12 @@ def convert(
 
     # convert the IUPAC strings into SMILES strings from the input list
     if len(glycans) != 0:
-        if cpu_count > 1:
-            pool = ThreadPool(processes=min(cpu_count, av_cpus()))
-            print(min(cpu_count, av_cpus()))
-            tasks = [None for _ in range(len(glycans))]
-            for i, glycan in enumerate(glycans):
-                tasks[i] = pool.apply_async(generate, (glycan, full))
-            for i in range(len(tasks)):
-                glycan, smiles = tasks[i].get()
-                if returning:
-                    output.append((glycan, smiles))
-                else:
-                    print(glycan, smiles, file=output, sep=",")
-        else:
-            for iupac in glycans:
-                glycan, smiles = generate(iupac, full)
-                if returning:
-                    output.append((glycan, smiles))
-                else:
-                    print(glycan, smiles, file=output, sep=",")
+        for iupac in glycans:
+            glycan, smiles = generate(iupac, full)
+            if returning:
+                output.append((glycan, smiles))
+            else:
+                print(glycan, smiles, file=output, sep=",")
 
     # and from the input generator
     if glycan_generator is not None:
@@ -179,16 +164,8 @@ def convert_generator(
 
     # Convert the glycans ...
     if len(glycans) != 0:
-        if cpu_count > 1:
-            pool = ThreadPool(processes=min(cpu_count, av_cpus()))
-            tasks = [None for _ in range(len(glycans))]
-            for i, glycan in enumerate(glycans):
-                tasks[i] = pool.apply_async(generate, (glycan, full))
-            for i in range(len(tasks)):
-                yield tasks[i].get()
-        else:
-            for glycan in glycans:
-                yield generate(glycan, full)
+        for glycan in glycans:
+            yield generate(glycan, full)
 
     # Convert the glycans ...
     if glycan_generator is not None:
