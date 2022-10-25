@@ -1,6 +1,8 @@
 import os
 import time
 
+import pytest
+
 from glyles import Glycan
 from glyles.converter import convert, convert_generator
 from tests.utils import setup_test, smiles_samples
@@ -69,6 +71,7 @@ class TestConverter:
         assert output[0][0] == "Glc b"
         compare_smiles(output[0][1], "OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O")
 
+    @pytest.mark.todo
     def test_parallel(self):
         with open("data/runtime.tsv", "r") as runtime:
             glycans = [line.strip().split("\t")[0] for line in runtime.readlines()]
@@ -79,6 +82,7 @@ class TestConverter:
 
         assert len(smiles) == len(smiles)
 
+    @pytest.mark.todo
     def test_parallel_2(self):
         with open("data/runtime.tsv", "r") as runtime:
             glycans = [line.strip().split("\t")[0] for line in runtime.readlines()]

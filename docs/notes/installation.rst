@@ -1,9 +1,9 @@
 Installation
-=====
+============
 
 
 PIP installation
-----
+----------------
 
 So far, this package can only be downloaded from the python package index. So the installation with ``pip`` is very easy.
 Just type
@@ -22,7 +22,7 @@ and you're ready to use it as described below. Use
 to upgrade the glyles package to the most recent version.
 
 Testing installation
-----
+--------------------
 
 To test the installation, just run
 
