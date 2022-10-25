@@ -149,5 +149,5 @@ def test_count_functional_groups(glycan):
 
 
 def test_count_protonation(glycan):
-    assert glycan.count_protonation(groups=False) == 2
-    assert glycan.count_protonation(groups=True) == 1
+    assert glycan.count_protonation(grouping=False) == 2
+    assert glycan.count_protonation(grouping=True) == 1
