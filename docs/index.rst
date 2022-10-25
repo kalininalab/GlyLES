@@ -16,13 +16,14 @@ Welcome to the documentation of GlyLES!
     :caption: Notes
 
     notes/installation
+    notes/notation
 
 .. toctree::
     :glob:
-    :maxdepth: 2
+    :maxdepth: 1
     :caption: Usage
 
-    howto/converting
+    howto/conversion
     howto/visualization
     howto/filtering
 

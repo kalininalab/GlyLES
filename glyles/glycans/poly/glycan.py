@@ -103,23 +103,16 @@ class Glycan:
     resulting abstract syntax trees (AST)s are not intuitive.
     """
 
-    def __init__(
-            self,
-            iupac: str,
-            root_orientation: str = "n",
-            start: int = 100,
-            tree_only: bool = False,
-            full: bool = True
-    ):
+    def __init__(self, iupac, root_orientation="n", start=100, tree_only=False, full=True):
         """
         Initialize the glycan from the IUPAC string.
 
         Args:
-            iupac: IUPAC string representation of the glycan to represent
-            root_orientation: orientation of the root monomer in the glycan (choose from 'a', 'b', 'n')
-            start: ID of the atom to start with in the root monomer when generating the SMILES
-            tree_only: Flag indicating to only parse the tree of glycans and not the modifications
-            full: Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
+            iupac (str): IUPAC string representation of the glycan to represent
+            root_orientation (str): orientation of the root monomer in the glycan (choose from 'a', 'b', 'n')
+            start (int): ID of the atom to start with in the root monomer when generating the SMILES
+            tree_only (int): Flag indicating to only parse the tree of glycans and not the modifications
+            full (bool): Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
                 such as 3-Anhydro-[...] are also present in the SMILES
         """
         self.iupac = iupac
@@ -165,45 +158,30 @@ class Glycan:
             "monomers": len(self.parse_tree.nodes),
             "types": dict(Counter([self.parse_tree.nodes[n]["type"].get_name(True) for n in self.parse_tree.nodes])),
             "root": self.parse_tree.nodes[0]["type"].get_name(True),
-            "leaves": [self.parse_tree.nodes[n]["type"].get_name(True) for n, d in self.parse_tree.out_degree() if d == 0],
+            "leaves": [self.parse_tree.nodes[n]["type"].get_name(True) for n, d in self.parse_tree.out_degree() if
+                       d == 0],
             "depth": max([v for k, v in nx.shortest_path_length(self.parse_tree, 0).items()]),
         }
 
-    def count(
-            self,
-            glycan: Union[str, 'Glycan'],
-            match_all_fg: bool = False,
-            match_some_fg: bool = False,
-            match_edges: bool = False,
-            match_nodes: bool = False,
-            match_leaves: bool = False,
-            match_root: bool = False,
-    ):
+    def count(self, glycan, match_all_fg=False, match_some_fg=False, match_edges=False, match_nodes=False,
+              match_leaves=False, match_root=False):
         """Match a glycan against a query molecule and return the number of hits. This matching can be restricted by
         setting some flags introducing additional conditions of the matches.
 
         This matching does not include the configuration (alpha/beta/undefined) of the root monomer of the query. So
         query "Gal" will result a hit in "GalNAc6S b" but neither do "Gal a" or "Gal b".
 
-        :param glycan: query glycan to be matched against the monomers of this glycan
-        :type glycan: class: `glyles.glycans.poly.glycan.Glycan`
-        :param match_all_fg: flag indicating to match all fgs of the query glycan to all fgs of a monomer,
-            defaults to False
-        :type match_all_fg: bool, optional
-        :param match_some_fg: flag indicating to match all fgs of the query glycan to some fgs of a monomer,
-            defaults to False
-        :type match_all_fg: bool, optional
-        :param match_edges: flag indicating to also match edges, defaults to False
-        :type match_all_fg: bool, optional
-        :param match_nodes: flag indicating to match against all nodes, defaults to False
-        :type match_all_fg: bool, optional
-        :param match_leaves: flag indicating to match against the leaf monomers only, defaults to False
-        :type match_all_fg: bool, optional
-        :param match_root: flag indicating to match against the root monomer only, defaults to False
-        :type match_all_fg: bool, optional
+        Args:
+            glycan (Union[str, 'Glycan']): query glycan to be matched against the monomers of this glycan
+            match_all_fg (bool): flag indicating to match all fgs of the query glycan to all fgs of a monomer
+            match_some_fg (bool): flag indicating to match all fgs of the query glycan to some fgs of a monomer
+            match_edges (bool): flag indicating to also match edges
+            match_nodes (bool): flag indicating to match against all nodes
+            match_leaves (bool): flag indicating to match against the leaf monomers only
+            match_root (bool): flag indicating to match against the root monomer only
 
-        :return: The number of matches of the query in this glycan under the given conditions
-        :rtype: int
+        Returns:
+            The number of matches of the query in this glycan under the given conditions
         """
         if sum([match_nodes, match_leaves, match_root]) != 1:
             raise ValueError("Exactly one of match_nodes, match_leaves, match_root has to be True.")
@@ -230,20 +208,18 @@ class Glycan:
             return len(list(matcher.subgraph_isomorphisms_iter()))
         if match_leaves:
             q = glycan.parse_tree.nodes[0]
-            return sum([kwargs["node_match"](self.parse_tree.nodes[n], q) for n, d in self.parse_tree.out_degree() if d == 0])
+            return sum(
+                [kwargs["node_match"](self.parse_tree.nodes[n], q) for n, d in self.parse_tree.out_degree() if d == 0])
         if match_root:
             return sum([kwargs["node_match"](self.parse_tree.nodes[0], glycan.parse_tree.nodes[0])])
 
-    def count_protonation(
-            self,
-            groups: bool
-    ):
+    def count_protonation(self, grouping):
         """
         Count the possible deprotonation sites in the final molecule.
 
         Args:
-            groups: If True, count functional groups based on their common atom, so an SO2 group will count as 1.
-                Otherwise, count groups based on the protonizable oxygen atoms, so an SO2 group will count as 2.
+            grouping (bool): If True, count functional groups based on their common atom, so an SO2 group will count as
+                1. Otherwise, count groups based on the protonizable oxygen atoms, so an SO2 group will count as 2.
 
         Returns:
             The number of possible deprotonations in the molecule.
@@ -274,20 +250,17 @@ class Glycan:
                         # find the core atom of each match, add it to the list of  covered atoms and increase the count
                         if mol.GetAtomWithIdx(aid).GetAtomicNum() == core and aid not in matched_atoms:
                             matched_atoms.add(aid)
-                            # do some trick to either count groups to be deprotonated or possibly chargable atoms
-                            count += val ** (1 - groups)
+                            # do some trick to either count groups to be deprotonated or possibly chargeable atoms
+                            count += val ** (1 - grouping)
         return count
 
-    def count_functional_groups(
-            self,
-            groups: Union[str, List[str]]
-    ):
+    def count_functional_groups(self, groups):
         """
         Count the number of the provided functional group in the final molecule.
 
         Args:
-            groups: each string has to be a valid functional group representable by this tool, a valid SMILES string or
-                a valid SMARTS string
+            groups (Union[str, List[str]]): each string has to be a valid functional group representable by this tool,
+                a valid SMILES string or a valid SMARTS string
 
         Returns:
             The number of matches of all functional groups. This count might overlap in the matched atoms.
@@ -358,7 +331,7 @@ class Glycan:
         Request the tree parsed from the IUPAC in this instance.
 
         Returns:
-            The parsed tree with the single monomers in the nodes
+            The parsed tree with the single monomers in the nodes.
         """
         return self.parse_tree
 

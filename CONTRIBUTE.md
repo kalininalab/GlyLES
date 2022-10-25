@@ -28,7 +28,9 @@ In order to update the documentation, please you need to install `sphinx` and `s
 documentation by executing
 
 ```shell
-sphinx-build ./ ./build -a
+rm -rf build & sphinx-build ./ ./build -a
 ```
 
-in the `docs` folder.
+in the `docs` folder. This will first remove the old documentation build and create a completely new one. Removing is 
+necessary as in some cases malfunctions accumulate and the number of warnings increase and the documentation even might 
+not build successfully.

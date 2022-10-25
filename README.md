@@ -36,7 +36,7 @@ pip install --upgrade glyles
 
 to upgrade the glyles package to the most recent version.
 
-## Usage
+## Basic Usage
 
 Convert the IUPAC into a SMILES representation using the handy `convert` method
 
@@ -55,7 +55,9 @@ for smiles in convert_generator(glycan_list=["Man(a1-2)Man a", "Man(a1-2)Man b"]
     print(smiles)
 ``````
 
-For more examples of how to use this package, please see the notebooks in the [examples](examples) folder. 
+For more examples of how to use this package, please see the notebooks in the 
+[examples](https://github.com/kalininalab/GlyLES/tree/dev/examples) folder and checkout the documentation on 
+[ReadTheDocs](https://glyles.readthedocs.io/en/latest/index.html).
 
 ## Notation of glycans
 
@@ -64,6 +66,7 @@ There are multiple different notations for glycans in IUPAC. So, according to th
 all describe the same disaccharide. This is also covered in this package as all three notations will be parsed into the 
 same tree of monosaccharides and result in the same SMILES string.
 
+This is also described more detailed in a section on [ReadTheDocs]().
 
 ## Poetry
 

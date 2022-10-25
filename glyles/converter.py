@@ -42,7 +42,6 @@ def convert(
         output_file=None,
         returning=True,
         verbose=logging.INFO,
-        cpu_count=1,
         full=True,
 ):
     """
@@ -59,8 +58,6 @@ def convert(
         output_file (str): File to save the converted glycans in
         returning (bool): Flag indicating to return a list of tuples
         verbose (Union[int, None]): Flag indicating to have no prints from this method
-        cpu_count (int): Number of processes to use. Values >1 activates multiprocessing.
-            This does not work for generator input.
         full (bool): Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
             such as 3-Anhydro-[...] are also present in the SMILES
 
@@ -128,7 +125,6 @@ def convert_generator(
         glycan_file=None,
         glycan_generator=None,
         verbose=logging.INFO,
-        cpu_count=1,
         full=True,
 ):
     """
@@ -143,8 +139,6 @@ def convert_generator(
         glycan_generator (generator): generator yielding iupac representation.
             Together with output_generator=True this does not create any lists
         verbose (Union[int, None]): Flag indicating to have no output-messages from this method
-        cpu_count (int): Number of processes to use. Values >1 activates multiprocessing.
-            This does not work for generator input.
         full (bool): Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
             such as 3-Anhydro-[...] are also present in the SMILES
 

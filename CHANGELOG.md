@@ -7,6 +7,8 @@ Release for publication in Journal of Cheminformatics
 ### Added
 
 - ?,?-Anhydro configurations of glycan implemented for structural representation
+- Open-form representations for "-aric", "-onic", "-ulosonic", and "-ulosaric" glycans
+- Example notebooks and documentation on [ReadTheDocs](https://glyles.readthedocs.io/en/latest/).
 
 ---
 
