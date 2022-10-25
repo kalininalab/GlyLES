@@ -56,7 +56,7 @@ tests = ["pytest"]
 
 [[package]]
 name = "atomicwrites"
-version = "1.4.0"
+version = "1.4.1"
 description = "Atomic file writes."
 category = "dev"
 optional = false
@@ -64,17 +64,17 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "attrs"
-version = "21.4.0"
+version = "22.1.0"
 description = "Classes Without Boilerplate"
 category = "dev"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+python-versions = ">=3.5"
 
 [package.extras]
-dev = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "zope.interface", "furo", "sphinx", "sphinx-notfound-page", "pre-commit", "cloudpickle"]
+dev = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "mypy (>=0.900,!=0.940)", "pytest-mypy-plugins", "zope.interface", "furo", "sphinx", "sphinx-notfound-page", "pre-commit", "cloudpickle"]
 docs = ["furo", "sphinx", "zope.interface", "sphinx-notfound-page"]
-tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "zope.interface", "cloudpickle"]
-tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "cloudpickle"]
+tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "mypy (>=0.900,!=0.940)", "pytest-mypy-plugins", "zope.interface", "cloudpickle"]
+tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "mypy (>=0.900,!=0.940)", "pytest-mypy-plugins", "cloudpickle"]
 
 [[package]]
 name = "babel"
@@ -158,11 +158,11 @@ unicode_backport = ["unicodedata2"]
 
 [[package]]
 name = "colorama"
-version = "0.4.5"
+version = "0.4.6"
 description = "Cross-platform colored terminal text."
 category = "dev"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 
 [[package]]
 name = "debugpy"
@@ -233,7 +233,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "importlib-metadata"
-version = "4.10.0"
+version = "5.0.0"
 description = "Read metadata from Python packages"
 category = "dev"
 optional = false
@@ -244,9 +244,9 @@ typing-extensions = {version = ">=3.6.4", markers = "python_version < \"3.8\""}
 zipp = ">=0.5"
 
 [package.extras]
-docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
+docs = ["sphinx (>=3.5)", "jaraco.packaging (>=9)", "rst.linker (>=1.9)", "furo", "jaraco.tidelift (>=1.4)"]
 perf = ["ipython"]
-testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "packaging", "pyfakefs", "flufl.flake8", "pytest-perf (>=0.9.2)", "pytest-black (>=0.3.7)", "pytest-mypy", "importlib-resources (>=1.3)"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "flake8 (<5)", "pytest-cov", "pytest-enabler (>=1.3)", "packaging", "pyfakefs", "flufl.flake8", "pytest-perf (>=0.9.2)", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)", "importlib-resources (>=1.3)"]
 
 [[package]]
 name = "importlib-resources"
@@ -273,7 +273,7 @@ python-versions = "*"
 
 [[package]]
 name = "ipykernel"
-version = "6.16.0"
+version = "6.16.2"
 description = "IPython Kernel for Jupyter"
 category = "dev"
 optional = false
@@ -293,7 +293,8 @@ tornado = ">=6.1"
 traitlets = ">=5.1.0"
 
 [package.extras]
-test = ["flaky", "ipyparallel", "pre-commit", "pytest-cov", "pytest-timeout", "pytest (>=6.0)"]
+docs = ["myst-parser", "pydata-sphinx-theme", "sphinx", "sphinxcontrib-github-alt"]
+test = ["flaky", "ipyparallel", "pre-commit", "pytest-cov", "pytest-timeout", "pytest (>=7.0)"]
 
 [[package]]
 name = "ipython"
@@ -386,7 +387,7 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 
 [[package]]
 name = "jupyter-client"
-version = "7.4.2"
+version = "7.4.4"
 description = "Jupyter protocol implementation and client libraries"
 category = "dev"
 optional = false
@@ -403,11 +404,11 @@ traitlets = "*"
 
 [package.extras]
 doc = ["ipykernel", "myst-parser", "sphinx-rtd-theme", "sphinx (>=1.3.6)", "sphinxcontrib-github-alt"]
-test = ["codecov", "coverage", "ipykernel (>=6.5)", "ipython", "mypy", "pre-commit", "pytest", "pytest-asyncio (>=0.18)", "pytest-cov", "pytest-timeout"]
+test = ["codecov", "coverage", "ipykernel (>=6.12)", "ipython", "mypy", "pre-commit", "pytest", "pytest-asyncio (>=0.18)", "pytest-cov", "pytest-timeout"]
 
 [[package]]
 name = "jupyter-core"
-version = "4.11.1"
+version = "4.11.2"
 description = "Jupyter core package. A base package on which Jupyter projects rely."
 category = "dev"
 optional = false
@@ -475,7 +476,7 @@ sphinx = ["sphinx-book-theme", "Sphinx (>=1.7)", "myst-parser", "moto", "mock", 
 
 [[package]]
 name = "nbconvert"
-version = "7.2.1"
+version = "7.2.2"
 description = "Converting Jupyter Notebooks"
 category = "dev"
 optional = false
@@ -525,6 +526,34 @@ traitlets = ">=5.1"
 
 [package.extras]
 test = ["check-manifest", "pep440", "pre-commit", "pytest", "testpath"]
+
+[[package]]
+name = "nbsphinx"
+version = "0.8.9"
+description = "Jupyter Notebook Tools for Sphinx"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+docutils = "*"
+jinja2 = "*"
+nbconvert = "!=5.4"
+nbformat = "*"
+sphinx = ">=1.8"
+traitlets = ">=5"
+
+[[package]]
+name = "nbsphinx-link"
+version = "1.3.0"
+description = "A sphinx extension for including notebook files outside sphinx source root"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+nbsphinx = "*"
+sphinx = ">=1.8"
 
 [[package]]
 name = "nest-asyncio"
@@ -581,7 +610,7 @@ test = ["pytest", "coverage", "requests", "testpath", "nbval", "selenium", "pyte
 
 [[package]]
 name = "numpy"
-version = "1.21.5"
+version = "1.21.4"
 description = "NumPy is the fundamental package for array computing with Python."
 category = "main"
 optional = false
@@ -638,14 +667,6 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "pillow"
-version = "9.0.0"
-description = "Python Imaging Library (Fork)"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[[package]]
 name = "pkgutil-resolve-name"
 version = "1.3.10"
 description = "Resolve a name to an object."
@@ -670,7 +691,7 @@ dev = ["tox", "pre-commit"]
 
 [[package]]
 name = "prometheus-client"
-version = "0.14.1"
+version = "0.15.0"
 description = "Python client for the Prometheus monitoring system."
 category = "dev"
 optional = false
@@ -692,7 +713,7 @@ wcwidth = "*"
 
 [[package]]
 name = "psutil"
-version = "5.9.2"
+version = "5.9.3"
 description = "Cross-platform lib for process and system monitoring in Python."
 category = "dev"
 optional = false
@@ -749,14 +770,14 @@ plugins = ["importlib-metadata"]
 
 [[package]]
 name = "pyparsing"
-version = "3.0.6"
-description = "Python parsing module"
+version = "3.0.9"
+description = "pyparsing module - Classes and methods to define and execute parsing grammars"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.6.8"
 
 [package.extras]
-diagrams = ["jinja2", "railroad-diagrams"]
+diagrams = ["railroad-diagrams", "jinja2"]
 
 [[package]]
 name = "pyrsistent"
@@ -837,7 +858,7 @@ py = {version = "*", markers = "implementation_name == \"pypy\""}
 
 [[package]]
 name = "rdkit-pypi"
-version = "2021.9.4"
+version = "2021.9.2"
 description = "A collection of chemoinformatics and machine-learning software written in C++ and Python"
 category = "main"
 optional = false
@@ -845,7 +866,6 @@ python-versions = "*"
 
 [package.dependencies]
 numpy = ">=1.19"
-Pillow = "*"
 
 [[package]]
 name = "requests"
@@ -1022,7 +1042,7 @@ test = ["pytest"]
 
 [[package]]
 name = "terminado"
-version = "0.16.0"
+version = "0.17.0"
 description = "Tornado websocket backend for the Xterm.js Javascript terminal emulator library."
 category = "dev"
 optional = false
@@ -1034,21 +1054,22 @@ pywinpty = {version = ">=1.1.0", markers = "os_name == \"nt\""}
 tornado = ">=6.1.0"
 
 [package.extras]
-test = ["pre-commit", "pytest-timeout", "pytest (>=6.0)"]
+docs = ["pydata-sphinx-theme", "sphinx"]
+test = ["pre-commit", "pytest-timeout", "pytest (>=7.0)"]
 
 [[package]]
 name = "tinycss2"
-version = "1.1.1"
+version = "1.2.1"
 description = "A tiny CSS parser"
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
 webencodings = ">=0.4"
 
 [package.extras]
-test = ["coverage", "pytest-isort", "pytest-flake8", "pytest-cov", "pytest"]
+test = ["flake8", "isort", "pytest"]
 doc = ["sphinx-rtd-theme", "sphinx"]
 
 [[package]]
@@ -1069,22 +1090,23 @@ python-versions = ">= 3.7"
 
 [[package]]
 name = "traitlets"
-version = "5.4.0"
+version = "5.5.0"
 description = ""
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 
 [package.extras]
+docs = ["myst-parser", "pydata-sphinx-theme", "sphinx"]
 test = ["pre-commit", "pytest"]
 
 [[package]]
 name = "typing-extensions"
-version = "4.0.1"
-description = "Backported and Experimental Type Hints for Python 3.6+"
+version = "4.4.0"
+description = "Backported and Experimental Type Hints for Python 3.7+"
 category = "dev"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [[package]]
 name = "urllib3"
@@ -1117,20 +1139,20 @@ python-versions = "*"
 
 [[package]]
 name = "zipp"
-version = "3.7.0"
+version = "3.10.0"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 
 [package.extras]
-docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
-testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
+docs = ["sphinx (>=3.5)", "jaraco.packaging (>=9)", "rst.linker (>=1.9)", "furo", "jaraco.tidelift (>=1.4)"]
+testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "flake8 (<5)", "pytest-cov", "pytest-enabler (>=1.3)", "jaraco.itertools", "func-timeout", "jaraco.functools", "more-itertools", "pytest-black (>=0.3.7)", "pytest-mypy (>=0.9.1)"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7,<3.11"
-content-hash = "fe130faa610417666d2edce30ad8c0239fbc9c098b9eac6e4eb26433ffadf699"
+content-hash = "8004afcd4437e907fe5ab5bac8fe76431286b37796f79042918c26a1442c9f8c"
 
 [metadata.files]
 alabaster = []
@@ -1174,6 +1196,8 @@ mistune = []
 nbclient = []
 nbconvert = []
 nbformat = []
+nbsphinx = []
+nbsphinx-link = []
 nest-asyncio = []
 networkx = []
 notebook = []
@@ -1183,7 +1207,6 @@ pandocfilters = []
 parso = []
 pexpect = []
 pickleshare = []
-pillow = []
 pkgutil-resolve-name = []
 pluggy = []
 prometheus-client = []
