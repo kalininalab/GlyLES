@@ -12,9 +12,18 @@ class OpenFactory:
     """
 
     __monomers = {
-        "HEX-OL": {"name": "Hexol", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.OPEN,
+        "PEN-OL": {"name": "Pent-ol", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.OPEN,
+                   "smiles": "OCC(O)C(O)C(O)CO",
+                   "c1_find": lambda x: c1_finder(x, "OCC(O)C(O)C(O)CO")},
+        "HEX-OL": {"name": "Hex-ol", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.OPEN,
                    "smiles": "OCC(O)C(O)C(O)C(O)CO",
                    "c1_find": lambda x: c1_finder(x, "OCC(O)C(O)C(O)C(O)CO")},
+        "HEP-OL": {"name": "Hept-ol", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.OPEN,
+                   "smiles": "OCC(O)C(O)C(O)C(O)C(O)CO",
+                   "c1_find": lambda x: c1_finder(x, "OCC(O)C(O)C(O)C(O)C(O)CO")},
+        "OCT-OL": {"name": "Oct-ol", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.OPEN,
+                   "smiles": "OCC(O)C(O)C(O)C(O)C(O)C(O)CO",
+                   "c1_find": lambda x: c1_finder(x, "OCC(O)C(O)C(O)C(O)C(O)C(O)CO")},
         "GLC-OL": {"name": "Glucitol", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.OPEN,
                    "smiles": "OC[C@H](O)[C@@H](O)[C@H](O)[C@H](O)CO",
                    "c1_find": lambda x: c1_finder(x, "OC[C@H](O)[C@@H](O)[C@H](O)[C@H](O)CO")},

@@ -3,8 +3,25 @@ import re
 
 import numpy as np
 
-from glyles.glycans.factory.factory_o import OpenFactory
+from glyles.glycans.factory.factory_o import OpenFactory, c1_finder
 from glyles.grammar.GlycanLexer import GlycanLexer
+
+
+def get_indices(names, types):
+    sac_index = types.index(GlycanLexer.SAC)
+
+    # if there's nothing to do, return
+    if len(types) == sac_index + 1 or (len(types) > sac_index + 1 and types[sac_index + 1] != GlycanLexer.SAC):
+        return sac_index, None
+
+    # identify the root and the new size of the monomer by identifying the indices of their descriptions
+    if names[sac_index + 1] in ["Pen", "Hex", "Hep", "Oct"]:
+        len_index = sac_index + 1
+    else:
+        len_index = sac_index
+        sac_index = len_index + 1
+
+    return sac_index, len_index
 
 
 def check_for_resizing(monomer, names, types):
@@ -19,18 +36,10 @@ def check_for_resizing(monomer, names, types):
     Returns:
         Nothing
     """
-    sac_index = types.index(GlycanLexer.SAC)
+    sac_index, len_index = get_indices(names, types)
 
-    # if there's nothing to do, return
-    if len(types) == sac_index + 1 or (len(types) > sac_index + 1 and types[sac_index + 1] != GlycanLexer.SAC):
+    if len_index is None:
         return
-
-    # identify the root and the new size of the monomer by identifying the indices of their descriptions
-    if names[sac_index + 1] in ["Pen", "Hex", "Hep", "Oct"]:
-        len_index = sac_index + 1
-    else:
-        len_index = sac_index
-        sac_index = len_index + 1
 
     # extract the orientations of the hydroxy-groups along the enlarged chain
     if sac_index != 0 and names[sac_index - 1].count("L") + \
@@ -96,32 +105,34 @@ def check_for_open_form(monomer, names, types, longer=False):
         Nothing
     """
     # identify the descriptions of what to do and determine the new SMILES string
-    sac_index = types.index(GlycanLexer.SAC)
+    sac_index, len_index = get_indices(names, types)
     params = copy.copy(OpenFactory()[names[sac_index] + "-ol"])
 
     if longer:
         last = params["smiles"].rfind("C")
         count = len(re.findall(r"\(C\)", params["smiles"]))
-        if "Pen" in names:
+        if names[len_index] == "Pen":
             maximum = 5
-        elif "Hex" in names:
+        elif names[len_index] == "Hex":
             maximum = 6
-        elif "Hep" in names:
+        elif names[len_index] == "Hep":
             maximum = 7
-        else:  # if "Oct" in names
+        elif names[len_index] == "Oct":
             maximum = 8
+        else:
+            maximum = count
         params["smiles"] = params["smiles"][:last] + "C(O)" * max((maximum - count), 0) + params["smiles"][last:]
 
-    if "-onic" in names or "-aric" in names or "-ulosaric":
+    if "-onic" in names or "-aric" in names:
         params["smiles"] = params["smiles"].replace("C", "C(=O)", 1)
-    if "-aric" in names or "-ulosaric" in names and names[sac_index] != "Qui":
+    if ("-aric" in names or "-ulosaric" in names) and names[sac_index] != "Qui":
         params["smiles"] = params["smiles"][:-1] + "(=O)O"
-    if "-ulosonic" in names or "-olusaric" in names:
-        params["smiles"] = re.sub(r"OC\[C@*H]\(O\)", "OC(=O)C(=O)", params["smiles"], count=1)
+    if "-ulosonic" in names or "-ulosaric" in names:
+        params["smiles"] = re.sub(r"OC\[*C@*[H\]]*\(O\)", "OC(=O)C(=O)", params["smiles"], count=1)
 
     # update the monomer accordingly
     monomer.smiles = params["smiles"]
-    monomer.c1_find = params["c1_find"]
+    monomer.c1_find = lambda x: c1_finder(x, params["smiles"])
     monomer.structure = None
     monomer.get_structure()
 
@@ -138,14 +149,14 @@ def change_base_monomer(monomer, names, types):
     Returns:
         modified monomer object
     """
-    longer = len(set(names).intersection({"Pen", "Hex", "Hep", "Oct"})) != 0
+    longer = get_indices(names, types)[1] is not None
     open_form = len(set(names).intersection({"-ol", "-onic", "-aric", "-ulosonic", "-ulosaric"})) != 0
 
-    if not longer and not open_form:
-        # nothing to do
-        return monomer
+    if not open_form:
+        if not longer:
+            # nothing to do
+            return monomer
 
-    if longer and not open_form:
         # parse for sth. like LDManHep or DDManHep -> afterwards, no need to look for LD/DD/... and Hep/Hex/Pen/Oct
         check_for_resizing(monomer, names, types)
         return monomer

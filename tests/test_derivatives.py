@@ -45,6 +45,12 @@ class TestDerivatives:
         iupac, smiles = line.split("\t")[:2]
         compare_smiles(Glycan(iupac).get_smiles(), smiles)
 
+    @pytest.mark.todo
+    @pytest.mark.parametrize("line", open("data/openforms.tsv", "r").readlines())
+    def test_openform_data(self, line):
+        iupac, smiles = line.strip().split("\t")[:2]
+        compare_smiles(Glycan(iupac).get_smiles(), smiles)
+
     @pytest.mark.slow
     @pytest.mark.todo
     @pytest.mark.parametrize(
@@ -67,13 +73,6 @@ class TestDerivatives:
     def test_full(self):
         smiles = convert("2,3-Anhydro-Gal", returning=True, full=True)[0][1]
         assert smiles == ""
-
-    def test_detail(self):
-        iupac = "6dTal(a1-2)Rhaf"
-        smiles = Glycan(iupac).get_smiles()
-        print(smiles)
-        assert smiles != ""
-        assert all([a.GetAtomicNum() in valid_atomic_nums for a in Chem.MolFromSmiles(smiles).GetAtoms()])
 
     @pytest.mark.todo
     def test_en(self):
