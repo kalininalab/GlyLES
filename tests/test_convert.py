@@ -71,27 +71,31 @@ class TestConverter:
         assert output[0][0] == "Glc b"
         compare_smiles(output[0][1], "OC[C@H]1O[C@@H](O)[C@H](O)[C@@H](O)[C@@H]1O")
 
-    @pytest.mark.todo
-    def test_parallel(self):
+    @pytest.mark.slow
+    def test_parallel_list_input(self):
         with open("data/runtime.tsv", "r") as runtime:
             glycans = [line.strip().split("\t")[0] for line in runtime.readlines()]
         start = time.time()
-        smiles = convert(glycan_list=glycans, cpu_count=14)
+        smiles1 = convert(glycan_list=glycans)
+        mid = time.time()
+        smiles2 = convert(glycan_list=glycans, cpu_count=14)
         end = time.time()
-        print(end - start)
 
-        assert len(smiles) == len(smiles)
+        assert len(smiles1) == len(smiles2) == len(glycans)
+        assert (end - mid) < (mid - start)
 
-    @pytest.mark.todo
-    def test_parallel_2(self):
+    @pytest.mark.slow
+    def test_parallel_gen_input(self):
         with open("data/runtime.tsv", "r") as runtime:
             glycans = [line.strip().split("\t")[0] for line in runtime.readlines()]
         start = time.time()
-        smiles = convert(glycan_list=glycans)
+        smiles1 = convert(glycan_generator=iter(glycans))
+        mid = time.time()
+        smiles2 = convert(glycan_generator=iter(glycans), cpu_count=14)
         end = time.time()
-        print(end - start)
 
-        assert len(smiles) == len(smiles)
+        assert len(smiles1) == len(smiles2) == len(glycans)
+        assert (end - mid) < (mid - start)
 
     """def test_convert_1_1_1(self):
         output, log_out, log_err = catch_output(method=convert, silent=False)

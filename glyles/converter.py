@@ -2,6 +2,8 @@ import os
 import sys
 import logging
 
+from joblib import Parallel, delayed, parallel_backend
+
 from glyles.glycans.utils import ParseError
 from glyles.glycans.poly.glycan import Glycan
 
@@ -42,6 +44,7 @@ def convert(
         output_file=None,
         returning=True,
         verbose=logging.INFO,
+        cpu_count=1,
         full=True,
 ):
     """
@@ -58,6 +61,8 @@ def convert(
         output_file (str): File to save the converted glycans in
         returning (bool): Flag indicating to return a list of tuples
         verbose (Union[int, None]): Flag indicating to have no prints from this method
+        cpu_count (int): Number of CPU cores to use for parallel processing. Behavior as described in joblib:
+            https://joblib.readthedocs.io/en/latest/generated/joblib.Parallel.html
         full (bool): Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
             such as 3-Anhydro-[...] are also present in the SMILES
 
@@ -92,23 +97,21 @@ def convert(
             logging.warning("No output-file specified, results will be printed on stdout.")
             output = sys.stdout
 
-    # convert the IUPAC strings into SMILES strings from the input list
+    # convert the IUPAC strings into SMILES strings from the input list and from the input generator
+    container = []
     if len(glycans) != 0:
-        for iupac in glycans:
-            glycan, smiles = generate(iupac, full)
-            if returning:
-                output.append((glycan, smiles))
-            else:
-                print(glycan, smiles, file=output, sep=",")
-
-    # and from the input generator
+        container.append(glycans)
     if glycan_generator is not None:
-        for iupac in glycan_generator:
-            glycan, smiles = generate(iupac, full)
+        container.append(glycan_generator)
+
+    for container in container:
+        with parallel_backend('multiprocessing', n_jobs=cpu_count):
+            results = Parallel()(delayed(generate)(iupac, full) for iupac in container)
             if returning:
-                output.append((glycan, smiles))
+                output += results
             else:
-                print(glycan, smiles, file=output, sep=",")
+                for iupac, smiles in results:
+                    print(iupac, smiles, file=output, sep=",")
 
     if returning:
         return output
@@ -125,6 +128,7 @@ def convert_generator(
         glycan_file=None,
         glycan_generator=None,
         verbose=logging.INFO,
+        cpu_count=1,
         full=True,
 ):
     """
@@ -139,6 +143,8 @@ def convert_generator(
         glycan_generator (generator): generator yielding iupac representation.
             Together with output_generator=True this does not create any lists
         verbose (Union[int, None]): Flag indicating to have no output-messages from this method
+        cpu_count (int): Number of CPU cores to use for parallel processing. Behavior as described in joblib:
+            https://joblib.readthedocs.io/en/latest/generated/joblib.Parallel.html
         full (bool): Flag indicating that only fully convertible glycans should be returned, i.e. all modifications
             such as 3-Anhydro-[...] are also present in the SMILES
 
