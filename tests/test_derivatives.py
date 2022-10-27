@@ -45,6 +45,9 @@ class TestDerivatives:
         iupac, smiles = line.split("\t")[:2]
         compare_smiles(Glycan(iupac).get_smiles(), smiles)
 
+    def test_comp(self):
+        compare_smiles(Glycan("Ery-ol").get_smiles(), "OC[C@H](O)[C@H](O)CO")
+
     @pytest.mark.todo
     @pytest.mark.parametrize("line", open("data/openforms.tsv", "r").readlines())
     def test_openform_data(self, line):

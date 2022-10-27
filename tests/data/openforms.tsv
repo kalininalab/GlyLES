@@ -37,7 +37,7 @@ GalA-ol	O=C(O)[C@@H](O)[C@H](O)[C@H](O)[C@@H](O)CO
 1dAlt-ol	C[C@H](O)[C@@H](O)[C@@H](O)[C@@H](O)CO
 D-1d5dAraHex-ol	C[C@@H](O)[C@H](O)[C@H](O)CCO
 1,5-Anhydro-Glc-ol	OC[C@H]1OC[C@H](O)[C@@H](O)[C@@H]1O
-FucN-ol	C[C@H](O)[C@@H](O)[C@@H](O)[C@H](O)CN
+Fuc1N-ol	C[C@H](O)[C@@H](O)[C@@H](O)[C@H](O)CN
 2,5-Anhydro-Man-ol	OC[C@H]1O[C@H](CO)[C@@H](O)[C@@H]1O
 2,5-Anhydro-Tal-ol	OC[C@H]1O[C@H](CO)[C@H](O)[C@@H]1O
 DDManHep-ol	OC[C@@H](O)[C@@H](O)C(O)[C@H](O)[C@H](O)CO
@@ -48,6 +48,6 @@ DDIdoHep-ol	OC[C@@H](O)[C@H](O)[C@@H](O)[C@H](O)[C@H](O)CO
 3dHep7P-ulosonic	C(C(C(C(COP(=O)(O)O)O)O)O)C(=O)C(=O)O
 Hex6P-onic	C(C(C(C(C(C(=O)O)O)O)O)O)OP(=O)(O)O
 Glc6P-onic	C([C@H]([C@H]([C@@H]([C@H](C(=O)O)O)O)O)O)OP(=O)(O)O
-Glc2F-onic	C([C@H]([C@H]([C@@H]([C@H](C(=O)O)F)O)O)O)OP(=O)(O)O
+Glc2F6P-onic	C([C@H]([C@H]([C@@H]([C@H](C(=O)O)F)O)O)O)OP(=O)(O)O
 3dManOct4P-ulosonic	C([C@H]([C@H]([C@@H]([C@@H](CO)O)O)O)OP(=O)(O)O)C(=O)C(=O)O
-3dAraHep7P-ulosonic	C([C@H]([C@@H]([C@@H](COP(=O)(O)O)O)O)O)C(=O)C(=O)O
+D-3dAraHep7P-ulosonic	C([C@H]([C@@H]([C@@H](COP(=O)(O)O)O)O)O)C(=O)C(=O)O

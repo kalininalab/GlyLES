@@ -2,8 +2,10 @@ import copy
 import re
 
 import numpy as np
+from rdkit.Chem import GetAdjacencyMatrix
 
 from glyles.glycans.factory.factory_o import OpenFactory, c1_finder
+from glyles.glycans.utils import find_longest_c_chain
 from glyles.grammar.GlycanLexer import GlycanLexer
 
 
@@ -109,8 +111,11 @@ def check_for_open_form(monomer, names, types, longer=False):
     params = copy.copy(OpenFactory()[names[sac_index] + "-ol"])
 
     if longer:
-        last = params["smiles"].rfind("C")
-        count = len(re.findall(r"\(C\)", params["smiles"]))
+        last = params["smiles"].find("C") + 1
+        a_type = np.array([a.GetAtomicNum() for a in monomer.structure.GetAtoms()])
+        adjacency = GetAdjacencyMatrix(monomer.structure, useBO=True)
+        c_atoms = np.where(a_type == 6)[0].tolist()
+        count = len(find_longest_c_chain(c_atoms, adjacency, a_type))
         if names[len_index] == "Pen":
             maximum = 5
         elif names[len_index] == "Hex":

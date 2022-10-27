@@ -1,6 +1,7 @@
 from enum import Enum
 
 import networkx as nx
+import numpy as np
 from networkx.algorithms import isomorphism
 from rdkit.Chem import MolFromSmiles
 
@@ -303,6 +304,26 @@ def find_isomorphism_nx(mol1, mol2, name, c1_find=None):
 
     # actually compute the isomorphism between the two molecules and return it
     return networkx_fragment_isomorphism(mol1_nx, ring1, mol2_nx, ring2)
+
+
+def find_longest_c_chain(c_atoms, adjacency, a_type):
+    # create a tree of all carbon atoms directly connected to the main ring of the monomer
+    c_tree = Tree()
+    stack = [(-1, c_atoms[0])]
+    while len(stack) != 0:
+        p_id, c_id = stack[-1]
+        stack = stack[:-1]
+        c_tree.add_node(c_id, p_id)
+
+        children = np.argwhere((adjacency[c_id, :] == 1) & (a_type == 6))
+        for c in children:
+            if int(c) not in c_tree.nodes:
+                stack.append((c_id, int(c)))
+
+    # find the deepest node and rehang the tree to this node
+    deepest_id, _ = c_tree.deepest_node()
+    c_tree = c_tree.rehang_tree(deepest_id)
+    return c_tree.longest_chain()
 
 
 class Node:

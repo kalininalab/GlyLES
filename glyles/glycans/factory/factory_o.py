@@ -3,7 +3,7 @@ from rdkit import Chem
 from rdkit.Chem import GetAdjacencyMatrix
 from rdkit.Chem.rdchem import BondType
 
-from glyles.glycans.utils import Config, Enantiomer, Lactole, Tree
+from glyles.glycans.utils import Config, Enantiomer, Lactole, Tree, find_longest_c_chain
 
 
 class OpenFactory:
@@ -79,7 +79,7 @@ class OpenFactory:
                    "smiles": "OC[C@@H](O)C(O)(CO)CO",
                    "c1_find": lambda x: c1_finder(x, "OC[C@@H](O)C(O)(CO)CO")},
         "ERY-OL": {"name": "Erythriol", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.OPEN,
-                   "smiles": "OC[C@H](O)[C@H](O)CO",
+                   "smiles": "C(O)[C@H](O)[C@H](O)CO",
                    "c1_find": lambda x: c1_finder(x, "OC[C@H](O)[C@H](O)CO")},
         "THRE-OL": {"name": "Threitol", "config": Config.UNDEF, "isomer": Enantiomer.D, "lactole": Lactole.OPEN,
                     "smiles": "OC[C@@H](O)[C@H](O)CO",
@@ -147,23 +147,7 @@ def c1_finder(structure, base_smiles):
     adjacency = GetAdjacencyMatrix(structure, useBO=True)
     c_atoms = np.where(a_type == 6)[0].tolist()
 
-    # create a tree of all carbon atoms directly connected to the main ring of the monomer
-    c_tree = Tree()
-    stack = [(-1, c_atoms[0])]
-    while len(stack) != 0:
-        p_id, c_id = stack[-1]
-        stack = stack[:-1]
-        c_tree.add_node(c_id, p_id)
-
-        children = np.argwhere((adjacency[c_id, :] == 1) & (a_type == 6))
-        for c in children:
-            if int(c) not in c_tree.nodes:
-                stack.append((c_id, int(c)))
-
-    # find the deepest node and rehang the tree to this node
-    deepest_id, _ = c_tree.deepest_node()
-    c_tree = c_tree.rehang_tree(deepest_id)
-    longest_c_chain = c_tree.longest_chain()
+    longest_c_chain = find_longest_c_chain(c_atoms, adjacency, a_type)
 
     # now the two C1 candidates can be found at the ends of the longest chain
     start, end = longest_c_chain[0], longest_c_chain[-1]
@@ -174,22 +158,34 @@ def c1_finder(structure, base_smiles):
     if start_acid and not end_acid:
         return longest_c_chain
     if end_acid and not start_acid:
-        return reversed(longest_c_chain)
+        return list(reversed(longest_c_chain))
 
     # check if exactly one of the two C1 candidates has an attached oxygen
     start_aldehyd, end_aldehyd = check_for_aldehyd(start, adjacency, a_type), check_for_aldehyd(end, adjacency, a_type)
     if start_aldehyd and not end_aldehyd:
         return longest_c_chain
     if end_aldehyd and not start_aldehyd:
-        return reversed(longest_c_chain)
+        return list(reversed(longest_c_chain))
+
+    start_double_oxy = check_for_co_double(longest_c_chain[1], structure, adjacency, a_type)
+    end_double_oxy = check_for_co_double(longest_c_chain[-2], structure, adjacency, a_type)
+    if start_double_oxy and not end_double_oxy:
+        return longest_c_chain
+    if end_double_oxy and not start_double_oxy:
+        return list(reversed(longest_c_chain))
+
+    if longest_c_chain[0] < longest_c_chain[-1]:
+        min_longest_c_chain = longest_c_chain
+    else:
+        min_longest_c_chain = list(reversed(longest_c_chain))
 
     # compare chiral tags of molecule with SMILES string of root monomer. THIS IS INACCURATE DUE TO CHIRAL TAGS
     tmp = Chem.MolFromSmiles(base_smiles)
     tmp_chain = [a.GetIdx() for a in tmp.GetAtoms() if a.GetAtomicNum() == 6]
     for c, t in zip(longest_c_chain, tmp_chain):
         if structure.GetAtomWithIdx(int(c)).GetChiralTag() != tmp.GetAtomWithIdx(int(t)).GetChiralTag():
-            return reversed(longest_c_chain)
-    return longest_c_chain
+            return list(reversed(min_longest_c_chain))
+    return min_longest_c_chain
 
 
 def check_for_acid(start, structure, adjacency, a_type):
@@ -216,6 +212,11 @@ def check_for_acid(start, structure, adjacency, a_type):
     return False
 
 
+def check_for_co_double(carbon, structure, adjacency, a_type):
+    oxys = [int(x) for x in np.where((adjacency[carbon] != 0) & (a_type == 8))[0]]
+    return sum(structure.GetBondBetweenAtoms(int(carbon), o).GetBondType() == BondType.DOUBLE for o in oxys) == 1
+
+
 def check_for_aldehyd(start, adjacency, a_type):
     """
     Check if the atom with the start ID has an aldehyd group.
@@ -228,4 +229,4 @@ def check_for_aldehyd(start, adjacency, a_type):
     Returns:
         bool flag indicating if the carbon atom has an aldehyd group
     """
-    return np.where((adjacency[start] == 1) & (a_type == 8))[0] != 0
+    return len(np.where((adjacency[start] == 1) & (a_type == 8))[0]) != 0
