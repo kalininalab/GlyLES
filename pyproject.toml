@@ -17,7 +17,7 @@ rdkit-pypi = "^2021.9.2"
 antlr4-python3-runtime = "==4.9.3"
 networkx = "^2.6.3"
 pydot = "^1.4.2"
-joblib = "^1.1.0"
+joblib = "^1.2.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
