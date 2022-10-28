@@ -1,6 +1,6 @@
 import numpy as np
 from rdkit import Chem
-from rdkit.Chem import GetAdjacencyMatrix
+from rdkit.Chem import GetAdjacencyMatrix, rdDepictor
 from rdkit.Chem.rdchem import BondType
 
 from glyles.glycans.utils import Config, Enantiomer, Lactole, Tree, find_longest_c_chain
@@ -174,18 +174,21 @@ def c1_finder(structure, base_smiles):
     if end_double_oxy and not start_double_oxy:
         return list(reversed(longest_c_chain))
 
-    if longest_c_chain[0] < longest_c_chain[-1]:
-        min_longest_c_chain = longest_c_chain
-    else:
-        min_longest_c_chain = list(reversed(longest_c_chain))
+    base = Chem.MolFromSmiles(base_smiles)
+    if not base.GetNumConformers():
+        rdDepictor.Compute2DCoords(base)
+    if not structure.GetNumConformers():
+        rdDepictor.Compute2DCoords(structure)
+    Chem.WedgeMolBonds(base, base.GetConformer())
+    Chem.WedgeMolBonds(structure, structure.GetConformer())
 
-    # compare chiral tags of molecule with SMILES string of root monomer. THIS IS INACCURATE DUE TO CHIRAL TAGS
-    tmp = Chem.MolFromSmiles(base_smiles)
-    tmp_chain = [a.GetIdx() for a in tmp.GetAtoms() if a.GetAtomicNum() == 6]
-    for c, t in zip(longest_c_chain, tmp_chain):
-        if structure.GetAtomWithIdx(int(c)).GetChiralTag() != tmp.GetAtomWithIdx(int(t)).GetChiralTag():
-            return list(reversed(min_longest_c_chain))
-    return min_longest_c_chain
+    base_chain = [a.GetIdx() for a in base.GetAtoms() if a.GetAtomicNum() == 6]
+    base_direc = [set(bond.GetBondDir() for bond in base.GetAtomWithIdx(idx).GetBonds()) for idx in base_chain]
+    struct_direc = [set(bond.GetBondDir() for bond in structure.GetAtomWithIdx(idx).GetBonds()) for idx in longest_c_chain]
+    equal = [bd == sd for bd, sd in zip(base_direc, struct_direc)]
+    if all(equal) or not any(equal):
+        return longest_c_chain
+    return list(reversed(longest_c_chain))
 
 
 def check_for_acid(start, structure, adjacency, a_type):

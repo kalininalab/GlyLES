@@ -24,13 +24,13 @@ D-3dGal6P-ulosonic	C([C@H]([C@@H](COP(=O)(O)O)O)O)C(=O)C(=O)O
 1dEry3N-ol	C[C@H](O)[C@H](N)CO
 1dThre-ol	C[C@@H](O)[C@H](O)CO
 1dThre3N-ol	C[C@@H](O)[C@H](N)CO
-Xyl1N-ol	NC[C@H](O)[C@@H](O)[C@H](O)CO
+L-Xyl1N-ol	NC[C@H](O)[C@@H](O)[C@H](O)CO
 GlcN-ol	N[C@@H](CO)[C@@H](O)[C@H](O)[C@H](O)CO
 Glc1N-ol	NC[C@H](O)[C@@H](O)[C@H](O)[C@H](O)CO
 GlcN1N-ol	NC[C@H](N)[C@@H](O)[C@H](O)[C@H](O)CO
 QuiN-ol	C[C@@H](O)[C@@H](O)[C@H](O)[C@@H](N)CO
+Qui2N-ol	C[C@@H](O)[C@@H](O)[C@H](O)[C@@H](N)CO
 Qui3N-ol	C[C@@H](O)[C@@H](O)[C@H](N)[C@@H](O)CO
-Qui4N-ol	C[C@@H](O)[C@@H](O)[C@H](O)[C@@H](N)CO
 GalN-ol	N[C@@H](CO)[C@@H](O)[C@@H](O)[C@H](O)CO
 GalA-ol	O=C(O)[C@@H](O)[C@H](O)[C@H](O)[C@@H](O)CO
 6dTal-ol	C[C@@H](O)[C@H](O)[C@H](O)[C@H](O)CO
