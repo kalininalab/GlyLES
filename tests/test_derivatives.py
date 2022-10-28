@@ -69,6 +69,7 @@ class TestDerivatives:
         assert smiles != ""
 
         mol = Chem.MolFromSmiles(smiles)
+        print(smiles)
         assert mol is not None
         assert all([a.GetAtomicNum() in valid_atomic_nums for a in mol.GetAtoms()])
 
