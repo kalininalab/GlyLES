@@ -194,10 +194,38 @@ classes = {
 def snfg_fy(glycan):
     name = glycan.get_name()
     if name in {
-        "Qui", "Rha", "Oli", "Tyv", "Abe", "Par", "Dig", "Col", "Ara", "Lyx", "Xyl", "Rib", "Kdn", "Sia", "Pse", "Aci",
+        "Oli", "Tyv", "Abe", "Par", "Dig", "Col", "Ara", "Lyx", "Xyl", "Rib", "Kdn", "Sia", "Pse", "Aci",
         "Bac", "Kdo", "Dha", "Api", "Fru", "Tag", "Sor", "Psi"
     }:
         return name
+    names = list(zip(*(glycan.get_recipe())))[0]
+    if name in classes["Hexose"] and ("NAc" in names or "N" in names or "A" in names):
+        if "NAc" in names and not (name in {"Alt", "Tal"} and "6d" in names):
+            return name + "NAc"
+        if "N" in names:
+            return name + "N"
+        if "A" in names:
+            return name + "A"
+    if name == "Gul" and "6d" in names:
+        return "6dGul"
+    if name in {"Alt", "Tal"} and ("NAc" in names or "6d" in names):
+        if "NAc" in names and "6d" in names:
+            return "6d" + name + "NAc"
+        if "NAc" in names:
+            return name + "NAc"
+        if "6d" in names:
+            return "6d" + name
+    if name in {"Qui", "Rha", "Fuc", "Mur"} and "NAc" in names:
+        return name + "NAc"
+    if name == "Neu" and "5Ac" in names or "Ac" in names:
+        return "Neu5Ac"
+    if name == "Neu" and "5Gc" in names or "Gc" in names:
+        return "Neu5Gc"
+    if name == "Mur" and "NGc" in names:
+        return "Mur5Gc"
+    if name == "Leg" and "4e" in names:
+        return "4eLeg"
+    # TODO: LDmanHep and DDmanHep
     return name
 
 
