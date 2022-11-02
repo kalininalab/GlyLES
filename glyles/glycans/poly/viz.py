@@ -1,5 +1,5 @@
 from glyles import Glycan
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 
 class Tree:
@@ -32,12 +32,15 @@ class Node:
         self.coord = None
 
         for _, cidx in parse_tree.edges(self.idx):
-            self.children.append(Node(cidx, self.depth + 1, parse_tree))
+            self.children.append((
+                Node(cidx, self.depth + 1, parse_tree),
+                parse_tree.get_edge_data(self.idx, cidx)["type"]
+            ))
 
         self.children = list(
             sorted(
                 self.children,
-                key=lambda child: (child.get_max_depth(), child.get_num_children()),
+                key=lambda child: (child[0].get_max_depth(), child[0].get_num_children()),
                 reverse=True
             )
         )
@@ -47,32 +50,32 @@ class Node:
         if len(self.children) == 0:
             return 0
 
-        for child in self.children:
+        for child, _ in self.children:
             child.assign_coords()
 
         for i in range(1, len(self.children)):
-            lower = self.children[i - 1].get_lower_bound()
-            upper = self.children[i].get_upper_bound()
+            lower = self.children[i - 1][0].get_lower_bound()
+            upper = self.children[i][0].get_upper_bound()
             offset = max(l - u for (_, l), (_, u) in zip(lower, upper)) + 1
-            self.children[1].adjust_coords(offset)
+            self.children[i][0].adjust_coords(offset)
 
-        self.coord = sum(child.coord for child in self.children) / len(self.children)
+        self.coord = sum(child.coord for child, _ in self.children) / len(self.children)
 
         return self.coord
 
     def adjust_coords(self, offset):
         self.coord += offset
-        for child in self.children:
+        for child, _ in self.children:
             child.adjust_coords(offset)
 
     def get_lower_bound(self):
         if len(self.children) != 0:
-            return [(self.depth, self.coord)] + self.children[-1].get_lower_bound()
+            return [(self.depth, self.coord)] + self.children[-1][0].get_lower_bound()
         return [(self.depth, self.coord)]
 
     def get_upper_bound(self):
         if len(self.children) != 0:
-            return [(self.depth, self.coord)] + self.children[0].get_upper_bound()
+            return [(self.depth, self.coord)] + self.children[0][0].get_upper_bound()
         return [(self.depth, self.coord)]
 
     def get_num_children(self):
@@ -81,24 +84,40 @@ class Node:
     def get_max_depth(self):
         if len(self.children) == 0:
             return self.depth
-        return max(child.get_max_depth() for child in self.children)
+        return max(child.get_max_depth() for child, _ in self.children)
 
     def get_coords(self):
         return self.depth, self.coord
 
     def draw_edges(self, img, **params):
         x, y = self.get_coords()
-        for child in self.children:
+        k = 0.3
+        l = 0.3
+        for child, info in self.children:
             c_x, c_y = child.get_coords()
             img.line([
                 ((x + 0.5) * params["width"], (y + 0.5) * params["height"]),
                 ((c_x + 0.5) * params["width"], (c_y + 0.5) * params["height"])
             ], fill="black", width=params["line"])
             child.draw_edges(img, **params)
+            img.text(
+                ((x + k + 0.48) * params["width"], (c_y + (y - c_y) * (1 - l) + 0.35) * params["width"]),
+                text=info[1],
+                fill="black",
+                anchor="lb",
+                # font=ImageFont.truetype("Arial.ttf", size=15)
+            )
+            img.text(
+                ((x - k + 1.48) * params["width"], (c_y + (y - c_y) * l + 0.35) * params["width"]),
+                text=info[-2],
+                fill="black",
+                anchor="lb",
+                # font=ImageFont.truetype("Arial.ttf", size=15),
+            )
 
     def draw_nodes(self, img, tree, **params):
-        draw_glycan(img, *(self.get_coords()), snfg_fy(tree.nodes[self.idx]["type"]), **params)
-        for child in self.children:
+        draw_glycan(img, *(self.get_coords()), *snfg_fy(tree.nodes[self.idx]["type"]), **params)
+        for child, _ in self.children:
             child.draw_nodes(img, tree, **params)
 
 
@@ -193,86 +212,93 @@ classes = {
 
 def snfg_fy(glycan):
     name = glycan.get_name()
+    names = set(list(zip(*(glycan.get_recipe())))[0])
     if name in {
         "Oli", "Tyv", "Abe", "Par", "Dig", "Col", "Ara", "Lyx", "Xyl", "Rib", "Kdn", "Sia", "Pse", "Aci",
         "Bac", "Kdo", "Dha", "Api", "Fru", "Tag", "Sor", "Psi"
     }:
-        return name
-    names = list(zip(*(glycan.get_recipe())))[0]
+        return name, names.difference({"NAc"})
     if name in classes["Hexose"] and ("NAc" in names or "N" in names or "A" in names):
         if "NAc" in names and not (name in {"Alt", "Tal"} and "6d" in names):
-            return name + "NAc"
+            return name + "NAc", names.difference({"NAc", name})
         if "N" in names:
-            return name + "N"
+            return name + "N", names.difference({"N", name})
         if "A" in names:
-            return name + "A"
+            return name + "A", names.difference({"A", name})
     if name == "Gul" and "6d" in names:
-        return "6dGul"
+        return "6dGul", names.difference({"6d", name})
     if name in {"Alt", "Tal"} and ("NAc" in names or "6d" in names):
         if "NAc" in names and "6d" in names:
-            return "6d" + name + "NAc"
+            return "6d" + name + "NAc", names.difference({"6d", "NAc", name})
         if "NAc" in names:
-            return name + "NAc"
+            return name + "NAc", names.difference({"NAc", name})
         if "6d" in names:
-            return "6d" + name
+            return "6d" + name, names.difference({"6d", name})
     if name in {"Qui", "Rha", "Fuc", "Mur"} and "NAc" in names:
-        return name + "NAc"
+        return name + "NAc", names.difference({"NAc", name})
     if name == "Neu" and "5Ac" in names or "Ac" in names:
-        return "Neu5Ac"
+        return "Neu5Ac", names.difference({"5Ac", name})
     if name == "Neu" and "5Gc" in names or "Gc" in names:
-        return "Neu5Gc"
+        return "Neu5Gc", names.difference({"5Gc", name})
     if name == "Mur" and "NGc" in names:
-        return "Mur5Gc"
+        return "Mur5Gc", names.difference({"5Gc", name})
     if name == "Leg" and "4e" in names:
-        return "4eLeg"
+        return "4eLeg", names.difference({"4e", name})
     # TODO: LDmanHep and DDmanHep
-    return name
+    return name, names.difference({name})
 
 
-def draw_glycan(img, x, y, name, **params):
+def draw_glycan(img, x, y, name, groups, **params):
     if name in classes["Hexose"]:
-        draw_hexose(img, x, y, name, **params)
+        draw_hexose(img, x, y, name, groups, **params)
     elif name in classes["HexNAc"]:
-        draw_hexnac(img, x, y, name, **params)
+        draw_hexnac(img, x, y, name, groups, **params)
     elif name in classes["Hexosamine"]:
-        draw_hexosamine(img, x, y, name, **params)
+        draw_hexosamine(img, x, y, name, groups, **params)
     elif name in classes["Hexuronate"]:
-        draw_hexuronate(img, x, y, name, **params)
+        draw_hexuronate(img, x, y, name, groups, **params)
     elif name in classes["Deoxyhexose"]:
-        draw_deoxyhexose(img, x, y, name, **params)
+        draw_deoxyhexose(img, x, y, name, groups, **params)
     elif name in classes["DeoxyhexNAc"]:
-        draw_deoxyhexnac(img, x, y, name, **params)
+        draw_deoxyhexnac(img, x, y, name, groups, **params)
     elif name in classes["Di-deoxyhexose"]:
-        draw_di_deoxyhexose(img, x, y, name, **params)
+        draw_di_deoxyhexose(img, x, y, name, groups, **params)
     elif name in classes["Pentose"]:
-        draw_pentose(img, x, y, name, **params)
+        draw_pentose(img, x, y, name, groups, **params)
     elif name in classes["3-deoxy-nonulosonic acids"]:
-        draw_3_deoxy_nonulosonic_acids(img, x, y, name, **params)
+        draw_3_deoxy_nonulosonic_acids(img, x, y, name, groups, **params)
     elif name in classes["3,9-dideoxy-nonulosonic acids"]:
-        draw_3_9_dideocy_nonulosonic_acids(img, x, y, name, **params)
+        draw_3_9_dideocy_nonulosonic_acids(img, x, y, name, groups, **params)
     elif name in classes["Unknown"]:
-        draw_unknown(img, x, y, name, **params)
+        draw_unknown(img, x, y, name, groups, **params)
     elif name in classes["Assigned"]:
-        draw_assigned(img, x, y, name, **params)
+        draw_assigned(img, x, y, name, groups, **params)
     else:
-        draw_other(img, x, y, name, **params)
+        draw_other(img, x, y, name, groups, **params)
 
 
-def draw_hexose(img, x, y, name, **params):
+def draw_hexose(img, x, y, name, groups, **params):
     img.ellipse([
         ((x + 0.25) * params["width"], (y + 0.25) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.75) * params["height"])
     ], fill=colors["Hexose"][name], width=params["stroke"], outline="black")
+    img.multiline_text(
+        ((x + 0.5) * params["width"], (y + 0.8) * params["height"]),
+        "".join(groups),
+        fill="black",
+        anchor="ma",
+        align="center"
+    )
 
 
-def draw_hexnac(img, x, y, name, **params):
+def draw_hexnac(img, x, y, name, groups, **params):
     img.rectangle([
         ((x + 0.25) * params["width"], (y + 0.25) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.75) * params["height"])
     ], fill=colors["Hexose"][name[:3]], width=params["stroke"], outline="black")
 
 
-def draw_hexosamine(img, x, y, name, **params):
+def draw_hexosamine(img, x, y, name, groups, **params):
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.25) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.75) * params["height"]),
@@ -285,20 +311,24 @@ def draw_hexosamine(img, x, y, name, **params):
     ], fill="white", width=params["stroke"], outline="black")
 
 
-def draw_hexuronate(img, x, y, name, **params):
+def draw_hexuronate(img, x, y, name, groups, **params):
+    if name in {"IdoA", "AltA"}:
+        cols = ("white", colors["Hexose"][name[:3]])
+    else:
+        cols = (colors["Hexose"][name[:3]], "white")
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.5) * params["height"]),
         ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.5) * params["height"])
-    ], fill=colors["Hexose"][name[:3]], width=params["stroke"], outline="black")
+    ], fill=cols[0], width=params["stroke"], outline="black")
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.5) * params["height"]),
         ((x + 0.5) * params["width"], (y + 0.75) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.5) * params["height"])
-    ], fill="white", width=params["stroke"], outline="black")
+    ], fill=cols[1], width=params["stroke"], outline="black")
 
 
-def draw_deoxyhexose(img, x, y, name, **params):
+def draw_deoxyhexose(img, x, y, name, groups, **params):
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.75) * params["height"]),
         ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
@@ -306,7 +336,7 @@ def draw_deoxyhexose(img, x, y, name, **params):
     ], fill=colors["Deoxyhexose"][name], width=params["stroke"], outline="black")
 
 
-def draw_deoxyhexnac(img, x, y, name, **params):
+def draw_deoxyhexnac(img, x, y, name, groups, **params):
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.75) * params["height"]),
         ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
@@ -319,14 +349,14 @@ def draw_deoxyhexnac(img, x, y, name, **params):
     ], fill=colors["DeoxyhexNAc"][name], width=params["stroke"], outline="black")
 
 
-def draw_di_deoxyhexose(img, x, y, name, **params):
+def draw_di_deoxyhexose(img, x, y, name, groups, **params):
     img.rectangle([
         ((x + 0.25) * params["width"], (y + 0.375) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.625) * params["height"])
     ], fill=colors["Di-deoxyhexose"][name], width=params["stroke"], outline="black")
 
 
-def draw_pentose(img, x, y, name, **params):
+def draw_pentose(img, x, y, name, groups, **params):
     img.polygon([
         ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
 
@@ -346,7 +376,7 @@ def draw_pentose(img, x, y, name, **params):
     ], fill=colors["Pentose"][name], width=params["stroke"], outline="black")
 
 
-def draw_3_deoxy_nonulosonic_acids(img, x, y, name, **params):
+def draw_3_deoxy_nonulosonic_acids(img, x, y, name, groups, **params):
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.5) * params["height"]),
         ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
@@ -355,7 +385,7 @@ def draw_3_deoxy_nonulosonic_acids(img, x, y, name, **params):
     ], fill=colors["3-dideoxy-nunolusonic acids"][name], width=params["stroke"], outline="black")
 
 
-def draw_3_9_dideocy_nonulosonic_acids(img, x, y, name, **params):
+def draw_3_9_dideocy_nonulosonic_acids(img, x, y, name, groups, **params):
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.5) * params["height"]),
         ((x + 0.5) * params["width"], (y + 0.375) * params["height"]),
@@ -364,7 +394,7 @@ def draw_3_9_dideocy_nonulosonic_acids(img, x, y, name, **params):
     ], fill=colors["3,9-dideoxy-nunolusonic acids"][name], width=params["stroke"], outline="black")
 
 
-def draw_unknown(img, x, y, name, **params):
+def draw_unknown(img, x, y, name, groups, **params):
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.5) * params["height"]),
         ((x + 0.375) * params["width"], (y + 0.375) * params["height"]),
@@ -375,7 +405,7 @@ def draw_unknown(img, x, y, name, **params):
     ], fill=colors["Unknown"][name], width=params["stroke"], outline="black")
 
 
-def draw_assigned(img, x, y, name, **params):
+def draw_assigned(img, x, y, name, groups, **params):
     img.polygon([
         ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.43164) * params["height"]),
@@ -385,7 +415,7 @@ def draw_assigned(img, x, y, name, **params):
     ], fill=colors["Assigned"][name], width=params["stroke"], outline="black")
 
 
-def draw_other(img, x, y, name, **params):
+def draw_other(img, x, y, name, groups, **params):
     pass
 
 
@@ -407,7 +437,7 @@ def create_snfg_img(glycan, **params):
 def main():
     iupac = "Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-6)]" \
             "Gal(b1-3)[GlcNAc(a1-4)Gal(b1-4)GlcNAc6S(b1-6)]GalNAc"
-    iupac2 = "Fuc(a1-4)[Par(a1-4)Xyl(a1-3)]Sia(a1-4)Pse(a1-4)Bac(a1-4)Tag"
+    iupac2 = "IdoA2S(b1-4)Fuc2S(a1-4)[Par2S(a1-4)Xyl2S(a1-2)][All2S(a1-3)TalNAc3S(b1-6)GulN3S(a1-3)6dAltNAc3S(b1-3)]Sia6S(a1-4)Pse2S(a1-4)[Gal2S(a1-3)]Bac2S(a1-4)Tag2S"
     glycan = Glycan(iupac2, tree_only=True)
     create_snfg_img(glycan, **{
         "width": 100,
