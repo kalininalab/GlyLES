@@ -277,14 +277,42 @@ def draw_glycan(img, x, y, name, groups, **params):
         draw_other(img, x, y, name, groups, **params)
 
 
+def arange_node_groups(groups, img, **params):
+    output = ""
+    length = 0
+    threshold = 0.5 * params["width"]
+    lines = []
+    for g in groups:
+        if length == 0:
+            output += g
+            tl = img.textlength(g)
+            if tl > threshold:
+                output += "\n"
+                lines.append(tl)
+            else:
+                length = tl
+        else:
+            tl = img.textlength(g)
+            if length + tl > threshold:
+                output += "\n" + g
+                lines.append(length)
+                length = tl
+            else:
+                output += g
+                length += tl
+    lines.append(length)
+    return output, max(lines)
+
+
 def draw_hexose(img, x, y, name, groups, **params):
     img.ellipse([
         ((x + 0.25) * params["width"], (y + 0.25) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.75) * params["height"])
     ], fill=colors["Hexose"][name], width=params["stroke"], outline="black")
+    text, width = arange_node_groups(groups, img, **params)
     img.multiline_text(
-        ((x + 0.5) * params["width"], (y + 0.8) * params["height"]),
-        "".join(groups),
+        ((x + 0.5) * params["width"] - width * 0.5, (y + 0.8) * params["height"]),
+        text,
         fill="black",
         anchor="ma",
         align="center"
