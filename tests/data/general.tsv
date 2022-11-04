@@ -91,6 +91,5 @@ Hex1Gly	C(C1C(C(C(C(O1)OCC(CO)O)O)O)O)O
 GalGly b	C([C@@H]1[C@@H]([C@@H]([C@H]([C@@H](O1)OCC(CO)O)O)O)O)O
 Gal1Gly b	C([C@@H]1[C@@H]([C@@H]([C@H]([C@@H](O1)OCC(CO)O)O)O)O)O
 Glc2Lys b	C(CCN[C@@H]1[C@H]([C@@H]([C@H](O[C@H]1O)CO)O)O)C[C@@H](C(=O)O)N
-FrufPro	C1CC(N(C1)CC2([C@H]([C@@H]([C@H](O2)CO)O)O)O)C(=O)O
 ManOle	CCCCCCCC/C=C\CCCCCCCC(=O)OC1[C@H]([C@H]([C@@H]([C@H](O1)CO)O)O)O
 Ko a	C([C@H]([C@@H]1[C@@H]([C@@H]([C@@H]([C@@](O1)(C(=O)O)O)O)O)O)O)O

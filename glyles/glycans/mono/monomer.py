@@ -1,3 +1,5 @@
+import re
+
 import numpy as np
 from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
 
@@ -245,7 +247,15 @@ class Monomer:
                 * the string representation of the atoms from above, i.e. how the atoms above will be represented in a
                   SMILES string
         """
-        return [34, 52, 84, 85], ["[SeH]", "[TeH]", "[PoH]", "[At]"]
+        # return [34, 52, 84, 85], ["[SeH]", "[TeH]", "[PoH]", "[At]"]
+        # return [34, 52, 84, 85], ["\[SeH*\d*\]", "\[TeH*\d*\]", "\[PoH*\d*\]", "\[AtH*\d*\]"]
+        # TODO: evtl. match for [GaH%10] with >\[GaH*\d*%?\]<
+        return [
+            ((31, "Ga", r"\[GaH*\d*\]"), (32, "Ge", r"\[GeH*\d*\]")),
+            ((33, "As", r"\[AsH*\d*\]"), (49, "In", r"\[InH*\d*\]")),
+            ((50, "Sn", r"\[SnH*\d*\]"), (51, "Sb", r"\[SbH*\d*\]")),
+            ((81, "Tl", r"\[TlH*\d*\]"), (82, "Pb", r"\[PbH*\d*\]")),
+        ]
 
     def root_atom_id(self, binding_c_id):
         """
@@ -258,9 +268,10 @@ class Monomer:
         Returns:
             id of the atom that binds to the parent, -1 if the root cannot be found
         """
-        return self.find_oxygen(binding_c_id)
 
-    def mark(self, position, atom):
+        return self.__check_root_id(self.find_oxygen(binding_c_id))
+
+    def mark(self, position, o_atom, n_atom):
         """
         Mark the oxygen atom linked to the carbon atom at the given position ready to participate in the bounding.
         Marking here works based on replacing the oxygen-group bound to the carbon atom at the given position with the
@@ -268,12 +279,20 @@ class Monomer:
 
         Args:
             position (int): id of the carbon atom whose oxygen atom will from the binding
-            atom (int): atom to replace the binding oxygen with
+            o_atom (Tuple[int, str, str]): atom to replace the binding oxygen with
+            n_atom (Tuple[int, str, str]): atom to replace the binding nitrogen with
 
         Returns:
             Nothing
         """
         idx = self.find_oxygen(position)
+        idx = self.__check_root_id(idx)
+        if self.get_structure().GetAtomWithIdx(idx).GetAtomicNum() == 8:
+            atom = o_atom[0]
+        elif self.get_structure().GetAtomWithIdx(idx).GetAtomicNum() == 7:
+            atom = n_atom[0]
+        else:
+            raise ValueError("GlyLES can only link monomers with N-glycosidic bonds and O-glycosidic bonds.")
         self.get_structure().GetAtomWithIdx(idx).SetAtomicNum(atom)
         self.x[idx, 0] = atom
 
@@ -296,9 +315,41 @@ class Monomer:
                 root_id = int(np.where(self.x[:, 1] == root_idx)[0])
             else:
                 root_id = int(np.where(self.x[:, 1] == 1)[0])
+
+        root_id = self.__check_root_id(root_id)
+
         smiles = MolToSmiles(self.get_structure(), rootedAtAtom=root_id)
-        return "".join([((f"%{int(c) + ring_index}" if int(c) + ring_index >= 10
-                          else f"{int(c) + ring_index}") if c.isdigit() else c) for c in smiles])
+        for match in reversed(list(re.finditer(r'[a-zA-GI-Z|\]]\d+', smiles))):
+            num = int(smiles[match.start() + 1: match.end()]) + ring_index
+            smiles = smiles[:match.start() + 1] + ("" if num < 10 else "%") + str(num) + smiles[match.end():]
+        return smiles
+
+    def __check_root_id(self, root_id):
+        if (self.x[root_id, 0] == 8 and sum(self.adjacency[:, root_id]) <= 1) or \
+                (self.x[root_id, 0] == 7 and sum(self.adjacency[:, root_id]) <= 2):
+            return int(root_id)
+
+        neighbors = list(np.where((self.adjacency[:, root_id] != 0) & (self.x[:, 2] != 1))[0])
+        candidate = None
+        seen = set()
+
+        while len(neighbors) != 0:
+            n = neighbors.pop(0)
+            if self.x[n, 0] not in {7, 8}:
+                neighbors += [k for k in np.where((self.adjacency[:, n] != 0) & (self.x[:, 2] != 1))[0] if
+                              k not in seen]
+            else:
+                if self.x[n, 0] == 8 and sum(self.adjacency[:, n]) == 1:
+                    return int(n)
+                if self.x[n, 0] == 7 and sum(self.adjacency[:, n]) <= 2 and candidate is None:
+                    candidate = n
+                neighbors += [k for k in np.where((self.adjacency[:, n] != 0) & (self.x[:, 2] != 1))[0] if
+                              k not in seen]
+            seen.add(n)
+
+        if candidate is not None:
+            return int(candidate)
+        return int(root_id)
 
     def react(self, names, types):
         """

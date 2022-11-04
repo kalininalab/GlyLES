@@ -250,31 +250,39 @@ def snfg_fy(glycan):
 
 def draw_glycan(img, x, y, name, groups, **params):
     if name in classes["Hexose"]:
-        draw_hexose(img, x, y, name, groups, **params)
+        draw_hexose(img, x, y, name, **params)
     elif name in classes["HexNAc"]:
-        draw_hexnac(img, x, y, name, groups, **params)
+        draw_hexnac(img, x, y, name, **params)
     elif name in classes["Hexosamine"]:
-        draw_hexosamine(img, x, y, name, groups, **params)
+        draw_hexosamine(img, x, y, name, **params)
     elif name in classes["Hexuronate"]:
-        draw_hexuronate(img, x, y, name, groups, **params)
+        draw_hexuronate(img, x, y, name, **params)
     elif name in classes["Deoxyhexose"]:
-        draw_deoxyhexose(img, x, y, name, groups, **params)
+        draw_deoxyhexose(img, x, y, name, **params)
     elif name in classes["DeoxyhexNAc"]:
-        draw_deoxyhexnac(img, x, y, name, groups, **params)
+        draw_deoxyhexnac(img, x, y, name, **params)
     elif name in classes["Di-deoxyhexose"]:
-        draw_di_deoxyhexose(img, x, y, name, groups, **params)
+        draw_di_deoxyhexose(img, x, y, name, **params)
     elif name in classes["Pentose"]:
-        draw_pentose(img, x, y, name, groups, **params)
+        draw_pentose(img, x, y, name, **params)
     elif name in classes["3-deoxy-nonulosonic acids"]:
-        draw_3_deoxy_nonulosonic_acids(img, x, y, name, groups, **params)
+        draw_3_deoxy_nonulosonic_acids(img, x, y, name, **params)
     elif name in classes["3,9-dideoxy-nonulosonic acids"]:
-        draw_3_9_dideocy_nonulosonic_acids(img, x, y, name, groups, **params)
+        draw_3_9_dideocy_nonulosonic_acids(img, x, y, name, **params)
     elif name in classes["Unknown"]:
-        draw_unknown(img, x, y, name, groups, **params)
+        draw_unknown(img, x, y, name, **params)
     elif name in classes["Assigned"]:
-        draw_assigned(img, x, y, name, groups, **params)
+        draw_assigned(img, x, y, name, **params)
     else:
-        draw_other(img, x, y, name, groups, **params)
+        draw_other(img, x, y, name, **params)
+    text, width = arange_node_groups(groups, img, **params)
+    img.multiline_text(
+        ((x + 0.5) * params["width"] - width * 0.5, (y + 0.8) * params["height"]),
+        text,
+        fill="black",
+        anchor="ma",
+        align="center"
+    )
 
 
 def arange_node_groups(groups, img, **params):
@@ -304,29 +312,21 @@ def arange_node_groups(groups, img, **params):
     return output, max(lines)
 
 
-def draw_hexose(img, x, y, name, groups, **params):
+def draw_hexose(img, x, y, name, **params):
     img.ellipse([
         ((x + 0.25) * params["width"], (y + 0.25) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.75) * params["height"])
     ], fill=colors["Hexose"][name], width=params["stroke"], outline="black")
-    text, width = arange_node_groups(groups, img, **params)
-    img.multiline_text(
-        ((x + 0.5) * params["width"] - width * 0.5, (y + 0.8) * params["height"]),
-        text,
-        fill="black",
-        anchor="ma",
-        align="center"
-    )
 
 
-def draw_hexnac(img, x, y, name, groups, **params):
+def draw_hexnac(img, x, y, name, **params):
     img.rectangle([
         ((x + 0.25) * params["width"], (y + 0.25) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.75) * params["height"])
     ], fill=colors["Hexose"][name[:3]], width=params["stroke"], outline="black")
 
 
-def draw_hexosamine(img, x, y, name, groups, **params):
+def draw_hexosamine(img, x, y, name, **params):
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.25) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.75) * params["height"]),
@@ -339,7 +339,7 @@ def draw_hexosamine(img, x, y, name, groups, **params):
     ], fill="white", width=params["stroke"], outline="black")
 
 
-def draw_hexuronate(img, x, y, name, groups, **params):
+def draw_hexuronate(img, x, y, name, **params):
     if name in {"IdoA", "AltA"}:
         cols = ("white", colors["Hexose"][name[:3]])
     else:
@@ -356,7 +356,7 @@ def draw_hexuronate(img, x, y, name, groups, **params):
     ], fill=cols[1], width=params["stroke"], outline="black")
 
 
-def draw_deoxyhexose(img, x, y, name, groups, **params):
+def draw_deoxyhexose(img, x, y, name, **params):
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.75) * params["height"]),
         ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
@@ -364,7 +364,7 @@ def draw_deoxyhexose(img, x, y, name, groups, **params):
     ], fill=colors["Deoxyhexose"][name], width=params["stroke"], outline="black")
 
 
-def draw_deoxyhexnac(img, x, y, name, groups, **params):
+def draw_deoxyhexnac(img, x, y, name, **params):
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.75) * params["height"]),
         ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
@@ -377,14 +377,14 @@ def draw_deoxyhexnac(img, x, y, name, groups, **params):
     ], fill=colors["DeoxyhexNAc"][name], width=params["stroke"], outline="black")
 
 
-def draw_di_deoxyhexose(img, x, y, name, groups, **params):
+def draw_di_deoxyhexose(img, x, y, name, **params):
     img.rectangle([
         ((x + 0.25) * params["width"], (y + 0.375) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.625) * params["height"])
     ], fill=colors["Di-deoxyhexose"][name], width=params["stroke"], outline="black")
 
 
-def draw_pentose(img, x, y, name, groups, **params):
+def draw_pentose(img, x, y, name, **params):
     img.polygon([
         ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
 
@@ -404,7 +404,7 @@ def draw_pentose(img, x, y, name, groups, **params):
     ], fill=colors["Pentose"][name], width=params["stroke"], outline="black")
 
 
-def draw_3_deoxy_nonulosonic_acids(img, x, y, name, groups, **params):
+def draw_3_deoxy_nonulosonic_acids(img, x, y, name, **params):
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.5) * params["height"]),
         ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
@@ -413,7 +413,7 @@ def draw_3_deoxy_nonulosonic_acids(img, x, y, name, groups, **params):
     ], fill=colors["3-dideoxy-nunolusonic acids"][name], width=params["stroke"], outline="black")
 
 
-def draw_3_9_dideocy_nonulosonic_acids(img, x, y, name, groups, **params):
+def draw_3_9_dideocy_nonulosonic_acids(img, x, y, name, **params):
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.5) * params["height"]),
         ((x + 0.5) * params["width"], (y + 0.375) * params["height"]),
@@ -422,7 +422,7 @@ def draw_3_9_dideocy_nonulosonic_acids(img, x, y, name, groups, **params):
     ], fill=colors["3,9-dideoxy-nunolusonic acids"][name], width=params["stroke"], outline="black")
 
 
-def draw_unknown(img, x, y, name, groups, **params):
+def draw_unknown(img, x, y, name, **params):
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.5) * params["height"]),
         ((x + 0.375) * params["width"], (y + 0.375) * params["height"]),
@@ -433,7 +433,7 @@ def draw_unknown(img, x, y, name, groups, **params):
     ], fill=colors["Unknown"][name], width=params["stroke"], outline="black")
 
 
-def draw_assigned(img, x, y, name, groups, **params):
+def draw_assigned(img, x, y, name, **params):
     img.polygon([
         ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.43164) * params["height"]),
@@ -447,7 +447,14 @@ def draw_other(img, x, y, name, groups, **params):
     pass
 
 
-def create_snfg_img(glycan, **params):
+def create_snfg_img(glycan, filepath, **kwargs):
+    params = {
+        "width": 100,
+        "height": 100,
+        "stroke": 2,
+        "line": 3,
+    }
+    params.update(**kwargs)
     tree = Tree(glycan).assign_coords()
     width, height = tree.get_bounds()[2:]
 
@@ -459,7 +466,8 @@ def create_snfg_img(glycan, **params):
     draw_img = ImageDraw.Draw(img)
     tree.draw_edges(draw_img, **params)
     tree.draw_nodes(draw_img, glycan, **params)
-    img.show()
+    img.save(filepath)
+    return img
 
 
 def main():

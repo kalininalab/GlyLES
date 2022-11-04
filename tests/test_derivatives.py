@@ -1,6 +1,7 @@
 import pytest
 
 from glyles.converter import convert, Glycan
+from glyles.glycans.utils import sanitize_smiles
 from tests.utils import derivatives
 from rdkit import Chem
 
@@ -66,10 +67,13 @@ class TestDerivatives:
             return
         iupac = line.strip()
         smiles = Glycan(iupac).get_smiles()
+        if smiles == "":
+            print(iupac, file=open("data/glycowork_out.txt", "a"))
         assert smiles != ""
 
         mol = Chem.MolFromSmiles(smiles)
-        print(smiles)
+        if mol is None or not all([a.GetAtomicNum() in valid_atomic_nums for a in mol.GetAtoms()]):
+            print(iupac, file=open("data/glycowork_out.txt", "a"))
         assert mol is not None
         assert all([a.GetAtomicNum() in valid_atomic_nums for a in mol.GetAtoms()])
 
@@ -107,3 +111,10 @@ class TestDerivatives:
             Glycan("Ins2P4S(1-4)Gal").get_smiles(),
             "O=P(O)(O)O[C@@H]1[C@H](O[C@H]2[C@@H](CO)OC(O)[C@H](O)[C@H]2O)[C@@H](O)[C@H](O)[C@@H](OS(=O)(=O)O)[C@@H]1O"
         )
+
+    def test_smiles_clean(self):
+        assert sanitize_smiles("SDJCBPIOUCODJCOBC") == "SDJCBPIOUCODJCOBC"
+        assert sanitize_smiles("DIC(DONC)WOUC") == "DIC(DONC)WOUC"
+        assert sanitize_smiles("DPIUCDBPSIDU((CPIDBC)PID)") == "DPIUCDBPSIDU(CPIDBCPID)"
+        assert sanitize_smiles("SDJC((PSODUCBN))SOD:C") == "SDJC(PSODUCBN)SOD:C"
+        assert sanitize_smiles("A:DO(C(OPDIC))PODUC") == "A:DO(COPDIC)PODUC"

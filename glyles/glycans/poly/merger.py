@@ -3,6 +3,8 @@ import re
 
 import numpy as np
 
+from glyles.glycans.utils import sanitize_smiles
+
 
 class Merger:
     """
@@ -71,10 +73,10 @@ class Merger:
             raise NotImplementedError("Glycans with maximal branching factor greater then 3 not implemented.")
 
         # iterate over the children and the atoms used to mark binding atoms in my structure
-        for child, atom in zip(children, t.nodes[node]["type"].get_dummy_atoms()[0]):
+        for child, atom in zip(children, t.nodes[node]["type"].get_dummy_atoms()):
             binding = re.findall(r'\d+', t.get_edge_data(node, child)["type"])[1]
 
-            t.nodes[node]["type"].mark(int(binding), atom)
+            t.nodes[node]["type"].mark(int(binding), *atom)
             self.__mark(t, child, t.get_edge_data(node, child)["type"])
 
     def __merge(self, t, node, start, ring_index):
@@ -100,7 +102,7 @@ class Merger:
             return me
 
         # iterate over the children and the atoms used to mark binding atoms
-        for child, atom in zip(children, t.nodes[node]["type"].get_dummy_atoms()[1]):
+        for child, (o_atom, n_atom) in zip(children, t.nodes[node]["type"].get_dummy_atoms()):
             binding = re.findall(r'\d+', t.get_edge_data(node, child)["type"])[0]
 
             child_start = t.nodes[child]["type"].root_atom_id(int(binding))
@@ -109,5 +111,11 @@ class Merger:
 
             # get the SMILES of this child and plug it in the current own SMILES
             child_smiles = self.__merge(t, child, child_start, ring_index + 1)
-            me = me.replace(atom, child_smiles)
+            if o_atom[1] in me:
+                me = re.sub(o_atom[2], child_smiles, me)
+            elif n_atom[1] in me:
+                me = re.sub(n_atom[2], "N(" + child_smiles[1:] + ")", me)
+            me = sanitize_smiles(me)
+            # me = me.replace("((", "(").replace("))", ")")
+            # me = me.replace(atom, child_smiles)
         return me
