@@ -70,33 +70,64 @@ ketoses2 = {
 
 
 def sanitize_smiles(smiles):
+    """
+    Sanitize the smiles string by removing unnecessary brackets.
+
+    Args:
+        smiles (str): SMILES string to be sanitized
+
+    Returns:
+        sanitized smiles string
+    """
     def get_index_forward(s, i):
+        """
+        Given string s and an opening bracket at position i, find the index of the corresponding closing bracket.
+
+        Args:
+            s (str): string to search in
+            i (int): index of the opening bracket to find the match for
+
+        Returns:
+            Index in s where the corresponding closing bracket of the opening bracket at position i is located.
+        """
         d = []
         for k in range(i, len(s)):
-            if s[k] == ')':
-                d.pop()
-            elif s[k] == '(':
+            if s[k] == '(':  # push every opening bracket to the stack
                 d.append('(')
-            if not d:
+            elif s[k] == ')':  # for every closing bracket, remove one opening bracket from the stack
+                d.pop()
+            if not d:  # if the stack is empty, the bracket we're looking for has just been popped from the stack
                 return k
         return -1
 
     def get_index_backward(s, i):
+        """
+        Given string s and a closing bracket at position i, find the index of the corresponding opening bracket.
+
+        Args:
+            s (str): string to search in
+            i (int): index of the closing bracket to find the match for
+
+        Returns:
+            Index in s where the corresponding opening bracket of the closing bracket at position i is located.
+        """
         d = []
         for k in range(i, 0, -1):
-            if s[k] == '(':
-                d.pop()
-            elif s[k] == ')':
+            if s[k] == ')':  # push every closing bracket to the stack
                 d.append(')')
-            if not d:
+            elif s[k] == '(':  # for every closing bracket, remove one opening bracket from the stack
+                d.pop()
+            if not d:  # if the stack is empty, the bracket we're looking for has just been popped from the stack
                 return k
         return -1
 
+    # check for two opening brackets, the first can be removed together with its partner
     while "((" in smiles:
         match = smiles.index("((")
         index = get_index_forward(smiles, match + 1)
         smiles = smiles[:match + 1] + smiles[match + 2:index] + smiles[index + 1:]
 
+    # check for two closing brackets, the first can be removed together with its partner
     while "))" in smiles:
         match = smiles.index("))")
         index = get_index_backward(smiles, match)

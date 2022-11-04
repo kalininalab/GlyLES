@@ -3,40 +3,95 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 class Tree:
+    """
+    Tree class to storeing a graphical representation of glycans in SNFG form.
+    """
+
     def __init__(self, glycan):
-        self.nx_tree = glycan.parse_tree
-        self.root = Node(0, 0, self.nx_tree)
+        """
+        Initialize the tree with the glycan.
+
+        Args:
+            glycan (Glycan): Glycan object to be represented in this tree object
+        """
+        self.root = Node(0, 0, glycan.parse_tree)
 
     def assign_coords(self):
+        """
+        Assign coordinates to every node in this tree.
+
+        Returns:
+            It-self
+        """
         self.root.assign_coords()
         return self
 
     def adjust_coords(self, offset):
+        """
+        Adjust the coordinates by adjusting every node's coordinate.
+
+        Args:
+            offset (float): Offset by which all nodes should be moved
+        """
         self.root.adjust_coords(offset)
 
     def get_bounds(self):
+        """
+        Bounding box in terms of node coordinates on a graphical representation.
+
+        Returns:
+            Tuple of 4 floats representing upper left and bottom right corners
+        """
         return 0, 0, self.root.get_max_depth(), self.root.get_lower_bound()[-1][1]
 
     def draw_edges(self, img, **params):
+        """
+        Draw the edges of the tree into the ImageDraw object.
+
+        Args:
+            img (ImageDraw.ImageDraw): ImageDraw object to draw on
+            **params: parameters for visualization
+        """
         self.root.draw_edges(img, **params)
 
     def draw_nodes(self, img, glycan, **params):
+        """
+        Draw the nodes of the tree representing the individual monosaccharides in a sugar polymer.
+
+        Args:
+            img (ImageDraw.ImageDraw): ImageDraw object to draw on
+            glycan (Glycan): Glycan object holding some information on the sugar monomers
+            **params: parameters for visualization
+        """
         self.root.draw_nodes(img, glycan.parse_tree, **params)
 
 
 class Node:
+    """
+    A single node in representing a monosaccharide in a graphical SNFG representation.
+    """
     def __init__(self, idx, depth, parse_tree):
+        """
+        Initialize a node representing a monosaccharide.
+
+        Args:
+            idx (int): Id of the glycan that matches the id in the networkx tree of the glycan object in the parse_tree.
+            depth (int): Depth of the node in the tree, root has depth 0, leaves have the highest depth-value
+            parse_tree (networkx.DiGraph): networkx graph representation of the glycan computed while parsing
+        """
         self.idx = idx
         self.depth = depth
         self.children = []
         self.coord = None
 
+        # iterate over the children and recursively initialize them.
         for _, cidx in parse_tree.edges(self.idx):
             self.children.append((
                 Node(cidx, self.depth + 1, parse_tree),
                 parse_tree.get_edge_data(self.idx, cidx)["type"]
             ))
 
+        # sort the children based on the depth of their most far away leaf and the number of children
         self.children = list(
             sorted(
                 self.children,
@@ -46,76 +101,143 @@ class Node:
         )
 
     def assign_coords(self):
+        """
+        Assign coordinates of this node. It is only necessary to assign y-coordinates as x coordinates are set to depth.
+
+        Returns:
+            The own y-coordinate relative to the parent.
+        """
+        # initially the coordinate is 0 and can be returned in case this node is a leaf
         self.coord = 0
         if len(self.children) == 0:
             return 0
 
+        # compute the coordinates of the children
         for child, _ in self.children:
             child.assign_coords()
 
+        # iterate over the children and arrange them to not overlap by moving the lower child down based on bounds
         for i in range(1, len(self.children)):
             lower = self.children[i - 1][0].get_lower_bound()
             upper = self.children[i][0].get_upper_bound()
             offset = max(l - u for (_, l), (_, u) in zip(lower, upper)) + 1
             self.children[i][0].adjust_coords(offset)
 
+        # set own coordinate to be in middle height of their children
         self.coord = sum(child.coord for child, _ in self.children) / len(self.children)
 
         return self.coord
 
     def adjust_coords(self, offset):
+        """
+        Adjust the y-coordinates of a node by adding the offset to the coordinate and propagating the offset to the
+        children.
+
+        Args:
+            offset (float): Offset to be added to the subtrees coordinates
+        """
         self.coord += offset
         for child, _ in self.children:
             child.adjust_coords(offset)
 
     def get_lower_bound(self):
+        """
+        Get the lower bound of this subtree in terms of node coordinates.
+
+        Returns:
+            A List of tuples of x and y coordinates (floats) representing the lower bound for this subtree.
+        """
+        # compose the lower bound as the own coordinate the lower bound of the lowest child
         if len(self.children) != 0:
             return [(self.depth, self.coord)] + self.children[-1][0].get_lower_bound()
         return [(self.depth, self.coord)]
 
     def get_upper_bound(self):
+        """
+        Get the upper bound of this subtree in terms of node coordinates.
+
+        Returns:
+            A List of tuples of x and y coordinates (floats) representing the upper bound for this subtree.
+        """
+        # compose the upper bound as the own coordinate the upper bound of the highest child
         if len(self.children) != 0:
             return [(self.depth, self.coord)] + self.children[0][0].get_upper_bound()
         return [(self.depth, self.coord)]
 
     def get_num_children(self):
+        """
+        Get the number of children of this node.
+
+        Returns:
+            Number of children
+        """
         return len(self.children)
 
     def get_max_depth(self):
+        """
+        Get the maximal depth value of a leaf of the subtree of this node. The return value will be relative to the
+        root not to this node.
+
+        Returns:
+            Depth of the deepest leaf of this subtree
+        """
         if len(self.children) == 0:
             return self.depth
         return max(child.get_max_depth() for child, _ in self.children)
 
     def get_coords(self):
+        """
+        Get the coordinates pair of this node.
+
+        Returns:
+            Tuple of two floats representing the x and y coordinate of this node
+        """
         return self.depth, self.coord
 
     def draw_edges(self, img, **params):
+        """
+        Draw the edge between two nodes.
+
+        Args:
+            img (ImageDraw.ImageDraw): ImageDraw object to draw on
+            **params: parameters for visualization
+        """
         x, y = self.get_coords()
         k = 0.3
         l = 0.3
         for child, info in self.children:
+            # draw a line from the center of this node to the centers of the child nodes
             c_x, c_y = child.get_coords()
             img.line([
                 ((x + 0.5) * params["width"], (y + 0.5) * params["height"]),
                 ((c_x + 0.5) * params["width"], (c_y + 0.5) * params["height"])
             ], fill="black", width=params["line"])
             child.draw_edges(img, **params)
+
+            # for each edge denote the additional information such as a/b conformation and binding carbon id
             img.text(
                 ((x + k + 0.48) * params["width"], (c_y + (y - c_y) * (1 - l) + 0.35) * params["width"]),
                 text=info[1],
                 fill="black",
                 anchor="lb",
-                # font=ImageFont.truetype("Arial.ttf", size=15)
             )
             img.text(
                 ((x - k + 1.48) * params["width"], (c_y + (y - c_y) * l + 0.35) * params["width"]),
                 text=info[-2],
                 fill="black",
                 anchor="lb",
-                # font=ImageFont.truetype("Arial.ttf", size=15),
             )
 
     def draw_nodes(self, img, tree, **params):
+        """
+        Draw the SNFG representation of this monomer to the ImageDraw object.
+
+        Args:
+            img (ImageDraw.ImageDraw): ImageDraw object to draw on
+            tree (networkx.DiGraph): ParseTree from a glycan, computed during parsing of the IUPAC string
+            **params: parameters for visualization
+        """
+        # draw this node and all the children recursively
         draw_glycan(img, *(self.get_coords()), *snfg_fy(tree.nodes[self.idx]["type"]), **params)
         for child, _ in self.children:
             child.draw_nodes(img, tree, **params)
@@ -211,6 +333,15 @@ classes = {
 
 
 def snfg_fy(glycan):
+    """
+    Convert the description of a glycan into the SNFG name and a list of attached functional groups.
+
+    Args:
+        glycan (Glycan): Glycan holding the information to be extracted
+
+    Returns:
+        Name of the glycan in SNFG-conform term and a list of remaining functional groups.
+    """
     name = glycan.get_name()
     names = set(list(zip(*(glycan.get_recipe())))[0])
     if name in {
@@ -244,11 +375,25 @@ def snfg_fy(glycan):
         return "Mur5Gc", names.difference({"5Gc", name})
     if name == "Leg" and "4e" in names:
         return "4eLeg", names.difference({"4e", name})
-    # TODO: LDmanHep and DDmanHep
+    if name == "Man" and "LD" in names and "Hep" in names:
+        return "LDManHep", names.difference({"LD", "Man", "Hep"})
+    if name == "Man" and "DD" in names and "Hep" in names:
+        return "DDManHep", names.difference({"DD", "Man", "Hep"})
     return name, names.difference({name})
 
 
 def draw_glycan(img, x, y, name, groups, **params):
+    """
+    Draw a single glycan node to the image.
+
+    Args:
+        img (ImageDraw.ImageDraw): ImageDraw object to paint on
+        x (float): x coordinate to be drawn
+        y (float): y coordinate to be drawn
+        name (str): name of the monomer to be drawn
+        groups (List[str]): List of strings to be written beyond the
+        **params: See description in viz.create_snfg_image
+    """
     if name in classes["Hexose"]:
         draw_hexose(img, x, y, name, **params)
     elif name in classes["HexNAc"]:
@@ -274,8 +419,10 @@ def draw_glycan(img, x, y, name, groups, **params):
     elif name in classes["Assigned"]:
         draw_assigned(img, x, y, name, **params)
     else:
-        draw_other(img, x, y, name, **params)
-    text, width = arange_node_groups(groups, img, **params)
+        draw_other(img, x, y, **params)
+
+    # finally write the text under the symbol
+    text, width = arrange_node_groups(groups, img, **params)
     img.multiline_text(
         ((x + 0.5) * params["width"] - width * 0.5, (y + 0.8) * params["height"]),
         text,
@@ -285,12 +432,27 @@ def draw_glycan(img, x, y, name, groups, **params):
     )
 
 
-def arange_node_groups(groups, img, **params):
+def arrange_node_groups(groups, img, **params):
+    """
+    Arrange the names of the attached functional groups in a way to not exceed the width of the sign.
+
+    Args:
+        groups (List[str]): List of descriptions of functional groups attached to a glycan
+        img (ImageDraw.ImageDraw): ImageDraw object to estimate the width of each textbox
+        **params: See description in viz.create_snfg_image
+
+    Returns:
+        Text with newlines and maximal width of the resulting textbox for better centering it.
+    """
+    # set some variable and define a threshold for the maximal width of a line
     output = ""
     length = 0
     threshold = 0.5 * params["width"]
     lines = []
+
+    # iterate over all groups
     for g in groups:
+        # if the line is empty, add the functional group as new line and store the length in case it's below threshold
         if length == 0:
             output += g
             tl = img.textlength(g)
@@ -299,6 +461,7 @@ def arange_node_groups(groups, img, **params):
                 lines.append(tl)
             else:
                 length = tl
+        # otherwise, check if the line has enough space for another functional group and add a new line eventually
         else:
             tl = img.textlength(g)
             if length + tl > threshold:
@@ -309,10 +472,21 @@ def arange_node_groups(groups, img, **params):
                 output += g
                 length += tl
     lines.append(length)
+
     return output, max(lines)
 
 
 def draw_hexose(img, x, y, name, **params):
+    """
+    Draw a filled circle for an assigned glycan.
+
+    Args:
+        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        x (float): x coordinate of the shape on the image before offsetting
+        y (float): y coordinate of the shape on the image before offsetting
+        name (str): name of the glycan to select the correct color
+        **params: See description in viz.create_snfg_image
+    """
     img.ellipse([
         ((x + 0.25) * params["width"], (y + 0.25) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.75) * params["height"])
@@ -320,6 +494,16 @@ def draw_hexose(img, x, y, name, **params):
 
 
 def draw_hexnac(img, x, y, name, **params):
+    """
+    Draw a filled square for an assigned glycan.
+
+    Args:
+        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        x (float): x coordinate of the shape on the image before offsetting
+        y (float): y coordinate of the shape on the image before offsetting
+        name (str): name of the glycan to select the correct color
+        **params: See description in viz.create_snfg_image
+    """
     img.rectangle([
         ((x + 0.25) * params["width"], (y + 0.25) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.75) * params["height"])
@@ -327,6 +511,16 @@ def draw_hexnac(img, x, y, name, **params):
 
 
 def draw_hexosamine(img, x, y, name, **params):
+    """
+    Draw a crossed square for an assigned glycan.
+
+    Args:
+        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        x (float): x coordinate of the shape on the image before offsetting
+        y (float): y coordinate of the shape on the image before offsetting
+        name (str): name of the glycan to select the correct color
+        **params: See description in viz.create_snfg_image
+    """
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.25) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.75) * params["height"]),
@@ -340,6 +534,16 @@ def draw_hexosamine(img, x, y, name, **params):
 
 
 def draw_hexuronate(img, x, y, name, **params):
+    """
+    Draw a divided diamond for an assigned glycan.
+
+    Args:
+        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        x (float): x coordinate of the shape on the image before offsetting
+        y (float): y coordinate of the shape on the image before offsetting
+        name (str): name of the glycan to select the correct color
+        **params: See description in viz.create_snfg_image
+    """
     if name in {"IdoA", "AltA"}:
         cols = ("white", colors["Hexose"][name[:3]])
     else:
@@ -357,6 +561,16 @@ def draw_hexuronate(img, x, y, name, **params):
 
 
 def draw_deoxyhexose(img, x, y, name, **params):
+    """
+    Draw a filled triangle for an assigned glycan.
+
+    Args:
+        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        x (float): x coordinate of the shape on the image before offsetting
+        y (float): y coordinate of the shape on the image before offsetting
+        name (str): name of the glycan to select the correct color
+        **params: See description in viz.create_snfg_image
+    """
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.75) * params["height"]),
         ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
@@ -365,6 +579,16 @@ def draw_deoxyhexose(img, x, y, name, **params):
 
 
 def draw_deoxyhexnac(img, x, y, name, **params):
+    """
+    Draw a divided triangle for an assigned glycan.
+
+    Args:
+        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        x (float): x coordinate of the shape on the image before offsetting
+        y (float): y coordinate of the shape on the image before offsetting
+        name (str): name of the glycan to select the correct color
+        **params: See description in viz.create_snfg_image
+    """
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.75) * params["height"]),
         ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
@@ -378,6 +602,16 @@ def draw_deoxyhexnac(img, x, y, name, **params):
 
 
 def draw_di_deoxyhexose(img, x, y, name, **params):
+    """
+    Draw a flat rectangle for an assigned glycan.
+
+    Args:
+        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        x (float): x coordinate of the shape on the image before offsetting
+        y (float): y coordinate of the shape on the image before offsetting
+        name (str): name of the glycan to select the correct color
+        **params: See description in viz.create_snfg_image
+    """
     img.rectangle([
         ((x + 0.25) * params["width"], (y + 0.375) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.625) * params["height"])
@@ -385,6 +619,16 @@ def draw_di_deoxyhexose(img, x, y, name, **params):
 
 
 def draw_pentose(img, x, y, name, **params):
+    """
+    Draw a 5-star for an assigned glycan.
+
+    Args:
+        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        x (float): x coordinate of the shape on the image before offsetting
+        y (float): y coordinate of the shape on the image before offsetting
+        name (str): name of the glycan to select the correct color
+        **params: See description in viz.create_snfg_image
+    """
     img.polygon([
         ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
 
@@ -405,6 +649,16 @@ def draw_pentose(img, x, y, name, **params):
 
 
 def draw_3_deoxy_nonulosonic_acids(img, x, y, name, **params):
+    """
+    Draw a filled diamond for an assigned glycan.
+
+    Args:
+        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        x (float): x coordinate of the shape on the image before offsetting
+        y (float): y coordinate of the shape on the image before offsetting
+        name (str): name of the glycan to select the correct color
+        **params: See description in viz.create_snfg_image
+    """
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.5) * params["height"]),
         ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
@@ -414,6 +668,16 @@ def draw_3_deoxy_nonulosonic_acids(img, x, y, name, **params):
 
 
 def draw_3_9_dideocy_nonulosonic_acids(img, x, y, name, **params):
+    """
+    Draw a diamond for an assigned glycan.
+
+    Args:
+        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        x (float): x coordinate of the shape on the image before offsetting
+        y (float): y coordinate of the shape on the image before offsetting
+        name (str): name of the glycan to select the correct color
+        **params: See description in viz.create_snfg_image
+    """
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.5) * params["height"]),
         ((x + 0.5) * params["width"], (y + 0.375) * params["height"]),
@@ -423,6 +687,16 @@ def draw_3_9_dideocy_nonulosonic_acids(img, x, y, name, **params):
 
 
 def draw_unknown(img, x, y, name, **params):
+    """
+    Draw a flat hexagon for an assigned glycan.
+
+    Args:
+        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        x (float): x coordinate of the shape on the image before offsetting
+        y (float): y coordinate of the shape on the image before offsetting
+        name (str): name of the glycan to select the correct color
+        **params: See description in viz.create_snfg_image
+    """
     img.polygon([
         ((x + 0.25) * params["width"], (y + 0.5) * params["height"]),
         ((x + 0.375) * params["width"], (y + 0.375) * params["height"]),
@@ -434,6 +708,16 @@ def draw_unknown(img, x, y, name, **params):
 
 
 def draw_assigned(img, x, y, name, **params):
+    """
+    Draw a pentagon for an assigned glycan.
+
+    Args:
+        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        x (float): x coordinate of the shape on the image before offsetting
+        y (float): y coordinate of the shape on the image before offsetting
+        name (str): name of the glycan to select the correct color
+        **params: See description in viz.create_snfg_image
+    """
     img.polygon([
         ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
         ((x + 0.75) * params["width"], (y + 0.43164) * params["height"]),
@@ -443,11 +727,37 @@ def draw_assigned(img, x, y, name, **params):
     ], fill=colors["Assigned"][name], width=params["stroke"], outline="black")
 
 
-def draw_other(img, x, y, name, groups, **params):
-    pass
+def draw_other(img, x, y, **params):
+    """
+    Draw an empty pentagon for an unknown glycan.
+
+    Args:
+        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        x (float): x coordinate of the shape on the image before offsetting
+        y (float): y coordinate of the shape on the image before offsetting
+        **params: See description in viz.create_snfg_image
+    """
+    img.polygon([
+        ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
+        ((x + 0.75) * params["width"], (y + 0.43164) * params["height"]),
+        ((x + 0.66877) * params["width"], (y + 0.75) * params["height"]),
+        ((x + 0.33123) * params["width"], (y + 0.75) * params["height"]),
+        ((x + 0.25) * params["width"], (y + 0.43164) * params["height"])
+    ], fill="white", width=params["stroke"], outline="black")
 
 
 def create_snfg_img(glycan, filepath, **kwargs):
+    """
+    Create an image representation for a glycan using the SNFG symbols.
+
+    Args:
+        glycan (Glycan): glycan to be visualized
+        filepath (str): path where to store the image
+
+    Returns:
+        PIL image representation using the SNFG symbols
+    """
+    # set up the parameters for visualizing
     params = {
         "width": 100,
         "height": 100,
@@ -455,9 +765,12 @@ def create_snfg_img(glycan, filepath, **kwargs):
         "line": 3,
     }
     params.update(**kwargs)
+
+    # generate the visualization tree representation of the glycan
     tree = Tree(glycan).assign_coords()
     width, height = tree.get_bounds()[2:]
 
+    # create and draw the image
     img = Image.new(
         mode="RGB",
         size=(int((width + 1) * params["width"]), int((height + 1) * params["height"])),
@@ -466,6 +779,8 @@ def create_snfg_img(glycan, filepath, **kwargs):
     draw_img = ImageDraw.Draw(img)
     tree.draw_edges(draw_img, **params)
     tree.draw_nodes(draw_img, glycan, **params)
+
+    # save the image and return is for further operations
     img.save(filepath)
     return img
 
