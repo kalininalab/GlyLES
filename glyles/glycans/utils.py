@@ -1,3 +1,5 @@
+import re
+from collections import deque
 from enum import Enum
 
 import networkx as nx
@@ -65,6 +67,42 @@ ketoses2 = {
     ("Leg", Lactole.PYRANOSE), ("Aci", Lactole.PYRANOSE), ("Kdo", Lactole.PYRANOSE), ("Dha", Lactole.PYRANOSE),
     ("Fru", Lactole.PYRANOSE), ("Sor", Lactole.PYRANOSE), ("Tag", Lactole.PYRANOSE), ("Psi", Lactole.PYRANOSE),
 }
+
+
+def sanitize_smiles(smiles):
+    def get_index_forward(s, i):
+        d = []
+        for k in range(i, len(s)):
+            if s[k] == ')':
+                d.pop()
+            elif s[k] == '(':
+                d.append('(')
+            if not d:
+                return k
+        return -1
+
+    def get_index_backward(s, i):
+        d = []
+        for k in range(i, 0, -1):
+            if s[k] == '(':
+                d.pop()
+            elif s[k] == ')':
+                d.append(')')
+            if not d:
+                return k
+        return -1
+
+    while "((" in smiles:
+        match = smiles.index("((")
+        index = get_index_forward(smiles, match + 1)
+        smiles = smiles[:match + 1] + smiles[match + 2:index] + smiles[index + 1:]
+
+    while "))" in smiles:
+        match = smiles.index("))")
+        index = get_index_backward(smiles, match)
+        smiles = smiles[:index] + smiles[index + 1:match + 1] + smiles[match + 2:]
+
+    return smiles
 
 
 def find_rings(mol):

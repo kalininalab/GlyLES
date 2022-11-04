@@ -100,11 +100,15 @@ def enumerate_c_atoms(monomer, c_atoms, ringo):
         start, end = longest_c_chain[0], longest_c_chain[-1]
 
         # check conditions
-        start_o_conn, end_o_conn = \
-            np.argwhere((monomer.adjacency[start, :] == 1) & (monomer.x[:, 0] == 8) & (monomer.x[:, 2] != 1) &
+        """start_o_conn, end_o_conn = \
+            np.argwhere((monomer.adjacency[start, :] == 1) & np.in1d(monomer.x[:, 0], [7, 8]) & (monomer.x[:, 2] != 1) &
                         (monomer.x[:, 3] == 1)).squeeze().size > 0, \
-            np.argwhere((monomer.adjacency[end, :] == 1) & (monomer.x[:, 0] == 8) & (monomer.x[:, 2] != 1) &
-                        (monomer.x[:, 3] == 1)).squeeze().size > 0
+            np.argwhere((monomer.adjacency[end, :] == 1) & np.in1d(monomer.x[:, 0], [7, 8]) & (monomer.x[:, 2] != 1) &
+                        (monomer.x[:, 3] == 1)).squeeze().size > 0"""
+        start_o_conn = np.argwhere((monomer.adjacency[start, :] == 1) & np.in1d(monomer.x[:, 0], [7, 8]) &
+                                   (monomer.x[:, 2] != 1)).squeeze().size > 0
+        end_o_conn = np.argwhere((monomer.adjacency[end, :] == 1) & np.in1d(monomer.x[:, 0], [7, 8]) &
+                                 (monomer.x[:, 2] != 1)).squeeze().size > 0
 
         # decide on c1
         if start_o_conn and end_o_conn:
@@ -174,9 +178,9 @@ def equidistant(monomer, start, end):
 
         # check if those ring carbons have an attached oxygen
         start_ring_c_o_candidates = np.where((monomer.adjacency[start_ring_c, :] == 1) &
-                                             (monomer.x[:, 0] == 8) & (monomer.x[:, 2] != 1))[0]
+                                             np.in1d(monomer.x[:, 0], [7, 8]) & (monomer.x[:, 2] != 1))[0]
         end_ring_c_o_candidates = np.where((monomer.adjacency[end_ring_c, :] == 1) &
-                                           (monomer.x[:, 0] == 8) & (monomer.x[:, 2] != 1))[0]
+                                           np.in1d(monomer.x[:, 0], [7, 8]) & (monomer.x[:, 2] != 1))[0]
 
         if start_ring_c_o_candidates.size == 1 and end_ring_c_o_candidates.size == 1:
             raise UnreachableError("C1 atom cannot be detected")
