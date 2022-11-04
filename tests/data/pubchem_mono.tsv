@@ -1,0 +1,147 @@
+HexN	C(C1C(C(C(C(O1)O)N)O)O)O	739
+6dHex	CC1C(C(C(C(O1)O)O)O)O	840
+HexNAc	CC(=O)NC1C(C(C(OC1O)CO)O)O	899
+D-Glc	C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O)O	5793
+Glc6P	C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O)OP(=O)(O)O	5958
+D-Gal	C([C@@H]1[C@@H]([C@@H]([C@H](C(O1)O)O)O)O)O	6036
+Fuc	C[C@H]1[C@H]([C@H]([C@@H](C(O1)O)O)O)O	17106
+D-Man	C([C@@H]1[C@H]([C@@H]([C@@H](C(O1)O)O)O)O)O	18950
+NAcGlc b	CC(=O)N[C@@H]1[C@H]([C@@H]([C@H](O[C@H]1O)CO)O)O	24139
+D-GalN	C([C@@H]1[C@@H]([C@@H]([C@H](C(O1)O)N)O)O)O	24154
+L-Rha	C[C@H]1[C@@H]([C@H]([C@H](C(O1)O)O)O)O	25310
+D-GalNAc	CC(=O)N[C@@H]1[C@H]([C@H]([C@H](OC1O)CO)O)O	35717
+D-GlcA	[C@@H]1([C@@H]([C@H](OC([C@@H]1O)O)C(=O)O)O)O	94715
+GcNeu b	C1[C@@H]([C@H]([C@@H](O[C@@]1(C(=O)O)O)[C@@H]([C@@H](CO)O)O)NC(=O)CO)O	123802
+D-Xyl	C1[C@H]([C@@H]([C@H](C(O1)O)O)O)O	135191
+Abe	C[C@@H]1[C@@H](C[C@H](C(O1)O)O)O	160540
+D-GlcNAc	CC(=O)N[C@@H]1[C@H]([C@@H]([C@H](OC1O)CO)O)O	439174
+L-Sor	C1[C@@H]([C@H]([C@@H](C(O1)(CO)O)O)O)O	439192
+Ara	C1[C@@H]([C@@H]([C@H](C(O1)O)O)O)O	439195
+Neu5Ac	CC(=O)N[C@@H]1[C@H](CC(O[C@H]1[C@@H]([C@@H](CO)O)O)(C(=O)O)O)O	439197
+D-GlcN	C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)N)O)O)O	439213
+D-GalA	[C@@H]1([C@H]([C@H](OC([C@@H]1O)O)C(=O)O)O)O	439215
+D-Lyx	C1[C@H]([C@@H]([C@@H](C(O1)O)O)O)O	439240
+D-ManNAc	CC(=O)N[C@H]1[C@H]([C@@H]([C@H](OC1O)CO)O)O	439281
+D-Tag	C1[C@H]([C@@H]([C@@H](C(O1)(CO)O)O)O)O	439312
+All	C([C@@H]1[C@H]([C@H]([C@H](C(O1)O)O)O)O)O	439507
+D-ManA	[C@@H]1([C@@H]([C@H](OC([C@H]1O)O)C(=O)O)O)O	439630
+D-Qui	C[C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O	439746
+Neu5Gc	C1[C@@H]([C@H]([C@@H](OC1(C(=O)O)O)[C@@H]([C@@H](CO)O)O)NC(=O)CO)O	440001
+D-ManN	C([C@@H]1[C@H]([C@@H]([C@@H](C(O1)O)N)O)O)O	440049
+D-Alt	C([C@@H]1[C@H]([C@H]([C@@H](C(O1)O)O)O)O)O	441032
+D-Gul	C([C@@H]1[C@@H]([C@H]([C@H](C(O1)O)O)O)O)O	441033
+D-Ido	C([C@@H]1[C@@H]([C@H]([C@@H](C(O1)O)O)O)O)O	441034
+D-Tal	C([C@@H]1[C@@H]([C@@H]([C@@H](C(O1)O)O)O)O)O	441035
+D-Psi	C1[C@H]([C@H]([C@H](C(O1)(CO)O)O)O)O	441036
+Neu	C1[C@@H]([C@H]([C@@H](OC1(C(=O)O)O)[C@@H]([C@@H](CO)O)O)N)O	441037
+Mur	C[C@H](C(=O)O)O[C@H]1[C@@H]([C@H](OC([C@@H]1N)O)CO)O	441038
+IdoA	[C@@H]1([C@@H]([C@@H](OC([C@@H]1O)O)C(=O)O)O)O	441039
+GlcAb	[C@@H]1([C@@H]([C@H](O[C@H]([C@@H]1O)O)C(=O)O)O)O	441478
+GlcAa	[C@@H]1([C@@H]([C@H](O[C@@H]([C@@H]1O)O)C(=O)O)O)O	444791
+GalNAc4S b	CC(=O)N[C@@H]1[C@H]([C@H]([C@H](O[C@H]1O)CO)OS(=O)(=O)O)O	446101
+Man6P a	C([C@@H]1[C@H]([C@@H]([C@@H]([C@H](O1)O)O)O)O)OP(=O)(O)O	447096
+3MeRha a	C[C@H]1[C@@H]([C@H]([C@H]([C@@H](O1)O)O)OC)O	449370
+GlcNS	C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)NS(=O)(=O)O)O)O)O	453619
+D-Dig	C[C@@H]1[C@H]([C@H](CC(O1)O)O)O	2723626
+D-Fru	C1[C@H]([C@H]([C@@H](C(O1)(CO)O)O)O)O	2723872
+Kdo8P a	C1[C@H]([C@H]([C@H](O[C@]1(C(=O)O)O)[C@@H](COP(=O)(O)O)O)O)O	4369556
+MurNAc	C[C@H](C(=O)O)O[C@H]1[C@@H]([C@H](OC([C@@H]1NC(=O)C)O)CO)O	5462244
+AltN	C([C@H]1[C@@H]([C@@H]([C@H](C(O1)O)N)O)O)O	6602094
+AllA	[C@H]1([C@@H]([C@H](OC([C@@H]1O)O)C(=O)O)O)O	6602103
+AllN	C([C@@H]1[C@H]([C@H]([C@H](C(O1)O)N)O)O)O	6915732
+Sorb	C1[C@@H]([C@H]([C@@H]([C@@](O1)(CO)O)O)O)O	6992107
+D-TalN	C([C@@H]1[C@@H]([C@@H]([C@@H](C(O1)O)N)O)O)O	9834117
+Neu5Gca	C1[C@@H]([C@H]([C@@H](O[C@]1(C(=O)O)O)[C@@H]([C@@H](CO)O)O)NC(=O)CO)O	9840259
+D-AltN	C([C@@H]1[C@H]([C@H]([C@@H](C(O1)O)N)O)O)O	9920527
+D-GulN	C([C@@H]1[C@@H]([C@H]([C@H](C(O1)O)N)O)O)O	9920528
+Alt	C([C@H]1[C@@H]([C@@H]([C@H](C(O1)O)O)O)O)O	10219674
+D-Kdo	C1[C@H]([C@H]([C@H](OC1(C(=O)O)O)[C@@H](CO)O)O)O	10857507
+D-Oli	C[C@@H]1[C@H]([C@@H](CC(O1)O)O)O	10888063
+Xylf	C([C@@H]1[C@@H]([C@H](C(O1)O)O)O)O	10888078
+AllNAc	CC(=O)N[C@@H]1[C@@H]([C@@H]([C@H](OC1O)CO)O)O	10944029
+Manf	C([C@H]([C@@H]1[C@@H]([C@@H](C(O1)O)O)O)O)O	10965116
+D-Rib	C1[C@H]([C@H]([C@H](C(O1)O)O)O)O	10975657
+L-Lyxf	C([C@H]1[C@H]([C@H](C(O1)O)O)O)O	11008085
+Galf b	C([C@H]([C@H]1[C@@H]([C@H]([C@@H](O1)O)O)O)O)O	11019448
+Ido	C([C@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O)O	11030410
+D-TalA	[C@@H]1([C@H]([C@H](OC([C@H]1O)O)C(=O)O)O)O	11298488
+L-Xylf	C([C@H]1[C@H]([C@@H](C(O1)O)O)O)O	11389478
+Lyxf	C([C@@H]1[C@@H]([C@@H](C(O1)O)O)O)O	11435035
+L-Glcf	C([C@@H]([C@H]1[C@H]([C@@H](C(O1)O)O)O)O)O	11480803
+D-GulA	[C@H]1([C@H]([C@H](OC([C@@H]1O)O)C(=O)O)O)O	11788788
+D-QuiNAc	C[C@@H]1[C@H]([C@@H]([C@H](C(O1)O)NC(=O)C)O)O	11954187
+Gulf	C([C@H]([C@H]1[C@H]([C@H](C(O1)O)O)O)O)O	12082513
+6dAlt	C[C@H]1[C@@H]([C@@H]([C@H](C(O1)O)O)O)O	12302958
+6dGul	C[C@@H]1[C@@H]([C@H]([C@H](C(O1)O)O)O)O	12302960
+D-IdoN	C([C@@H]1[C@@H]([C@H]([C@@H](C(O1)O)N)O)O)O	12302990
+Col	C[C@H]1[C@H](C[C@@H](C(O1)O)O)O	12303780
+D-Tyv	C[C@@H]1[C@H](C[C@@H](C(O1)O)O)O	12303782
+D-Par	C[C@@H]1[C@H](C[C@H](C(O1)O)O)O	12303783
+Api	C1[C@@]([C@H](C(O1)O)O)(CO)O	12306753
+D-GulNAc	CC(=O)N[C@@H]1[C@@H]([C@H]([C@H](OC1O)CO)O)O	13201633
+D-AltNAc	CC(=O)N[C@H]1[C@@H]([C@@H]([C@H](OC1O)CO)O)O	13201635
+IdoNAc	CC(=O)N[C@@H]1[C@H]([C@@H]([C@@H](OC1O)CO)O)O	13201636
+Kdn	C1[C@@H]([C@H]([C@@H](OC1(C(=O)O)O)[C@@H]([C@@H](CO)O)O)O)O	13991616
+D-Galf	C([C@H]([C@H]1[C@@H]([C@H](C(O1)O)O)O)O)O	15560222
+D-Idof	C([C@H]([C@H]1[C@H]([C@@H](C(O1)O)O)O)O)O	15560232
+D-Dha	C1[C@H]([C@H]([C@H](OC1(C(=O)O)O)C(=O)O)O)O	15608515
+LDManHep	C([C@@H]([C@@H]1[C@H]([C@@H]([C@@H](C(O1)O)O)O)O)O)O	21120522
+6dTal	C[C@@H]1[C@@H]([C@@H]([C@@H](C(O1)O)O)O)O	44119431
+AltNAc	CC(=O)N[C@@H]1[C@H]([C@H]([C@@H](OC1O)CO)O)O	44717159
+Kdo5P a	C1[C@H]([C@H]([C@H](O[C@]1(C(=O)O)O)[C@@H](CO)O)OP(=O)(O)O)O	45480575
+Kdo4P a	C1[C@H]([C@H]([C@H](O[C@]1(C(=O)O)O)[C@@H](CO)O)O)OP(=O)(O)O	45480576
+Glc3S	C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)OS(=O)(=O)O)O)O	46185934
+Idof	C([C@@H]([C@@H]1[C@@H]([C@H](C(O1)O)O)O)O)O	53664873
+L-Talf	C([C@@H]([C@@H]1[C@H]([C@H](C(O1)O)O)O)O)O	53664877
+Talf	C([C@H]([C@H]1[C@@H]([C@@H](C(O1)O)O)O)O)O	53664879
+D-Altf	C([C@H]([C@@H]1[C@H]([C@@H](C(O1)O)O)O)O)O	53664882
+L-Gulf	C([C@@H]([C@@H]1[C@@H]([C@@H](C(O1)O)O)O)O)O	53664884
+DDManHep	C([C@H]([C@@H]1[C@H]([C@@H]([C@@H](C(O1)O)O)O)O)O)O	53681436
+AltA	[C@@H]1([C@H]([C@@H](OC([C@@H]1O)O)C(=O)O)O)O	56845780
+D-TalNAc	CC(=O)N[C@H]1[C@H]([C@H]([C@H](OC1O)CO)O)O	57376616
+Altf	C([C@@H]([C@H]1[C@@H]([C@H](C(O1)O)O)O)O)O	69116425
+Leg b	C[C@H]([C@H]([C@H]1[C@@H]([C@H](C[C@](O1)(C(=O)O)O)O)N)N)O	70678967
+L-Galf	C([C@@H]([C@@H]1[C@H]([C@@H](C(O1)O)O)O)O)O	90276981
+D-Fuc4NAc a	C[C@@H]1[C@@H]([C@@H]([C@H]([C@H](O1)O)O)O)NC(=O)C	90659075
+D-IdoNAc	CC(=O)N[C@H]1[C@@H]([C@H]([C@H](OC1O)CO)O)O	91801287
+L-RhaNAc	C[C@H]1[C@@H]([C@H]([C@H](C(O1)O)NC(=O)C)O)O	91807222
+FucNAc	C[C@H]1[C@H]([C@H]([C@@H](C(O1)O)NC(=O)C)O)O	91810489
+MurNGc	C[C@H](C(=O)O)O[C@H]1[C@@H]([C@H](OC([C@@H]1NC(=O)CO)O)CO)O	91810748
+L-Manf	C([C@@H]([C@H]1[C@H]([C@H](C(O1)O)O)O)O)O	91853894
+IdoN	C([C@H]1[C@H]([C@@H]([C@H](C(O1)O)N)O)O)O	91864695
+Pse b	C[C@@H]([C@@H]([C@H]1[C@H]([C@H](C[C@](O1)(C(=O)O)O)O)N)N)O	101137651
+6dAltNAc	C[C@H]1[C@@H]([C@@H]([C@H](C(O1)O)NC(=O)C)O)O	126961777
+6dTalNAc	C[C@@H]1[C@@H]([C@@H]([C@@H](C(O1)O)NC(=O)C)O)O	126961778
+Aci b	C[C@@H]([C@@H]([C@H]1[C@@H]([C@H](C[C@](O1)(C(=O)O)O)O)N)N)O	126961779
+4eLeg b	C[C@H]([C@H]([C@H]1[C@@H]([C@@H](C[C@](O1)(C(=O)O)O)O)N)N)O	126961780
+2dHex	C1C(C(C(OC1O)CO)O)O	40
+Pen1P4N	C1C(C(C(C(O1)OP(=O)(O)O)O)O)N	115
+Penf1N5P	C(C1C(C(C(O1)N)O)O)OP(=O)(O)O	150
+Hex	C(C1C(C(C(C(O1)O)O)O)O)O	206
+6-O-P-Hex	C(C1C(C(C(C(O1)O)O)O)O)OP(=O)(O)O	208
+Pen	C1C(C(C(C(O1)O)O)O)O	229
+Hex1P	C(C1C(C(C(C(O1)OP(=O)(O)O)O)O)O)O	466
+6dHex1P	CC1C(C(C(C(O1)OP(=O)(O)O)O)O)O	475
+Hex2N6P	C(C1C(C(C(C(O1)O)N)O)O)OP(=O)(O)O	609
+HexA	C1(C(C(OC(C1O)O)C(=O)O)O)O	610
+1-O-P-2dPenf	C1C(C(OC1OP(=O)(O)O)CO)O	634
+2dPenf5P	C1C(C(OC1O)COP(=O)(O)O)O	635
+Hex1P6P	C(C1C(C(C(C(O1)OP(=O)(O)O)O)O)O)OP(=O)(O)O	737
+Hex1P2N	C(C1C(C(C(C(O1)OP(=O)(O)O)N)O)O)O	740
+HexNAc1N	CC(=O)NC1C(C(C(OC1N)CO)O)O	897
+HexNAc6P	CC(=O)NC1C(C(C(OC1O)COP(=O)(O)O)O)O	898
+HexNAc1P	CC(=O)NC1C(C(C(OC1OP(=O)(O)O)CO)O)O	900
+Sia	CC(=O)NC1C(CC(OC1C(C(CO)O)O)(C(=O)O)O)O	906
+1dPenf	C1C(C(C(O1)CO)O)O	952
+Penf	C(C1C(C(C(O1)O)O)O)O	993
+Penf1P5P	C(C1C(C(C(O1)OP(=O)(O)O)O)O)OP(=O)(O)O	1073
+Penf1P	C(C1C(C(C(O1)OP(=O)(O)O)O)O)O	1074
+Hex2Cl	C(C1C(C(C(C(O1)O)Cl)O)O)O	1545
+D-Ribf	C([C@@H]1[C@H]([C@H](C(O1)O)O)O)O	5779
+D-Xyl a	C1[C@H]([C@@H]([C@H]([C@H](O1)O)O)O)O	6027
+D-Arap	C1[C@H]([C@H]([C@@H](C(O1)O)O)O)O	6902
+1-O-P-6-O-P-D-Frufb	C([C@@H]1[C@H]([C@@H]([C@](O1)(COP(=O)(O)O)O)O)O)OP(=O)(O)O	10267
+D-Fucp	C[C@@H]1[C@@H]([C@@H]([C@H](C(O1)O)O)O)O	19466
+FruN b	C1[C@H]([C@H]([C@@H]([C@](O1)(CN)O)O)O)O	20484
+D-Frubp	C1[C@H]([C@H]([C@@H]([C@](O1)(CO)O)O)O)O	24310
+8eLeg5Ac7Ac b	C[C@@H]([C@H]([C@H]1[C@@H]([C@H](C[C@](O1)(C(=O)O)O)O)NC(=O)C)NC(=O)C)O	154573043

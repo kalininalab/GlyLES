@@ -9,10 +9,12 @@ on:
     branches:
       - main
       - auto_test
+      - dev
   pull_request:
     branches:
       - main
       - auto_test
+      - dev
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -27,15 +29,15 @@ jobs:
       - name: Install poetry
         uses: abatilo/actions-poetry@v2.0.0
         with:
-          poetry-version: 1.0
+          poetry-version: 1.1.12
       - name: Install dependencies
         run: |
-          poetry install
+          poetry install --no-dev
           poetry run python -m pip install pytest-cov
       - name: Run tests
         run: |
           cd tests
-          poetry run python -m pytest --cov=./ --cov-report=xml -m "not todo"
+          poetry run python -m pytest --cov=../glyles/ --cov-report=xml -m "not todo and not slow"
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:

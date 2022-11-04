@@ -4,6 +4,11 @@
 __pycache__/
 .vscode/
 dist/
+tests/data/misc/
+.ipynb_checkpoints/
 
 *.dot
 /.vscode/settings.json
+tests/still_not_parsed.txt
+examples/files/example.csv
+/docs/build/

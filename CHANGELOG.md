@@ -1,5 +1,62 @@
 # Change Log
 
+## to be released - v0.5.0 - 2022-??-??
+
+Release for publication in Journal of Cheminformatics 
+
+### Added
+
+- ?,?-Anhydro configurations of glycan implemented for structural representation
+- Open-form representations for "-aric", "-onic", "-ulosonic", and "-ulosaric" glycans
+- Example notebooks and documentation on [ReadTheDocs](https://glyles.readthedocs.io/en/latest/).
+
+---
+
+## v0.4.2 - 2022-09-06
+
+### Fixed
+
+- Bug fixed
+
+---
+
+## v0.4.1 - 2022-09-02
+
+### Fixed
+
+- Patch for full representation mode of glycans
+- Logging levels based on python logging module introduced instead of own logging mix
+
+---
+
+## v0.4.0 - 2022-08-25
+
+### Added
+
+- Ternary and Quarternary branching is now possible. Monomers may have up to four children in the tree-like structure 
+of a glycan.
+- More tests for the new functionality
+- Support for two new IUPAC representations (full and simplified according to 
+[SNFG](https://www.ncbi.nlm.nih.gov/glycans/snfg.html)) beside the current IUPAC-condensed
+- Now supporting most of the functional groups in [CSDB]() and [glycowork](https://pypi.org/project/glycowork/). 
+
+### Changed
+
+- Monomers only in RDKit representation possible. NetworkX-implementation has been removed
+- Adding of functional groups completely reworked
+- Comments and code style improved, also a bit of a cleanup
+- Default output-type is ``return`` instead of commandline prints
+
+---
+
+## v0.3.1 - 2022-05-18
+
+### Fixed
+
+- Bug fixed in ANTLR4 package version requirement
+
+---
+
 ## v0.3.0 - 2022-02-10
 
 Release for 17th German Conference on Cheminformatics and EuroSAMPL Satellite Workshop
