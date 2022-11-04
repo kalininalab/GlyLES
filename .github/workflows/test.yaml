@@ -39,7 +39,7 @@ jobs:
           cd tests
           poetry run python -m pytest --cov=../glyles/ --cov-report=xml -m "not todo and not slow"
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           fail_ci_if_error: true
           files: coverage.xml
