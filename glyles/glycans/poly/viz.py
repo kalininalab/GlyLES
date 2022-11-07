@@ -1,5 +1,4 @@
-from glyles import Glycan
-from PIL import Image, ImageDraw, ImageFont
+from PIL.ImageDraw import Draw
 
 
 class Tree:
@@ -49,7 +48,7 @@ class Tree:
         Draw the edges of the tree into the ImageDraw object.
 
         Args:
-            img (ImageDraw.ImageDraw): ImageDraw object to draw on
+            img (Draw): ImageDraw object to draw on
             **params: parameters for visualization
         """
         self.root.draw_edges(img, **params)
@@ -59,7 +58,7 @@ class Tree:
         Draw the nodes of the tree representing the individual monosaccharides in a sugar polymer.
 
         Args:
-            img (ImageDraw.ImageDraw): ImageDraw object to draw on
+            img (Draw): ImageDraw object to draw on
             glycan (Glycan): Glycan object holding some information on the sugar monomers
             **params: parameters for visualization
         """
@@ -199,12 +198,12 @@ class Node:
         Draw the edge between two nodes.
 
         Args:
-            img (ImageDraw.ImageDraw): ImageDraw object to draw on
+            img (Draw): ImageDraw object to draw on
             **params: parameters for visualization
         """
         x, y = self.get_coords()
-        k = 0.3
-        l = 0.3
+        k = 0.3 * (params["box"] / params["width"])
+        l = 0.3 * (params["box"] / params["width"])
         for child, info in self.children:
             # draw a line from the center of this node to the centers of the child nodes
             c_x, c_y = child.get_coords()
@@ -216,13 +215,13 @@ class Node:
 
             # for each edge denote the additional information such as a/b conformation and binding carbon id
             img.text(
-                ((x + k + 0.48) * params["width"], (c_y + (y - c_y) * (1 - l) + 0.35) * params["width"]),
+                ((x + k + 0.5) * params["width"], (c_y + (y - c_y) * (1 - l) + 0.38) * params["height"]),
                 text=info[1],
                 fill="black",
                 anchor="lb",
             )
             img.text(
-                ((x - k + 1.48) * params["width"], (c_y + (y - c_y) * l + 0.35) * params["width"]),
+                ((x - k + 1.48) * params["width"], (c_y + (y - c_y) * l + 0.38) * params["height"]),
                 text=info[-2],
                 fill="black",
                 anchor="lb",
@@ -233,7 +232,7 @@ class Node:
         Draw the SNFG representation of this monomer to the ImageDraw object.
 
         Args:
-            img (ImageDraw.ImageDraw): ImageDraw object to draw on
+            img (Draw): ImageDraw object to draw on
             tree (networkx.DiGraph): ParseTree from a glycan, computed during parsing of the IUPAC string
             **params: parameters for visualization
         """
@@ -387,7 +386,7 @@ def draw_glycan(img, x, y, name, groups, **params):
     Draw a single glycan node to the image.
 
     Args:
-        img (ImageDraw.ImageDraw): ImageDraw object to paint on
+        img (Draw): ImageDraw object to paint on
         x (float): x coordinate to be drawn
         y (float): y coordinate to be drawn
         name (str): name of the monomer to be drawn
@@ -438,8 +437,8 @@ def arrange_node_groups(groups, img, **params):
 
     Args:
         groups (List[str]): List of descriptions of functional groups attached to a glycan
-        img (ImageDraw.ImageDraw): ImageDraw object to estimate the width of each textbox
-        **params: See description in viz.create_snfg_image
+        img (Draw): ImageDraw object to estimate the width of each textbox
+        **params: See description in Glycan.create_snfg_image
 
     Returns:
         Text with newlines and maximal width of the resulting textbox for better centering it.
@@ -447,7 +446,7 @@ def arrange_node_groups(groups, img, **params):
     # set some variable and define a threshold for the maximal width of a line
     output = ""
     length = 0
-    threshold = 0.5 * params["width"]
+    threshold = 0.5 * params["box"]
     lines = []
 
     # iterate over all groups
@@ -481,15 +480,15 @@ def draw_hexose(img, x, y, name, **params):
     Draw a filled circle for an assigned glycan.
 
     Args:
-        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        img (Draw): ImageDraw object to use for drawing.
         x (float): x coordinate of the shape on the image before offsetting
         y (float): y coordinate of the shape on the image before offsetting
         name (str): name of the glycan to select the correct color
-        **params: See description in viz.create_snfg_image
+        **params: See description in Glycan.create_snfg_image
     """
     img.ellipse([
-        ((x + 0.25) * params["width"], (y + 0.25) * params["height"]),
-        ((x + 0.75) * params["width"], (y + 0.75) * params["height"])
+        ((x + 0.5) * params["width"] - 0.25 * params["box"], (y + 0.5) * params["height"] - 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.25 * params["box"], (y + 0.5) * params["height"] + 0.25 * params["box"])
     ], fill=colors["Hexose"][name], width=params["stroke"], outline="black")
 
 
@@ -498,15 +497,15 @@ def draw_hexnac(img, x, y, name, **params):
     Draw a filled square for an assigned glycan.
 
     Args:
-        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        img (Draw): ImageDraw object to use for drawing.
         x (float): x coordinate of the shape on the image before offsetting
         y (float): y coordinate of the shape on the image before offsetting
         name (str): name of the glycan to select the correct color
-        **params: See description in viz.create_snfg_image
+        **params: See description in Glycan.create_snfg_image
     """
     img.rectangle([
-        ((x + 0.25) * params["width"], (y + 0.25) * params["height"]),
-        ((x + 0.75) * params["width"], (y + 0.75) * params["height"])
+        ((x + 0.5) * params["width"] - 0.25 * params["box"], (y + 0.5) * params["height"] - 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.25 * params["box"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
     ], fill=colors["Hexose"][name[:3]], width=params["stroke"], outline="black")
 
 
@@ -515,21 +514,21 @@ def draw_hexosamine(img, x, y, name, **params):
     Draw a crossed square for an assigned glycan.
 
     Args:
-        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        img (Draw): ImageDraw object to use for drawing.
         x (float): x coordinate of the shape on the image before offsetting
         y (float): y coordinate of the shape on the image before offsetting
         name (str): name of the glycan to select the correct color
-        **params: See description in viz.create_snfg_image
+        **params: See description in Glycan.create_snfg_image
     """
     img.polygon([
-        ((x + 0.25) * params["width"], (y + 0.25) * params["height"]),
-        ((x + 0.75) * params["width"], (y + 0.75) * params["height"]),
-        ((x + 0.75) * params["width"], (y + 0.25) * params["height"])
+        ((x + 0.5) * params["width"] - 0.25 * params["box"], (y + 0.5) * params["height"] - 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.25 * params["box"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.25 * params["box"], (y + 0.5) * params["height"] - 0.25 * params["box"]),
     ], fill=colors["Hexose"][name[:3]], width=params["stroke"], outline="black")
     img.polygon([
-        ((x + 0.25) * params["width"], (y + 0.25) * params["height"]),
-        ((x + 0.75) * params["width"], (y + 0.75) * params["height"]),
-        ((x + 0.25) * params["width"], (y + 0.75) * params["height"])
+        ((x + 0.5) * params["width"] - 0.25 * params["box"], (y + 0.5) * params["height"] - 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.25 * params["box"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] - 0.25 * params["box"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
     ], fill="white", width=params["stroke"], outline="black")
 
 
@@ -538,25 +537,25 @@ def draw_hexuronate(img, x, y, name, **params):
     Draw a divided diamond for an assigned glycan.
 
     Args:
-        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        img (Draw): ImageDraw object to use for drawing.
         x (float): x coordinate of the shape on the image before offsetting
         y (float): y coordinate of the shape on the image before offsetting
         name (str): name of the glycan to select the correct color
-        **params: See description in viz.create_snfg_image
+        **params: See description in Glycan.create_snfg_image
     """
     if name in {"IdoA", "AltA"}:
         cols = ("white", colors["Hexose"][name[:3]])
     else:
         cols = (colors["Hexose"][name[:3]], "white")
     img.polygon([
-        ((x + 0.25) * params["width"], (y + 0.5) * params["height"]),
-        ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
-        ((x + 0.75) * params["width"], (y + 0.5) * params["height"])
+        ((x + 0.5) * params["width"] - 0.25 * params["box"], (y + 0.5) * params["height"]),
+        ((x + 0.5) * params["width"], (y + 0.5) * params["height"] - 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.25 * params["box"], (y + 0.5) * params["height"]),
     ], fill=cols[0], width=params["stroke"], outline="black")
     img.polygon([
-        ((x + 0.25) * params["width"], (y + 0.5) * params["height"]),
-        ((x + 0.5) * params["width"], (y + 0.75) * params["height"]),
-        ((x + 0.75) * params["width"], (y + 0.5) * params["height"])
+        ((x + 0.5) * params["width"] - 0.25 * params["box"], (y + 0.5) * params["height"]),
+        ((x + 0.5) * params["width"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.25 * params["box"], (y + 0.5) * params["height"]),
     ], fill=cols[1], width=params["stroke"], outline="black")
 
 
@@ -565,16 +564,16 @@ def draw_deoxyhexose(img, x, y, name, **params):
     Draw a filled triangle for an assigned glycan.
 
     Args:
-        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        img (Draw): ImageDraw object to use for drawing.
         x (float): x coordinate of the shape on the image before offsetting
         y (float): y coordinate of the shape on the image before offsetting
         name (str): name of the glycan to select the correct color
-        **params: See description in viz.create_snfg_image
+        **params: See description in Glycan.create_snfg_image
     """
     img.polygon([
-        ((x + 0.25) * params["width"], (y + 0.75) * params["height"]),
-        ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
-        ((x + 0.75) * params["width"], (y + 0.75) * params["height"])
+        ((x + 0.5) * params["width"] - 0.25 * params["box"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
+        ((x + 0.5) * params["width"], (y + 0.5) * params["height"] - 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.25 * params["box"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
     ], fill=colors["Deoxyhexose"][name], width=params["stroke"], outline="black")
 
 
@@ -583,21 +582,21 @@ def draw_deoxyhexnac(img, x, y, name, **params):
     Draw a divided triangle for an assigned glycan.
 
     Args:
-        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        img (Draw): ImageDraw object to use for drawing.
         x (float): x coordinate of the shape on the image before offsetting
         y (float): y coordinate of the shape on the image before offsetting
         name (str): name of the glycan to select the correct color
-        **params: See description in viz.create_snfg_image
+        **params: See description in Glycan.create_snfg_image
     """
     img.polygon([
-        ((x + 0.25) * params["width"], (y + 0.75) * params["height"]),
-        ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
-        ((x + 0.5) * params["width"], (y + 0.75) * params["height"])
+        ((x + 0.5) * params["width"] - 0.25 * params["box"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
+        ((x + 0.5) * params["width"], (y + 0.5) * params["height"] - 0.25 * params["box"]),
+        ((x + 0.5) * params["width"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
     ], fill="white", width=params["stroke"], outline="black")
     img.polygon([
-        ((x + 0.5) * params["width"], (y + 0.75) * params["height"]),
-        ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
-        ((x + 0.75) * params["width"], (y + 0.75) * params["height"])
+        ((x + 0.5) * params["width"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
+        ((x + 0.5) * params["width"], (y + 0.5) * params["height"] - 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.25 * params["box"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
     ], fill=colors["DeoxyhexNAc"][name], width=params["stroke"], outline="black")
 
 
@@ -606,15 +605,15 @@ def draw_di_deoxyhexose(img, x, y, name, **params):
     Draw a flat rectangle for an assigned glycan.
 
     Args:
-        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        img (Draw): ImageDraw object to use for drawing.
         x (float): x coordinate of the shape on the image before offsetting
         y (float): y coordinate of the shape on the image before offsetting
         name (str): name of the glycan to select the correct color
-        **params: See description in viz.create_snfg_image
+        **params: See description in Glycan.create_snfg_image
     """
     img.rectangle([
-        ((x + 0.25) * params["width"], (y + 0.375) * params["height"]),
-        ((x + 0.75) * params["width"], (y + 0.625) * params["height"])
+        ((x + 0.5) * params["width"] - 0.25 * params["box"], (y + 0.5) * params["height"] - 0.125 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.25 * params["box"], (y + 0.5) * params["height"] + 0.125 * params["box"]),
     ], fill=colors["Di-deoxyhexose"][name], width=params["stroke"], outline="black")
 
 
@@ -623,28 +622,28 @@ def draw_pentose(img, x, y, name, **params):
     Draw a 5-star for an assigned glycan.
 
     Args:
-        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        img (Draw): ImageDraw object to use for drawing.
         x (float): x coordinate of the shape on the image before offsetting
         y (float): y coordinate of the shape on the image before offsetting
         name (str): name of the glycan to select the correct color
-        **params: See description in viz.create_snfg_image
+        **params: See description in Glycan.create_snfg_image
     """
     img.polygon([
-        ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
+        ((x + 0.5) * params["width"], (y + 0.5) * params["height"] - 0.25 * params["box"]),
 
-        ((x + 0.55902) * params["width"], (y + 0.43164) * params["height"]),
-        ((x + 0.75) * params["width"], (y + 0.43164) * params["height"]),
+        ((x + 0.5) * params["width"] + 0.05902 * params["box"], (y + 0.5) * params["height"] - 0.06836 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.25 * params["box"], (y + 0.5) * params["height"] - 0.06836 * params["box"]),
 
-        ((x + 0.5955) * params["width"], (y + 0.5439) * params["height"]),
-        ((x + 0.66877) * params["width"], (y + 0.75) * params["height"]),
+        ((x + 0.5) * params["width"] + 0.0955 * params["box"], (y + 0.5) * params["height"] + 0.0439 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.16877 * params["box"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
 
-        ((x + 0.5) * params["width"], (y + 0.61328) * params["height"]),
+        ((x + 0.5) * params["width"], (y + 0.5) * params["height"] + 0.11328 * params["box"]),
 
-        ((x + 0.33123) * params["width"], (y + 0.75) * params["height"]),
-        ((x + 0.4045) * params["width"], (y + 0.5439) * params["height"]),
+        ((x + 0.5) * params["width"] - 0.16877 * params["box"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] - 0.0955 * params["box"], (y + 0.5) * params["height"] + 0.0439 * params["box"]),
 
-        ((x + 0.25) * params["width"], (y + 0.43164) * params["height"]),
-        ((x + 0.44098) * params["width"], (y + 0.43164) * params["height"])
+        ((x + 0.5) * params["width"] - 0.25 * params["box"], (y + 0.5) * params["height"] - 0.06836 * params["box"]),
+        ((x + 0.5) * params["width"] - 0.05902 * params["box"], (y + 0.5) * params["height"] - 0.06836 * params["box"]),
     ], fill=colors["Pentose"][name], width=params["stroke"], outline="black")
 
 
@@ -653,17 +652,17 @@ def draw_3_deoxy_nonulosonic_acids(img, x, y, name, **params):
     Draw a filled diamond for an assigned glycan.
 
     Args:
-        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        img (Draw): ImageDraw object to use for drawing.
         x (float): x coordinate of the shape on the image before offsetting
         y (float): y coordinate of the shape on the image before offsetting
         name (str): name of the glycan to select the correct color
-        **params: See description in viz.create_snfg_image
+        **params: See description in Glycan.create_snfg_image
     """
     img.polygon([
-        ((x + 0.25) * params["width"], (y + 0.5) * params["height"]),
-        ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
-        ((x + 0.75) * params["width"], (y + 0.5) * params["height"]),
-        ((x + 0.5) * params["width"], (y + 0.75) * params["height"])
+        ((x + 0.5) * params["width"] - 0.25 * params["box"], (y + 0.5) * params["height"]),
+        ((x + 0.5) * params["width"], (y + 0.5) * params["height"] - 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.25 * params["box"], (y + 0.5) * params["height"]),
+        ((x + 0.5) * params["width"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
     ], fill=colors["3-dideoxy-nunolusonic acids"][name], width=params["stroke"], outline="black")
 
 
@@ -672,17 +671,17 @@ def draw_3_9_dideocy_nonulosonic_acids(img, x, y, name, **params):
     Draw a diamond for an assigned glycan.
 
     Args:
-        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        img (Draw): ImageDraw object to use for drawing.
         x (float): x coordinate of the shape on the image before offsetting
         y (float): y coordinate of the shape on the image before offsetting
         name (str): name of the glycan to select the correct color
-        **params: See description in viz.create_snfg_image
+        **params: See description in Glycan.create_snfg_image
     """
     img.polygon([
-        ((x + 0.25) * params["width"], (y + 0.5) * params["height"]),
-        ((x + 0.5) * params["width"], (y + 0.375) * params["height"]),
-        ((x + 0.75) * params["width"], (y + 0.5) * params["height"]),
-        ((x + 0.5) * params["width"], (y + 0.625) * params["height"])
+        ((x + 0.5) * params["width"] - 0.25 * params["box"], (y + 0.5) * params["height"]),
+        ((x + 0.5) * params["width"], (y + 0.5) * params["height"] - 0.125 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.25 * params["box"], (y + 0.5) * params["height"]),
+        ((x + 0.5) * params["width"], (y + 0.5) * params["height"] + 0.125 * params["box"]),
     ], fill=colors["3,9-dideoxy-nunolusonic acids"][name], width=params["stroke"], outline="black")
 
 
@@ -691,19 +690,19 @@ def draw_unknown(img, x, y, name, **params):
     Draw a flat hexagon for an assigned glycan.
 
     Args:
-        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        img (Draw): ImageDraw object to use for drawing.
         x (float): x coordinate of the shape on the image before offsetting
         y (float): y coordinate of the shape on the image before offsetting
         name (str): name of the glycan to select the correct color
-        **params: See description in viz.create_snfg_image
+        **params: See description in Glycan.create_snfg_image
     """
     img.polygon([
-        ((x + 0.25) * params["width"], (y + 0.5) * params["height"]),
-        ((x + 0.375) * params["width"], (y + 0.375) * params["height"]),
-        ((x + 0.625) * params["width"], (y + 0.375) * params["height"]),
-        ((x + 0.75) * params["width"], (y + 0.5) * params["height"]),
-        ((x + 0.625) * params["width"], (y + 0.625) * params["height"]),
-        ((x + 0.375) * params["width"], (y + 0.625) * params["height"]),
+        ((x + 0.5) * params["width"] - 0.25 * params["box"], (y + 0.5) * params["height"]),
+        ((x + 0.5) * params["width"] - 0.125 * params["box"], (y + 0.5) * params["height"] - 0.125 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.125 * params["box"], (y + 0.5) * params["height"] - 0.125 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.25 * params["box"], (y + 0.5) * params["height"]),
+        ((x + 0.5) * params["width"] + 0.125 * params["box"], (y + 0.5) * params["height"] + 0.125 * params["box"]),
+        ((x + 0.5) * params["width"] - 0.125 * params["box"], (y + 0.5) * params["height"] + 0.125 * params["box"]),
     ], fill=colors["Unknown"][name], width=params["stroke"], outline="black")
 
 
@@ -712,18 +711,18 @@ def draw_assigned(img, x, y, name, **params):
     Draw a pentagon for an assigned glycan.
 
     Args:
-        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        img (Draw): ImageDraw object to use for drawing.
         x (float): x coordinate of the shape on the image before offsetting
         y (float): y coordinate of the shape on the image before offsetting
         name (str): name of the glycan to select the correct color
-        **params: See description in viz.create_snfg_image
+        **params: See description in Glycan.create_snfg_image
     """
     img.polygon([
-        ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
-        ((x + 0.75) * params["width"], (y + 0.43164) * params["height"]),
-        ((x + 0.66877) * params["width"], (y + 0.75) * params["height"]),
-        ((x + 0.33123) * params["width"], (y + 0.75) * params["height"]),
-        ((x + 0.25) * params["width"], (y + 0.43164) * params["height"])
+        ((x + 0.5) * params["width"], (y + 0.5) * params["height"] - 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.25 * params["box"], (y + 0.5) * params["height"] - 0.06836 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.16877 * params["box"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] - 0.16877 * params["box"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] - 0.25 * params["box"], (y + 0.5) * params["height"] - 0.06836 * params["box"]),
     ], fill=colors["Assigned"][name], width=params["stroke"], outline="black")
 
 
@@ -732,71 +731,15 @@ def draw_other(img, x, y, **params):
     Draw an empty pentagon for an unknown glycan.
 
     Args:
-        img (ImageDraw.ImageDraw): ImageDraw object to use for drawing.
+        img (Draw): ImageDraw object to use for drawing.
         x (float): x coordinate of the shape on the image before offsetting
         y (float): y coordinate of the shape on the image before offsetting
-        **params: See description in viz.create_snfg_image
+        **params: See description in Glycan.create_snfg_image
     """
     img.polygon([
-        ((x + 0.5) * params["width"], (y + 0.25) * params["height"]),
-        ((x + 0.75) * params["width"], (y + 0.43164) * params["height"]),
-        ((x + 0.66877) * params["width"], (y + 0.75) * params["height"]),
-        ((x + 0.33123) * params["width"], (y + 0.75) * params["height"]),
-        ((x + 0.25) * params["width"], (y + 0.43164) * params["height"])
+        ((x + 0.5) * params["width"], (y + 0.5) * params["height"] - 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.25 * params["box"], (y + 0.5) * params["height"] - 0.06836 * params["box"]),
+        ((x + 0.5) * params["width"] + 0.16877 * params["box"], (y + 0.5) * params["height"] + 0.75 * params["box"]),
+        ((x + 0.5) * params["width"] - 0.16877 * params["box"], (y + 0.5) * params["height"] + 0.25 * params["box"]),
+        ((x + 0.5) * params["width"] - 0.25 * params["box"], (y + 0.5) * params["height"] - 0.06836 * params["box"]),
     ], fill="white", width=params["stroke"], outline="black")
-
-
-def create_snfg_img(glycan, filepath, **kwargs):
-    """
-    Create an image representation for a glycan using the SNFG symbols.
-
-    Args:
-        glycan (Glycan): glycan to be visualized
-        filepath (str): path where to store the image
-
-    Returns:
-        PIL image representation using the SNFG symbols
-    """
-    # set up the parameters for visualizing
-    params = {
-        "width": 100,
-        "height": 100,
-        "stroke": 2,
-        "line": 3,
-    }
-    params.update(**kwargs)
-
-    # generate the visualization tree representation of the glycan
-    tree = Tree(glycan).assign_coords()
-    width, height = tree.get_bounds()[2:]
-
-    # create and draw the image
-    img = Image.new(
-        mode="RGB",
-        size=(int((width + 1) * params["width"]), int((height + 1) * params["height"])),
-        color=(255, 255, 255)
-    )
-    draw_img = ImageDraw.Draw(img)
-    tree.draw_edges(draw_img, **params)
-    tree.draw_nodes(draw_img, glycan, **params)
-
-    # save the image and return is for further operations
-    img.save(filepath)
-    return img
-
-
-def main():
-    iupac = "Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-6)]" \
-            "Gal(b1-3)[GlcNAc(a1-4)Gal(b1-4)GlcNAc6S(b1-6)]GalNAc"
-    iupac2 = "IdoA2S(b1-4)Fuc2S(a1-4)[Par2S(a1-4)Xyl2S(a1-2)][All2S(a1-3)TalNAc3S(b1-6)GulN3S(a1-3)6dAltNAc3S(b1-3)]Sia6S(a1-4)Pse2S(a1-4)[Gal2S(a1-3)]Bac2S(a1-4)Tag2S"
-    glycan = Glycan(iupac2, tree_only=True)
-    create_snfg_img(glycan, **{
-        "width": 100,
-        "height": 100,
-        "stroke": 2,
-        "line": 3,
-    })
-
-
-if __name__ == '__main__':
-    main()
