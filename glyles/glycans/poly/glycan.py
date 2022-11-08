@@ -402,7 +402,6 @@ class Glycan:
 
         # save the image and return is for further operations
         img.save(filepath)
-        img.show()
         return img
 
     def __parse(self):
