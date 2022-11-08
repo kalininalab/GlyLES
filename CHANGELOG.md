@@ -1,6 +1,6 @@
 # Change Log
 
-## to be released - v0.5.0 - 2022-??-??
+## to be released - v0.5.0 - 2022-11-??
 
 Release for publication in Journal of Cheminformatics 
 
@@ -9,6 +9,7 @@ Release for publication in Journal of Cheminformatics
 - ?,?-Anhydro configurations of glycan implemented for structural representation
 - Open-form representations for "-aric", "-onic", "-ulosonic", and "-ulosaric" glycans
 - Example notebooks and documentation on [ReadTheDocs](https://glyles.readthedocs.io/en/latest/).
+- 99% of the structures in the glycowork database can be converted (if they are convertible).
 
 ---
 
@@ -38,7 +39,9 @@ of a glycan.
 - More tests for the new functionality
 - Support for two new IUPAC representations (full and simplified according to 
 [SNFG](https://www.ncbi.nlm.nih.gov/glycans/snfg.html)) beside the current IUPAC-condensed
-- Now supporting most of the functional groups in [CSDB]() and [glycowork](https://pypi.org/project/glycowork/). 
+- Now supporting most of the functional groups in 
+  [CSDB](http://csdb.glycoscience.ru/snfgedit/snfgedit.html?expert=1&destination=structure) and 
+  [glycowork](https://pypi.org/project/glycowork/). 
 
 ### Changed
 

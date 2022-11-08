@@ -5,7 +5,6 @@ from rdkit.Chem import MolFromSmiles
 from rdkit.Chem.rdchem import ChiralType
 
 from glyles.glycans.utils import find_isomorphism_nx as iso
-from glyles import Glycan
 
 CHIRALITY = [ChiralType.CHI_TETRAHEDRAL_CW, ChiralType.CHI_TETRAHEDRAL_CCW]
 
@@ -47,22 +46,3 @@ class TestIsomorphism:
 
         assert len(mapping) == size
         check_map(smiles1, smiles2, mapping)
-
-    @pytest.mark.slow
-    @pytest.mark.parametrize("line", open("data/profiling.tsv", "r").readlines())
-    def test_runtime(self, line):
-        line = line.strip()
-        if '-ulosaric' in line or '-ulosonic' in line or '-uronic' in line or '-aric' in line or \
-                'en' in line or 'Anhydro' in line or 'Ins' in line or 'Coum' in line or '0dHex' in line:
-            return
-
-        if "\t" in line:
-            iupac, smiles = line.split("\t")[:2]
-            equal = True
-        else:
-            iupac, smiles, equal = line, "", False
-
-        if equal:
-            compare_smiles(Glycan(iupac).get_smiles(), smiles)
-        else:
-            assert Glycan(iupac).get_smiles() != smiles

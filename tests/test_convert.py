@@ -3,8 +3,8 @@ import time
 
 import pytest
 
-from glyles import Glycan
 from glyles.converter import convert, convert_generator
+from glyles.glycans.utils import sanitize_smiles
 from tests.utils import setup_test, smiles_samples
 from rdkit import Chem
 
@@ -97,70 +97,9 @@ class TestConverter:
         assert len(smiles1) == len(smiles2) == len(glycans)
         assert (end - mid) < (mid - start)
 
-    """def test_convert_1_1_1(self):
-        output, log_out, log_err = catch_output(method=convert, silent=False)
-
-        assert output is None
-        assert len(log_out) == 0
-        assert len(log_err) == 2
-
-    def test_convert_1_1_2(self):
-        output, log_out, log_err = catch_output(method=convert, silent=False)
-
-        assert output is None
-        assert len(log_out) == 0
-        assert len(log_err) == 2
-        assert log_err[0] == "List of glycans is empty"
-
-    def test_convert_1_2_1(self):
-        output, log_out, log_err = catch_output(method=convert_generator, silent=True)
-
-        assert len(output) == 0
-        assert len(log_out) == 0
-        assert len(log_err) == 0
-
-    def test_convert_1_2_2(self):
-        output, log_out, log_err = catch_output(method=convert_generator, silent=False)
-
-        assert len(output) == 0
-        assert len(log_out) == 0
-        assert len(log_err) == 2
-        assert log_err[0] == "List of glycans is empty"
-
-    def test_convert_2_1(self):
-        output, log_out, log_err = catch_output(method=convert, glycan="Glc", output_file="./invalid/path/out.txt",
-                                                silent=True)
-
-        assert output is None
-        assert len(log_out) == 4
-        assert log_out[0] == "Glc"
-        compare_smiles(log_out[2], "[C@H]1(O)[C@H](O)[C@@H](O)C(O)O[C@@H]1CO")
-        assert len(log_err) == 0
-
-    def test_convert_2_2(self):
-        output, log_out, log_err = catch_output(method=convert, glycan="Glc", output_file="./invalid/path/out.txt",
-                                                silent=False)
-
-        assert output is None
-        assert len(log_out) == 4
-        assert log_out[0] == "Glc"
-        compare_smiles(log_out[2], "[C@H]1(O)[C@H](O)[C@@H](O)C(O)O[C@@H]1CO")
-        assert len(log_err) == 2
-        assert log_err[0] == "Path of output-file does not exist! Results will be printed on stdout."
-
-    def test_convert_3_1(self):
-        output, log_out, log_err = catch_output(method=convert, glycan="Man", silent=True, returning=False)
-
-        assert output is None
-        assert len(log_out) == 4
-        assert log_out[0] == "Man"
-        assert len(log_err) == 0
-
-    def test_convert_3_2(self):
-        output, log_out, log_err = catch_output(method=convert, glycan="Man", silent=False, returning=False)
-
-        assert output is None
-        assert len(log_out) == 6
-        assert log_out[0] == "No output-file specified, results will be printed on stdout."
-        assert log_out[2] == "Man"
-        assert len(log_err) == 0"""
+    def test_smiles_clean(self):
+        assert sanitize_smiles("SDJCBPIOUCODJCOBC") == "SDJCBPIOUCODJCOBC"
+        assert sanitize_smiles("DIC(DONC)WOUC") == "DIC(DONC)WOUC"
+        assert sanitize_smiles("DPIUCDBPSIDU((CPIDBC)PID)") == "DPIUCDBPSIDU(CPIDBCPID)"
+        assert sanitize_smiles("SDJC((PSODUCBN))SOD:C") == "SDJC(PSODUCBN)SOD:C"
+        assert sanitize_smiles("A:DO(C(OPDIC))PODUC") == "A:DO(COPDIC)PODUC"

@@ -1,8 +1,6 @@
 import pytest
 
 from glyles.converter import convert, Glycan
-from glyles.glycans.utils import sanitize_smiles
-from tests.utils import derivatives
 from rdkit import Chem
 
 
@@ -25,17 +23,13 @@ def compare_smiles(computed, solution):
 
 
 class TestDerivatives:
-    @pytest.mark.parametrize("name", derivatives.keys())
-    def test_basic(self, name):
-        output = convert(name)[0][1]
-        compare_smiles(output, derivatives[name])
-
     @pytest.mark.parametrize(
         "line",
         open("data/anhydro.tsv", "r").readlines() +
         open("data/carbons.tsv", "r").readlines() +
         open("data/general.tsv", "r").readlines() +
         open("data/glycam.tsv", "r").readlines() +
+        open("data/openforms.tsv", "r").readlines() +
         open("data/pubchem_mono.tsv", "r").readlines() +
         open("data/pubchem_poly.tsv", "r").readlines()
     )
@@ -46,41 +40,17 @@ class TestDerivatives:
         iupac, smiles = line.split("\t")[:2]
         compare_smiles(Glycan(iupac).get_smiles(), smiles)
 
-    def test_comp(self):
-        compare_smiles(Glycan("Ery-ol").get_smiles(), "OC[C@H](O)[C@H](O)CO")
-
-    @pytest.mark.todo
-    @pytest.mark.parametrize("line", open("data/openforms.tsv", "r").readlines())
-    def test_openform_data(self, line):
-        iupac, smiles = line.strip().split("\t")[:2]
-        compare_smiles(Glycan(iupac).get_smiles(), smiles)
-
-    @pytest.mark.slow
-    @pytest.mark.todo
-    @pytest.mark.parametrize(
-        "line",
-        open("data/glycowork_mono.txt", "r").readlines() +
-        open("data/glycowork_poly.txt", "r").readlines()
-    )
+    @pytest.mark.parametrize("line", open("data/glycowork.txt", "r").readlines())
     def test_iupac_databases(self, line):
         if '0dHex' in line or 'en' in line or 'Ins' in line:
             return
         iupac = line.strip()
         smiles = Glycan(iupac).get_smiles()
-        if smiles == "":
-            print(iupac, file=open("data/glycowork_out.txt", "a"))
         assert smiles != ""
 
         mol = Chem.MolFromSmiles(smiles)
-        if mol is None or not all([a.GetAtomicNum() in valid_atomic_nums for a in mol.GetAtoms()]):
-            print(iupac, file=open("data/glycowork_out.txt", "a"))
         assert mol is not None
         assert all([a.GetAtomicNum() in valid_atomic_nums for a in mol.GetAtoms()])
-
-    @pytest.mark.todo
-    def test_full(self):
-        smiles = convert("2,3-Anhydro-Gal", returning=True, full=True)[0][1]
-        assert smiles == ""
 
     @pytest.mark.todo
     def test_en(self):
@@ -111,10 +81,3 @@ class TestDerivatives:
             Glycan("Ins2P4S(1-4)Gal").get_smiles(),
             "O=P(O)(O)O[C@@H]1[C@H](O[C@H]2[C@@H](CO)OC(O)[C@H](O)[C@H]2O)[C@@H](O)[C@H](O)[C@@H](OS(=O)(=O)O)[C@@H]1O"
         )
-
-    def test_smiles_clean(self):
-        assert sanitize_smiles("SDJCBPIOUCODJCOBC") == "SDJCBPIOUCODJCOBC"
-        assert sanitize_smiles("DIC(DONC)WOUC") == "DIC(DONC)WOUC"
-        assert sanitize_smiles("DPIUCDBPSIDU((CPIDBC)PID)") == "DPIUCDBPSIDU(CPIDBCPID)"
-        assert sanitize_smiles("SDJC((PSODUCBN))SOD:C") == "SDJC(PSODUCBN)SOD:C"
-        assert sanitize_smiles("A:DO(C(OPDIC))PODUC") == "A:DO(COPDIC)PODUC"

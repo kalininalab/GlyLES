@@ -298,7 +298,7 @@ class SMILESReaktor:
                     continue
 
                 # if the name starts with a - char, drop this, the functional group will be independent of the previous
-                if n[0] == "-":
+                if n[0] == "-" and n != "-uronic":
                     n = n[1:]
 
                 # parse making the monosaccharide an acid

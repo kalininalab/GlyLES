@@ -35,14 +35,7 @@ GalN-ol	N[C@@H](CO)[C@@H](O)[C@@H](O)[C@H](O)CO
 GalA-ol	O=C(O)[C@@H](O)[C@H](O)[C@H](O)[C@@H](O)CO
 6dTal-ol	C[C@@H](O)[C@H](O)[C@H](O)[C@H](O)CO
 1dAlt-ol	C[C@H](O)[C@@H](O)[C@@H](O)[C@@H](O)CO
-D-1d5dAraHex-ol	C[C@@H](O)[C@H](O)[C@H](O)CCO
-1,5-Anhydro-Glc-ol	OC[C@H]1OC[C@H](O)[C@@H](O)[C@@H]1O
 Fuc1N-ol	C[C@H](O)[C@@H](O)[C@@H](O)[C@H](O)CN
-2,5-Anhydro-Man-ol	OC[C@H]1O[C@H](CO)[C@@H](O)[C@@H]1O
-2,5-Anhydro-Tal-ol	OC[C@H]1O[C@H](CO)[C@H](O)[C@@H]1O
-DDManHep-ol	OC[C@@H](O)[C@@H](O)C(O)[C@H](O)[C@H](O)CO
-LDManHep-ol	OC[C@H](O)[C@@H](O)[C@@H](O)[C@H](O)[C@H](O)CO
-DDIdoHep-ol	OC[C@@H](O)[C@H](O)[C@@H](O)[C@H](O)[C@H](O)CO
 6dGlc-ol	C[C@H]([C@H]([C@@H]([C@H](CO)O)O)O)O
 3dHex6P-ulosonic	C(C(C(COP(=O)(O)O)O)O)C(=O)C(=O)O
 3dHep7P-ulosonic	C(C(C(C(COP(=O)(O)O)O)O)O)C(=O)C(=O)O

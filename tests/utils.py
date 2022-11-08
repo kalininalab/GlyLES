@@ -186,41 +186,6 @@ smiles_samples_simple = [
 ]
 
 
-def catch_output(method, glycan=None, output_file=None, silent=True, returning=True):
-    logging_out, logging_err = [], []
-
-    class writer_out(object):
-        @staticmethod
-        def write(data):
-            logging_out.append(data)
-
-        def close(self):
-            pass
-
-    class writer_err(object):
-        @staticmethod
-        def write(data):
-            logging_err.append(data)
-
-        def close(self):
-            pass
-
-    old_out = sys.stdout
-    sys.stdout = writer_out()
-
-    old_err = sys.stderr
-    sys.stderr = writer_err()
-
-    if method == convert:
-        output = method(glycan=glycan, output_file=output_file, silent=silent, returning=returning)
-    else:
-        output = list(method(glycan=glycan, silent=silent))
-
-    sys.stdout = old_out
-    sys.stderr = old_err
-    return output, logging_out, logging_err
-
-
 def setup_test():
     def generator(x_list):
         for x in x_list:
