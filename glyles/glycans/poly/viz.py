@@ -347,7 +347,7 @@ def snfg_fy(glycan):
         "Oli", "Tyv", "Abe", "Par", "Dig", "Col", "Ara", "Lyx", "Xyl", "Rib", "Kdn", "Sia", "Pse", "Aci",
         "Bac", "Kdo", "Dha", "Api", "Fru", "Tag", "Sor", "Psi"
     }:
-        return name, names.difference({"NAc"})
+        return name, names.difference({name})
     if name in classes["Hexose"] and ("NAc" in names or "N" in names or "A" in names):
         if "NAc" in names and not (name in {"Alt", "Tal"} and "6d" in names):
             return name + "NAc", names.difference({"NAc", name})
