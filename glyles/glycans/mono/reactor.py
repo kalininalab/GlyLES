@@ -7,7 +7,6 @@ from rdkit import Chem
 from rdkit.Chem.rdchem import ChiralType
 from rdkit.Chem.rdmolops import AddHs, RemoveHs
 
-from glyles.glycans.factory.factory_o import OpenFactory
 from glyles.glycans.mono.reactor_basic import change_base_monomer
 from glyles.glycans.utils import Enantiomer, ketoses2
 from glyles.grammar.GlycanLexer import GlycanLexer

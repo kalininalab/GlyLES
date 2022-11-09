@@ -445,20 +445,3 @@ class Glycan:
         # if the glycan should be parsed immediately, do so
         if not self.tree_only and self.tree_full == self.full:
             self.glycan_smiles = Merger(self.factory).merge(self.parse_tree, self.root_orientation, start=self.start)
-
-
-def main():
-    iupac = "Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-6)]" \
-            "Gal(b1-3)[GlcNAc(a1-4)Gal(b1-4)GlcNAc6S(b1-6)]GalNAc"
-    iupac2 = "IdoA2S(b1-4)Fuc2S(a1-4)[Par2S(a1-4)Xyl2S(a1-2)][All2S(a1-3)TalNAc3S(b1-6)GulN3S(a1-3)6dAltNAc3S(b1-3)]Sia6S(a1-4)Pse2S(a1-4)[Gal2S(a1-3)]Bac2S(a1-4)Tag2S"
-    glycan = Glycan(iupac2, tree_only=True)
-    glycan.create_snfg_img("test.png", **{
-        "width": 300,
-        "height": 100,
-        "stroke": 2,
-        "line": 3,
-    })
-
-
-if __name__ == '__main__':
-    main()

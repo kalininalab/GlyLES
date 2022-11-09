@@ -18,12 +18,7 @@ def get_indices(names, types):
 
     # identify the root and the new size of the monomer by identifying the indices of their descriptions
     if names[sac_index + 1] in ["Pen", "Hex", "Hep", "Oct"]:
-        len_index = sac_index + 1
-    else:
-        len_index = sac_index
-        sac_index = len_index + 1
-
-    return sac_index, len_index
+        return sac_index, sac_index + 1
 
 
 def check_for_resizing(monomer, names, types):
@@ -39,9 +34,6 @@ def check_for_resizing(monomer, names, types):
         Nothing
     """
     sac_index, len_index = get_indices(names, types)
-
-    if len_index is None:
-        return
 
     # extract the orientations of the hydroxy-groups along the enlarged chain
     if sac_index != 0 and names[sac_index - 1].count("L") + \

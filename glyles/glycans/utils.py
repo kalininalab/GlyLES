@@ -26,6 +26,13 @@ class Config(Enum):
     ALPHA = 1
     BETA = 2
 
+    def __str__(self):
+        if self == Config.UNDEF:
+            return "not determined"
+        if self == Config.ALPHA:
+            return "alpha"
+        return "beta"
+
 
 class Enantiomer(Enum):
     """
@@ -34,6 +41,13 @@ class Enantiomer(Enum):
     D = 0
     L = 1
     U = 2
+
+    def __str__(self):
+        if self == Enantiomer.U:
+            return "not determined"
+        if self == Enantiomer.D:
+            return "D-form"
+        return "L-form"
 
 
 class Lactole(Enum):
@@ -44,6 +58,15 @@ class Lactole(Enum):
     OPEN = 1
     FURANOSE = 5
     PYRANOSE = 6
+
+    def __str__(self):
+        if self == Lactole.UNKNOWN:
+            return "not determined"
+        if self == Lactole.OPEN:
+            return "Open-form"
+        if self == Lactole.FURANOSE:
+            return "Furanose"
+        return "Pyranose"
 
 
 class UnreachableError(NotImplementedError):
