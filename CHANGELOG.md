@@ -1,6 +1,16 @@
 # Change Log
 
-## to be released - v0.5.0 - 2022-11-??
+## v0.5.1-beta - 2022-11-09
+
+Release for publication in Journal of Cheminformatics 
+
+### Added
+
+- Incorporate for networkx 3.0 use in glycowork
+
+---
+
+## v0.5.0 - 2022-11-09
 
 Release for publication in Journal of Cheminformatics 
 
