@@ -1,6 +1,6 @@
 package:
   name: glyles
-  version: 0.5.5
+  version: 0.5.6
 
 source:
   git_url: https://github.com/kalininalab/GlyLES
