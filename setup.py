@@ -5,6 +5,6 @@ setup(
     version="0.5.5",
     description="Convert the IUPAC into a SMILES representation",
     author="Roman Joeres",
-    packages=["glyles"],
-    scripts=["glyles/glyles"]
+    packages=["Glyles"],
+    scripts=["Glyles/glyles"]
 )
