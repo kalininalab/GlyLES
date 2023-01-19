@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-#from converter import convert
-from glyles import converter
+from converter import convert
+#from glyles import converter
 import os
 import sys
 import argparse
@@ -58,11 +58,11 @@ if __name__ == "__main__":
 
 
     if input_string_flag:
-        converter.convert(glycan=input, output_file=output)
+        convert(glycan=input, output_file=output)
 
     elif input_list_flag:
-        converter.convert(glycan_list=input, output_file=output)
+        convert(glycan_list=input, output_file=output)
 
     elif input_path_flag:
-        converter.convert(glycan_file=input, output_file=output)
+        convert(glycan_file=input, output_file=output)
 
