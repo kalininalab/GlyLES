@@ -11,12 +11,11 @@ build:
   script: pip install .
 
 requirements:
-  build:
+  host:
     - python
     - pip
-
   run:
-    - python
-    - biopython
-    - probe
-    - reduce
+  - python
+  - biopython
+  - probe
+  - reduce
