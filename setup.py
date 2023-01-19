@@ -2,7 +2,8 @@ from setuptools import setup
 
 setup(
     name="glyles",
-    install_requires=[
-        "importlib-metadata; python_version < '3.8'",
-    ],
+    version="0.5.1",
+    description="Convert the IUPAC into a SMILES representation",
+    author="Roman Joeres",
+    scripts=["/glyles/command_line_caller.py"]
 )

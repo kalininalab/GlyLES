@@ -1,4 +1,4 @@
-from converter import convert, convert_generator
+from converter import convert
 import os
 import sys
 import argparse
