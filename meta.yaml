@@ -11,6 +11,9 @@ build:
   script: pip install .
 
 requirements:
+  build:
+    - python
+    - pip
   host:
     - python
     - pip
