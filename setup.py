@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name="glyles",
+    name="GlyLES",
     version="0.5.6",
     description="Convert the IUPAC into a SMILES representation",
     author="Roman Joeres",
