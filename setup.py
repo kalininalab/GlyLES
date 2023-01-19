@@ -6,5 +6,5 @@ setup(
     description="Convert the IUPAC into a SMILES representation",
     author="Roman Joeres",
     packages=["Glyles"],
-    scripts=["Glyles/glyles"]
+    scripts=["Glyles/*"]
 )
