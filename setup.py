@@ -1,4 +1,5 @@
 from setuptools import setup
+from glyles import *
 
 setup(
     name="GlyLES",
