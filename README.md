@@ -36,6 +36,22 @@ pip install --upgrade glyles
 ``````
 
 to upgrade the glyles package to the most recent version.
+## Command Line Usage
+
+### With IUPAC input
+``````bash
+$ glyles -i Man(a1-2)Man -o ./test_output.txt
+``````
+
+### With IUPAC inputs
+``````bash
+$ glyles -i Man(a1-2)Man Fuc(a1-6)Glc -o ./test_output.txt
+``````
+
+### With file input
+``````bash
+$ glyles -i ./input_file.txt -o ./test_output.txt
+``````
 
 ## Basic Usage
 

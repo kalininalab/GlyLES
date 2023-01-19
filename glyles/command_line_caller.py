@@ -33,7 +33,7 @@ if __name__ == "__main__":
     try:
         if os.path.isfile(input):
             input_path_flag = True
-            print("aaa")
+
     except:
         string_or_list_will_be_parsed=True
 
