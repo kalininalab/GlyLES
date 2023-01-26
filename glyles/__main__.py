@@ -1,34 +1,50 @@
-#!/usr/bin/env python
-
-from converter import convert
-#from glyles import converter
 import os
 import sys
 import argparse
 
+# SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+# sys.path.append(os.path.dirname(SCRIPT_DIR))
 
-if __name__ == "__main__":
+from glyles import convert
 
+
+def main():
     input_string_flag = False
     input_list_flag = False
     input_path_flag = False
-    override_flag = False
     string_or_list_will_be_parsed = False
 
-    parser = argparse.ArgumentParser(prog="glyles",
-                                     description="A tool to convert IUPAC representation of Glycans into SMILES representation")
-    parser.add_argument('-i', '--input', required=True, action="store", help="Input IUPAC string, list or file path", nargs='+')
-    parser.add_argument('-o', '--output', required=True, action="store", help="Output file path")
-    parser.add_argument('--override', required=False, action="store_true", help="Override output file")
-    #parser.add_argument("-h", "--help", action="help")
-    #parser.add_argument("-v", "--version", action="version")
+    parser = argparse.ArgumentParser(
+        prog="glyles",
+        description="A tool to convert IUPAC representation of Glycans into SMILES representation"
+    )
+    parser.add_argument(
+        '-i',
+        '--input',
+        required=True,
+        action="store",
+        help="Input IUPAC string, list or file path",
+        nargs='+'
+    )
+    parser.add_argument(
+        '-o',
+        '--output',
+        required=True,
+        action="store",
+        help="Output file path"
+    )
+    parser.add_argument(
+        '--override',
+        required=False,
+        action="store_true",
+        help="Override output file"
+    )
+    # parser.add_argument("-h", "--help", action="help")
+    # parser.add_argument("-v", "--version", action="version")
     args = parser.parse_args()
 
     input = args.input
     output = args.output
-
-    print(input)
-    print(output)
 
     if len(input) == 1:
         input = input[0]
@@ -36,9 +52,8 @@ if __name__ == "__main__":
     try:
         if os.path.isfile(input):
             input_path_flag = True
-
     except:
-        string_or_list_will_be_parsed=True
+        string_or_list_will_be_parsed = True
 
     if string_or_list_will_be_parsed:
         if type(input) == list:
@@ -47,15 +62,12 @@ if __name__ == "__main__":
         elif type(input) == str:
             input_string_flag = True
 
-
     override_flag = args.override
 
     if os.path.isfile(output):
         if not override_flag:
             print("Given output exist, please pick another name or use --override")
             sys.exit()
-
-
 
     if input_string_flag:
         convert(glycan=input, output_file=output)
@@ -66,3 +78,6 @@ if __name__ == "__main__":
     elif input_path_flag:
         convert(glycan_file=input, output_file=output)
 
+
+if __name__ == "__main__":
+    main()
