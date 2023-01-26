@@ -60,7 +60,7 @@ class MonomerFactory:
             return self.pyranose_fac[item]
         if item in self.open_fac:
             return self.open_fac[item]
-        raise NotImplementedError("Query-monomer is neither in pyranoses nor in furanoses")
+        raise NotImplementedError("Query-monosaccharide is neither in pyranoses nor in furanoses.")
 
     def keys(self):
         """

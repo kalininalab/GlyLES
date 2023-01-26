@@ -57,7 +57,7 @@ functional_groups = {
     "cdPam": "OC(=O)CCCCCCC/C=C\CCCCCC",
     "Cet": "CCC(=O)O",
     "Cin": "OC(=O)/C=C/c2ccccc2",
-    "Coum": "OC(=O)/C=C/c1ccc(O)ccc",
+    "Coum": "OC(=O)/C=C/c1ccc(O)ccc1",
     "Dce": "OC(=O)CCCCCCCC=C",
     "Dhp": "OC(=O)C(O)(O)CCC",
     "Dhpa": "OC(=O)C(O)(O)CCC",
@@ -491,7 +491,7 @@ class SMILESReaktor:
             if t == GlycanLexer.MOD and "Anhydro" in n:
                 nums = [int(x) for x in re.findall(r'\d+', n)]
                 if len(nums) != 2:
-                    raise ValueError("Anhydro functional groups should have exaclty two numbers: X,Y-Anhydro-...")
+                    raise ValueError("Anhydro functional groups should have exactly two numbers: X,Y-Anhydro-...")
                 y_c = int(np.where(self.monomer.x[:, 1] == nums[1])[0])
                 x_o = self.monomer.find_oxygen(nums[0])
                 y_o = self.monomer.find_oxygen(nums[1])

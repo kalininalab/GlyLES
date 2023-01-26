@@ -1,3 +1,4 @@
+import logging
 import sys
 from collections import Counter
 from typing import Union, List
@@ -411,37 +412,49 @@ class Glycan:
         Returns:
             Nothing
         """
-        # catch the prints of antlr to stderr to check if during parsing an error occurred and the glycan is invalid
-        log = []
+        try:
+            # catch the prints of antlr to stderr to check if during parsing an error occurred and the glycan is invalid
+            log = []
 
-        class Writer(object):
-            @staticmethod
-            def write(data):
-                log.append(data)
+            class Writer(object):
+                @staticmethod
+                def write(data):
+                    log.append(data)
 
-        old_err = sys.stderr
-        sys.stderr = Writer()
+            old_err = sys.stderr
+            sys.stderr = Writer()
 
-        # parse the remaining structure description following the grammar, also add the dummy characters
-        if not isinstance(self.iupac, str):
-            raise ParseError("Only string input can be parsed: " + str(self.iupac))
-        stream = InputStream(data='{' + self.iupac + '}')
-        lexer = GlycanLexer(stream)
-        token = CommonTokenStream(lexer)
-        parser = GlycanParser(token)
-        self.grammar_tree = parser.start()
+            # parse the remaining structure description following the grammar, also add the dummy characters
+            if not isinstance(self.iupac, str):
+                raise ParseError("Only string input can be parsed: " + str(self.iupac))
+            stream = InputStream(data='{' + self.iupac + '}')
+            lexer = GlycanLexer(stream)
+            token = CommonTokenStream(lexer)
+            parser = GlycanParser(token)
+            self.grammar_tree = parser.start()
 
-        sys.stderr = old_err
+            sys.stderr = old_err
 
-        # if the glycan is invalid, set its structure to None and the SMILES string to empty and return
-        if len(log) != 0:
-            self.parse_tree = None
+            # if the glycan is invalid, set its structure to None and the SMILES string to empty and return
+            if len(log) != 0:
+                self.parse_tree = None
+                self.glycan_smiles = ""
+                raise ParseError("Glycan cannot be parsed:\n" + log[0])
+
+            # walk through the AST and parse the AST into a networkx representation of the glycan.
+            self.parse_tree, self.tree_full = TreeWalker(self.factory, self.tree_only).parse(self.grammar_tree)
+
+            # if the glycan should be parsed immediately, do so
+            if not self.tree_only and self.tree_full == self.full:
+                self.glycan_smiles = Merger(self.factory).merge(self.parse_tree, self.root_orientation, start=self.start)
+                # catch any exception at glycan level to not destroy the whole pipeline because of one mis-formed glycan
+
+        except ParseError as e:
+            msg = e.__str__().replace("\n", " ")
+            logging.error(f"A parsing error occurred with \"{self.iupac}\": Error message: {msg}")
             self.glycan_smiles = ""
-            raise ParseError("Glycan cannot be parsed:\n" + log[0])
-
-        # walk through the AST and parse the AST into a networkx representation of the glycan.
-        self.parse_tree, self.tree_full = TreeWalker(self.factory, self.tree_only).parse(self.grammar_tree)
-
-        # if the glycan should be parsed immediately, do so
-        if not self.tree_only and self.tree_full == self.full:
-            self.glycan_smiles = Merger(self.factory).merge(self.parse_tree, self.root_orientation, start=self.start)
+        except Exception as e:
+            msg = e.__str__().replace("\n", " ")
+            logging.error(f"An unexpected exception occurred with \"{self.iupac}\". This glycan cannot be parsed. "
+                          f"Error message: {msg}")
+            self.glycan_smiles = ""

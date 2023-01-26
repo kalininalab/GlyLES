@@ -187,16 +187,5 @@ def generate(glycan, full):
     Returns:
         A pair of glycan represented with its IUPAC string and SMILES string
     """
-    try:
-        # ... by passing them to the glycan class to parse them and return them as intended
-        return glycan, Glycan(glycan, full=full).get_smiles()
-
-    # catch any exception at glycan level to not destroy the whole pipeline because of one mis-formed glycan
-    except ParseError as e:
-        logging.error(f"A parsing error occurred with {glycan}: {e.__class__}\n"
-                      f"Error message: {e.__str__()}")
-        return glycan, ""
-    except Exception as e:
-        logging.error(f"An unexpected exception occurred with with {glycan}. This glycan cannot be parsed."
-                      f"Error message: {e.__str__()}")
-        return glycan, ""
+    # ... by passing them to the glycan class to parse them and return them as intended
+    return glycan, Glycan(glycan, full=full).get_smiles()
