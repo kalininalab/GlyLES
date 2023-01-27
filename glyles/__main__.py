@@ -12,7 +12,6 @@ def main():
     input_string_flag = False
     input_list_flag = False
     input_path_flag = False
-    string_or_list_will_be_parsed = False
 
     parser = argparse.ArgumentParser(
         prog="glyles",
@@ -49,23 +48,17 @@ def main():
     if len(input) == 1:
         input = input[0]
 
-    try:
-        if os.path.isfile(input):
-            input_path_flag = True
-    except:
-        string_or_list_will_be_parsed = True
-
-    if string_or_list_will_be_parsed:
+    if os.path.isfile(input):
+        input_path_flag = True
+    else:
         if type(input) == list:
             input_list_flag = True
 
         elif type(input) == str:
             input_string_flag = True
 
-    override_flag = args.override
-
     if os.path.isfile(output):
-        if not override_flag:
+        if not args.override:
             print("Given output exist, please pick another name or use --override")
             sys.exit()
 
