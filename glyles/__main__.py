@@ -78,7 +78,7 @@ def main(args):
     # check if the output already exists
     if os.path.isfile(kwargs["output"]):
         if input(
-                "The given output file already exist, do you want to proceed and overwrite it? [y]/n"
+                "The given output file already exist, do you want to proceed and overwrite it? [y]/n\n"
         ) not in ["", "Y", "y"]:
             exit(0)
 

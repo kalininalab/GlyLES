@@ -90,7 +90,7 @@ There are multiple different notations for glycans in IUPAC. So, according to th
 all describe the same disaccharide. This is also covered in this package as all three notations will be parsed into the 
 same tree of monosaccharides and result in the same SMILES string.
 
-This is also described more detailed in a section on [ReadTheDocs]().
+This is also described more detailed in a section on [ReadTheDocs](https://glyles.readthedocs.io/en/latest/notes/notation.html).
 
 ## Poetry
 
