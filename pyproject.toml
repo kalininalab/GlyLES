@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "glyles"
-version = "0.5.8"
+version = "0.5.9"
 repository = "https://github.com/kalininalab/GlyLES"
 readme = "README.md"
 description = "A tool to convert IUPAC representation of glycans into SMILES strings"

@@ -1,0 +1,6 @@
+GalNAc
+GlcNAca
+GalA
+GlcA
+GalN
+GlcN
