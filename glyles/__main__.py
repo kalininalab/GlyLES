@@ -1,18 +1,13 @@
 import os
 import sys
 import argparse
+import pkg_resources
 
-# SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-# sys.path.append(os.path.dirname(SCRIPT_DIR))
 
 from glyles import convert
 
 
 def main():
-    input_string_flag = False
-    input_list_flag = False
-    input_path_flag = False
-
     parser = argparse.ArgumentParser(
         prog="glyles",
         description="A tool to convert IUPAC representation of Glycans into SMILES representation"
@@ -38,38 +33,27 @@ def main():
         action="store_true",
         help="Override output file"
     )
-    # parser.add_argument("-h", "--help", action="help")
-    # parser.add_argument("-v", "--version", action="version")
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version=f"%(prog)s {pkg_resources.get_distribution('glyles').version}"
+    )
     args = parser.parse_args()
-
-    input = args.input
-    output = args.output
-
-    if len(input) == 1:
-        input = input[0]
-
-    if os.path.isfile(input):
-        input_path_flag = True
-    else:
-        if type(input) == list:
-            input_list_flag = True
-
-        elif type(input) == str:
-            input_string_flag = True
-
-    if os.path.isfile(output):
+    if os.path.isfile(args.output):
         if not args.override:
             print("Given output exist, please pick another name or use --override")
             sys.exit()
 
-    if input_string_flag:
-        convert(glycan=input, output_file=output)
+    if len(args.input) == 1:
+        args.input = args.input[0]
 
-    elif input_list_flag:
-        convert(glycan_list=input, output_file=output)
-
-    elif input_path_flag:
-        convert(glycan_file=input, output_file=output)
+    if os.path.isfile(args.input):
+        convert(glycan_file=args.input, output_file=args.output)
+    elif isinstance(args.input, list):
+        convert(glycan_list=args.input, output_file=args.output)
+    elif type(input) == str:
+        convert(glycan=args.input, output_file=args.output)
 
 
 if __name__ == "__main__":
