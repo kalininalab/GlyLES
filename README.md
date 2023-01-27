@@ -14,11 +14,11 @@ phase; so, feel free to report any errors or issues. The code is available on
 
 ## Specification and (current) Limitations
 
-The exact specification we're referring to when talking about "IUPAC representations of glycan", is given in the 
-"Notes" section of this [website](https://www.ncbi.nlm.nih.gov/glycans/snfg.html). But as this package is still in the 
-development phase, not everything of the specification is implemented yet (especially not all side chains you can 
-attach to monomers). The structure of the glycan can be represented as a tree of the monosaccharides with maximal 
-branching factor 4, i.e., each monomer in the glycan has at most 4 children.
+The exact specification we're referring to when talking about "IUPAC representations of glycan" or "IUPAC-condensed", 
+is given in the "Notes" section of this [website](https://www.ncbi.nlm.nih.gov/glycans/snfg.html). But as this package 
+is still in the development phase, not everything of the specification is implemented yet (especially not all side 
+chains you can attach to monomers). The structure of the glycan can be represented as a tree of the monosaccharides 
+with maximal branching factor 4, i.e., each monomer in the glycan has at most 4 children.
 
 ## Installation
 
@@ -38,6 +38,8 @@ pip install --upgrade glyles
 to upgrade the glyles package to the most recent version.
 
 ## Basic Usage
+
+### As a Python Package
 
 Convert the IUPAC into a SMILES representation using the handy `convert` method
 
@@ -59,6 +61,27 @@ for smiles in convert_generator(glycan_list=["Man(a1-2)Man a", "Man(a1-2)Man b"]
 For more examples of how to use this package, please see the notebooks in the 
 [examples](https://github.com/kalininalab/GlyLES/tree/dev/examples) folder and checkout the documentation on 
 [ReadTheDocs](https://glyles.readthedocs.io/en/latest/index.html).
+
+### In the Commandline
+
+As of version 0.5.9, there is a commandline interface to GlyLES which is automatically installed when installing GlyLES 
+through pip. The CLI is open for one or multiple IUPAC inputs as individual arguments. Due to the syntax of the 
+IUPAC-condensed notation and the argument parsing in commandlines, the IUPAC strings must be given in quotes.
+
+``````shell
+glyles -i "Man(a1-2)Man" -o test_output.txt
+glyles -i "Man(a1-2)Man" "Fuc(a1-6)Glc" -o test_output.txt
+``````
+
+File-input is also possible.
+``````shell
+glyles -i input_file.txt -o test_output.txt
+``````
+
+Providing multiple files and IUPAC-condensed names is als supported.
+``````shell
+glyles -i input_file1.txt "Man(a1-2)Man" input_file2.txt input_file13.txt "Fuc(a1-6)Glc" -o test_output.txt
+``````
 
 ## Notation of glycans
 

@@ -1,6 +1,14 @@
 # Change Log
 
-## v0.5.1-beta - 2022-11-09
+## v0.5.2-0.5.9 - 2023-01-26/27
+
+Implementation of a CLI for GlyLES including debugging
+
+### Added
+
+- CLI for GlyLES
+
+## v0.5.1 - 2023-01-12
 
 Release for publication in Journal of Cheminformatics 
 
