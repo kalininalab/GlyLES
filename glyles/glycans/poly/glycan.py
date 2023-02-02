@@ -420,9 +420,11 @@ class Glycan:
             lexer = GlycanLexer(stream)
             token = CommonTokenStream(lexer)
             parser = GlycanParser(token)
+
             lexer.removeErrorListeners()
-            parser.removeErrorListeners()
             lexer.addErrorListener(GlyLESErrorListener())
+
+            parser.removeErrorListeners()
             parser.addErrorListener(GlyLESErrorListener())
 
             try:
