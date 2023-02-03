@@ -292,7 +292,7 @@ class Monomer:
         elif self.get_structure().GetAtomWithIdx(idx).GetAtomicNum() == 7:
             atom = n_atom[0]
         else:
-            raise ValueError("GlyLES can only link monomers with N-glycosidic bonds and O-glycosidic bonds.")
+            raise ValueError("GlyLES can only link monomers with N-glycosidic linkages and O-glycosidic linkages.")
         self.get_structure().GetAtomWithIdx(idx).SetAtomicNum(atom)
         self.x[idx, 0] = atom
 
@@ -453,4 +453,6 @@ class Monomer:
         if not multiple and position.size == 1:
             return int(position)
 
-        raise ValueError(f"Multiple options for oxygen (or other atom type) found.")
+        if position.size == 0:
+            raise ValueError(f"No oxygen or nitrogen found.")
+        raise ValueError(f"Multiple oxygen or nitrogen found.")
