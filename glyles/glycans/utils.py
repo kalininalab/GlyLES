@@ -9,6 +9,8 @@ from rdkit.Chem import MolFromSmiles
 
 from itertools import permutations
 
+from rdkit.Chem.rdchem import ChiralType
+
 
 class Verbosity(Enum):
     """
@@ -416,6 +418,23 @@ def find_longest_c_chain(c_atoms, adjacency, a_type):
     deepest_id, _ = c_tree.deepest_node()
     c_tree = c_tree.rehang_tree(deepest_id)
     return c_tree.longest_chain()
+
+
+def opposite_chirality(tag):
+    """
+    Invert chirality based on the given ChiralType.
+
+    Args:
+        tag (rdkit.Chem.rdchem.ChiralType): ChiralType to be inverted
+
+    Returns:
+        Returns opposite chiral tag
+    """
+    if tag == ChiralType.CHI_TETRAHEDRAL_CCW:
+        return ChiralType.CHI_TETRAHEDRAL_CW
+    elif tag == ChiralType.CHI_TETRAHEDRAL_CW:
+        return ChiralType.CHI_TETRAHEDRAL_CCW
+    return tag
 
 
 class Node:

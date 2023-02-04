@@ -8,7 +8,7 @@ from rdkit.Chem.rdchem import ChiralType
 from rdkit.Chem.rdmolops import AddHs, RemoveHs
 
 from glyles.glycans.mono.reactor_basic import change_base_monomer
-from glyles.glycans.utils import Enantiomer, ketoses2
+from glyles.glycans.utils import Enantiomer, ketoses2, opposite_chirality
 from glyles.grammar.GlycanLexer import GlycanLexer
 
 O, C = 0, 1
@@ -225,23 +225,6 @@ def extract_bridge(n):
         bridge = bridge[1:]
 
     return bridge, fg
-
-
-def opposite_chirality(tag):
-    """
-    Invert chirality based on the given ChiralType.
-
-    Args:
-        tag (rdkit.Chem.rdchem.ChiralType): ChiralType to be inverted
-
-    Returns:
-        Returns opposite chiral tag
-    """
-    if tag == ChiralType.CHI_TETRAHEDRAL_CCW:
-        return ChiralType.CHI_TETRAHEDRAL_CW
-    elif tag == ChiralType.CHI_TETRAHEDRAL_CW:
-        return ChiralType.CHI_TETRAHEDRAL_CCW
-    return tag
 
 
 class SMILESReaktor:

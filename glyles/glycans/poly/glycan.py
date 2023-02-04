@@ -453,8 +453,8 @@ class Glycan:
             msg = e.__str__().replace("\n", " ")
             logging.error(f"A parsing error occurred with \"{self.iupac}\": Error message: {msg}")
             self.glycan_smiles = ""
-        except Exception as e:
-            msg = e.__str__().replace("\n", " ")
-            logging.error(f"An unexpected exception occurred with \"{self.iupac}\". This glycan cannot be parsed. "
-                          f"Error message: {msg}")
-            self.glycan_smiles = ""
+        # except Exception as e:
+        #     msg = e.__str__().replace("\n", " ")
+        #     logging.error(f"An unexpected exception occurred with \"{self.iupac}\". This glycan cannot be parsed. "
+        #                   f"Error message: {msg}")
+        #     self.glycan_smiles = ""
