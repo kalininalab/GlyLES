@@ -457,4 +457,4 @@ class Monomer:
         if not multiple and position.size == 1:
             return int(position)
 
-        raise ValueError(f"Multiple options for oxygen (or other atom type) found.")
+        raise ValueError(f"Multiple or no options for oxygen (or other atom type) found.")
