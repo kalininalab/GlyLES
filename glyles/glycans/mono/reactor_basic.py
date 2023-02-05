@@ -55,7 +55,7 @@ def check_for_resizing(monomer, names, types):
         count = 8
     else:
         count = c_count
-    extension = "[C?H](O)" * max(0, count - c_count - 1) + "CO"
+    extension = "[C?H](O)" * (count - c_count) + "CO"
 
     # insert the orientations
     for c in orientations[:-1]:
@@ -66,35 +66,42 @@ def check_for_resizing(monomer, names, types):
     extension = extension.replace("[C?H]", "C")
 
     # find oxygen of c6 to delete it and find c6 to replace it
+    # TODO: Check if this is actually valid for all cases
     c_id = int(np.where(monomer.x[:, 1] == int(max(monomer.x[monomer.x[:, 0] == 6, 1])))[0])
-    # if the carbon to be extended is part of the ring, put the extension into a side_chain
-    # if monomer.x[c_id, 2] & 0b1:
-    #     extension = extension.replace(")", ")(", 1) + ")"
-    # if the original molecule has no oxygen at its last carbon, remove the first oxygen from the extension
-    if monomer.x[((monomer.adjacency[c_id] - monomer.x[:, 2]) > 0) & (monomer.x[:, 0] == 8), 0].size == 0:
-        extension = extension.replace("(O)", "", 1)
+    ox_id = monomer.find_oxygen(position=c_id)
 
-    ox_id = monomer.find_oxygen(c_count)
-    if ox_id == c_id:
+    # if the carbon to be extended is part of the ring, put the extension into a side_chain
+    c_has_ox = ox_id != c_id
+    c_in_ring = bool(monomer.x[c_id, 2] & 0b1)
+
+    if c_in_ring and c_has_ox:  # no example known (yet)
+        smiles = monomer.to_smiles(0, root_idx=100)
+    elif c_in_ring and not c_has_ox:  # AraHex
         tmp = AddHs(monomer.structure)
-        for n in tmp.GetAtomWithIdx(ox_id).GetNeighbors():
+        for n in tmp.GetAtomWithIdx(c_id).GetNeighbors():
             if n.GetAtomicNum() == 1:
                 n.SetAtomicNum(50)
                 break
         monomer.structure = RemoveHs(tmp)
-    # monomer.structure.GetAtomWithIdx().SetAtomicNum(50)
-    carb_atom = monomer.structure.GetAtomWithIdx(c_id)
-    prev_c_id = int(np.where(monomer.x[:, 1] == (max(monomer.x[monomer.x[:, 0] == 6, 1]) - 1))[0])
-    if carb_atom.GetChiralTag() == ChiralType.CHI_UNSPECIFIED:
-        # carb_atom.SetChiralTag(opposite_chirality(monomer.structure.GetAtomWithIdx(prev_c_id).GetChiralTag()))
-        carb_atom.SetChiralTag(monomer.structure.GetAtomWithIdx(prev_c_id).GetChiralTag())
-    # monomer.structure.GetAtomWithIdx(c_id).SetAtomicNum(32)
-
-    # generate SMILES from rings oxygen and replace c6's oxygen and c6 by the extension
-    smiles = monomer.to_smiles(0, root_idx=10)
-    # smiles = smiles.replace(r"\[GaH*\d*\]", "").replace("[GeH2]", extension).replace("[GeH]", extension).replace("()", "")
-    smiles = re.sub(r"\(\[SnH*\d*\]\)", "(" + extension + ")", smiles)
-    smiles = re.sub(r"\[SnH*\d*\]", extension.replace(")", ")(", 1) + ")", smiles)
+        extension = extension[extension.index(")") + 1:]
+        carb_atom = monomer.structure.GetAtomWithIdx(c_id)
+        prev_c_id = int(np.where(monomer.x[:, 1] == (max(monomer.x[monomer.x[:, 0] == 6, 1]) - 1))[0])
+        if carb_atom.GetChiralTag() == ChiralType.CHI_UNSPECIFIED:
+            # carb_atom.SetChiralTag(opposite_chirality(monomer.structure.GetAtomWithIdx(prev_c_id).GetChiralTag()))
+            carb_atom.SetChiralTag(monomer.structure.GetAtomWithIdx(prev_c_id).GetChiralTag())
+        smiles = monomer.to_smiles(0, root_idx=100)
+        smiles = re.sub(r"\[SnH*\d*\]", extension, smiles)
+    elif not c_in_ring and c_has_ox:  # LDManHep/DDManHep
+        monomer.structure.GetAtomWithIdx(c_id).SetAtomicNum(50)
+        monomer.structure.GetAtomWithIdx(ox_id).SetAtomicNum(1)
+        smiles = monomer.to_smiles(0, root_idx=100)
+        smiles = re.sub(r"\[SnH*\d*\]", extension, smiles)
+    elif not c_in_ring and not c_has_ox:  # no example known (yet)
+        monomer.structure.GetAtomWithIdx(c_id).SetAtomicNum(50)
+        smiles = monomer.to_smiles(0, root_idx=100)
+        smiles = re.sub(r"\[SnH*\d*\]", extension, smiles)
+    else:
+        smiles = monomer.to_smiles(0, root_idx=100)
 
     # update the monomer
     monomer.smiles = smiles

@@ -422,7 +422,7 @@ class Monomer:
 
         return self.structure
 
-    def find_oxygen(self, binding_c_id):
+    def find_oxygen(self, binding_c_id=-1, position=None):
         """
         Find the oxygen atom that binds to the carbon atom with the provided id. The returned id may not refer to an
         oxygen atom in the ring of the monomer as this cannot bind anything. This method will report the atom id of the
@@ -432,13 +432,17 @@ class Monomer:
         Args:
             binding_c_id (int): id of the carbon atom that participates in a binding, and we need to find the oxygen
                 from
+            position (int): RDKit id of the carbon atom to search around.
 
         Returns:
             The RDKit-ID referring to the atom binding the provided carbon atom and may participate in a glycan-binding.
             In case the carbon is bound to neither an oxygen nor a nitrogen, the RDKit-ID of the carbon is returned.
         """
         # first find the rdkit id of the carbon atom that should bind to something
-        position = np.argwhere(self.x[:, 1] == binding_c_id).squeeze()
+        if position is None:
+            position = np.argwhere(self.x[:, 1] == binding_c_id).squeeze()
+        else:
+            position = np.asarray(position)
 
         multiple = False
         for check in [8, 7]:
