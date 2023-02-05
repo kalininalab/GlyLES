@@ -1,5 +1,4 @@
 import logging
-import sys
 from collections import Counter
 from typing import Union, List
 
@@ -14,6 +13,7 @@ from rdkit.Chem.Descriptors import ExactMolWt
 from glyles.glycans.factory.factory import MonomerFactory
 from glyles.glycans.mono.reactor import functional_groups
 from glyles.glycans.mono.monomer import Monomer
+from glyles.glycans.poly.anltr_error_listener import GlyLESErrorListener
 from glyles.glycans.poly.merger import Merger
 from glyles.glycans.poly.viz import Tree
 from glyles.glycans.poly.walker import TreeWalker
@@ -413,17 +413,6 @@ class Glycan:
             Nothing
         """
         try:
-            # catch the prints of antlr to stderr to check if during parsing an error occurred and the glycan is invalid
-            log = []
-
-            class Writer(object):
-                @staticmethod
-                def write(data):
-                    log.append(data)
-
-            old_err = sys.stderr
-            sys.stderr = Writer()
-
             # parse the remaining structure description following the grammar, also add the dummy characters
             if not isinstance(self.iupac, str):
                 raise ParseError("Only string input can be parsed: " + str(self.iupac))
@@ -431,15 +420,19 @@ class Glycan:
             lexer = GlycanLexer(stream)
             token = CommonTokenStream(lexer)
             parser = GlycanParser(token)
-            self.grammar_tree = parser.start()
 
-            sys.stderr = old_err
+            lexer.removeErrorListeners()
+            lexer.addErrorListener(GlyLESErrorListener())
 
-            # if the glycan is invalid, set its structure to None and the SMILES string to empty and return
-            if len(log) != 0:
+            parser.removeErrorListeners()
+            parser.addErrorListener(GlyLESErrorListener())
+
+            try:
+                self.grammar_tree = parser.start()
+            except ParseError as pe:
                 self.parse_tree = None
                 self.glycan_smiles = ""
-                raise ParseError("Glycan cannot be parsed:\n" + log[0])
+                raise pe from None
 
             # walk through the AST and parse the AST into a networkx representation of the glycan.
             self.parse_tree, self.tree_full = TreeWalker(self.factory, self.tree_only).parse(self.grammar_tree)
