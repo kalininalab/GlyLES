@@ -34,3 +34,20 @@ Welcome to the documentation of GlyLES!
 
     source/convert
     source/glycan
+
+Citation
+
+If you used GlyLES in your work or it was helpful for your project, please cite it.
+
+.. code-block::
+
+    @article{joeres2023glyles,
+        title={GlyLES: Grammar-based Parsing of Glycans from IUPAC-condensed to SMILES},
+        author={Joeres, Roman and Bojar, Daniel and Kalinina, Olga V},
+        journal={Journal of Cheminformatics},
+        volume={15},
+        number={1},
+        pages={1--11},
+        year={2023},
+        publisher={BioMed Central}
+    }

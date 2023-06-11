@@ -1,5 +1,11 @@
 # Change Log
 
+## v0.5.11 - 2023-06-09
+
+Relax requirement restrictions to allow for RDKit versions newer then 2021-09-02
+
+## v0.5.10
+
 ## v0.5.2-0.5.9 - 2023-01-26/27
 
 Implementation of a CLI for GlyLES including debugging

@@ -1,9 +1,9 @@
 # GlyLES
 
 ![testing](https://github.com/kalininalab/glyles/actions/workflows/test.yaml/badge.svg)
-![docs-image](https://readthedocs.org/projects/glyles/badge/?version=latest)
-![piwheels](https://img.shields.io/piwheels/v/glyles) 
-![PyPI - Downloads](https://img.shields.io/pypi/dm/glyles) 
+[![docs-image](https://readthedocs.org/projects/glyles/badge/?version=latest)](https://glyles.readthedocs.io/en/latest/)
+[![piwheels](https://img.shields.io/piwheels/v/glyles)](https://pypi.org/project/glyles/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/glyles)](https://pypi.org/project/glyles/)
 [![codecov](https://codecov.io/gh/kalininalab/GlyLES/branch/main/graph/badge.svg)](https://codecov.io/gh/kalininalab/glyles)
 [![DOI](https://zenodo.org/badge/431874597.svg)](https://zenodo.org/badge/latestdoi/431874597)
 
@@ -99,3 +99,19 @@ instruction). It has basically the same functionality as conda but supports the 
 supports distinguishing packages into those that are needed to use the package and those that are needed in the 
 development of the package. To enable others to work on this repository, we also publish the exact 
 specifications of our poetry environment.
+
+## Citation
+
+If you use GlyLES in your work, please cite
+```
+@article{joeres2023glyles,
+  title={GlyLES: Grammar-based Parsing of Glycans from IUPAC-condensed to SMILES},
+  author={Joeres, Roman and Bojar, Daniel and Kalinina, Olga V},
+  journal={Journal of Cheminformatics},
+  volume={15},
+  number={1},
+  pages={1--11},
+  year={2023},
+  publisher={BioMed Central}
+}
+```
