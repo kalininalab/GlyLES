@@ -11,9 +11,9 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.7,<4.0"
-numpy = "^1.21.4"
-rdkit-pypi = ">=2021.9.2"
+python = ">=3.9,<4.0"
+numpy
+rdkit = ">=2021.9.2"
 antlr4-python3-runtime = "==4.13.1"
 networkx = ">=2.6.3"
 pydot = "^1.4.2"
