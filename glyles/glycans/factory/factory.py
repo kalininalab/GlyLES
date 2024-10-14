@@ -5,6 +5,9 @@ from glyles.glycans.mono.monomer import Monomer
 from glyles.glycans.utils import Config, Enantiomer, Lactole
 from glyles.grammar.GlycanLexer import GlycanLexer
 
+if not hasattr(GlycanLexer, "MOD"):
+    GlycanLexer.MOD = GlycanLexer.QMARK + 1
+
 
 class MonomerFactory:
     """

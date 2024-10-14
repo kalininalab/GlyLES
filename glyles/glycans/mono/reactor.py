@@ -11,6 +11,9 @@ from glyles.glycans.mono.reactor_basic import change_base_monomer
 from glyles.glycans.utils import Enantiomer, ketoses2, opposite_chirality
 from glyles.grammar.GlycanLexer import GlycanLexer
 
+if not hasattr(GlycanLexer, "MOD"):
+    GlycanLexer.MOD = GlycanLexer.QMARK + 1
+
 O, C = 0, 1
 
 # map of all functional groups from IUPAC name to SMILES string
@@ -295,12 +298,12 @@ class SMILESReaktor:
                         c_id = int(np.where(self.monomer.x[:, 1] == c_id)[0])
 
                     # if the selected carbon has a tail raging away from the monomer, iterate all the way down
-                    children = np.where((self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) &
+                    children = np.where(np.array(self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) &
                                         (1 - self.monomer.x[:, 2] & 0b1))[0].tolist()
                     while len(children) != 0:
                         c_id = int(children[0])
                         children = np.where(
-                            (self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) &
+                            np.array(self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) &
                             (1 - self.monomer.x[:, 2] & 0b1) & (self.monomer.x[:, 1] > self.monomer.x[c_id, 1])
                         )[0].tolist()
 

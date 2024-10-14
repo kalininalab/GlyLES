@@ -9,6 +9,9 @@ from glyles.glycans.factory.factory_o import OpenFactory, c1_finder
 from glyles.glycans.utils import find_longest_c_chain, opposite_chirality
 from glyles.grammar.GlycanLexer import GlycanLexer
 
+if not hasattr(GlycanLexer, "MOD"):
+    GlycanLexer.MOD = GlycanLexer.QMARK + 1
+
 
 def get_indices(names, types):
     sac_index = types.index(GlycanLexer.SAC)

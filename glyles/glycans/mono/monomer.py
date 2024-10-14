@@ -8,6 +8,9 @@ from glyles.glycans.mono.reactor import SMILESReaktor
 from glyles.glycans.utils import Config, find_isomorphism_nx
 from glyles.grammar.GlycanLexer import GlycanLexer
 
+if not hasattr(GlycanLexer, "MOD"):
+    GlycanLexer.MOD = GlycanLexer.QMARK + 1
+
 
 class Monomer:
 
@@ -281,9 +284,6 @@ class Monomer:
             position (int): id of the carbon atom whose oxygen atom will from the binding
             o_atom (Tuple[int, str, str]): atom to replace the binding oxygen with
             n_atom (Tuple[int, str, str]): atom to replace the binding nitrogen with
-
-        Returns:
-            Nothing
         """
         idx = self.find_oxygen(position)
         idx = self.__check_root_id(idx)
@@ -329,21 +329,21 @@ class Monomer:
                 (self.x[root_id, 0] == 7 and sum(self.adjacency[:, root_id]) <= 2):
             return int(root_id)
 
-        neighbors = list(np.where((self.adjacency[:, root_id] != 0) & (self.x[:, 2] != 1))[0])
+        neighbors = list(np.where(np.array(self.adjacency[:, root_id] != 0) & (self.x[:, 2] != 1))[0])
         candidate = None
         seen = set()
 
         while len(neighbors) != 0:
             n = neighbors.pop(0)
             if self.x[n, 0] not in {7, 8}:
-                neighbors += [k for k in np.where((self.adjacency[:, n] != 0) & (self.x[:, 2] != 1))[0] if
+                neighbors += [k for k in np.where(np.array(self.adjacency[:, n] != 0) & (self.x[:, 2] != 1))[0] if
                               k not in seen]
             else:
                 if self.x[n, 0] == 8 and sum(self.adjacency[:, n]) == 1:
                     return int(n)
                 if self.x[n, 0] == 7 and sum(self.adjacency[:, n]) <= 2 and candidate is None:
                     candidate = n
-                neighbors += [k for k in np.where((self.adjacency[:, n] != 0) & (self.x[:, 2] != 1))[0] if
+                neighbors += [k for k in np.where(np.array(self.adjacency[:, n] != 0) & (self.x[:, 2] != 1))[0] if
                               k not in seen]
             seen.add(n)
 
@@ -447,7 +447,7 @@ class Monomer:
         multiple = False
         for check in [8, 7]:
             # then find the candidates. There should be exactly one element in the resulting array
-            candidates = np.argwhere((self.adjacency[position, :] == 1) &
+            candidates = np.argwhere(np.array(self.adjacency[position, :] == 1) &
                                      (self.x[:, 0] == check) & (self.x[:, 2] != 1)).squeeze()
             if candidates.size == 1:
                 return int(candidates)
