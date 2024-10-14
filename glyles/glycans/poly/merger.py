@@ -65,7 +65,7 @@ class Merger:
         """
         self.factory = factory
 
-    def merge(self, t, root_orientation="n", start=100, smiles_only: bool = True) -> str | tuple[str, nx.Graph]:
+    def merge(self, t, root_orientation="n", start=100, smiles_only: bool = True):
         """
         Merge the provided tree of monomers enriched with the glycans in the nodes and information on the bindings
         between two monomer-nodes in the edges. The input graph is not changed during this process, as the methods
