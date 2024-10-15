@@ -15,7 +15,8 @@ branch:
     | deriv con LBRACE branch RBRACE LBRACE branch RBRACE branch
     | deriv con LBRACE branch RBRACE LBRACE branch RBRACE LBRACE branch RBRACE branch;
 deriv:
-    modi* saci+ modi* RING? modi* TYPE?;
+    modi* saci+ modi* RING? modi* TYPE? modi*
+    | modi* saci+ modi* TYPE? modi* RING? modi*;
 saci: COUNT | SAC;
 con:
     LPAR typi NUM DASH qnum RPAR

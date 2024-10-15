@@ -54,10 +54,10 @@ functional_groups = {
     "A": "OC(=O)C",
     "Allyl": "CC=C",
     "Ac": "C(=O)C",
-    "Ang": "OC(=O)C/(C)=C\C",
+    "Ang": "OC(=O)C/(C)=C\\C",
     "Bz": "C(=O)c2ccccc2",
     "Bn": "Cc2ccccc2",
-    "cdPam": "OC(=O)CCCCCCC/C=C\CCCCCC",
+    "cdPam": "OC(=O)CCCCCCC/C=C\\CCCCCC",
     "Cet": "CCC(=O)O",
     "Cin": "OC(=O)/C=C/c2ccccc2",
     "Coum": "OC(=O)/C=C/c1ccc(O)ccc1",
@@ -72,7 +72,7 @@ functional_groups = {
     "Gro": "OCC(O)CO",
     "He": "C(O)C",
     "Lac": "OC(=O)C(O)C",
-    "Lin": "OC(=O)CCCCCCC/C=C\C/C=C\CCCCC",
+    "Lin": "OC(=O)CCCCCCC/C=C\\C/C=C\\CCCCC",
     "Mal": "O[C@H](C(=O)O)CC(=O)O",
     "Ole": "OC(=O)CCCCCCC/C=C\CCCCCCCC",
     "Ph": "c2ccccc2",
@@ -93,9 +93,9 @@ functional_groups = {
 
     # some special cases
     "3oxoMyr": "OC(=O)CC(=O)CCCCCCCCCCC",
-    "17HOLin": "OC(=O)CCCCCCC/C=C\C/C=C\CCCC(O)C",
+    "17HOLin": "OC(=O)CCCCCCC/C=C\\C/C=C\\CCCC(O)C",
     "aLnn": "OC(=O)CCCCCCCC=CCC=CCC=CCC",
-    "cVac": "OC(=O)CCCCCCCCC/C=C\CCCCCC",
+    "cVac": "OC(=O)CCCCCCCCC/C=C\\CCCCCC",
     "d2Ach": "OC(=O)CCCCCCC=CCC=CCCCCCCCC",
     "d3Ach": "OC(=O)CCCC=CCC=CCC=CCCCCCCCC",
     "d4Ach": "OC(=O)CCCC=CCC=CCC=CCC=CCCCCC",
@@ -147,7 +147,7 @@ functional_groups = {
     "Geddic": "OC(=O)" + "C" * 33,
     "Ceroplastic": "OC(=O)" + "C" * 35,
     "Phthi": "OC(=O)C(C)=CC(C)CC(C)" + "C" * 18,
-    "Ner": "OC(=O)" + "C" * 13 + "/C=C\C" + "C" * 7,
+    "Ner": "OC(=O)" + "C" * 13 + "/C=C\\C" + "C" * 7,
 }
 
 # list of functional groups that preserve the atom it is attached to instead of replacing it
@@ -524,7 +524,7 @@ class SMILESReaktor:
 
         # identify a hydrogen bound to the carbon atom to attach the functional group to
         h = None
-        for n in tmp.GetAtomWithIdx(int(np.where(self.monomer.x[:, 1] == i)[0])).GetNeighbors():
+        for n in tmp.GetAtomWithIdx(np.where(self.monomer.x[:, 1] == i)[0].item()).GetNeighbors():
             if n.GetAtomicNum() == 1:
                 h = n.GetIdx()
                 break

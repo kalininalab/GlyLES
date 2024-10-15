@@ -87,8 +87,8 @@ def enumerate_c_atoms(monomer, c_atoms, ringo):
 
             children = np.where(np.array(monomer.adjacency[c_id, :] == 1) & (monomer.x[:, 0] == 6) & (monomer.x[:, 3] == 1))[0]
             for c in children:
-                if int(c) not in c_tree.nodes:
-                    stack.append((c_id, int(c)))
+                if c.item() not in c_tree.nodes:
+                    stack.append((c_id, c.item()))
 
         # find the deepest node and rehang the tree to this node
         deepest_id, _ = c_tree.deepest_node()
