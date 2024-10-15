@@ -23,7 +23,6 @@ def compare_smiles(computed, solution):
 
 
 class TestDerivatives:
-    @pytest.mark.slow
     @pytest.mark.parametrize(
         "line",
         open("data/anhydro.tsv", "r").readlines() +
@@ -41,7 +40,6 @@ class TestDerivatives:
         iupac, smiles = line.split("\t")[:2]
         compare_smiles(Glycan(iupac).get_smiles(), smiles)
 
-    @pytest.mark.slow
     @pytest.mark.parametrize("line", open("data/glycowork.txt", "r").readlines())
     def test_iupac_databases(self, line):
         if '0dHex' in line or 'en' in line or 'Ins' in line:

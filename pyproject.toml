@@ -1,13 +1,15 @@
 [tool.poetry]
 name = "glyles"
-version = "0.5.11"
+version = "1.0.0"
 repository = "https://github.com/kalininalab/GlyLES"
 readme = "README.md"
 description = "A tool to convert IUPAC representation of glycans into SMILES strings"
 authors = ["Roman Joeres <roman.joeres@helmholtz-hips.de>"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Operating System :: OS Independent"
+    "Development Status :: 5 - Production/Stable",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
 ]
 
 [tool.poetry.dependencies]
