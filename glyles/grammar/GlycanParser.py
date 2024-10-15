@@ -10,138 +10,93 @@ else:
 
 def serializedATN():
     return [
-        4,1,33,357,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        4,1,33,247,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
         6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,
-        2,14,7,14,1,0,1,0,1,0,1,0,1,0,5,0,36,8,0,10,0,12,0,39,9,0,1,0,1,
-        0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,57,
-        8,1,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,
-        1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,
-        1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,100,8,2,1,3,1,3,1,3,
-        1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,3,3,113,8,3,1,4,4,4,116,8,4,11,4,
-        12,4,117,1,4,1,4,1,4,5,4,123,8,4,10,4,12,4,126,9,4,1,4,4,4,129,8,
-        4,11,4,12,4,130,1,4,1,4,5,4,135,8,4,10,4,12,4,138,9,4,1,4,4,4,141,
-        8,4,11,4,12,4,142,1,4,1,4,5,4,147,8,4,10,4,12,4,150,9,4,1,4,4,4,
-        153,8,4,11,4,12,4,154,1,4,5,4,158,8,4,10,4,12,4,161,9,4,1,4,4,4,
-        164,8,4,11,4,12,4,165,1,4,4,4,169,8,4,11,4,12,4,170,1,4,1,4,1,4,
-        5,4,176,8,4,10,4,12,4,179,9,4,1,4,4,4,182,8,4,11,4,12,4,183,1,4,
-        4,4,187,8,4,11,4,12,4,188,1,4,1,4,5,4,193,8,4,10,4,12,4,196,9,4,
-        1,4,4,4,199,8,4,11,4,12,4,200,1,4,4,4,204,8,4,11,4,12,4,205,1,4,
-        1,4,5,4,210,8,4,10,4,12,4,213,9,4,1,4,4,4,216,8,4,11,4,12,4,217,
-        1,4,4,4,221,8,4,11,4,12,4,222,1,4,5,4,226,8,4,10,4,12,4,229,9,4,
-        3,4,231,8,4,1,5,1,5,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,
-        1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,1,6,3,6,256,8,6,1,7,1,7,1,7,
-        3,7,261,8,7,1,7,1,7,1,7,3,7,266,8,7,1,7,5,7,269,8,7,10,7,12,7,272,
-        9,7,1,7,1,7,1,7,1,7,1,7,1,7,5,7,280,8,7,10,7,12,7,283,9,7,1,7,3,
-        7,286,8,7,1,8,1,8,1,8,3,8,291,8,8,1,9,3,9,294,8,9,1,9,1,9,1,9,5,
-        9,299,8,9,10,9,12,9,302,9,9,1,10,1,10,3,10,306,8,10,1,10,1,10,1,
-        10,1,10,1,10,1,10,1,10,1,10,1,10,1,10,1,10,1,10,3,10,320,8,10,1,
-        10,3,10,323,8,10,1,10,5,10,326,8,10,10,10,12,10,329,9,10,1,10,1,
-        10,1,10,1,10,3,10,335,8,10,1,10,1,10,1,10,3,10,340,8,10,1,10,1,10,
-        1,10,1,10,1,10,3,10,347,8,10,1,11,1,11,1,12,1,12,1,13,1,13,1,14,
-        1,14,1,14,0,0,15,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,0,6,2,0,
-        3,3,13,13,2,0,25,26,32,32,2,0,16,16,33,33,2,0,14,14,33,33,1,0,4,
-        7,2,0,27,27,30,30,405,0,30,1,0,0,0,2,56,1,0,0,0,4,99,1,0,0,0,6,112,
-        1,0,0,0,8,230,1,0,0,0,10,232,1,0,0,0,12,255,1,0,0,0,14,285,1,0,0,
-        0,16,290,1,0,0,0,18,293,1,0,0,0,20,346,1,0,0,0,22,348,1,0,0,0,24,
-        350,1,0,0,0,26,352,1,0,0,0,28,354,1,0,0,0,30,37,5,1,0,0,31,32,5,
-        23,0,0,32,33,3,4,2,0,33,34,5,24,0,0,34,36,1,0,0,0,35,31,1,0,0,0,
-        36,39,1,0,0,0,37,35,1,0,0,0,37,38,1,0,0,0,38,40,1,0,0,0,39,37,1,
-        0,0,0,40,41,3,2,1,0,41,42,5,1,0,0,42,1,1,0,0,0,43,44,3,4,2,0,44,
-        45,3,6,3,0,45,46,5,2,0,0,46,47,5,14,0,0,47,57,1,0,0,0,48,49,3,4,
-        2,0,49,50,3,6,3,0,50,57,1,0,0,0,51,52,3,6,3,0,52,53,5,2,0,0,53,54,
-        5,14,0,0,54,57,1,0,0,0,55,57,3,6,3,0,56,43,1,0,0,0,56,48,1,0,0,0,
-        56,51,1,0,0,0,56,55,1,0,0,0,57,3,1,0,0,0,58,59,3,6,3,0,59,60,3,12,
-        6,0,60,100,1,0,0,0,61,62,3,6,3,0,62,63,3,12,6,0,63,64,3,4,2,0,64,
-        100,1,0,0,0,65,66,5,21,0,0,66,67,3,4,2,0,67,68,5,22,0,0,68,100,1,
-        0,0,0,69,70,3,6,3,0,70,71,3,12,6,0,71,72,5,21,0,0,72,73,3,4,2,0,
-        73,74,5,22,0,0,74,75,3,4,2,0,75,100,1,0,0,0,76,77,3,6,3,0,77,78,
-        3,12,6,0,78,79,5,21,0,0,79,80,3,4,2,0,80,81,5,22,0,0,81,82,5,21,
-        0,0,82,83,3,4,2,0,83,84,5,22,0,0,84,85,3,4,2,0,85,100,1,0,0,0,86,
-        87,3,6,3,0,87,88,3,12,6,0,88,89,5,21,0,0,89,90,3,4,2,0,90,91,5,22,
-        0,0,91,92,5,21,0,0,92,93,3,4,2,0,93,94,5,22,0,0,94,95,5,21,0,0,95,
-        96,3,4,2,0,96,97,5,22,0,0,97,98,3,4,2,0,98,100,1,0,0,0,99,58,1,0,
-        0,0,99,61,1,0,0,0,99,65,1,0,0,0,99,69,1,0,0,0,99,76,1,0,0,0,99,86,
-        1,0,0,0,100,5,1,0,0,0,101,102,3,8,4,0,102,103,5,15,0,0,103,104,5,
-        14,0,0,104,113,1,0,0,0,105,106,3,8,4,0,106,107,5,14,0,0,107,113,
-        1,0,0,0,108,109,3,8,4,0,109,110,5,15,0,0,110,113,1,0,0,0,111,113,
-        3,8,4,0,112,101,1,0,0,0,112,105,1,0,0,0,112,108,1,0,0,0,112,111,
-        1,0,0,0,113,7,1,0,0,0,114,116,3,10,5,0,115,114,1,0,0,0,116,117,1,
-        0,0,0,117,115,1,0,0,0,117,118,1,0,0,0,118,119,1,0,0,0,119,120,5,
-        15,0,0,120,124,5,14,0,0,121,123,3,20,10,0,122,121,1,0,0,0,123,126,
-        1,0,0,0,124,122,1,0,0,0,124,125,1,0,0,0,125,231,1,0,0,0,126,124,
-        1,0,0,0,127,129,3,10,5,0,128,127,1,0,0,0,129,130,1,0,0,0,130,128,
-        1,0,0,0,130,131,1,0,0,0,131,132,1,0,0,0,132,136,5,14,0,0,133,135,
-        3,20,10,0,134,133,1,0,0,0,135,138,1,0,0,0,136,134,1,0,0,0,136,137,
-        1,0,0,0,137,231,1,0,0,0,138,136,1,0,0,0,139,141,3,10,5,0,140,139,
-        1,0,0,0,141,142,1,0,0,0,142,140,1,0,0,0,142,143,1,0,0,0,143,144,
-        1,0,0,0,144,148,5,15,0,0,145,147,3,20,10,0,146,145,1,0,0,0,147,150,
-        1,0,0,0,148,146,1,0,0,0,148,149,1,0,0,0,149,231,1,0,0,0,150,148,
-        1,0,0,0,151,153,3,10,5,0,152,151,1,0,0,0,153,154,1,0,0,0,154,152,
-        1,0,0,0,154,155,1,0,0,0,155,159,1,0,0,0,156,158,3,20,10,0,157,156,
-        1,0,0,0,158,161,1,0,0,0,159,157,1,0,0,0,159,160,1,0,0,0,160,231,
-        1,0,0,0,161,159,1,0,0,0,162,164,3,20,10,0,163,162,1,0,0,0,164,165,
-        1,0,0,0,165,163,1,0,0,0,165,166,1,0,0,0,166,168,1,0,0,0,167,169,
-        3,10,5,0,168,167,1,0,0,0,169,170,1,0,0,0,170,168,1,0,0,0,170,171,
-        1,0,0,0,171,172,1,0,0,0,172,173,5,15,0,0,173,177,5,14,0,0,174,176,
-        3,20,10,0,175,174,1,0,0,0,176,179,1,0,0,0,177,175,1,0,0,0,177,178,
-        1,0,0,0,178,231,1,0,0,0,179,177,1,0,0,0,180,182,3,20,10,0,181,180,
-        1,0,0,0,182,183,1,0,0,0,183,181,1,0,0,0,183,184,1,0,0,0,184,186,
-        1,0,0,0,185,187,3,10,5,0,186,185,1,0,0,0,187,188,1,0,0,0,188,186,
-        1,0,0,0,188,189,1,0,0,0,189,190,1,0,0,0,190,194,5,14,0,0,191,193,
-        3,20,10,0,192,191,1,0,0,0,193,196,1,0,0,0,194,192,1,0,0,0,194,195,
-        1,0,0,0,195,231,1,0,0,0,196,194,1,0,0,0,197,199,3,20,10,0,198,197,
-        1,0,0,0,199,200,1,0,0,0,200,198,1,0,0,0,200,201,1,0,0,0,201,203,
-        1,0,0,0,202,204,3,10,5,0,203,202,1,0,0,0,204,205,1,0,0,0,205,203,
-        1,0,0,0,205,206,1,0,0,0,206,207,1,0,0,0,207,211,5,15,0,0,208,210,
-        3,20,10,0,209,208,1,0,0,0,210,213,1,0,0,0,211,209,1,0,0,0,211,212,
-        1,0,0,0,212,231,1,0,0,0,213,211,1,0,0,0,214,216,3,20,10,0,215,214,
-        1,0,0,0,216,217,1,0,0,0,217,215,1,0,0,0,217,218,1,0,0,0,218,220,
-        1,0,0,0,219,221,3,10,5,0,220,219,1,0,0,0,221,222,1,0,0,0,222,220,
-        1,0,0,0,222,223,1,0,0,0,223,227,1,0,0,0,224,226,3,20,10,0,225,224,
-        1,0,0,0,226,229,1,0,0,0,227,225,1,0,0,0,227,228,1,0,0,0,228,231,
-        1,0,0,0,229,227,1,0,0,0,230,115,1,0,0,0,230,128,1,0,0,0,230,140,
-        1,0,0,0,230,152,1,0,0,0,230,163,1,0,0,0,230,181,1,0,0,0,230,198,
-        1,0,0,0,230,215,1,0,0,0,231,9,1,0,0,0,232,233,7,0,0,0,233,11,1,0,
-        0,0,234,235,5,19,0,0,235,236,3,24,12,0,236,237,5,16,0,0,237,238,
-        5,18,0,0,238,239,3,22,11,0,239,240,5,20,0,0,240,256,1,0,0,0,241,
-        242,5,19,0,0,242,243,5,16,0,0,243,244,5,18,0,0,244,245,3,22,11,0,
-        245,246,5,20,0,0,246,256,1,0,0,0,247,248,3,24,12,0,248,249,5,16,
-        0,0,249,250,5,18,0,0,250,251,3,22,11,0,251,256,1,0,0,0,252,253,3,
-        24,12,0,253,254,5,16,0,0,254,256,1,0,0,0,255,234,1,0,0,0,255,241,
-        1,0,0,0,255,247,1,0,0,0,255,252,1,0,0,0,256,13,1,0,0,0,257,258,5,
-        31,0,0,258,260,5,23,0,0,259,261,3,28,14,0,260,259,1,0,0,0,260,261,
-        1,0,0,0,261,262,1,0,0,0,262,270,5,16,0,0,263,265,5,17,0,0,264,266,
-        3,28,14,0,265,264,1,0,0,0,265,266,1,0,0,0,266,267,1,0,0,0,267,269,
-        5,16,0,0,268,263,1,0,0,0,269,272,1,0,0,0,270,268,1,0,0,0,270,271,
-        1,0,0,0,271,273,1,0,0,0,272,270,1,0,0,0,273,286,5,24,0,0,274,275,
-        5,27,0,0,275,276,5,23,0,0,276,281,5,16,0,0,277,278,5,17,0,0,278,
-        280,5,16,0,0,279,277,1,0,0,0,280,283,1,0,0,0,281,279,1,0,0,0,281,
-        282,1,0,0,0,282,284,1,0,0,0,283,281,1,0,0,0,284,286,5,24,0,0,285,
-        257,1,0,0,0,285,274,1,0,0,0,286,15,1,0,0,0,287,291,5,13,0,0,288,
-        291,3,26,13,0,289,291,5,8,0,0,290,287,1,0,0,0,290,288,1,0,0,0,290,
-        289,1,0,0,0,291,17,1,0,0,0,292,294,7,1,0,0,293,292,1,0,0,0,293,294,
-        1,0,0,0,294,295,1,0,0,0,295,296,5,4,0,0,296,300,5,16,0,0,297,299,
-        3,14,7,0,298,297,1,0,0,0,299,302,1,0,0,0,300,298,1,0,0,0,300,301,
-        1,0,0,0,301,19,1,0,0,0,302,300,1,0,0,0,303,304,5,16,0,0,304,306,
-        5,17,0,0,305,303,1,0,0,0,305,306,1,0,0,0,306,307,1,0,0,0,307,308,
-        5,16,0,0,308,309,5,18,0,0,309,310,5,9,0,0,310,347,5,18,0,0,311,312,
-        5,16,0,0,312,313,5,18,0,0,313,314,3,26,13,0,314,315,5,18,0,0,315,
-        316,3,16,8,0,316,317,5,18,0,0,317,347,1,0,0,0,318,320,5,18,0,0,319,
-        318,1,0,0,0,319,320,1,0,0,0,320,322,1,0,0,0,321,323,5,16,0,0,322,
-        321,1,0,0,0,322,323,1,0,0,0,323,327,1,0,0,0,324,326,3,26,13,0,325,
-        324,1,0,0,0,326,329,1,0,0,0,327,325,1,0,0,0,327,328,1,0,0,0,328,
-        330,1,0,0,0,329,327,1,0,0,0,330,347,3,16,8,0,331,339,5,16,0,0,332,
-        333,5,17,0,0,333,335,5,16,0,0,334,332,1,0,0,0,334,335,1,0,0,0,335,
-        336,1,0,0,0,336,340,5,28,0,0,337,340,5,29,0,0,338,340,3,18,9,0,339,
-        334,1,0,0,0,339,337,1,0,0,0,339,338,1,0,0,0,340,347,1,0,0,0,341,
-        347,5,10,0,0,342,343,5,11,0,0,343,347,5,18,0,0,344,345,5,18,0,0,
-        345,347,5,12,0,0,346,305,1,0,0,0,346,311,1,0,0,0,346,319,1,0,0,0,
-        346,331,1,0,0,0,346,341,1,0,0,0,346,342,1,0,0,0,346,344,1,0,0,0,
-        347,21,1,0,0,0,348,349,7,2,0,0,349,23,1,0,0,0,350,351,7,3,0,0,351,
-        25,1,0,0,0,352,353,7,4,0,0,353,27,1,0,0,0,354,355,7,5,0,0,355,29,
-        1,0,0,0,41,37,56,99,112,117,124,130,136,142,148,154,159,165,170,
-        177,183,188,194,200,205,211,217,222,227,230,255,260,265,270,281,
-        285,290,293,300,305,319,322,327,334,339,346
+        1,0,1,0,1,0,1,0,1,0,5,0,34,8,0,10,0,12,0,37,9,0,1,0,1,0,1,0,1,1,
+        1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,55,8,1,1,2,1,
+        2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,
+        2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,
+        2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3,2,98,8,2,1,3,5,3,101,8,3,10,3,12,
+        3,104,9,3,1,3,4,3,107,8,3,11,3,12,3,108,1,3,5,3,112,8,3,10,3,12,
+        3,115,9,3,1,3,3,3,118,8,3,1,3,3,3,121,8,3,1,4,1,4,1,5,1,5,1,5,1,
+        5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,
+        5,1,5,3,5,146,8,5,1,6,1,6,1,6,3,6,151,8,6,1,6,1,6,1,6,3,6,156,8,
+        6,1,6,5,6,159,8,6,10,6,12,6,162,9,6,1,6,1,6,1,6,1,6,1,6,1,6,5,6,
+        170,8,6,10,6,12,6,173,9,6,1,6,3,6,176,8,6,1,7,1,7,1,7,3,7,181,8,
+        7,1,8,3,8,184,8,8,1,8,1,8,1,8,5,8,189,8,8,10,8,12,8,192,9,8,1,9,
+        1,9,3,9,196,8,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,1,9,
+        3,9,210,8,9,1,9,3,9,213,8,9,1,9,5,9,216,8,9,10,9,12,9,219,9,9,1,
+        9,1,9,1,9,1,9,3,9,225,8,9,1,9,1,9,1,9,3,9,230,8,9,1,9,1,9,1,9,1,
+        9,1,9,3,9,237,8,9,1,10,1,10,1,11,1,11,1,12,1,12,1,13,1,13,1,13,0,
+        0,14,0,2,4,6,8,10,12,14,16,18,20,22,24,26,0,6,2,0,3,3,13,13,2,0,
+        25,26,32,32,2,0,16,16,33,33,2,0,14,14,33,33,1,0,4,7,2,0,27,27,30,
+        30,271,0,28,1,0,0,0,2,54,1,0,0,0,4,97,1,0,0,0,6,102,1,0,0,0,8,122,
+        1,0,0,0,10,145,1,0,0,0,12,175,1,0,0,0,14,180,1,0,0,0,16,183,1,0,
+        0,0,18,236,1,0,0,0,20,238,1,0,0,0,22,240,1,0,0,0,24,242,1,0,0,0,
+        26,244,1,0,0,0,28,35,5,1,0,0,29,30,5,23,0,0,30,31,3,4,2,0,31,32,
+        5,24,0,0,32,34,1,0,0,0,33,29,1,0,0,0,34,37,1,0,0,0,35,33,1,0,0,0,
+        35,36,1,0,0,0,36,38,1,0,0,0,37,35,1,0,0,0,38,39,3,2,1,0,39,40,5,
+        1,0,0,40,1,1,0,0,0,41,42,3,4,2,0,42,43,3,6,3,0,43,44,5,2,0,0,44,
+        45,5,14,0,0,45,55,1,0,0,0,46,47,3,4,2,0,47,48,3,6,3,0,48,55,1,0,
+        0,0,49,50,3,6,3,0,50,51,5,2,0,0,51,52,5,14,0,0,52,55,1,0,0,0,53,
+        55,3,6,3,0,54,41,1,0,0,0,54,46,1,0,0,0,54,49,1,0,0,0,54,53,1,0,0,
+        0,55,3,1,0,0,0,56,57,3,6,3,0,57,58,3,10,5,0,58,98,1,0,0,0,59,60,
+        3,6,3,0,60,61,3,10,5,0,61,62,3,4,2,0,62,98,1,0,0,0,63,64,5,21,0,
+        0,64,65,3,4,2,0,65,66,5,22,0,0,66,98,1,0,0,0,67,68,3,6,3,0,68,69,
+        3,10,5,0,69,70,5,21,0,0,70,71,3,4,2,0,71,72,5,22,0,0,72,73,3,4,2,
+        0,73,98,1,0,0,0,74,75,3,6,3,0,75,76,3,10,5,0,76,77,5,21,0,0,77,78,
+        3,4,2,0,78,79,5,22,0,0,79,80,5,21,0,0,80,81,3,4,2,0,81,82,5,22,0,
+        0,82,83,3,4,2,0,83,98,1,0,0,0,84,85,3,6,3,0,85,86,3,10,5,0,86,87,
+        5,21,0,0,87,88,3,4,2,0,88,89,5,22,0,0,89,90,5,21,0,0,90,91,3,4,2,
+        0,91,92,5,22,0,0,92,93,5,21,0,0,93,94,3,4,2,0,94,95,5,22,0,0,95,
+        96,3,4,2,0,96,98,1,0,0,0,97,56,1,0,0,0,97,59,1,0,0,0,97,63,1,0,0,
+        0,97,67,1,0,0,0,97,74,1,0,0,0,97,84,1,0,0,0,98,5,1,0,0,0,99,101,
+        3,18,9,0,100,99,1,0,0,0,101,104,1,0,0,0,102,100,1,0,0,0,102,103,
+        1,0,0,0,103,106,1,0,0,0,104,102,1,0,0,0,105,107,3,8,4,0,106,105,
+        1,0,0,0,107,108,1,0,0,0,108,106,1,0,0,0,108,109,1,0,0,0,109,113,
+        1,0,0,0,110,112,3,18,9,0,111,110,1,0,0,0,112,115,1,0,0,0,113,111,
+        1,0,0,0,113,114,1,0,0,0,114,117,1,0,0,0,115,113,1,0,0,0,116,118,
+        5,15,0,0,117,116,1,0,0,0,117,118,1,0,0,0,118,120,1,0,0,0,119,121,
+        5,14,0,0,120,119,1,0,0,0,120,121,1,0,0,0,121,7,1,0,0,0,122,123,7,
+        0,0,0,123,9,1,0,0,0,124,125,5,19,0,0,125,126,3,22,11,0,126,127,5,
+        16,0,0,127,128,5,18,0,0,128,129,3,20,10,0,129,130,5,20,0,0,130,146,
+        1,0,0,0,131,132,5,19,0,0,132,133,5,16,0,0,133,134,5,18,0,0,134,135,
+        3,20,10,0,135,136,5,20,0,0,136,146,1,0,0,0,137,138,3,22,11,0,138,
+        139,5,16,0,0,139,140,5,18,0,0,140,141,3,20,10,0,141,146,1,0,0,0,
+        142,143,3,22,11,0,143,144,5,16,0,0,144,146,1,0,0,0,145,124,1,0,0,
+        0,145,131,1,0,0,0,145,137,1,0,0,0,145,142,1,0,0,0,146,11,1,0,0,0,
+        147,148,5,31,0,0,148,150,5,23,0,0,149,151,3,26,13,0,150,149,1,0,
+        0,0,150,151,1,0,0,0,151,152,1,0,0,0,152,160,5,16,0,0,153,155,5,17,
+        0,0,154,156,3,26,13,0,155,154,1,0,0,0,155,156,1,0,0,0,156,157,1,
+        0,0,0,157,159,5,16,0,0,158,153,1,0,0,0,159,162,1,0,0,0,160,158,1,
+        0,0,0,160,161,1,0,0,0,161,163,1,0,0,0,162,160,1,0,0,0,163,176,5,
+        24,0,0,164,165,5,27,0,0,165,166,5,23,0,0,166,171,5,16,0,0,167,168,
+        5,17,0,0,168,170,5,16,0,0,169,167,1,0,0,0,170,173,1,0,0,0,171,169,
+        1,0,0,0,171,172,1,0,0,0,172,174,1,0,0,0,173,171,1,0,0,0,174,176,
+        5,24,0,0,175,147,1,0,0,0,175,164,1,0,0,0,176,13,1,0,0,0,177,181,
+        5,13,0,0,178,181,3,24,12,0,179,181,5,8,0,0,180,177,1,0,0,0,180,178,
+        1,0,0,0,180,179,1,0,0,0,181,15,1,0,0,0,182,184,7,1,0,0,183,182,1,
+        0,0,0,183,184,1,0,0,0,184,185,1,0,0,0,185,186,5,4,0,0,186,190,5,
+        16,0,0,187,189,3,12,6,0,188,187,1,0,0,0,189,192,1,0,0,0,190,188,
+        1,0,0,0,190,191,1,0,0,0,191,17,1,0,0,0,192,190,1,0,0,0,193,194,5,
+        16,0,0,194,196,5,17,0,0,195,193,1,0,0,0,195,196,1,0,0,0,196,197,
+        1,0,0,0,197,198,5,16,0,0,198,199,5,18,0,0,199,200,5,9,0,0,200,237,
+        5,18,0,0,201,202,5,16,0,0,202,203,5,18,0,0,203,204,3,24,12,0,204,
+        205,5,18,0,0,205,206,3,14,7,0,206,207,5,18,0,0,207,237,1,0,0,0,208,
+        210,5,18,0,0,209,208,1,0,0,0,209,210,1,0,0,0,210,212,1,0,0,0,211,
+        213,5,16,0,0,212,211,1,0,0,0,212,213,1,0,0,0,213,217,1,0,0,0,214,
+        216,3,24,12,0,215,214,1,0,0,0,216,219,1,0,0,0,217,215,1,0,0,0,217,
+        218,1,0,0,0,218,220,1,0,0,0,219,217,1,0,0,0,220,237,3,14,7,0,221,
+        229,5,16,0,0,222,223,5,17,0,0,223,225,5,16,0,0,224,222,1,0,0,0,224,
+        225,1,0,0,0,225,226,1,0,0,0,226,230,5,28,0,0,227,230,5,29,0,0,228,
+        230,3,16,8,0,229,224,1,0,0,0,229,227,1,0,0,0,229,228,1,0,0,0,230,
+        237,1,0,0,0,231,237,5,10,0,0,232,233,5,11,0,0,233,237,5,18,0,0,234,
+        235,5,18,0,0,235,237,5,12,0,0,236,195,1,0,0,0,236,201,1,0,0,0,236,
+        209,1,0,0,0,236,221,1,0,0,0,236,231,1,0,0,0,236,232,1,0,0,0,236,
+        234,1,0,0,0,237,19,1,0,0,0,238,239,7,2,0,0,239,21,1,0,0,0,240,241,
+        7,3,0,0,241,23,1,0,0,0,242,243,7,4,0,0,243,25,1,0,0,0,244,245,7,
+        5,0,0,245,27,1,0,0,0,24,35,54,97,102,108,113,117,120,145,150,155,
+        160,171,175,180,183,190,195,209,212,217,224,229,236
     ]
 
 class GlycanParser ( Parser ):
@@ -171,22 +126,20 @@ class GlycanParser ( Parser ):
     RULE_start = 0
     RULE_begin = 1
     RULE_branch = 2
-    RULE_glycan = 3
-    RULE_deriv = 4
-    RULE_saci = 5
-    RULE_con = 6
-    RULE_add = 7
-    RULE_fgi = 8
-    RULE_carb = 9
-    RULE_modi = 10
-    RULE_qnum = 11
-    RULE_typi = 12
-    RULE_bridge = 13
-    RULE_ct = 14
+    RULE_deriv = 3
+    RULE_saci = 4
+    RULE_con = 5
+    RULE_add = 6
+    RULE_fgi = 7
+    RULE_carb = 8
+    RULE_modi = 9
+    RULE_qnum = 10
+    RULE_typi = 11
+    RULE_bridge = 12
+    RULE_ct = 13
 
-    ruleNames =  [ "start", "begin", "branch", "glycan", "deriv", "saci", 
-                   "con", "add", "fgi", "carb", "modi", "qnum", "typi", 
-                   "bridge", "ct" ]
+    ruleNames =  [ "start", "begin", "branch", "deriv", "saci", "con", "add", 
+                   "fgi", "carb", "modi", "qnum", "typi", "bridge", "ct" ]
 
     EOF = Token.EOF
     T__0=1
@@ -283,25 +236,25 @@ class GlycanParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 30
+            self.state = 28
             self.match(GlycanParser.T__0)
-            self.state = 37
+            self.state = 35
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==23:
-                self.state = 31
+                self.state = 29
                 self.match(GlycanParser.LBRACK)
-                self.state = 32
+                self.state = 30
                 self.branch()
-                self.state = 33
+                self.state = 31
                 self.match(GlycanParser.RBRACK)
-                self.state = 39
+                self.state = 37
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 40
+            self.state = 38
             self.begin()
-            self.state = 41
+            self.state = 39
             self.match(GlycanParser.T__0)
         except RecognitionException as re:
             localctx.exception = re
@@ -323,8 +276,8 @@ class GlycanParser ( Parser ):
             return self.getTypedRuleContext(GlycanParser.BranchContext,0)
 
 
-        def glycan(self):
-            return self.getTypedRuleContext(GlycanParser.GlycanContext,0)
+        def deriv(self):
+            return self.getTypedRuleContext(GlycanParser.DerivContext,0)
 
 
         def TYPE(self):
@@ -349,43 +302,43 @@ class GlycanParser ( Parser ):
         localctx = GlycanParser.BeginContext(self, self._ctx, self.state)
         self.enterRule(localctx, 2, self.RULE_begin)
         try:
-            self.state = 56
+            self.state = 54
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,1,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 43
+                self.state = 41
                 self.branch()
-                self.state = 44
-                self.glycan()
-                self.state = 45
+                self.state = 42
+                self.deriv()
+                self.state = 43
                 self.match(GlycanParser.T__1)
-                self.state = 46
+                self.state = 44
                 self.match(GlycanParser.TYPE)
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 48
+                self.state = 46
                 self.branch()
-                self.state = 49
-                self.glycan()
+                self.state = 47
+                self.deriv()
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 51
-                self.glycan()
-                self.state = 52
+                self.state = 49
+                self.deriv()
+                self.state = 50
                 self.match(GlycanParser.T__1)
-                self.state = 53
+                self.state = 51
                 self.match(GlycanParser.TYPE)
                 pass
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 55
-                self.glycan()
+                self.state = 53
+                self.deriv()
                 pass
 
 
@@ -405,8 +358,8 @@ class GlycanParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def glycan(self):
-            return self.getTypedRuleContext(GlycanParser.GlycanContext,0)
+        def deriv(self):
+            return self.getTypedRuleContext(GlycanParser.DerivContext,0)
 
 
         def con(self):
@@ -451,182 +404,101 @@ class GlycanParser ( Parser ):
         localctx = GlycanParser.BranchContext(self, self._ctx, self.state)
         self.enterRule(localctx, 4, self.RULE_branch)
         try:
-            self.state = 99
+            self.state = 97
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,2,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 58
-                self.glycan()
-                self.state = 59
+                self.state = 56
+                self.deriv()
+                self.state = 57
                 self.con()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 61
-                self.glycan()
-                self.state = 62
+                self.state = 59
+                self.deriv()
+                self.state = 60
                 self.con()
-                self.state = 63
+                self.state = 61
                 self.branch()
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 65
+                self.state = 63
                 self.match(GlycanParser.LBRACE)
-                self.state = 66
+                self.state = 64
                 self.branch()
-                self.state = 67
+                self.state = 65
                 self.match(GlycanParser.RBRACE)
                 pass
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 69
-                self.glycan()
-                self.state = 70
+                self.state = 67
+                self.deriv()
+                self.state = 68
                 self.con()
-                self.state = 71
+                self.state = 69
                 self.match(GlycanParser.LBRACE)
-                self.state = 72
+                self.state = 70
                 self.branch()
-                self.state = 73
+                self.state = 71
                 self.match(GlycanParser.RBRACE)
-                self.state = 74
+                self.state = 72
                 self.branch()
                 pass
 
             elif la_ == 5:
                 self.enterOuterAlt(localctx, 5)
-                self.state = 76
-                self.glycan()
-                self.state = 77
+                self.state = 74
+                self.deriv()
+                self.state = 75
                 self.con()
+                self.state = 76
+                self.match(GlycanParser.LBRACE)
+                self.state = 77
+                self.branch()
                 self.state = 78
-                self.match(GlycanParser.LBRACE)
+                self.match(GlycanParser.RBRACE)
                 self.state = 79
-                self.branch()
-                self.state = 80
-                self.match(GlycanParser.RBRACE)
-                self.state = 81
                 self.match(GlycanParser.LBRACE)
-                self.state = 82
+                self.state = 80
                 self.branch()
-                self.state = 83
+                self.state = 81
                 self.match(GlycanParser.RBRACE)
-                self.state = 84
+                self.state = 82
                 self.branch()
                 pass
 
             elif la_ == 6:
                 self.enterOuterAlt(localctx, 6)
-                self.state = 86
-                self.glycan()
-                self.state = 87
+                self.state = 84
+                self.deriv()
+                self.state = 85
                 self.con()
+                self.state = 86
+                self.match(GlycanParser.LBRACE)
+                self.state = 87
+                self.branch()
                 self.state = 88
-                self.match(GlycanParser.LBRACE)
+                self.match(GlycanParser.RBRACE)
                 self.state = 89
-                self.branch()
+                self.match(GlycanParser.LBRACE)
                 self.state = 90
-                self.match(GlycanParser.RBRACE)
-                self.state = 91
-                self.match(GlycanParser.LBRACE)
-                self.state = 92
                 self.branch()
-                self.state = 93
+                self.state = 91
                 self.match(GlycanParser.RBRACE)
-                self.state = 94
+                self.state = 92
                 self.match(GlycanParser.LBRACE)
+                self.state = 93
+                self.branch()
+                self.state = 94
+                self.match(GlycanParser.RBRACE)
                 self.state = 95
                 self.branch()
-                self.state = 96
-                self.match(GlycanParser.RBRACE)
-                self.state = 97
-                self.branch()
-                pass
-
-
-        except RecognitionException as re:
-            localctx.exception = re
-            self._errHandler.reportError(self, re)
-            self._errHandler.recover(self, re)
-        finally:
-            self.exitRule()
-        return localctx
-
-
-    class GlycanContext(ParserRuleContext):
-        __slots__ = 'parser'
-
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
-            self.parser = parser
-
-        def deriv(self):
-            return self.getTypedRuleContext(GlycanParser.DerivContext,0)
-
-
-        def RING(self):
-            return self.getToken(GlycanParser.RING, 0)
-
-        def TYPE(self):
-            return self.getToken(GlycanParser.TYPE, 0)
-
-        def getRuleIndex(self):
-            return GlycanParser.RULE_glycan
-
-        def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterGlycan" ):
-                listener.enterGlycan(self)
-
-        def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitGlycan" ):
-                listener.exitGlycan(self)
-
-
-
-
-    def glycan(self):
-
-        localctx = GlycanParser.GlycanContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 6, self.RULE_glycan)
-        try:
-            self.state = 112
-            self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,3,self._ctx)
-            if la_ == 1:
-                self.enterOuterAlt(localctx, 1)
-                self.state = 101
-                self.deriv()
-                self.state = 102
-                self.match(GlycanParser.RING)
-                self.state = 103
-                self.match(GlycanParser.TYPE)
-                pass
-
-            elif la_ == 2:
-                self.enterOuterAlt(localctx, 2)
-                self.state = 105
-                self.deriv()
-                self.state = 106
-                self.match(GlycanParser.TYPE)
-                pass
-
-            elif la_ == 3:
-                self.enterOuterAlt(localctx, 3)
-                self.state = 108
-                self.deriv()
-                self.state = 109
-                self.match(GlycanParser.RING)
-                pass
-
-            elif la_ == 4:
-                self.enterOuterAlt(localctx, 4)
-                self.state = 111
-                self.deriv()
                 pass
 
 
@@ -646,11 +518,12 @@ class GlycanParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def RING(self):
-            return self.getToken(GlycanParser.RING, 0)
+        def modi(self, i:int=None):
+            if i is None:
+                return self.getTypedRuleContexts(GlycanParser.ModiContext)
+            else:
+                return self.getTypedRuleContext(GlycanParser.ModiContext,i)
 
-        def TYPE(self):
-            return self.getToken(GlycanParser.TYPE, 0)
 
         def saci(self, i:int=None):
             if i is None:
@@ -659,12 +532,11 @@ class GlycanParser ( Parser ):
                 return self.getTypedRuleContext(GlycanParser.SaciContext,i)
 
 
-        def modi(self, i:int=None):
-            if i is None:
-                return self.getTypedRuleContexts(GlycanParser.ModiContext)
-            else:
-                return self.getTypedRuleContext(GlycanParser.ModiContext,i)
+        def RING(self):
+            return self.getToken(GlycanParser.RING, 0)
 
+        def TYPE(self):
+            return self.getToken(GlycanParser.TYPE, 0)
 
         def getRuleIndex(self):
             return GlycanParser.RULE_deriv
@@ -683,295 +555,59 @@ class GlycanParser ( Parser ):
     def deriv(self):
 
         localctx = GlycanParser.DerivContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 8, self.RULE_deriv)
+        self.enterRule(localctx, 6, self.RULE_deriv)
         self._la = 0 # Token type
         try:
-            self.state = 230
+            self.enterOuterAlt(localctx, 1)
+            self.state = 102
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,24,self._ctx)
+            _alt = self._interp.adaptivePredict(self._input,3,self._ctx)
+            while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
+                if _alt==1:
+                    self.state = 99
+                    self.modi() 
+                self.state = 104
+                self._errHandler.sync(self)
+                _alt = self._interp.adaptivePredict(self._input,3,self._ctx)
+
+            self.state = 106 
+            self._errHandler.sync(self)
+            _alt = 1
+            while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
+                if _alt == 1:
+                    self.state = 105
+                    self.saci()
+
+                else:
+                    raise NoViableAltException(self)
+                self.state = 108 
+                self._errHandler.sync(self)
+                _alt = self._interp.adaptivePredict(self._input,4,self._ctx)
+
+            self.state = 113
+            self._errHandler.sync(self)
+            _la = self._input.LA(1)
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & 339440) != 0):
+                self.state = 110
+                self.modi()
+                self.state = 115
+                self._errHandler.sync(self)
+                _la = self._input.LA(1)
+
+            self.state = 117
+            self._errHandler.sync(self)
+            _la = self._input.LA(1)
+            if _la==15:
+                self.state = 116
+                self.match(GlycanParser.RING)
+
+
+            self.state = 120
+            self._errHandler.sync(self)
+            la_ = self._interp.adaptivePredict(self._input,7,self._ctx)
             if la_ == 1:
-                self.enterOuterAlt(localctx, 1)
-                self.state = 115 
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while True:
-                    self.state = 114
-                    self.saci()
-                    self.state = 117 
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-                    if not (_la==3 or _la==13):
-                        break
-
                 self.state = 119
-                self.match(GlycanParser.RING)
-                self.state = 120
                 self.match(GlycanParser.TYPE)
-                self.state = 124
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while (((_la) & ~0x3f) == 0 and ((1 << _la) & 339440) != 0):
-                    self.state = 121
-                    self.modi()
-                    self.state = 126
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-
-                pass
-
-            elif la_ == 2:
-                self.enterOuterAlt(localctx, 2)
-                self.state = 128 
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while True:
-                    self.state = 127
-                    self.saci()
-                    self.state = 130 
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-                    if not (_la==3 or _la==13):
-                        break
-
-                self.state = 132
-                self.match(GlycanParser.TYPE)
-                self.state = 136
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while (((_la) & ~0x3f) == 0 and ((1 << _la) & 339440) != 0):
-                    self.state = 133
-                    self.modi()
-                    self.state = 138
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-
-                pass
-
-            elif la_ == 3:
-                self.enterOuterAlt(localctx, 3)
-                self.state = 140 
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while True:
-                    self.state = 139
-                    self.saci()
-                    self.state = 142 
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-                    if not (_la==3 or _la==13):
-                        break
-
-                self.state = 144
-                self.match(GlycanParser.RING)
-                self.state = 148
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while (((_la) & ~0x3f) == 0 and ((1 << _la) & 339440) != 0):
-                    self.state = 145
-                    self.modi()
-                    self.state = 150
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-
-                pass
-
-            elif la_ == 4:
-                self.enterOuterAlt(localctx, 4)
-                self.state = 152 
-                self._errHandler.sync(self)
-                _alt = 1
-                while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                    if _alt == 1:
-                        self.state = 151
-                        self.saci()
-
-                    else:
-                        raise NoViableAltException(self)
-                    self.state = 154 
-                    self._errHandler.sync(self)
-                    _alt = self._interp.adaptivePredict(self._input,10,self._ctx)
-
-                self.state = 159
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while (((_la) & ~0x3f) == 0 and ((1 << _la) & 339440) != 0):
-                    self.state = 156
-                    self.modi()
-                    self.state = 161
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-
-                pass
-
-            elif la_ == 5:
-                self.enterOuterAlt(localctx, 5)
-                self.state = 163 
-                self._errHandler.sync(self)
-                _alt = 1
-                while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                    if _alt == 1:
-                        self.state = 162
-                        self.modi()
-
-                    else:
-                        raise NoViableAltException(self)
-                    self.state = 165 
-                    self._errHandler.sync(self)
-                    _alt = self._interp.adaptivePredict(self._input,12,self._ctx)
-
-                self.state = 168 
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while True:
-                    self.state = 167
-                    self.saci()
-                    self.state = 170 
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-                    if not (_la==3 or _la==13):
-                        break
-
-                self.state = 172
-                self.match(GlycanParser.RING)
-                self.state = 173
-                self.match(GlycanParser.TYPE)
-                self.state = 177
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while (((_la) & ~0x3f) == 0 and ((1 << _la) & 339440) != 0):
-                    self.state = 174
-                    self.modi()
-                    self.state = 179
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-
-                pass
-
-            elif la_ == 6:
-                self.enterOuterAlt(localctx, 6)
-                self.state = 181 
-                self._errHandler.sync(self)
-                _alt = 1
-                while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                    if _alt == 1:
-                        self.state = 180
-                        self.modi()
-
-                    else:
-                        raise NoViableAltException(self)
-                    self.state = 183 
-                    self._errHandler.sync(self)
-                    _alt = self._interp.adaptivePredict(self._input,15,self._ctx)
-
-                self.state = 186 
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while True:
-                    self.state = 185
-                    self.saci()
-                    self.state = 188 
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-                    if not (_la==3 or _la==13):
-                        break
-
-                self.state = 190
-                self.match(GlycanParser.TYPE)
-                self.state = 194
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while (((_la) & ~0x3f) == 0 and ((1 << _la) & 339440) != 0):
-                    self.state = 191
-                    self.modi()
-                    self.state = 196
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-
-                pass
-
-            elif la_ == 7:
-                self.enterOuterAlt(localctx, 7)
-                self.state = 198 
-                self._errHandler.sync(self)
-                _alt = 1
-                while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                    if _alt == 1:
-                        self.state = 197
-                        self.modi()
-
-                    else:
-                        raise NoViableAltException(self)
-                    self.state = 200 
-                    self._errHandler.sync(self)
-                    _alt = self._interp.adaptivePredict(self._input,18,self._ctx)
-
-                self.state = 203 
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while True:
-                    self.state = 202
-                    self.saci()
-                    self.state = 205 
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-                    if not (_la==3 or _la==13):
-                        break
-
-                self.state = 207
-                self.match(GlycanParser.RING)
-                self.state = 211
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while (((_la) & ~0x3f) == 0 and ((1 << _la) & 339440) != 0):
-                    self.state = 208
-                    self.modi()
-                    self.state = 213
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-
-                pass
-
-            elif la_ == 8:
-                self.enterOuterAlt(localctx, 8)
-                self.state = 215 
-                self._errHandler.sync(self)
-                _alt = 1
-                while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                    if _alt == 1:
-                        self.state = 214
-                        self.modi()
-
-                    else:
-                        raise NoViableAltException(self)
-                    self.state = 217 
-                    self._errHandler.sync(self)
-                    _alt = self._interp.adaptivePredict(self._input,21,self._ctx)
-
-                self.state = 220 
-                self._errHandler.sync(self)
-                _alt = 1
-                while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
-                    if _alt == 1:
-                        self.state = 219
-                        self.saci()
-
-                    else:
-                        raise NoViableAltException(self)
-                    self.state = 222 
-                    self._errHandler.sync(self)
-                    _alt = self._interp.adaptivePredict(self._input,22,self._ctx)
-
-                self.state = 227
-                self._errHandler.sync(self)
-                _la = self._input.LA(1)
-                while (((_la) & ~0x3f) == 0 and ((1 << _la) & 339440) != 0):
-                    self.state = 224
-                    self.modi()
-                    self.state = 229
-                    self._errHandler.sync(self)
-                    _la = self._input.LA(1)
-
-                pass
 
 
         except RecognitionException as re:
@@ -1013,11 +649,11 @@ class GlycanParser ( Parser ):
     def saci(self):
 
         localctx = GlycanParser.SaciContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 10, self.RULE_saci)
+        self.enterRule(localctx, 8, self.RULE_saci)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 232
+            self.state = 122
             _la = self._input.LA(1)
             if not(_la==3 or _la==13):
                 self._errHandler.recoverInline(self)
@@ -1077,58 +713,58 @@ class GlycanParser ( Parser ):
     def con(self):
 
         localctx = GlycanParser.ConContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 12, self.RULE_con)
+        self.enterRule(localctx, 10, self.RULE_con)
         try:
-            self.state = 255
+            self.state = 145
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,25,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,8,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 234
+                self.state = 124
                 self.match(GlycanParser.LPAR)
-                self.state = 235
+                self.state = 125
                 self.typi()
-                self.state = 236
+                self.state = 126
                 self.match(GlycanParser.NUM)
-                self.state = 237
+                self.state = 127
                 self.match(GlycanParser.DASH)
-                self.state = 238
+                self.state = 128
                 self.qnum()
-                self.state = 239
+                self.state = 129
                 self.match(GlycanParser.RPAR)
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 241
+                self.state = 131
                 self.match(GlycanParser.LPAR)
-                self.state = 242
+                self.state = 132
                 self.match(GlycanParser.NUM)
-                self.state = 243
+                self.state = 133
                 self.match(GlycanParser.DASH)
-                self.state = 244
+                self.state = 134
                 self.qnum()
-                self.state = 245
+                self.state = 135
                 self.match(GlycanParser.RPAR)
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 247
+                self.state = 137
                 self.typi()
-                self.state = 248
+                self.state = 138
                 self.match(GlycanParser.NUM)
-                self.state = 249
+                self.state = 139
                 self.match(GlycanParser.DASH)
-                self.state = 250
+                self.state = 140
                 self.qnum()
                 pass
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 252
+                self.state = 142
                 self.typi()
-                self.state = 253
+                self.state = 143
                 self.match(GlycanParser.NUM)
                 pass
 
@@ -1197,72 +833,72 @@ class GlycanParser ( Parser ):
     def add(self):
 
         localctx = GlycanParser.AddContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 14, self.RULE_add)
+        self.enterRule(localctx, 12, self.RULE_add)
         self._la = 0 # Token type
         try:
-            self.state = 285
+            self.state = 175
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [31]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 257
+                self.state = 147
                 self.match(GlycanParser.EQ)
-                self.state = 258
+                self.state = 148
                 self.match(GlycanParser.LBRACK)
-                self.state = 260
+                self.state = 150
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==27 or _la==30:
-                    self.state = 259
+                    self.state = 149
                     self.ct()
 
 
-                self.state = 262
+                self.state = 152
                 self.match(GlycanParser.NUM)
-                self.state = 270
+                self.state = 160
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==17:
-                    self.state = 263
+                    self.state = 153
                     self.match(GlycanParser.COLON)
-                    self.state = 265
+                    self.state = 155
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if _la==27 or _la==30:
-                        self.state = 264
+                        self.state = 154
                         self.ct()
 
 
-                    self.state = 267
+                    self.state = 157
                     self.match(GlycanParser.NUM)
-                    self.state = 272
+                    self.state = 162
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-                self.state = 273
+                self.state = 163
                 self.match(GlycanParser.RBRACK)
                 pass
             elif token in [27]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 274
+                self.state = 164
                 self.match(GlycanParser.C)
-                self.state = 275
+                self.state = 165
                 self.match(GlycanParser.LBRACK)
-                self.state = 276
+                self.state = 166
                 self.match(GlycanParser.NUM)
-                self.state = 281
+                self.state = 171
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==17:
-                    self.state = 277
+                    self.state = 167
                     self.match(GlycanParser.COLON)
-                    self.state = 278
+                    self.state = 168
                     self.match(GlycanParser.NUM)
-                    self.state = 283
+                    self.state = 173
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-                self.state = 284
+                self.state = 174
                 self.match(GlycanParser.RBRACK)
                 pass
             else:
@@ -1311,24 +947,24 @@ class GlycanParser ( Parser ):
     def fgi(self):
 
         localctx = GlycanParser.FgiContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 16, self.RULE_fgi)
+        self.enterRule(localctx, 14, self.RULE_fgi)
         try:
-            self.state = 290
+            self.state = 180
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [13]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 287
+                self.state = 177
                 self.match(GlycanParser.COUNT)
                 pass
             elif token in [4, 5, 6, 7]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 288
+                self.state = 178
                 self.bridge()
                 pass
             elif token in [8]:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 289
+                self.state = 179
                 self.match(GlycanParser.FG)
                 pass
             else:
@@ -1389,15 +1025,15 @@ class GlycanParser ( Parser ):
     def carb(self):
 
         localctx = GlycanParser.CarbContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 18, self.RULE_carb)
+        self.enterRule(localctx, 16, self.RULE_carb)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 293
+            self.state = 183
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & 4395630592) != 0):
-                self.state = 292
+                self.state = 182
                 _la = self._input.LA(1)
                 if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 4395630592) != 0)):
                     self._errHandler.recoverInline(self)
@@ -1406,17 +1042,17 @@ class GlycanParser ( Parser ):
                     self.consume()
 
 
-            self.state = 295
+            self.state = 185
             self.match(GlycanParser.CARBON)
-            self.state = 296
+            self.state = 186
             self.match(GlycanParser.NUM)
-            self.state = 300
+            self.state = 190
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==27 or _la==31:
-                self.state = 297
+                self.state = 187
                 self.add()
-                self.state = 302
+                self.state = 192
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -1501,110 +1137,110 @@ class GlycanParser ( Parser ):
     def modi(self):
 
         localctx = GlycanParser.ModiContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 20, self.RULE_modi)
+        self.enterRule(localctx, 18, self.RULE_modi)
         self._la = 0 # Token type
         try:
-            self.state = 346
+            self.state = 236
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,40,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,23,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 305
+                self.state = 195
                 self._errHandler.sync(self)
-                la_ = self._interp.adaptivePredict(self._input,34,self._ctx)
+                la_ = self._interp.adaptivePredict(self._input,17,self._ctx)
                 if la_ == 1:
-                    self.state = 303
+                    self.state = 193
                     self.match(GlycanParser.NUM)
-                    self.state = 304
+                    self.state = 194
                     self.match(GlycanParser.COLON)
 
 
-                self.state = 307
+                self.state = 197
                 self.match(GlycanParser.NUM)
-                self.state = 308
+                self.state = 198
                 self.match(GlycanParser.DASH)
-                self.state = 309
+                self.state = 199
                 self.match(GlycanParser.ANHYDRO)
-                self.state = 310
+                self.state = 200
                 self.match(GlycanParser.DASH)
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 311
+                self.state = 201
                 self.match(GlycanParser.NUM)
-                self.state = 312
+                self.state = 202
                 self.match(GlycanParser.DASH)
-                self.state = 313
+                self.state = 203
                 self.bridge()
-                self.state = 314
+                self.state = 204
                 self.match(GlycanParser.DASH)
-                self.state = 315
+                self.state = 205
                 self.fgi()
-                self.state = 316
+                self.state = 206
                 self.match(GlycanParser.DASH)
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 319
+                self.state = 209
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==18:
-                    self.state = 318
+                    self.state = 208
                     self.match(GlycanParser.DASH)
 
 
-                self.state = 322
+                self.state = 212
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==16:
-                    self.state = 321
+                    self.state = 211
                     self.match(GlycanParser.NUM)
 
 
-                self.state = 327
+                self.state = 217
                 self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,37,self._ctx)
+                _alt = self._interp.adaptivePredict(self._input,20,self._ctx)
                 while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                     if _alt==1:
-                        self.state = 324
+                        self.state = 214
                         self.bridge() 
-                    self.state = 329
+                    self.state = 219
                     self._errHandler.sync(self)
-                    _alt = self._interp.adaptivePredict(self._input,37,self._ctx)
+                    _alt = self._interp.adaptivePredict(self._input,20,self._ctx)
 
-                self.state = 330
+                self.state = 220
                 self.fgi()
                 pass
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 331
+                self.state = 221
                 self.match(GlycanParser.NUM)
-                self.state = 339
+                self.state = 229
                 self._errHandler.sync(self)
                 token = self._input.LA(1)
                 if token in [17, 28]:
-                    self.state = 334
+                    self.state = 224
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
                     if _la==17:
-                        self.state = 332
+                        self.state = 222
                         self.match(GlycanParser.COLON)
-                        self.state = 333
+                        self.state = 223
                         self.match(GlycanParser.NUM)
 
 
-                    self.state = 336
+                    self.state = 226
                     self.match(GlycanParser.D)
                     pass
                 elif token in [29]:
-                    self.state = 337
+                    self.state = 227
                     self.match(GlycanParser.E)
                     pass
                 elif token in [4, 25, 26, 32]:
-                    self.state = 338
+                    self.state = 228
                     self.carb()
                     pass
                 else:
@@ -1614,23 +1250,23 @@ class GlycanParser ( Parser ):
 
             elif la_ == 5:
                 self.enterOuterAlt(localctx, 5)
-                self.state = 341
+                self.state = 231
                 self.match(GlycanParser.HEAD)
                 pass
 
             elif la_ == 6:
                 self.enterOuterAlt(localctx, 6)
-                self.state = 342
+                self.state = 232
                 self.match(GlycanParser.HEADD)
-                self.state = 343
+                self.state = 233
                 self.match(GlycanParser.DASH)
                 pass
 
             elif la_ == 7:
                 self.enterOuterAlt(localctx, 7)
-                self.state = 344
+                self.state = 234
                 self.match(GlycanParser.DASH)
-                self.state = 345
+                self.state = 235
                 self.match(GlycanParser.END)
                 pass
 
@@ -1674,11 +1310,11 @@ class GlycanParser ( Parser ):
     def qnum(self):
 
         localctx = GlycanParser.QnumContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 22, self.RULE_qnum)
+        self.enterRule(localctx, 20, self.RULE_qnum)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 348
+            self.state = 238
             _la = self._input.LA(1)
             if not(_la==16 or _la==33):
                 self._errHandler.recoverInline(self)
@@ -1724,11 +1360,11 @@ class GlycanParser ( Parser ):
     def typi(self):
 
         localctx = GlycanParser.TypiContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 24, self.RULE_typi)
+        self.enterRule(localctx, 22, self.RULE_typi)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 350
+            self.state = 240
             _la = self._input.LA(1)
             if not(_la==14 or _la==33):
                 self._errHandler.recoverInline(self)
@@ -1780,11 +1416,11 @@ class GlycanParser ( Parser ):
     def bridge(self):
 
         localctx = GlycanParser.BridgeContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 26, self.RULE_bridge)
+        self.enterRule(localctx, 24, self.RULE_bridge)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 352
+            self.state = 242
             _la = self._input.LA(1)
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 240) != 0)):
                 self._errHandler.recoverInline(self)
@@ -1830,11 +1466,11 @@ class GlycanParser ( Parser ):
     def ct(self):
 
         localctx = GlycanParser.CtContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 28, self.RULE_ct)
+        self.enterRule(localctx, 26, self.RULE_ct)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 354
+            self.state = 244
             _la = self._input.LA(1)
             if not(_la==27 or _la==30):
                 self._errHandler.recoverInline(self)

@@ -3,22 +3,19 @@ grammar Glycan;
 start:
     '#' (LBRACK branch RBRACK)* begin '#';
 begin:
-    branch glycan ' ' TYPE
-    | branch glycan
-    | glycan ' ' TYPE
-    | glycan;
+    branch deriv ' ' TYPE
+    | branch deriv
+    | deriv ' ' TYPE
+    | deriv;
 branch:
-    glycan con
-    | glycan con branch
+    deriv con
+    | deriv con branch
     | LBRACE branch RBRACE
-    | glycan con LBRACE branch RBRACE branch
-    | glycan con LBRACE branch RBRACE LBRACE branch RBRACE branch
-    | glycan con LBRACE branch RBRACE LBRACE branch RBRACE LBRACE branch RBRACE branch;
-glycan:
-    deriv RING TYPE | deriv TYPE | deriv RING | deriv;
+    | deriv con LBRACE branch RBRACE branch
+    | deriv con LBRACE branch RBRACE LBRACE branch RBRACE branch
+    | deriv con LBRACE branch RBRACE LBRACE branch RBRACE LBRACE branch RBRACE branch;
 deriv:
-    saci+ RING TYPE modi* | saci+ TYPE modi* | saci+ RING modi* | saci+ modi*
-    | modi+ saci+ RING TYPE modi* | modi+ saci+ TYPE modi* | modi+ saci+ RING modi* | modi+ saci+ modi*;
+    modi* saci+ modi* RING? TYPE?;
 saci: COUNT | SAC;
 con:
     LPAR typi NUM DASH qnum RPAR
@@ -39,7 +36,7 @@ modi:
     | NUM ((COLON NUM)? D | E | carb)
     | HEAD
     | HEADD DASH
-    | DASH END;  // |bridge deleted
+    | DASH END;
 qnum:
 	QMARK | NUM;
 typi:
@@ -123,6 +120,5 @@ I:
 	'i';
 QMARK:
 	'?';
-
 
 // antlr -Dlanguage=Python3 Glycan.g4

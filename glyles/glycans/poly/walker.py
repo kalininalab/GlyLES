@@ -171,6 +171,8 @@ class TreeWalker:
                 tmp = self.build_recipe(c)
                 if isinstance(c, GlycanParser.ModiContext):
                     recipe.append(("".join([x[0] for x in tmp]), GlycanLexer.MOD))
+                elif isinstance(c, GlycanParser.SaciContext):
+                    recipe += [(x[0], GlycanLexer.SAC) for x in tmp]
                 else:
                     recipe += tmp
         return recipe
