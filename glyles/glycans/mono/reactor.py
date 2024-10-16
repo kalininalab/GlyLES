@@ -11,6 +11,9 @@ from glyles.glycans.mono.reactor_basic import change_base_monomer
 from glyles.glycans.utils import Enantiomer, ketoses2, opposite_chirality
 from glyles.grammar.GlycanLexer import GlycanLexer
 
+if not hasattr(GlycanLexer, "MOD"):
+    GlycanLexer.MOD = GlycanLexer.QMARK + 1
+
 O, C = 0, 1
 
 # map of all functional groups from IUPAC name to SMILES string
@@ -51,10 +54,10 @@ functional_groups = {
     "A": "OC(=O)C",
     "Allyl": "CC=C",
     "Ac": "C(=O)C",
-    "Ang": "OC(=O)C/(C)=C\C",
+    "Ang": "OC(=O)C/(C)=C\\C",
     "Bz": "C(=O)c2ccccc2",
     "Bn": "Cc2ccccc2",
-    "cdPam": "OC(=O)CCCCCCC/C=C\CCCCCC",
+    "cdPam": "OC(=O)CCCCCCC/C=C\\CCCCCC",
     "Cet": "CCC(=O)O",
     "Cin": "OC(=O)/C=C/c2ccccc2",
     "Coum": "OC(=O)/C=C/c1ccc(O)ccc1",
@@ -69,9 +72,9 @@ functional_groups = {
     "Gro": "OCC(O)CO",
     "He": "C(O)C",
     "Lac": "OC(=O)C(O)C",
-    "Lin": "OC(=O)CCCCCCC/C=C\C/C=C\CCCCC",
+    "Lin": "OC(=O)CCCCCCC/C=C\\C/C=C\\CCCCC",
     "Mal": "O[C@H](C(=O)O)CC(=O)O",
-    "Ole": "OC(=O)CCCCCCC/C=C\CCCCCCCC",
+    "Ole": "OC(=O)CCCCCCC/C=C\\CCCCCCCC",
     "Ph": "c2ccccc2",
     "Phyt": "OCCC(C)CCCC(C)CCCC(C)CCCC(C)C",
     "Pyr": "OC(=O)C(=O)C",
@@ -90,9 +93,9 @@ functional_groups = {
 
     # some special cases
     "3oxoMyr": "OC(=O)CC(=O)CCCCCCCCCCC",
-    "17HOLin": "OC(=O)CCCCCCC/C=C\C/C=C\CCCC(O)C",
+    "17HOLin": "OC(=O)CCCCCCC/C=C\\C/C=C\\CCCC(O)C",
     "aLnn": "OC(=O)CCCCCCCC=CCC=CCC=CCC",
-    "cVac": "OC(=O)CCCCCCCCC/C=C\CCCCCC",
+    "cVac": "OC(=O)CCCCCCCCC/C=C\\CCCCCC",
     "d2Ach": "OC(=O)CCCCCCC=CCC=CCCCCCCCC",
     "d3Ach": "OC(=O)CCCC=CCC=CCC=CCCCCCCCC",
     "d4Ach": "OC(=O)CCCC=CCC=CCC=CCC=CCCCCC",
@@ -144,7 +147,7 @@ functional_groups = {
     "Geddic": "OC(=O)" + "C" * 33,
     "Ceroplastic": "OC(=O)" + "C" * 35,
     "Phthi": "OC(=O)C(C)=CC(C)CC(C)" + "C" * 18,
-    "Ner": "OC(=O)" + "C" * 13 + "/C=C\C" + "C" * 7,
+    "Ner": "OC(=O)" + "C" * 13 + "/C=C\\C" + "C" * 7,
 }
 
 # list of functional groups that preserve the atom it is attached to instead of replacing it
@@ -287,20 +290,20 @@ class SMILESReaktor:
                 if n == "A" or n == "-uronic":
                     # if there's no ring take carbon with the highest number
                     if sum(self.monomer.x[:, 2] & 0b1) == 0:
-                        c_id = int(max(self.monomer.x[self.monomer.x[:, 0] == 6, 1]))
+                        c_id = np.max(self.monomer.x[self.monomer.x[:, 0] == 6, 1]).item()
 
                     # else take the last carbon in the ring
                     else:
-                        c_id = int(max(self.monomer.x[(self.monomer.x[:, 0] == 6) & (self.monomer.x[:, 2] & 0b1), 1]))
-                        c_id = int(np.where(self.monomer.x[:, 1] == c_id)[0])
+                        c_id = np.max(self.monomer.x[(self.monomer.x[:, 0] == 6) & (self.monomer.x[:, 2] & 0b1), 1]).item()
+                        c_id = np.where(self.monomer.x[:, 1] == c_id)[0].item()
 
                     # if the selected carbon has a tail raging away from the monomer, iterate all the way down
-                    children = np.where((self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) &
+                    children = np.where(np.array(self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) &
                                         (1 - self.monomer.x[:, 2] & 0b1))[0].tolist()
                     while len(children) != 0:
                         c_id = int(children[0])
                         children = np.where(
-                            (self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) &
+                            np.array(self.monomer.adjacency[c_id, :] == 1) & (self.monomer.x[:, 0] == 6) &
                             (1 - self.monomer.x[:, 2] & 0b1) & (self.monomer.x[:, 1] > self.monomer.x[c_id, 1])
                         )[0].tolist()
 
@@ -349,20 +352,20 @@ class SMILESReaktor:
                     # add a functional group connected with an oxygen or nitrogen
                     elif len(n) > 4 and n[1] == n[3] == "-" and n[2] in "ON":
                         elem = "" if functional_groups[n[4:-1]][0] == n[2] else n[2]
-                        full &= self.set_fg(C if int(self.monomer.x[self.monomer.find_oxygen(int(n[0])), 0]) == 6 else O, int(n[0]), elem, n[4:-1])
+                        full &= self.set_fg(C if self.monomer.x[self.monomer.find_oxygen(int(n[0])), 0].item() == 6 else O, int(n[0]), elem, n[4:-1])
 
                     # connect a functional group with nitrogen, oxygen, or phosphate in between
                     elif n[1] in "NOP" and n[1:] not in n_conflict + o_conflict + p_conflict:
                         bridge, fg = extract_bridge(n)
                         if len(bridge) > 0 and functional_groups[fg][0] == bridge[-1]:
                             bridge = bridge[:-1]
-                        full &= self.set_fg(C if int(self.monomer.x[self.monomer.find_oxygen(int(n[0])), 0]) == 6 else O, int(n[0]), bridge, fg)
+                        full &= self.set_fg(C if self.monomer.x[self.monomer.find_oxygen(int(n[0])), 0].item() == 6 else O, int(n[0]), bridge, fg)
 
                     # add a poly carbon group
                     elif (n[1] == "C" and n[2:4].isnumeric()) or \
                             (n[1:3] in "aCiC" and n[3:5].isnumeric()) or \
                             (n[1:4] == "aiC" and n[4:6].isnumeric()):
-                        full &= self.set_fg(C if int(self.monomer.x[self.monomer.find_oxygen(int(n[0])), 0]) == 6 else O, int(n[0]), "", n)
+                        full &= self.set_fg(C if self.monomer.x[self.monomer.find_oxygen(int(n[0])), 0].item() == 6 else O, int(n[0]), "", n)
 
                     # add a group connected directly to the C-Atom
                     elif n[1] == "C" and n[1:] not in c_conflict:
@@ -373,7 +376,7 @@ class SMILESReaktor:
                     else:
                         elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol() \
                             if n[1:] in preserve_elem else ""
-                        attach_to = C if int(self.monomer.x[self.monomer.find_oxygen(int(n[0])), 0]) == 6 else O
+                        attach_to = C if self.monomer.x[self.monomer.find_oxygen(int(n[0])), 0].item() == 6 else O
                         if elem == "C":
                             full &= self.set_fg(attach_to, int(n[0]), "", n[1:])
                         else:
@@ -387,14 +390,14 @@ class SMILESReaktor:
 
                     # attach the monomer to the second carbon in the ring, it might be C2 or C3 (for 2-ketoses)
                     if fg == "Me":
-                        full &= self.set_fg(C if int(self.monomer.x[self.monomer.find_oxygen(self.ring_c), 0]) == 6 else O, self.ring_c, bridge, fg)
+                        full &= self.set_fg(C if self.monomer.x[self.monomer.find_oxygen(self.ring_c), 0].item() == 6 else O, self.ring_c, bridge, fg)
                     else:
-                        full &= self.set_fg(C if int(self.monomer.x[self.monomer.find_oxygen(self.ring_c + 1), 0]) == 6 else O, self.ring_c + 1, bridge, fg)
+                        full &= self.set_fg(C if self.monomer.x[self.monomer.find_oxygen(self.ring_c + 1), 0].item() == 6 else O, self.ring_c + 1, bridge, fg)
 
                 # functional groups might be directly connected to the carbon of the ring
                 elif n[0] == "C" and n not in c_conflict:
                     if "=" in n or n[1:].isdigit():
-                        self.set_fg(C if int(self.monomer.x[self.monomer.find_oxygen(self.ring_c), 0]) == 6 else O, self.ring_c, "O", self.parse_poly_carbon(n))
+                        self.set_fg(C if self.monomer.x[self.monomer.find_oxygen(self.ring_c), 0].item() == 6 else O, self.ring_c, "O", self.parse_poly_carbon(n))
                     else:  # add a group connected directly to the C-Atom
                         bridge, fg = extract_bridge(n)
                         full &= self.set_fg(C, self.ring_c, bridge, fg)
@@ -404,7 +407,7 @@ class SMILESReaktor:
                     elem = self.monomer.structure.GetAtomWithIdx(self.monomer.find_oxygen(int(n[0]))).GetSymbol() \
                         if n[1:] in preserve_elem else ""
                     elem = "" if functional_groups[n][0] == elem else elem
-                    full &= self.set_fg(C if int(self.monomer.x[self.monomer.find_oxygen(self.ring_c), 0]) == 6 else O, self.ring_c, elem, n)
+                    full &= self.set_fg(C if self.monomer.x[self.monomer.find_oxygen(self.ring_c), 0].item() == 6 else O, self.ring_c, elem, n)
 
             # after storing all functional groups in a list, iterate over them and put them into the monomers structure
             self.assemble_chains()
@@ -475,7 +478,7 @@ class SMILESReaktor:
                 nums = [int(x) for x in re.findall(r'\d+', n)]
                 if len(nums) != 2:
                     raise ValueError("Anhydro functional groups should have exactly two numbers: X,Y-Anhydro-...")
-                y_c = int(np.where(self.monomer.x[:, 1] == nums[1])[0])
+                y_c = np.where(self.monomer.x[:, 1] == nums[1])[0].item()
                 x_o = self.monomer.find_oxygen(nums[0])
                 y_o = self.monomer.find_oxygen(nums[1])
 
@@ -521,7 +524,7 @@ class SMILESReaktor:
 
         # identify a hydrogen bound to the carbon atom to attach the functional group to
         h = None
-        for n in tmp.GetAtomWithIdx(int(np.where(self.monomer.x[:, 1] == i)[0])).GetNeighbors():
+        for n in tmp.GetAtomWithIdx(np.where(self.monomer.x[:, 1] == i)[0].item()).GetNeighbors():
             if n.GetAtomicNum() == 1:
                 h = n.GetIdx()
                 break

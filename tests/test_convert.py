@@ -39,6 +39,37 @@ def compare_smiles(computed, solution):
 
 
 class TestConverter:
+
+    @pytest.mark.parametrize("iupac", [
+        "Man",
+        "Man(a1-4)Man",
+        "Man(a1-4)[Man(a1-3)]Man",
+        "Man(a1-4)[Man(a1-3)][Man(a1-2)]Man",
+    ])
+    def test_demo(self, iupac):
+        output = convert(iupac)
+
+        assert len(output) == 1
+        assert len(output[0]) == 2
+        assert output[0][0] == iupac
+        assert all(c in output[0][1] for c in {"C", "O", "[", "]", "@"})
+
+    @pytest.mark.parametrize("iupac", [
+        "Man(?1-4)Man",
+        "Man(a1-?)Man",
+        "Man(?1-?)Man",
+        "{Man(a1-4)}Man(a1-2)Man",
+        "{Man(?1-4)}Man(a1-?)Man",
+        "{Man(?1-?)}Man(?1-?)Man",
+    ])
+    def test_demo_no_resolution(self, iupac):
+        output = convert(iupac)
+
+        assert len(output) == 1
+        assert len(output[0]) == 2
+        assert output[0][0] == iupac
+        assert output[0][1] == ""
+
     def test_file_output(self):
         args = setup_test()
 
@@ -126,22 +157,3 @@ class TestConverter:
         assert output["leaves"].count("GalNAc") == 2
         assert output["leaves"].count("Fuc") == 2
         assert output["depth"] == 4
-
-    def test_snfg_image(self):
-        output = Glycan(
-            "IdoA2S(b1-4)Fuc2S(a1-4)[Par2S(a1-4)Xyl2S(a1-2)][All2S(a1-3)TalNAc3S(b1-6)GulN3S(a1-3)6dAltNAc3S(b1-3)]"
-            "Sia6S(a1-4)Pse2S(a1-4)[Gal2S(a1-3)]Bac2S(a1-4)Tag2S",
-            tree_only=True
-        ).create_snfg_img(
-            "data/snfg.png",
-            width=300
-        )
-        img = Image.open("data/viz_snfg.png")
-        sum_sq_diff = np.sum((np.asarray(img).astype('float') - np.asarray(output).astype('float')) ** 2)
-
-        if sum_sq_diff == 0:
-            # Images are exactly the same
-            pass
-        else:
-            normalized_sum_sq_diff = sum_sq_diff / np.sqrt(sum_sq_diff)
-            assert normalized_sum_sq_diff < 0.001

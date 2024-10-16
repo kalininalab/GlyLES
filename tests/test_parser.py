@@ -346,6 +346,33 @@ class TestParser:
         id_child_111 = list(g.edges(id_child_11))[0][1]
         check_child(g, id_child_11, id_child_111, monomers[1], f"({c[1]})", 0, lactole=Lactole.PYRANOSE)
 
+    def test_parse_fuzzy_check(self):
+        monomers = ['Tag', 'Mur', 'Hex', 'Kdo', 'Dig']
+        orientation = Config.ALPHA
+        mode = "simple"
+        c = ["a1-4", "a1-4", "a1-3", "a1-4"]
+
+        iupac = f"{monomers[0]}({c[0]})[{monomers[1]}({c[1]}){monomers[2]}({c[2]})]{monomers[3]}({c[3]}){monomers[4]}"
+        if orientation == Config.ALPHA:
+            iupac += " a"
+        elif orientation == Config.BETA:
+            iupac += " b"
+
+        g = Glycan(reduce_notation(iupac, mode), tree_only=True).get_tree()
+
+        check_initial(g, monomers[4], 1, orientation, lactole=Lactole.PYRANOSE)
+        id_child_1 = list(g.edges(0))[0][1]
+        check_child(g, 0, id_child_1, monomers[3], f"({c[3]})", 2, lactole=Lactole.PYRANOSE)
+
+        id_children_1 = [x[1] for x in list(g.edges(id_child_1))]
+        id_child_11, id_child_12 = split_children(g, id_children_1, monomers[2])
+
+        check_child(g, id_child_1, id_child_11, monomers[2], f"({c[2]})", 1, lactole=Lactole.PYRANOSE)
+        check_child(g, id_child_1, id_child_12, monomers[0], f"({c[0]})", 0, lactole=Lactole.PYRANOSE)
+
+        id_child_111 = list(g.edges(id_child_11))[0][1]
+        check_child(g, id_child_11, id_child_111, monomers[1], f"({c[1]})", 0, lactole=Lactole.PYRANOSE)
+
     @pytest.mark.parametrize("orientation", [Config.ALPHA, Config.BETA, Config.UNDEF])
     @pytest.mark.parametrize("pos_man", [1, 2, 3, 4, 6])
     @pytest.mark.parametrize("pos_glc", [2, 3, 4, 6])
@@ -435,7 +462,7 @@ class TestParser:
         check_child(g, id_child_1, id_child_23, "Gal", "(a1-6)", 0, Lactole.PYRANOSE)
 
     def test_parsing_error(self, caplog):
-        iupac = "Alt(a1-2)[Glc(a1-4)][Gal(a1-6)]Gul(a1-4)M*#$s'\d ;«]as;an"  # Invalid IUPAC string!
+        iupac = "Alt(a1-2)[Glc(a1-4)][Gal(a1-6)]Gul(a1-4)M*#$s'\\d ;«]as;an"  # Invalid IUPAC string!
         g = Glycan(iupac).get_tree()
         assert g is None
         assert "A parsing error occurred" in caplog.records[0].msg

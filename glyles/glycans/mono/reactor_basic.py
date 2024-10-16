@@ -9,6 +9,9 @@ from glyles.glycans.factory.factory_o import OpenFactory, c1_finder
 from glyles.glycans.utils import find_longest_c_chain, opposite_chirality
 from glyles.grammar.GlycanLexer import GlycanLexer
 
+if not hasattr(GlycanLexer, "MOD"):
+    GlycanLexer.MOD = GlycanLexer.QMARK + 1
+
 
 def get_indices(names, types):
     sac_index = types.index(GlycanLexer.SAC)
@@ -67,7 +70,7 @@ def check_for_resizing(monomer, names, types):
 
     # find oxygen of c6 to delete it and find c6 to replace it
     # TODO: Check if this is actually valid for all cases
-    c_id = int(np.where(monomer.x[:, 1] == int(max(monomer.x[monomer.x[:, 0] == 6, 1])))[0])
+    c_id = np.where(monomer.x[:, 1] == np.max(monomer.x[monomer.x[:, 0] == 6, 1]).item())[0].item()
     ox_id = monomer.find_oxygen(position=c_id)
 
     # if the carbon to be extended is part of the ring, put the extension into a side_chain

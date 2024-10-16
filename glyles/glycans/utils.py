@@ -94,7 +94,7 @@ ketoses2 = {
 }
 
 
-def sanitize_smiles(smiles):
+def sanitize_smiles(smiles, mask=None):
     """
     Sanitize the smiles string by removing unnecessary brackets.
 
@@ -151,13 +151,19 @@ def sanitize_smiles(smiles):
         match = smiles.index("((")
         index = get_index_forward(smiles, match + 1)
         smiles = smiles[:match + 1] + smiles[match + 2:index] + smiles[index + 1:]
+        if mask is not None:
+            mask = mask[:match + 1] + mask[match + 2:index] + mask[index + 1:]
 
     # check for two closing brackets, the first can be removed together with its partner
     while "))" in smiles:
         match = smiles.index("))")
         index = get_index_backward(smiles, match)
         smiles = smiles[:index] + smiles[index + 1:match + 1] + smiles[match + 2:]
+        if mask is not None:
+            mask = mask[:index] + mask[index + 1:match + 1] + mask[match + 2:]
 
+    if mask is not None:
+        return smiles, mask
     return smiles
 
 
@@ -409,10 +415,10 @@ def find_longest_c_chain(c_atoms, adjacency, a_type):
         stack = stack[:-1]
         c_tree.add_node(c_id, p_id)
 
-        children = np.argwhere((adjacency[c_id, :] == 1) & (a_type == 6))
+        children = np.argwhere(np.array(adjacency[c_id, :] == 1) & (a_type == 6))
         for c in children:
-            if int(c) not in c_tree.nodes:
-                stack.append((c_id, int(c)))
+            if c.item() not in c_tree.nodes:
+                stack.append((c_id, c.item()))
 
     # find the deepest node and rehang the tree to this node
     deepest_id, _ = c_tree.deepest_node()

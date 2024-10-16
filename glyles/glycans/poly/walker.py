@@ -2,7 +2,11 @@ import networkx as nx
 from antlr4 import ErrorNode, TerminalNode
 
 from glyles.glycans.utils import UnreachableError, ketoses2
+from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
+
+if not hasattr(GlycanLexer, "MOD"):
+    GlycanLexer.MOD = GlycanLexer.QMARK + 1
 
 
 class TreeWalker:
@@ -21,6 +25,14 @@ class TreeWalker:
         self.full = True
 
     def parse(self, t):
+        for c in filter(lambda x: not isinstance(x, (TerminalNode, ErrorNode)), t.getChildren()):
+            if isinstance(c, GlycanParser.BranchContext):
+                self.__walk(c, self.node_id)
+            elif isinstance(c, GlycanParser.BeginContext):
+                self.__parse(c)
+        return self.g, self.full and len(list(nx.connected_components(self.g.to_undirected()))) == 1
+
+    def __parse(self, t):
         """
         Parse a parsed tree (AST) from ANTLR into this networkx graph.
 
@@ -33,7 +45,8 @@ class TreeWalker:
 
         # parse the initial monomer and the orientation of the root monomer
         # and remove the first and last char, i.e. '{' and '}'
-        children = list(t.getChildren())[1:-1]
+        # if isinstance(t, )
+        children = list(t.getChildren())
         if len(children) == 1:  # glycan
             self.__add_node(children[0])
         elif len(children) == 2:  # branch glycan
@@ -46,7 +59,6 @@ class TreeWalker:
             self.__walk(children[0], node_id)
         else:
             raise RuntimeError("This branch of the if-statement should be unreachable!")
-        return self.g, self.full
 
     def __walk(self, t, parent):
         """
@@ -70,14 +82,14 @@ class TreeWalker:
         if len(children) == 2:  # {glycan con}
             # terminal element, add the node with the connection
             node_id = self.__add_node(children[0])
-            self.__add_edge(parent, node_id, children[1])
+            self.full &= self.__add_edge(parent, node_id, children[1])
             return node_id
 
         elif len(children) == 3 and isinstance(children[2], GlycanParser.BranchContext):  # {glycan con branch}
             # chain without branching, the parent is the parent of the parsing of the back part
             parent = self.__walk(children[2], parent)
             node_id = self.__add_node(children[0])
-            self.__add_edge(parent, node_id, children[1])
+            self.full &= self.__add_edge(parent, node_id, children[1])
             return node_id
 
         elif len(children) == 3 and isinstance(children[1], GlycanParser.BranchContext):  # {'[' branch ']'}
@@ -90,7 +102,7 @@ class TreeWalker:
             node_id = self.__walk(children[5], parent)
             self.__walk(children[3], node_id)
             node_id2 = self.__add_node(children[0])
-            self.__add_edge(node_id, node_id2, children[1])
+            self.full &= self.__add_edge(node_id, node_id2, children[1])
             return node_id2
 
         elif len(children) == 9:  # {glycan con '[' branch ']' '[' branch ']' branch}
@@ -99,7 +111,7 @@ class TreeWalker:
             self.__walk(children[3], node_id)
             self.__walk(children[6], node_id)
             node_id2 = self.__add_node(children[0])
-            self.__add_edge(node_id, node_id2, children[1])
+            self.full &= self.__add_edge(node_id, node_id2, children[1])
             return node_id2
 
         elif len(children) == 12:  # {glycan con '[' branch ']' '[' branch ']' '[' branch ']' branch}
@@ -109,13 +121,22 @@ class TreeWalker:
             self.__walk(children[6], node_id)
             self.__walk(children[9], node_id)
             node_id2 = self.__add_node(children[0])
-            self.__add_edge(node_id, node_id2, children[1])
+            self.full &= self.__add_edge(node_id, node_id2, children[1])
             return node_id2
 
         # there should be no case missing, but who knows...
         raise UnreachableError("Invalid branching in glycan tree")
 
-    def __add_edge(self, parent, child, con):
+    def context2str(self, node):
+        output = ""
+        for c in node.getChildren():
+            if isinstance(c, TerminalNode):
+                output += str(c)
+            else:
+                output += self.context2str(c)
+        return output
+
+    def __add_edge(self, parent, child, con) -> bool:
         """
         Add an edge between the provided ids of the parent and the children in the glycan tree.
 
@@ -127,7 +148,11 @@ class TreeWalker:
         Returns:
             Nothing
         """
-        con = str(con)
+        # for floating elements as they add a new connected component
+        if parent == child:
+            return True
+
+        con = self.context2str(con)
         if "(" not in con and ")" not in con:
             if "-" not in con:
                 bond = ("2-" if (self.g.nodes[child]["type"].get_lactole,
@@ -135,6 +160,22 @@ class TreeWalker:
                 con = con[0] + bond + con[1:]
             con = "(" + con + ")"
         self.g.add_edge(parent, child, type=con)
+        return "?" not in con
+
+    def build_recipe(self, node):
+        recipe = []
+        for c in node.getChildren():
+            if isinstance(c, TerminalNode):
+                recipe.append((str(c), GlycanLexer.SAC if isinstance(node, GlycanParser.SaciContext) else c.symbol.type))
+            else:
+                tmp = self.build_recipe(c)
+                if isinstance(c, GlycanParser.ModiContext):
+                    recipe.append(("".join([x[0] for x in tmp]), GlycanLexer.MOD))
+                elif isinstance(c, GlycanParser.SaciContext):
+                    recipe += [(x[0], GlycanLexer.SAC) for x in tmp]
+                else:
+                    recipe += tmp
+        return recipe
 
     def __add_node(self, node, config=""):
         """
@@ -152,13 +193,8 @@ class TreeWalker:
         self.node_id += 1
 
         # add the node to the network and store the enum of the glycan as attribute
-        recipe = []
-        for child in node.children:
-            if isinstance(child, GlycanParser.DerivContext):
-                for c in child.children:
-                    recipe.append((str(c), c.symbol.type))
-            else:
-                recipe.append((str(child), child.symbol.type))
+        recipe = self.build_recipe(node)
+        # print(recipe)
         monomer, full = self.factory.create(recipe, config, tree_only=self.tree_only)
         self.g.add_node(
             node_id,

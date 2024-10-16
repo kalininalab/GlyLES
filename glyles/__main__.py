@@ -1,10 +1,9 @@
 import os
 import sys
 import argparse
-import pkg_resources
-
 
 from glyles import convert
+from glyles.version import __version__
 
 
 def parse_args(args):
@@ -40,7 +39,7 @@ def parse_args(args):
         "-v",
         "--version",
         action="version",
-        version=f"%(prog)s {pkg_resources.get_distribution('glyles').version}"
+        version=f"%(prog)s {__version__}"
     )
     return vars(parser.parse_args(args))
 

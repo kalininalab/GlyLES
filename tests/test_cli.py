@@ -1,4 +1,5 @@
 import os
+import shutil
 
 from rdkit import Chem
 
@@ -45,3 +46,5 @@ def test_cli():
     for (sol_iupac, sol_smiles), (out_iupac, out_smiles) in zip(solution, output):
         assert sol_iupac == out_iupac
         compare_smiles(out_smiles, sol_smiles)
+
+    os.remove("data/test_cli_output.txt")

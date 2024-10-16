@@ -204,7 +204,7 @@ def check_for_acid(start, structure, adjacency, a_type):
     Returns:
         bool flag indicating if the carbon atom has an acid group
     """
-    oxys = [int(x) for x in np.where((adjacency[start] != 0) & (a_type == 8))[0]]
+    oxys = [int(x) for x in np.where(np.array(adjacency[start] != 0) & (a_type == 8))[0]]
     if len(oxys) != 2:
         return False
     if (structure.GetBondBetweenAtoms(int(start), oxys[0]).GetBondType() == BondType.SINGLE and
@@ -216,7 +216,7 @@ def check_for_acid(start, structure, adjacency, a_type):
 
 
 def check_for_co_double(carbon, structure, adjacency, a_type):
-    oxys = [int(x) for x in np.where((adjacency[carbon] != 0) & (a_type == 8))[0]]
+    oxys = [int(x) for x in np.where(np.array(adjacency[carbon] != 0) & (a_type == 8))[0]]
     return sum(structure.GetBondBetweenAtoms(int(carbon), o).GetBondType() == BondType.DOUBLE for o in oxys) == 1
 
 
@@ -232,4 +232,4 @@ def check_for_aldehyd(start, adjacency, a_type):
     Returns:
         bool flag indicating if the carbon atom has an aldehyd group
     """
-    return len(np.where((adjacency[start] == 1) & (a_type == 8))[0]) != 0
+    return len(np.where(np.array(adjacency[start] == 1) & (a_type == 8))[0]) != 0
