@@ -24,7 +24,7 @@ def enumerate_carbon(monomer):
 
     # then iterate over all those carbons and enumerate them beginning at C1
     for c_id in range(1, next_c_id):
-        c_index = int(np.where(monomer.x[:, 1] == c_id)[0])
+        c_index = np.where(monomer.x[:, 1] == c_id)[0].item()
         candidates = np.where(np.array(monomer.adjacency[c_index, :] != 0) & (monomer.x[:, 1] == 0))[0]
         if candidates.size != 0:
             for candidate in list(candidates):
@@ -100,14 +100,9 @@ def enumerate_c_atoms(monomer, c_atoms, ringo):
         start, end = longest_c_chain[0], longest_c_chain[-1]
 
         # check conditions
-        """start_o_conn, end_o_conn = \
-            np.argwhere((monomer.adjacency[start, :] == 1) & np.in1d(monomer.x[:, 0], [7, 8]) & (monomer.x[:, 2] != 1) &
-                        (monomer.x[:, 3] == 1)).squeeze().size > 0, \
-            np.argwhere((monomer.adjacency[end, :] == 1) & np.in1d(monomer.x[:, 0], [7, 8]) & (monomer.x[:, 2] != 1) &
-                        (monomer.x[:, 3] == 1)).squeeze().size > 0"""
-        start_o_conn = np.argwhere(np.array(monomer.adjacency[start, :] == 1) & np.in1d(monomer.x[:, 0], [7, 8]) &
+        start_o_conn = np.argwhere(np.array(monomer.adjacency[start, :] == 1) & np.isin(monomer.x[:, 0], [7, 8]) &
                                    (monomer.x[:, 2] != 1)).squeeze().size > 0
-        end_o_conn = np.argwhere(np.array(monomer.adjacency[end, :] == 1) & np.in1d(monomer.x[:, 0], [7, 8]) &
+        end_o_conn = np.argwhere(np.array(monomer.adjacency[end, :] == 1) & np.isin(monomer.x[:, 0], [7, 8]) &
                                  (monomer.x[:, 2] != 1)).squeeze().size > 0
 
         # decide on c1
@@ -173,14 +168,14 @@ def equidistant(monomer, start, end):
     c_end_candidates = np.where(np.array(monomer.adjacency[end, :] == 1) & (monomer.x[:, 0] == 6) & (monomer.x[:, 2] & 0b1))[0]
 
     if c_start_candidates.size == 1 and c_end_candidates.size == 1:
-        start_ring_c = int(c_start_candidates)
-        end_ring_c = int(c_end_candidates)
+        start_ring_c = c_start_candidates.item()
+        end_ring_c = c_end_candidates.item()
 
         # check if those ring carbons have an attached oxygen
         start_ring_c_o_candidates = np.where(np.array(monomer.adjacency[start_ring_c, :] == 1) &
-                                             np.in1d(monomer.x[:, 0], [7, 8]) & (monomer.x[:, 2] != 1))[0]
+                                             np.isin(monomer.x[:, 0], [7, 8]) & (monomer.x[:, 2] != 1))[0]
         end_ring_c_o_candidates = np.where(np.array(monomer.adjacency[end_ring_c, :] == 1) &
-                                           np.in1d(monomer.x[:, 0], [7, 8]) & (monomer.x[:, 2] != 1))[0]
+                                           np.isin(monomer.x[:, 0], [7, 8]) & (monomer.x[:, 2] != 1))[0]
 
         if start_ring_c_o_candidates.size == 1 and end_ring_c_o_candidates.size == 1:
             raise UnreachableError("C1 atom cannot be detected")

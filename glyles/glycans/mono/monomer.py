@@ -312,9 +312,9 @@ class Monomer:
         assert root_idx is not None or root_id is not None, "Either Index or ID has to be provided"
         if root_id is None:
             if np.where(self.x[:, 1] == root_idx)[0].size != 0:
-                root_id = int(np.where(self.x[:, 1] == root_idx)[0])
+                root_id = np.where(self.x[:, 1] == root_idx)[0].item()
             else:
-                root_id = int(np.where(self.x[:, 1] == 1)[0])
+                root_id = np.where(self.x[:, 1] == 1)[0].item()
 
         root_id = self.__check_root_id(root_id)
 

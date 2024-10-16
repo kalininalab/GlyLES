@@ -87,9 +87,9 @@ class Merger:
 
         # return the string that can be computed from connecting the monomers as marked above
         if np.where(t.nodes[0]["type"].get_features()[:, 1] == start)[0].size != 0:
-            position = int(np.argwhere(t.nodes[0]["type"].get_features()[:, 1] == start).squeeze())
+            position = np.argwhere(t.nodes[0]["type"].get_features()[:, 1] == start).squeeze().item()
         else:
-            position = int(np.argwhere(t.nodes[0]["type"].get_features()[:, 1] == 1).squeeze())
+            position = np.argwhere(t.nodes[0]["type"].get_features()[:, 1] == 1).squeeze().item()
         smiles, mask = self.merge_int(t, 0, position, 0)
         if smiles_only:
             return smiles

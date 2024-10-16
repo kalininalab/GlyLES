@@ -462,7 +462,7 @@ class TestParser:
         check_child(g, id_child_1, id_child_23, "Gal", "(a1-6)", 0, Lactole.PYRANOSE)
 
     def test_parsing_error(self, caplog):
-        iupac = "Alt(a1-2)[Glc(a1-4)][Gal(a1-6)]Gul(a1-4)M*#$s'\d ;«]as;an"  # Invalid IUPAC string!
+        iupac = "Alt(a1-2)[Glc(a1-4)][Gal(a1-6)]Gul(a1-4)M*#$s'\\d ;«]as;an"  # Invalid IUPAC string!
         g = Glycan(iupac).get_tree()
         assert g is None
         assert "A parsing error occurred" in caplog.records[0].msg
