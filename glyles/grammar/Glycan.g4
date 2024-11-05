@@ -1,5 +1,4 @@
 grammar Glycan;
-
 start:
     '#' (LBRACK branch RBRACK)* begin '#';
 begin:
@@ -60,16 +59,16 @@ OXYGEN:
 PHOSPHOR:
     'P';
 FG:
-    'Ceroplastic' | 'Lacceroic' | '3oxoMyr' | 'Psyllic' | 'Geddic' | 'Allyl' | 'Phthi'
-    | 'aLnn' | 'gLnn' | 'eSte' | 'Coum' | 'HSer' | 'Prop'
-    | 'Ach' | 'Aep' | 'Ala' | 'Ang' | 'Asp' | 'Beh' | 'But' | 'Cct' | 'Cer' | 'Cet' | 'Cho' | 'Cin' | 'Crt' | 'Cys'
-    | 'Dce' | 'Dco' | 'Dec' | 'Dhp' | 'Dod' | 'Etg' | 'EtN' | 'Etn' | 'Fer' | 'Gro' | 'Glu' | 'Gly' | 'Hpo' | 'Hse'
-    | 'Hxo' | 'Lac' | 'Lau' | 'Leu' | 'Lin' | 'Lys' | 'Mal' | 'Mar' | 'Mel' | 'Mon' | 'Myr' | 'Ner' | 'Nno' | 'Non'
-    | 'Oco' | 'Ole' | 'Orn' | 'Pam' | 'Pro' | 'Pyr' | 'Ser' | 'Sin' | 'Ste' | 'tBu' | 'Thr' | 'Tig' | 'Und' | 'Vac'
-    | 'Udo' | 'Ulo' | 'ulo'
-    | 'Ac' | 'Am' | 'Bn' | 'Br' | 'Bu' | 'Bz' | 'Cl' | 'Cm' | 'DD' | 'DL' | 'Et' | 'Fo' | 'Gc' | 'Hp' | 'Hx'
-    | 'LD' | 'LL' | 'Me' | 'Nn' | 'Oc' | 'Pe' | 'Ph' | 'Pr' | 'Pp' | 'Tf' | 'Tr' | 'Ts' | 'Vl' | 'en'
-    | 'A' | 'F' | 'I' | 'S';
+    '3oxoMyr' | 'A' | 'Ac' | 'Ach' | 'Aep' | 'Al' | 'Ala' | 'Alloc' | 'Allyl' | 'aLnn' | 'Am' | 'Ang' | 'Asp' | 'Beh'
+    | 'Bn' | 'Boc' | 'Br' | 'Bu' | 'But' | 'Bz' | 'Cbz' | 'Cct' | 'Cer' | 'Ceroplastic' | 'Cet' | 'Cho' | 'cHx' | 'Cin'
+    | 'Cl' | 'ClAc' | 'Cm' | 'Coum' | 'Crt' | 'Cys' | 'DCA' | 'Dce' | 'Dco' | 'DD' | 'Dec' | 'Dhp' | 'DL' | 'DMT'
+    | 'Dod' | 'en' | 'eSte' | 'Et' | 'Etg' | 'EtN' | 'Etn' | 'F' | 'Fer' | 'Fmoc' | 'Fo' | 'Gc' | 'Geddic' | 'gLnn'
+    | 'Glu' | 'Gly' | 'Gro' | 'Hp' | 'Hpo' | 'Hse' | 'HSer' | 'Hx' | 'Hxo' | 'I' | 'Lac' | 'Lacceroic' | 'Lau' | 'LD'
+    | 'Leu' | 'Lev' | 'Lin' | 'LL' | 'Lys' | 'Mal' | 'Mar' | 'Me' | 'Mel' | 'MMT' | 'MOM' | 'Mon' | 'Myr' | 'N3'
+    | 'NAP' | 'Ner' | 'Nn' | 'Nno' | 'Non' | 'Ns' | 'Oc' | 'Oco' | 'Ole' | 'oNB' | 'Orn' | 'Pam' | 'Pe' | 'Ph'
+    | 'Phthi' | 'Pic' | 'Pico' | 'Piv' | 'PMB' | 'PMP' | 'Poc' | 'Pp' | 'Pr' | 'Pro' | 'Prop' | 'Psyllic' | 'Pyr'
+    | 'S' | 'Ser' | 'Sin' | 'Ste' | 'TBDPS' | 'TBS' | 'tBu' | 'TCA' | 'TES' | 'Tf' | 'TFA' | 'THP' | 'Thr' | 'Tig'
+    | 'TIPS' | 'TMS' | 'Tr' | 'Troc' | 'Ts' | 'Udo' | 'Ulo' | 'ulo' | 'Und' | 'Vac' | 'Vl';
 ANHYDRO:
     'Anhydro';
 HEAD:

@@ -24,11 +24,14 @@ functional_groups = {
     "Am": "C(=N)C",
     "Asp": "N[C@@H](CC(=O)O)C(=O)O",
     "Br": "Br",
+    "Cbz": "C(=O)OCc2ccccc2",
     "Cer": "OC[C@H](NC=O)C(O)/C=C/" + "C" * 13,
     "Cho": "OCC[N+](C)(C)C",
     "Cl": "Cl",
+    "ClAc": "C(=O)CCl",
     "Cm": "NC(=O)",
     "Cys": "N[C@@H](CS)C(=O)O",
+    "DCA": "C(=O)C(Cl)Cl",
     "Etn": "OCCN",
     "EtN": "OCCN",
     "F": "F",
@@ -38,51 +41,78 @@ functional_groups = {
     "I": "I",
     "Lys": "NCCCC[C@H](N)C(=O)O",
     "N": "N",
+    "N3": "N=[N+]=[N-]",
     "NFo": "NC=O",
+    "Ns": "S(=O)(=O)c2ccccc2[N+](=O)[O-]",
+    "oNB": "Cc2ccccc2[N+](=O)[O-]",
     "Orn": "NCCC[C@H](N)C(=O)O",
     "P": "OP(=O)(O)O",
     "PhNO2": "Oc2ccc([N+]([O-])=O)cc2",
+    "Pic": "CC2=CC=CC=N2",
+    "Pico": "C(=O)C2=CC=CC=N2",
     "Pp": "OC(=O)CC",
     "S": "S(=O)(=O)O",
     "Pro": "N2CCCC2C(=O)O",
     "Ser": "OC(=O)[C@H](N)CO",
+    "TBDPS": "[Si](C(C)(C)C)(c2ccccc2)c2ccccc2",
+    "TBS": "[Si](C)(C)C(C)(C)C",
+    "TCA": "C(=O)C(Cl)(Cl)Cl",
+    "TES": "[Si](CC)(CC)CC",
     "Tf": "OS(=O)(=O)C(F)(F)F",
+    "TFA": "C(=O)C(F)(F)F",
+    "TIPS": "[Si](C(C)C)(C(C)C)C(C)C",
+    "TMS": "[Si](C)(C)C",
     "Thr": "N[C@@H](C(=O)O)[C@@H](O)C",
+    "Troc": "C(=O)OCC(Cl)(Cl)Cl",
+    "Ts": "S(=O)(=O)c2ccc(C)cc2",
     "Ulo": "OC(c2ccccc2)(c2ccccc2(Cl))CCN(C)C",
 
     # COH land
     "A": "OC(=O)C",
+    "Al": "CCC=C",
     "Allyl": "CC=C",
     "Ac": "C(=O)C",
-    "Ang": "OC(=O)C/(C)=C\\C",
-    "Bz": "C(=O)c2ccccc2",
+    "Ang": "OC(=O)/C(C)=C\\C",
     "Bn": "Cc2ccccc2",
+    "Boc": "C(=O)OC(C)(C)C",
+    "Bz": "C(=O)c2ccccc2",
     "cdPam": "OC(=O)CCCCCCC/C=C\\CCCCCC",
     "Cet": "CCC(=O)O",
+    "cHx": "C2CCCCC2",
     "Cin": "OC(=O)/C=C/c2ccccc2",
-    "Coum": "OC(=O)/C=C/c1ccc(O)ccc1",
+    "Coum": "OC(=O)/C=C/c2cc(O)ccc2",
     "Dce": "OC(=O)CCCCCCCC=C",
     "Dhp": "OC(=O)C(O)(O)CCC",
     "Dhpa": "OC(=O)C(O)(O)CCC",
+    "DMT": "C(c2ccc(OC)cc2)(c2ccccc2)c2ccccc2",
     "Etg": "OCCO",
     "Fer": "OC(=O)/C=C/c2ccc(O)c(OC)c2",
+    "Fmoc": "C(=O)OCC2c3ccccc3c4c2cccc4",
     "Fo": "OC(=O)",
     "Gc": "C(=O)CO",
     "Gly": "OCC(O)CO",
     "Gro": "OCC(O)CO",
     "He": "C(O)C",
     "Lac": "OC(=O)C(O)C",
+    "Lev": "C(=O)CCC(=O)C",
     "Lin": "OC(=O)CCCCCCC/C=C\\C/C=C\\CCCCC",
     "Mal": "O[C@H](C(=O)O)CC(=O)O",
+    "MMT": "C(c2ccccc2)(c2ccccc2)c2ccc(OC)cc2",
+    "MOM": "COC",
+    "NAP": "CCc2cc3ccccc3cc2",
     "Ole": "OC(=O)CCCCCCC/C=C\\CCCCCCCC",
     "Ph": "c2ccccc2",
     "Phyt": "OCCC(C)CCCC(C)CCCC(C)CCCC(C)C",
+    "Piv": "C(=O)C(C)(C)C",
+    "PMB": "Cc2ccc(OC)cc2",
+    "PMP": "Cc2ccccc2O",
+    "Poc": "C(=O)OCC#C",
     "Pyr": "OC(=O)C(=O)C",
     "Sin": "OC(=O)/C=C/c2cc(OC)c(O)c(OC)c2",
     "Suc": "OC(=O)CCC(=O)O",
-    "Tig": "OC(=O)C/(C)=C/C",
-    "Tr": "C(c2ccccc2)(c3ccccc3)c4ccccc4",
-    "Ts": "OS(=O)(=O)c2ccc(C)cc2",
+    "THP": "C2CCCCO2",
+    "Tig": "OC(=O)/C(C)=C/C",
+    "Tr": "C(c2ccccc2)(c2ccccc2)c2ccccc2",
     "Vac": "OC(=O)CCCCCCCCCC=CCCCCCC",
 
     # Sugar rings
@@ -157,7 +187,7 @@ preserve_elem = [
 
 # list of functional groups that start with an N and might be confused with a nitrogen-bridge
 n_conflict = [
-    "Ner", "Nno", "Non", "Nn"
+    "NAP", "Ner", "Nno", "Non", "Nn"
 ]
 
 # list of functional groups that start with an O and might be confused with an oxygen-bridge
@@ -167,7 +197,7 @@ o_conflict = [
 
 # list of functional groups that start with a P and might be confused with a phosphate-bridge
 p_conflict = [
-    "Psyllic", "Prop", "Pam", "Pro", "Pyr", "Pe", "Ph", "Pr", "Pp"
+    "PMB", "PMP", "Pic", "Pico", "Psyllic", "Prop", "Pam", "Pro", "Pyr", "Pe", "Ph", "Pr", "Pp"
 ]
 
 # list of functional groups that start with a C and might be confused with a carbon-bridge

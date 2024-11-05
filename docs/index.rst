@@ -26,6 +26,7 @@ Welcome to the documentation of GlyLES!
     howto/conversion
     howto/visualization
     howto/filtering
+    howto/fgs
 
 .. toctree::
     :glob:
