@@ -397,6 +397,7 @@ class Glycan:
             if not self.tree_only and self.tree_full and self.full:
                 self.glycan_smiles = Merger(self.factory).merge(self.parse_tree, self.root_orientation, start=self.start)
                 # catch any exception at glycan level to not destroy the whole pipeline because of one mis-formed glycan
+                print(self.glycan_smiles)
 
         except ParseError as e:
             msg = e.__str__().replace("\n", " ")

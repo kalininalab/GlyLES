@@ -60,15 +60,15 @@ PHOSPHOR:
     'P';
 FG:
     'Ceroplastic' | 'Lacceroic' | '3oxoMyr' | 'Psyllic' | 'Geddic' | 'Alloc' | 'Allyl' | 'Phthi' | 'TBDPS' | 'aLnn'
-    | 'ClAc' | 'Coum' | 'eSte' | 'Fmoc' | 'gLnn' | 'HSer' | 'Pico' | 'Prop' | 'TIPS' | 'Troc' | 'Ach' | 'Aep' | 'Ala'
-    | 'Ang' | 'Asp' | 'Beh' | 'Boc' | 'But' | 'Cbz' | 'Cct' | 'Cer' | 'Cet' | 'Cho' | 'cHx' | 'Cin' | 'Crt' | 'Cys'
-    | 'DCA' | 'Dce' | 'Dco' | 'Dec' | 'Dhp' | 'DMT' | 'Dod' | 'Etg' | 'Etn' | 'EtN' | 'Fer' | 'Glu' | 'Gly' | 'Gro'
-    | 'Hpo' | 'Hse' | 'Hxo' | 'Lac' | 'Lau' | 'Leu' | 'Lev' | 'Lin' | 'Lys' | 'Mal' | 'Mar' | 'Mel' | 'MMT' | 'MOM'
-    | 'Mon' | 'Myr' | 'NAP' | 'Ner' | 'Nno' | 'Non' | 'Oco' | 'Ole' | 'oNB' | 'Orn' | 'Pam' | 'Pic' | 'Piv' | 'PMB'
-    | 'PMP' | 'Poc' | 'Pro' | 'Pyr' | 'Ser' | 'Sin' | 'Ste' | 'TBS' | 'tBu' | 'TCA' | 'TES' | 'TFA' | 'THP' | 'Thr'
-    | 'Tig' | 'TMS' | 'Udo' | 'Ulo' | 'ulo' | 'Und' | 'Vac' | 'Ac' | 'Al' | 'Am' | 'Bn' | 'Br' | 'Bu' | 'Bz' | 'Cl'
-    | 'Cm' | 'DD' | 'DL' | 'en' | 'Et' | 'Fo' | 'Gc' | 'Hp' | 'Hx' | 'LD' | 'LL' | 'Me' | 'N3' | 'Nn' | 'Ns' | 'Oc'
-    | 'Pe' | 'Ph' | 'Pp' | 'Pr' | 'Tf' | 'Tr' | 'Ts' | 'Vl' | 'A' | 'F' | 'I' | 'S';
+    | 'ClAc' | 'Coum' | 'eSte' | 'Fmoc' | 'gLnn' | 'HSer' | 'Pico' | 'Prop' | 'TIPS' | 'triN' | 'Troc' | 'Ach' | 'Aep'
+    | 'Ala' | 'Ang' | 'Asp' | 'Beh' | 'Boc' | 'But' | 'Cbz' | 'Cct' | 'Cer' | 'Cet' | 'Cho' | 'cHx' | 'Cin' | 'Crt'
+    | 'Cys' | 'DCA' | 'Dce' | 'Dco' | 'Dec' | 'Dhp' | 'DMT' | 'Dod' | 'Etg' | 'Etn' | 'EtN' | 'Fer' | 'Glu' | 'Gly'
+    | 'Gro' | 'Hpo' | 'Hse' | 'Hxo' | 'Lac' | 'Lau' | 'Leu' | 'Lev' | 'Lin' | 'Lys' | 'Mal' | 'Mar' | 'Mel' | 'MMT'
+    | 'MOM' | 'Mon' | 'Myr' | 'NAP' | 'Ner' | 'Nno' | 'Non' | 'Oco' | 'Ole' | 'oNB' | 'Orn' | 'Pam' | 'Pic' | 'Piv'
+    | 'PMB' | 'PMP' | 'Poc' | 'Pro' | 'Pyr' | 'Ser' | 'Sin' | 'Ste' | 'TBS' | 'tBu' | 'TCA' | 'TES' | 'TFA' | 'THP'
+    | 'Thr' | 'Tig' | 'TMS' | 'Udo' | 'Ulo' | 'ulo' | 'Und' | 'Vac' | 'Ac' | 'Al' | 'Am' | 'Bn' | 'Br' | 'Bu' | 'Bz'
+    | 'Cl' | 'Cm' | 'DD' | 'DL' | 'en' | 'Et' | 'Fo' | 'Gc' | 'Hp' | 'Hx' | 'LD' | 'LL' | 'Me' | 'N3' | 'Nn' | 'Ns'
+    | 'Oc' | 'Pe' | 'Ph' | 'Pp' | 'Pr' | 'Tf' | 'Tr' | 'Ts' | 'Vl' | 'A' | 'F' | 'I' | 'S';
 ANHYDRO:
     'Anhydro';
 HEAD:

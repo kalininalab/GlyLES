@@ -12,6 +12,13 @@ if not hasattr(GlycanLexer, "MOD"):
     GlycanLexer.MOD = GlycanLexer.QMARK + 1
 
 
+def shift(d, offset):
+    x = str(int(d) + offset)
+    if len(x) != 1:
+        return "%" + x
+    return x
+
+
 class Monomer:
 
     def __init__(self, origin=None, **kwargs):
@@ -319,9 +326,19 @@ class Monomer:
         root_id = self.__check_root_id(root_id)
 
         smiles = MolToSmiles(self.get_structure(), rootedAtAtom=root_id)
-        for match in reversed(list(re.finditer(r'[a-zA-GI-Z|\]]\d+', smiles))):
-            num = int(smiles[match.start() + 1: match.end()]) + ring_index
-            smiles = smiles[:match.start() + 1] + ("" if num < 10 else "%") + str(num) + smiles[match.end():]
+
+        # bump ring indices to avoid clashes with outer rings
+        # for match in reversed(list(re.finditer(r'[a-zA-GI-Z0-9|\]]\d', smiles))):
+        #     num = int(smiles[match.start() + 1: match.end()]) + ring_index * 10
+        #     smiles = smiles[:match.start() + 1] + "%" + str(num) + smiles[match.end():]
+        for m in reversed(list(iter(re.finditer(r'[A-G|I-Za-z|\]|%]\d+', smiles)))):
+            start, end = m.start(), m.end()
+            match = smiles[start:end]
+            if match[0] == "%":
+                new_str = shift(match[1:], ring_index)
+            else:
+                new_str = match[0] + "".join(shift(d, ring_index) for d in match[1:])
+            smiles = smiles[:start] + new_str + smiles[end:]
         return smiles
 
     def __check_root_id(self, root_id):
