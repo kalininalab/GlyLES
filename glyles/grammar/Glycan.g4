@@ -59,16 +59,16 @@ OXYGEN:
 PHOSPHOR:
     'P';
 FG:
-    '3oxoMyr' | 'A' | 'Ac' | 'Ach' | 'Aep' | 'Al' | 'Ala' | 'Alloc' | 'Allyl' | 'aLnn' | 'Am' | 'Ang' | 'Asp' | 'Beh'
-    | 'Bn' | 'Boc' | 'Br' | 'Bu' | 'But' | 'Bz' | 'Cbz' | 'Cct' | 'Cer' | 'Ceroplastic' | 'Cet' | 'Cho' | 'cHx' | 'Cin'
-    | 'Cl' | 'ClAc' | 'Cm' | 'Coum' | 'Crt' | 'Cys' | 'DCA' | 'Dce' | 'Dco' | 'DD' | 'Dec' | 'Dhp' | 'DL' | 'DMT'
-    | 'Dod' | 'en' | 'eSte' | 'Et' | 'Etg' | 'EtN' | 'Etn' | 'F' | 'Fer' | 'Fmoc' | 'Fo' | 'Gc' | 'Geddic' | 'gLnn'
-    | 'Glu' | 'Gly' | 'Gro' | 'Hp' | 'Hpo' | 'Hse' | 'HSer' | 'Hx' | 'Hxo' | 'I' | 'Lac' | 'Lacceroic' | 'Lau' | 'LD'
-    | 'Leu' | 'Lev' | 'Lin' | 'LL' | 'Lys' | 'Mal' | 'Mar' | 'Me' | 'Mel' | 'MMT' | 'MOM' | 'Mon' | 'Myr' | 'N3'
-    | 'NAP' | 'Ner' | 'Nn' | 'Nno' | 'Non' | 'Ns' | 'Oc' | 'Oco' | 'Ole' | 'oNB' | 'Orn' | 'Pam' | 'Pe' | 'Ph'
-    | 'Phthi' | 'Pic' | 'Pico' | 'Piv' | 'PMB' | 'PMP' | 'Poc' | 'Pp' | 'Pr' | 'Pro' | 'Prop' | 'Psyllic' | 'Pyr'
-    | 'S' | 'Ser' | 'Sin' | 'Ste' | 'TBDPS' | 'TBS' | 'tBu' | 'TCA' | 'TES' | 'Tf' | 'TFA' | 'THP' | 'Thr' | 'Tig'
-    | 'TIPS' | 'TMS' | 'Tr' | 'Troc' | 'Ts' | 'Udo' | 'Ulo' | 'ulo' | 'Und' | 'Vac' | 'Vl';
+    'Ceroplastic' | 'Lacceroic' | '3oxoMyr' | 'Psyllic' | 'Geddic' | 'Alloc' | 'Allyl' | 'Phthi' | 'TBDPS' | 'aLnn'
+    | 'ClAc' | 'Coum' | 'eSte' | 'Fmoc' | 'gLnn' | 'HSer' | 'Pico' | 'Prop' | 'TIPS' | 'Troc' | 'Ach' | 'Aep' | 'Ala'
+    | 'Ang' | 'Asp' | 'Beh' | 'Boc' | 'But' | 'Cbz' | 'Cct' | 'Cer' | 'Cet' | 'Cho' | 'cHx' | 'Cin' | 'Crt' | 'Cys'
+    | 'DCA' | 'Dce' | 'Dco' | 'Dec' | 'Dhp' | 'DMT' | 'Dod' | 'Etg' | 'Etn' | 'EtN' | 'Fer' | 'Glu' | 'Gly' | 'Gro'
+    | 'Hpo' | 'Hse' | 'Hxo' | 'Lac' | 'Lau' | 'Leu' | 'Lev' | 'Lin' | 'Lys' | 'Mal' | 'Mar' | 'Mel' | 'MMT' | 'MOM'
+    | 'Mon' | 'Myr' | 'NAP' | 'Ner' | 'Nno' | 'Non' | 'Oco' | 'Ole' | 'oNB' | 'Orn' | 'Pam' | 'Pic' | 'Piv' | 'PMB'
+    | 'PMP' | 'Poc' | 'Pro' | 'Pyr' | 'Ser' | 'Sin' | 'Ste' | 'TBS' | 'tBu' | 'TCA' | 'TES' | 'TFA' | 'THP' | 'Thr'
+    | 'Tig' | 'TMS' | 'Udo' | 'Ulo' | 'ulo' | 'Und' | 'Vac' | 'Ac' | 'Al' | 'Am' | 'Bn' | 'Br' | 'Bu' | 'Bz' | 'Cl'
+    | 'Cm' | 'DD' | 'DL' | 'en' | 'Et' | 'Fo' | 'Gc' | 'Hp' | 'Hx' | 'LD' | 'LL' | 'Me' | 'N3' | 'Nn' | 'Ns' | 'Oc'
+    | 'Pe' | 'Ph' | 'Pp' | 'Pr' | 'Tf' | 'Tr' | 'Ts' | 'Vl' | 'A' | 'F' | 'I' | 'S';
 ANHYDRO:
     'Anhydro';
 HEAD:
