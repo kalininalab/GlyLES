@@ -160,7 +160,8 @@ class TreeWalker:
                 con = con[0] + bond + con[1:]
             con = "(" + con + ")"
         self.g.add_edge(parent, child, type=con)
-        return "?" not in con
+        # Identify standard and narrow wildcard connections
+        return "?" not in con and "/" not in con
 
     def build_recipe(self, node):
         recipe = []
