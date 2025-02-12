@@ -24,20 +24,20 @@ class TreeWalker:
         self.tree_only = tree_only
         self.full = True
 
-    def parse(self, t):
+    def parse_first(self, t):
         for c in filter(lambda x: not isinstance(x, (TerminalNode, ErrorNode)), t.getChildren()):
             if isinstance(c, GlycanParser.BranchContext):
-                self.__walk(c, self.node_id)
+                self.walk(c, self.node_id)
             elif isinstance(c, GlycanParser.BeginContext):
-                self.__parse(c)
+                self.parse(c)
         return self.g, self.full and len(list(nx.connected_components(self.g.to_undirected()))) == 1
 
-    def __parse(self, t):
+    def parse(self, t):
         """
         Parse a parsed tree (AST) from ANTLR into this networkx graph.
 
         Args:
-            t (GlycanParser.StartContext): result of the parsing step from ANTLR
+            t (GlycanParser.BeginContext): result of the parsing step from ANTLR
 
         Returns:
             Tree of parsed glycan with monomers in nodes
@@ -48,25 +48,25 @@ class TreeWalker:
         # if isinstance(t, )
         children = list(t.getChildren())
         if len(children) == 1:  # glycan
-            self.__add_node(children[0])
+            self.add_node(children[0])
         elif len(children) == 2:  # branch glycan
-            node_id = self.__add_node(children[1])
-            self.__walk(children[0], node_id)
+            node_id = self.add_node(children[1])
+            self.walk(children[0], node_id)
         elif len(children) == 3:  # SAC ' ' TYPE
-            self.__add_node(children[0], children[2].symbol.text)
+            self.add_node(children[0], children[2].symbol.text)
         elif len(children) == 4:  # branch SAC ' ' TYPE
-            node_id = self.__add_node(children[1], children[3].symbol.text)
-            self.__walk(children[0], node_id)
+            node_id = self.add_node(children[1], children[3].symbol.text)
+            self.walk(children[0], node_id)
         else:
             raise RuntimeError("This branch of the if-statement should be unreachable!")
 
-    def __walk(self, t, parent):
+    def walk(self, t, parent):
         """
         The heart of this class. This method recursively adds nodes to the graph and connects them according to the
         connections in the input IUPAC.
 
         Args:
-            t (GlycanParser.StartContext): subtree to parse in this recursive step.
+            t (GlycanParser.BranchContext): subtree to parse in this recursive step.
             parent (int): ID of the parent node for this (subtree)
 
         Returns:
@@ -81,47 +81,47 @@ class TreeWalker:
         children = list(t.getChildren())
         if len(children) == 2:  # {glycan con}
             # terminal element, add the node with the connection
-            node_id = self.__add_node(children[0])
-            self.full &= self.__add_edge(parent, node_id, children[1])
+            node_id = self.add_node(children[0])
+            self.full &= self.add_edge(parent, node_id, children[1])
             return node_id
 
         elif len(children) == 3 and isinstance(children[2], GlycanParser.BranchContext):  # {glycan con branch}
             # chain without branching, the parent is the parent of the parsing of the back part
-            parent = self.__walk(children[2], parent)
-            node_id = self.__add_node(children[0])
-            self.full &= self.__add_edge(parent, node_id, children[1])
+            parent = self.walk(children[2], parent)
+            node_id = self.add_node(children[0])
+            self.full &= self.add_edge(parent, node_id, children[1])
             return node_id
 
         elif len(children) == 3 and isinstance(children[1], GlycanParser.BranchContext):  # {'[' branch ']'}
             # branching, hand the parent on to the next level
-            self.__walk(children[1], parent)
+            self.walk(children[1], parent)
             return parent
 
         elif len(children) == 6:  # {glycan con '[' branch ']' branch}
             # branching in a chain, append the end to the parent and hang both branches on that
-            node_id = self.__walk(children[5], parent)
-            self.__walk(children[3], node_id)
-            node_id2 = self.__add_node(children[0])
-            self.full &= self.__add_edge(node_id, node_id2, children[1])
+            node_id = self.walk(children[5], parent)
+            self.walk(children[3], node_id)
+            node_id2 = self.add_node(children[0])
+            self.full &= self.add_edge(node_id, node_id2, children[1])
             return node_id2
 
         elif len(children) == 9:  # {glycan con '[' branch ']' '[' branch ']' branch}
             # branching in a chain, append the end to the parent and hang both branches on that
-            node_id = self.__walk(children[8], parent)
-            self.__walk(children[3], node_id)
-            self.__walk(children[6], node_id)
-            node_id2 = self.__add_node(children[0])
-            self.full &= self.__add_edge(node_id, node_id2, children[1])
+            node_id = self.walk(children[8], parent)
+            self.walk(children[3], node_id)
+            self.walk(children[6], node_id)
+            node_id2 = self.add_node(children[0])
+            self.full &= self.add_edge(node_id, node_id2, children[1])
             return node_id2
 
         elif len(children) == 12:  # {glycan con '[' branch ']' '[' branch ']' '[' branch ']' branch}
             # branching in a chain, append the end to the parent and hang both branches on that
-            node_id = self.__walk(children[11], parent)
-            self.__walk(children[3], node_id)
-            self.__walk(children[6], node_id)
-            self.__walk(children[9], node_id)
-            node_id2 = self.__add_node(children[0])
-            self.full &= self.__add_edge(node_id, node_id2, children[1])
+            node_id = self.walk(children[11], parent)
+            self.walk(children[3], node_id)
+            self.walk(children[6], node_id)
+            self.walk(children[9], node_id)
+            node_id2 = self.add_node(children[0])
+            self.full &= self.add_edge(node_id, node_id2, children[1])
             return node_id2
 
         # there should be no case missing, but who knows...
@@ -136,7 +136,7 @@ class TreeWalker:
                 output += self.context2str(c)
         return output
 
-    def __add_edge(self, parent, child, con) -> bool:
+    def add_edge(self, parent, child, con) -> bool:
         """
         Add an edge between the provided ids of the parent and the children in the glycan tree.
 
@@ -178,7 +178,7 @@ class TreeWalker:
                     recipe += tmp
         return recipe
 
-    def __add_node(self, node, config=""):
+    def add_node(self, node, config=""):
         """
         Add a new node to the network based on the name of the represented glycan.
 
