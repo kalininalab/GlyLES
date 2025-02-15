@@ -4,6 +4,7 @@ import logging
 
 from joblib import Parallel, delayed, parallel_backend
 
+from glyles.glycans.poly.gwb_glycan import GWBGlycan
 from glyles.glycans.utils import ParseError
 from glyles.glycans.poly.glycan import Glycan
 
@@ -189,6 +190,8 @@ def generate(glycan, full):
     """
     try:
         # ... by passing them to the glycan class to parse them and return them as intended
+        if "End--" in glycan:
+            return GWBGlycan(glycan, full=full).get_smiles()
         return glycan, Glycan(glycan, full=full).get_smiles()
 
     # catch any exception at glycan level to not destroy the whole pipeline because of one mis-formed glycan

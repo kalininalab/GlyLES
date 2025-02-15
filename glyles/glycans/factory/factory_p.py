@@ -14,6 +14,12 @@ class PyranoseFactory:
                   "smiles": "OCC(O)C1O[C@H](O)C(O)C(O)C1O"},
         "B_HEP": {"name": "Hep", "config": Config.BETA, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,
                   "smiles": "OCC(O)C1O[C@@H](O)C(O)C(O)C1O"},
+        "HEPT": {"name": "Hep", "config": Config.UNDEF, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,
+                "smiles": "OCC(O)C1OC(O)C(O)C(O)C1O"},
+        "A_HEPT": {"name": "Hep", "config": Config.ALPHA, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,
+                  "smiles": "OCC(O)C1O[C@H](O)C(O)C(O)C1O"},
+        "B_HEPT": {"name": "Hep", "config": Config.BETA, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,
+                  "smiles": "OCC(O)C1O[C@@H](O)C(O)C(O)C1O"},
 
         # Hexose
         "HEX": {"name": "Hex", "config": Config.UNDEF, "isomer": Enantiomer.U, "lactole": Lactole.PYRANOSE,

@@ -6,7 +6,7 @@ from rdkit.Chem import GetAdjacencyMatrix, AddHs, RemoveHs
 from rdkit.Chem.rdchem import ChiralType
 
 from glyles.glycans.factory.factory_o import OpenFactory, c1_finder
-from glyles.glycans.utils import find_longest_c_chain, opposite_chirality
+from glyles.glycans.utils import UnreachableError, find_longest_c_chain, opposite_chirality
 from glyles.grammar.GlycanLexer import GlycanLexer
 
 if not hasattr(GlycanLexer, "MOD"):
@@ -14,7 +14,12 @@ if not hasattr(GlycanLexer, "MOD"):
 
 
 def get_indices(names, types):
-    sac_index = types.index(GlycanLexer.SAC)
+    if GlycanLexer.SAC in types:
+        sac_index = types.index(GlycanLexer.SAC)
+    elif GlycanLexer.COUNT in types:
+        sac_index = types.index(GlycanLexer.COUNT)
+    else:
+        raise UnreachableError("No saccharide found in the monomer")
 
     # if there's nothing to do, return
     if len(types) == sac_index + 1 or (len(types) > sac_index + 1 and types[sac_index + 1] != GlycanLexer.SAC):
@@ -52,7 +57,7 @@ def check_for_resizing(monomer, names, types):
         count = 5
     elif names[len_index] == "Hex":
         count = 6
-    elif names[len_index] == "Hep":
+    elif names[len_index] in {"Hep", "Hept"}:
         count = 7
     elif names[len_index] == "Oct":
         count = 8
@@ -139,7 +144,7 @@ def check_for_open_form(monomer, names, types, longer=False):
             maximum = 5
         elif names[len_index] == "Hex":
             maximum = 6
-        elif names[len_index] == "Hep":
+        elif names[len_index] in {"Hep", "Hept"}:
             maximum = 7
         elif names[len_index] == "Oct":
             maximum = 8

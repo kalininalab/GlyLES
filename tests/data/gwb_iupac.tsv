@@ -1,0 +1,16 @@
+redEnd--??1D-GalNAc,p(--??1D-Gal,p)--??1D-GlcNAc,p--??1D-Gal,p(--??1D-GlcNAc,p(--??1D-Gal,p)--??1S)--??1S$MONO,Und,-2H,0,redEnd	Gal(?1-?)GlcNAcS(?1-?)GalS(?1-?)GlcNAc(?1-?)[Gal(?1-?)]GalNAc
+redEnd--??1D-GalNAc,p(--??1D-Gal,p)--??1D-GlcNAc,p--??1D-Gal,p--??1D-GlcNAc,p(--??1D-Gal,p--??1D-GlcNAc,p(--??1D-Gal,p)--??1S)--??1S$MONO,Und,-2H,0,redEnd	Gal(?1-?)GlcNAcS(?1-?)Gal(?1-?)GlcNAcS(?1-?)Gal(?1-?)GlcNAc(?1-?)[Gal(?1-?)]GalNAc
+redEnd--??1D-GalNAc,p(--3b1D-Gal,p(--3a2D-NeuAc,p)--6?1S)--6b1D-GlcNAc,p--4b1D-Gal,p$MONO,Und,-2H,0,redEnd	NeuAc(a2-3)Gal6S(b1-3)[Gal(b1-4)GlcNAc(b1-6)]GalNAc
+redEnd--?a1D-GalNAc,p(--3b1D-Gal,p)--6b1D-GlcNAc,p((--??1D-Gal,p)--??1L-Fuc,p)--??1S$MONO,Und,-H,0,redEnd	Gal(?1-?)[Fuc(?1-?)]GlcNAcS(b1-6)[Gal(b1-3)]GalNAc
+redEnd--?a1D-GalNAc,p(--6b1D-GlcNAc,p)--3b1D-Gal,p--??1D-GlcNAc,p(--??1L-Fuc,p)--??1S$MONO,Und,-H,0,redEnd	Fuc(?1-?)GlcNAcS(?1-?)Gal(b1-3)[GlcNAc(b1-6)]GalNAc
+redEnd--?a1D-GalNAc,p(--3b1D-Gal,p)--6b1D-Gal,p}--3a2D-NeuAc,p$MONO,Und,-H,0,redEnd	{NeuAc(a2-3)}Gal(b1-6)[Gal(b1-3)]GalNAc
+redEnd--?a1D-GalNAc,p(--3b1D-GlcNAc,p--??1D-Gal,p--??1L-Fuc,p)--6b1D-GlcNAc,p--??1D-Gal,p--??1L-Fuc,p}--??1L-Fuc,p$MONO,Und,-2H,0,redEnd	{Fuc(?1-?)}Fuc(?1-?)Gal(?1-?)GlcNAc(b1-6)[Fuc(?1-?)Gal(?1-?)GlcNAc(b1-3)]GalNAc
+redEnd--?a1D-GalNAc,p(--3b1D-Gal,p--2a1L-Fuc,p)--6b1D-GlcNAc,p$MONO,Und,-H,0,redEnd	Fuc(a1-2)Gal(b1-3)[GlcNAc(b1-6)]GalNAc
+redEnd--?a1D-GalNAc,p(--3b1D-Gal,p--2a1L-Fuc,p)--6b1D-GlcNAc,p--4b1D-Gal,p(--3a1D-GalNAc,p)--2a1L-Fuc,p$MONO,Und,-2H,0,redEnd	GalNAc(a1-3)[Fuc(a1-2)]Gal(b1-4)GlcNAc(b1-6)[Fuc(a1-2)Gal(b1-3)]GalNAc
+redEnd--?a1D-GalNAc,p(--3b1D-GlcNAc,p--4b1D-Gal,p--4a1D-GlcNAc,p)--6b1D-GlcNAc,p--4b1D-Gal,p--3b1D-GlcNAc,p--4b1D-Gal,p--4a1D-GlcNAc,p$MONO,Und,-2H,0,redEnd	GlcNAc(a1-4)Gal(b1-4)GlcNAc(b1-3)Gal(b1-4)GlcNAc(b1-6)[GlcNAc(a1-4)Gal(b1-4)GlcNAc(b1-3)]GalNAc
+redEnd--??1D-Glc,p--4b1D-Gal,p(--3a2D-NeuGc,p)--4b1D-GalNAc,p$MONO,Und,-H,0,redEnd	NeuGc(a2-3)[GalNAc(b1-4)]Gal(b1-4)Glc
+redEnd--??1D-GalNAc,p(--??1D-Gal,p--??1HexNAc,p--??1L-Fuc,p)--??2D-NeuAc,p--??2D-NeuAc,p$MONO,Und,-H,0,redEnd	Fuc(?1-?)HexNAc(?1-?)Gal(?1-?)[NeuAc(?2-?)NeuAc(?2-?)]GalNAc
+redEnd--??1D-GalNAc,p--??2D-Kdn,p$MONO,Und,-H,0,redEnd	Kdn(?2-?)GalNAc
+redEnd--?b1D-GlcNAc,p--4b1D-GlcNAc,p--4b1D-Man,p((--3a1D-Man,p--??1D-GlcNAc,p)--4b1D-GlcNAc,p)--6a1D-Man,p--??1D-GlcNAc,p}--??1D-GlcNAc,p$MONO,Und,-H,0,redEnd	{GlcNAc(?1-?)}GlcNAc(?1-?)Man(a1-6)[GlcNAc(?1-?)Man(a1-3)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc
+redEnd--?b1D-GlcNAc,p--4b1D-GlcNAc,p--4b1D-Man,p((--3a1D-Man,p--??1D-GlcNAc,p)--6a1D-Man,p--??1D-GlcNAc,p)--4b1D-GlcNAc,p}(--??1D-Gal,p--??2D-NeuAc,p)--??1D-GlcNAc,p$MONO,Und,-H,0,redEnd	{GlcNAc(?1-?)}{NeuAc(?2-?)Gal(?1-?)}GlcNAc(?1-?)Man(a1-6)[GlcNAc(?1-?)Man(a1-3)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc
+redEnd--?b1D-GlcNAc,p--4b1D-GlcNAc,p--4b1D-Man,p((--3a1D-Man,p--2b1D-GlcNAc,p)--4b1D-GlcNAc,p)--6a1D-Man,p--2b1D-GlcNAc,p$MONO,Und,-H,0,redEnd	GlcNAc(b1-2)Man(a1-6)[GlcNAc(b1-2)Man(a1-3)][GlcNAc(b1-4)]Man(b1-4)GlcNAc(b1-4)GlcNAc

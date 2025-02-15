@@ -2,7 +2,7 @@ from glyles.glycans.factory.factory_f import FuranoseFactory
 from glyles.glycans.factory.factory_o import c1_finder, OpenFactory
 from glyles.glycans.factory.factory_p import PyranoseFactory
 from glyles.glycans.mono.monomer import Monomer
-from glyles.glycans.utils import Config, Enantiomer, Lactole
+from glyles.glycans.utils import Config, Enantiomer, Lactole, UnreachableError
 from glyles.grammar.GlycanLexer import GlycanLexer
 
 if not hasattr(GlycanLexer, "MOD"):
@@ -181,9 +181,16 @@ class MonomerFactory:
 
         # extract key information from the input, i.e. the type, the configuration and pyranose/furanose
         tmp = list(zip(*recipe))
-        name = recipe[tmp[1].index(GlycanLexer.SAC)][0]
+        if GlycanLexer.SAC in tmp[1]:
+            name = recipe[tmp[1].index(GlycanLexer.SAC)][0]
+        elif GlycanLexer.COUNT in tmp[1]:
+            name = recipe[tmp[1].index(GlycanLexer.COUNT)][0]
+        else:
+            raise UnreachableError("No monomer name found in the recipe.")
         if name == "Sug":
             name = "Oct"
+        name = name[0].upper() + name[1:].lower()
+
         config_index = tmp[1].index(GlycanLexer.TYPE) if GlycanLexer.TYPE in tmp[1] else None
         ring_index = tmp[1].index(GlycanLexer.RING) if GlycanLexer.RING in tmp[1] else None
 

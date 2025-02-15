@@ -1,5 +1,16 @@
 # Change Log
 
+## v1.2.0 - 2025-02-15
+
+### Added
+
+- GWB support
+- IUPAC Export for GWB sequences
+
+## v1.1.0 - 2024-12-18
+
+## v1.0.0 - 2024-08-16
+
 ## v0.5.11 - 2023-06-09
 
 Relax requirement restrictions to allow for RDKit versions newer then 2021-09-02

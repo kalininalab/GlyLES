@@ -53,9 +53,9 @@ class TreeWalker:
             node_id = self.add_node(children[1])
             self.walk(children[0], node_id)
         elif len(children) == 3:  # SAC ' ' TYPE
-            self.add_node(children[0], children[2].symbol.text)
+            self.add_node(children[0], config=children[2].symbol.text)
         elif len(children) == 4:  # branch SAC ' ' TYPE
-            node_id = self.add_node(children[1], children[3].symbol.text)
+            node_id = self.add_node(children[1], config=children[3].symbol.text)
             self.walk(children[0], node_id)
         else:
             raise RuntimeError("This branch of the if-statement should be unreachable!")
@@ -178,7 +178,7 @@ class TreeWalker:
                     recipe += tmp
         return recipe
 
-    def add_node(self, node, config=""):
+    def add_node(self, node, parent: int = -1, config=""):
         """
         Add a new node to the network based on the name of the represented glycan.
 

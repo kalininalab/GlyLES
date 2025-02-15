@@ -1,4 +1,5 @@
 import re
+from typing import Literal
 
 import numpy as np
 from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
@@ -7,6 +8,7 @@ from glyles.glycans.mono.enum_c import enumerate_carbon
 from glyles.glycans.mono.reactor import SMILESReaktor
 from glyles.glycans.utils import Config, find_isomorphism_nx
 from glyles.grammar.GlycanLexer import GlycanLexer
+from glyles.gwb.GWBLexer import GWBLexer
 
 if not hasattr(GlycanLexer, "MOD"):
     GlycanLexer.MOD = GlycanLexer.QMARK + 1
@@ -69,7 +71,7 @@ class Monomer:
         """
         return self.__root_smiles
 
-    def get_name(self, full=False):
+    def get_name(self, mode: Literal["name", "full", "slim"] = "name"):
         """
         Returns the name of this monomer as three-letter code (eventually longer for more fancy monosaccharides with
         more complex side chains).
@@ -80,8 +82,20 @@ class Monomer:
         Returns:
             The name of this monomer
         """
-        if full:
-            return "".join((s for s, _ in self.recipe))
+        if mode in {"slim", "full"}:
+            core, mods = [], []
+            for v, t in self.recipe:
+                if t in {GlycanLexer.MOD, GlycanLexer.COUNT, GWBLexer.MOD, GWBLexer.COUNT}:
+                    core.append(v)
+                else:
+                    if mode == "slim" and t in {GlycanLexer.RING, GWBLexer.RING}:
+                        continue
+                    mods.append(v)
+            name = "".join(core) + "".join(mods)
+            if mode == "slim":
+                name = name.replace("L-", "").replace("D-", "")
+            name = name.replace("?", "-")
+            return name
         return self.name
 
     def get_smiles(self):

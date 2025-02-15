@@ -120,6 +120,7 @@ functional_groups = {
     "Pen": "OC2C(O)C(O)C(O)CO2",
     "Hex": "OC2C(O)C(O)C(O)C(CO)O2",
     "Hep": "OC2C(O)C(O)C(O)C(C(O)CO)O2",
+    "Hept": "OC2C(O)C(O)C(O)C(C(O)CO)O2",
     "Oct": "OC2C(O)C(O)C(O)C(C(O)C(O)CO)O2",
 
     # some special cases
@@ -322,7 +323,7 @@ class SMILESReaktor:
                 # if it's not a modification or already parsed, continue
                 if t != GlycanLexer.MOD or \
                         n.count("L") + n.count("D") == len(n) or \
-                        n in ['-', '-ol', '-onic', '-aric', '-ulosonic', '-ulosaric'] or \
+                        n in ['?', '-', '-ol', '-onic', '-aric', '-ulosonic', '-ulosaric'] or \
                         "Anhydro" in n:
                     continue
 

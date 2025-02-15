@@ -27,13 +27,13 @@ class Config(Enum):
     UNDEF = 0
     ALPHA = 1
     BETA = 2
+    OPEN = 3
 
     def __str__(self):
-        if self == Config.UNDEF:
-            return "not determined"
-        if self == Config.ALPHA:
-            return "alpha"
-        return "beta"
+        return ["not determined", "alpha", "beta", "open"][self.value]
+
+    def to_string(self):
+        return ["", "a", "b", "o"][self.value]
 
 
 class Enantiomer(Enum):
