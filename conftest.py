@@ -60,11 +60,11 @@ def pytest_addoption(parser):
 
 def pytest_generate_tests(metafunc):
     subset_size = metafunc.config.getoption("--subset-size")
-    if subset_size == 0:
-        return
     seed = metafunc.config.getoption("--seed")
     random.seed(seed)  # Seed affects all parameterizations consistently
     old_markers = list(metafunc.definition.iter_markers("parametrize"))
+    if len(old_markers) == 0:
+        return
     subset_size = math.ceil(math.pow(subset_size, 1/len(old_markers)))
     new_markers = []
 
