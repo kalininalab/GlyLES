@@ -16,7 +16,7 @@ class GWBTreeWalker(TreeWalker):
     def __init__(self, factory, tree_only):
         super().__init__(factory, tree_only)
     
-    def parse_int(self, t):
+    def parse(self, t):
         floating = False
         for c in filter(lambda x: not isinstance(x, (TerminalNode, ErrorNode)), t.getChildren()):
             if isinstance(c, GWBParser.BranchContext):
