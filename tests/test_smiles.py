@@ -59,8 +59,9 @@ class TestSMILES:
         compare_smiles(computed, sol)
 
     @pytest.mark.parametrize("root_orientation", ["n", "a", "b"])
-    @pytest.mark.parametrize("iupac, plain, alpha, beta", smiles_samples_simple)
-    def test_smiles_poly(self, iupac, plain, alpha, beta, root_orientation):
+    @pytest.mark.parametrize("data", smiles_samples_simple)
+    def test_smiles_poly(self, data, root_orientation):
+        iupac, plain, alpha, beta = data
         computed = Glycan(iupac, root_orientation=root_orientation).get_smiles()
 
         if root_orientation == "a":

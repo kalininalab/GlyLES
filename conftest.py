@@ -95,7 +95,6 @@ def pytest_generate_tests(metafunc):
         ))
     metafunc.definition.own_markers = []
     for args, values, ids, indirect in new_markers:
-        print(args)
         metafunc.parametrize(
             args,
             values,

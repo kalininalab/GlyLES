@@ -32,7 +32,7 @@ class TreeWalker:
                 self.parse_int(c)
         return self.g, self.full and len(list(nx.connected_components(self.g.to_undirected()))) == 1
 
-    def parse_int(self, t, parent: int):
+    def parse_int(self, t):
         """
         Parse a parsed tree (AST) from ANTLR into this networkx graph.
 
