@@ -42,7 +42,7 @@ jobs:
         shell: bash -l {0}
         run: |
           cd tests
-          pytest --cov=../glyles/ --cov-report=xml -m "not todo"
+          pytest --cov=../glyles/ --cov-report=xml -m "not todo" --sample-size=10000
       
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3

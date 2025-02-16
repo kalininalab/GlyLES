@@ -162,9 +162,9 @@ class Glycan:
             "bonds": len(mol.GetBonds()),
             "rings": len(mol.GetRingInfo().AtomRings()),
             "monomers": len(self.parse_tree.nodes),
-            "types": dict(Counter([self.parse_tree.nodes[n]["type"].get_name(True) for n in self.parse_tree.nodes])),
-            "root": self.parse_tree.nodes[0]["type"].get_name(True),
-            "leaves": [self.parse_tree.nodes[n]["type"].get_name(True) for n, d in self.parse_tree.out_degree() if
+            "types": dict(Counter([self.parse_tree.nodes[n]["type"].get_name("full") for n in self.parse_tree.nodes])),
+            "root": self.parse_tree.nodes[0]["type"].get_name("full"),
+            "leaves": [self.parse_tree.nodes[n]["type"].get_name("full") for n, d in self.parse_tree.out_degree() if
                        d == 0],
             "depth": max([v for k, v in nx.shortest_path_length(self.parse_tree, 0).items()]),
         }
