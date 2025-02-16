@@ -203,3 +203,8 @@ def generate(glycan, full):
         logging.error(f"An unexpected exception occurred with with {glycan}. This glycan cannot be parsed. "
                       f"Error message: {e.__str__()}")
         return glycan, ""
+
+
+if __name__ == "__main__":
+    # print(convert("GalNAc"))
+    print(Glycan("GalNAc").get_smiles())

@@ -89,7 +89,7 @@ class GWBGlycan(Glycan):
                 self.parse_tree = None
                 self.glycan_smiles = ""
                 raise pe from None
-            self.parse_tree, self.tree_full = GWBTreeWalker(self.factory, self.tree_only).parse(self.grammar_tree)
+            self.parse_tree, self.tree_full = GWBTreeWalker(self.factory, self.tree_only).parse_int(self.grammar_tree)
 
             # if the glycan should be parsed immediately, do so
             if not self.tree_only and self.tree_full and self.full:

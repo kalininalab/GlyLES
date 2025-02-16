@@ -24,15 +24,15 @@ class TreeWalker:
         self.tree_only = tree_only
         self.full = True
 
-    def parse_first(self, t):
+    def parse(self, t):
         for c in filter(lambda x: not isinstance(x, (TerminalNode, ErrorNode)), t.getChildren()):
             if isinstance(c, GlycanParser.BranchContext):
                 self.walk(c, self.node_id)
             elif isinstance(c, GlycanParser.BeginContext):
-                self.parse(c)
+                self.parse_int(c)
         return self.g, self.full and len(list(nx.connected_components(self.g.to_undirected()))) == 1
 
-    def parse(self, t):
+    def parse_int(self, t):
         """
         Parse a parsed tree (AST) from ANTLR into this networkx graph.
 
