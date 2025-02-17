@@ -125,7 +125,7 @@ class GlycanParser ( Parser ):
     symbolicNames = [ "<INVALID>", "<INVALID>", "<INVALID>", "SAC", "CARBON", 
                       "NITROGEN", "OXYGEN", "PHOSPHOR", "FG", "ANHYDRO", 
                       "HEAD", "HEADD", "END", "COUNT", "TYPE", "RING", "NUM", 
-                      "COLON", "DASH", "LPAR", "RPAR", "LBRACE", "RBRACE", 
+                      "COMMA", "DASH", "LPAR", "RPAR", "LBRACE", "RBRACE", 
                       "LBRACK", "RBRACK", "A", "AI", "C", "D", "E", "T", 
                       "EQ", "I", "SLASH", "QMARK" ]
 
@@ -164,7 +164,7 @@ class GlycanParser ( Parser ):
     TYPE=14
     RING=15
     NUM=16
-    COLON=17
+    COMMA=17
     DASH=18
     LPAR=19
     RPAR=20
@@ -825,11 +825,11 @@ class GlycanParser ( Parser ):
                 return self.getTypedRuleContext(GlycanParser.CtContext,i)
 
 
-        def COLON(self, i:int=None):
+        def COMMA(self, i:int=None):
             if i is None:
-                return self.getTokens(GlycanParser.COLON)
+                return self.getTokens(GlycanParser.COMMA)
             else:
-                return self.getToken(GlycanParser.COLON, i)
+                return self.getToken(GlycanParser.COMMA, i)
 
         def C(self):
             return self.getToken(GlycanParser.C, 0)
@@ -878,7 +878,7 @@ class GlycanParser ( Parser ):
                 _la = self._input.LA(1)
                 while _la==17:
                     self.state = 159
-                    self.match(GlycanParser.COLON)
+                    self.match(GlycanParser.COMMA)
                     self.state = 161
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
@@ -909,7 +909,7 @@ class GlycanParser ( Parser ):
                 _la = self._input.LA(1)
                 while _la==17:
                     self.state = 173
-                    self.match(GlycanParser.COLON)
+                    self.match(GlycanParser.COMMA)
                     self.state = 174
                     self.match(GlycanParser.NUM)
                     self.state = 179
@@ -1105,8 +1105,8 @@ class GlycanParser ( Parser ):
         def ANHYDRO(self):
             return self.getToken(GlycanParser.ANHYDRO, 0)
 
-        def COLON(self):
-            return self.getToken(GlycanParser.COLON, 0)
+        def COMMA(self):
+            return self.getToken(GlycanParser.COMMA, 0)
 
         def bridge(self, i:int=None):
             if i is None:
@@ -1170,7 +1170,7 @@ class GlycanParser ( Parser ):
                     self.state = 199
                     self.match(GlycanParser.NUM)
                     self.state = 200
-                    self.match(GlycanParser.COLON)
+                    self.match(GlycanParser.COMMA)
 
 
                 self.state = 203
@@ -1245,7 +1245,7 @@ class GlycanParser ( Parser ):
                     _la = self._input.LA(1)
                     if _la==17:
                         self.state = 228
-                        self.match(GlycanParser.COLON)
+                        self.match(GlycanParser.COMMA)
                         self.state = 229
                         self.match(GlycanParser.NUM)
 

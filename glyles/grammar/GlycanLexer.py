@@ -343,7 +343,7 @@ class GlycanLexer(Lexer):
     TYPE = 14
     RING = 15
     NUM = 16
-    COLON = 17
+    COMMA = 17
     DASH = 18
     LPAR = 19
     RPAR = 20
@@ -373,13 +373,13 @@ class GlycanLexer(Lexer):
 
     symbolicNames = [ "<INVALID>",
             "SAC", "CARBON", "NITROGEN", "OXYGEN", "PHOSPHOR", "FG", "ANHYDRO", 
-            "HEAD", "HEADD", "END", "COUNT", "TYPE", "RING", "NUM", "COLON", 
+            "HEAD", "HEADD", "END", "COUNT", "TYPE", "RING", "NUM", "COMMA", 
             "DASH", "LPAR", "RPAR", "LBRACE", "RBRACE", "LBRACK", "RBRACK", 
             "A", "AI", "C", "D", "E", "T", "EQ", "I", "SLASH", "QMARK" ]
 
     ruleNames = [ "T__0", "T__1", "SAC", "CARBON", "NITROGEN", "OXYGEN", 
                   "PHOSPHOR", "FG", "ANHYDRO", "HEAD", "HEADD", "END", "COUNT", 
-                  "TYPE", "RING", "NUM", "COLON", "DASH", "LPAR", "RPAR", 
+                  "TYPE", "RING", "NUM", "COMMA", "DASH", "LPAR", "RPAR", 
                   "LBRACE", "RBRACE", "LBRACK", "RBRACK", "A", "AI", "C", 
                   "D", "E", "T", "EQ", "I", "SLASH", "QMARK" ]
 

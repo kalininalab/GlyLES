@@ -4,6 +4,7 @@ from antlr4 import ErrorNode, TerminalNode
 from glyles.glycans.utils import UnreachableError, ketoses2
 from glyles.grammar.GlycanLexer import GlycanLexer
 from glyles.grammar.GlycanParser import GlycanParser
+from glyles.gwb.GWBLexer import GWBLexer
 
 if not hasattr(GlycanLexer, "MOD"):
     GlycanLexer.MOD = GlycanLexer.QMARK + 1
@@ -176,6 +177,10 @@ class TreeWalker:
                     recipe += [(x[0], GlycanLexer.SAC) for x in tmp]
                 else:
                     recipe += tmp
+        if GWBLexer.AT in [x[1] for x in recipe]:
+            idx = [x[1] for x in recipe].index(GWBLexer.AT)
+            end = idx - 1 if idx > 0 and recipe[idx - 1][1] == GWBLexer.COMMA else idx  # check if predecessor is a comma
+            recipe = recipe[:end] + recipe[idx + 2:]  # remove (,) @ NUM
         return recipe
 
     def add_node(self, node, parent: int = -1, config=""):

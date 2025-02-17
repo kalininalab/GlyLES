@@ -7,24 +7,25 @@ branch:
     | LPAR branch RPAR branch
     | con deriv (LPAR branch RPAR)? branch;
 deriv:
-    (HEADD DASH)? modi* saci+ modi* (COLON RING)? | modi*;
+    (HEADD DASH)? modi* saci+ modi* (COMMA RING)? (COMMA? AT NUM)? 
+    | modi* (COMMA? AT NUM);
 saci: 
     COUNT | SAC;
 con: 
     DOUBLEDASH (qnum typi)? qnum?;
 add:
-    EQ LBRACK ct? NUM (COLON ct? NUM)* RBRACK
-    | C LBRACK NUM (COLON NUM)* RBRACK;
+    EQ LBRACK ct? NUM (COMMA ct? NUM)* RBRACK
+    | C LBRACK NUM (COMMA NUM)* RBRACK;
 fgi:
 	COUNT | bridge | FG;
 carb:
     (AI | A | I)? CARBON NUM add*;
 modi:
-    (NUM COLON)? NUM DASH ANHYDRO DASH
+    (NUM COMMA)? NUM DASH ANHYDRO DASH
     | NUM DASH bridge DASH fgi DASH
     | DASH? NUM? bridge* fgi
     | QMARK NUM FG
-    | NUM ((COLON NUM)? D | E | carb)
+    | NUM ((COMMA NUM)? D | E | carb)
     | HEAD
     | HEADD DASH
     | DASH END;
@@ -83,9 +84,11 @@ RING:
     'p' | 'f' | 'o';
 NUM:
     ('1'..'9') ('0'..'9')*;
+AT:
+    '@';
 SEMICOLON: 
     ';';
-COLON: 
+COMMA: 
     ',';
 DASH: 
     '-';

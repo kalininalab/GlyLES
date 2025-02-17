@@ -23,17 +23,17 @@ con:
     | typi NUM DASH qnum
     | typi NUM;
 add:
-    EQ LBRACK ct? NUM (COLON ct? NUM)* RBRACK
-    | C LBRACK NUM (COLON NUM)* RBRACK;
+    EQ LBRACK ct? NUM (COMMA ct? NUM)* RBRACK
+    | C LBRACK NUM (COMMA NUM)* RBRACK;
 fgi:
 	COUNT | bridge | FG;
 carb:
     (AI | A | I)? CARBON NUM add*;
 modi:
-    (NUM COLON)? NUM DASH ANHYDRO DASH
+    (NUM COMMA)? NUM DASH ANHYDRO DASH
     | NUM DASH bridge DASH fgi DASH
     | DASH? NUM? bridge* fgi
-    | NUM ((COLON NUM)? D | E | carb)
+    | NUM ((COMMA NUM)? D | E | carb)
     | HEAD
     | HEADD DASH
     | DASH END;
@@ -86,7 +86,7 @@ RING:
     'p' | 'f';
 NUM:
     ('1'..'9') ('0'..'9')*;
-COLON:
+COMMA:
 	',';
 DASH:
 	'-';

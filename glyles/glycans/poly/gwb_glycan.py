@@ -108,4 +108,4 @@ class GWBGlycan(Glycan):
 
 
 if __name__ == "__main__":
-    print(GWBGlycan("freeEnd--?a1L-Glc,p--N?1Me$MONO,perMe,Na,0,freeEnd").to_iupac(slim=True))
+    print(GWBGlycan("redEnd--??1D-Glc,p--4b1D-Gal,p(--3a2D-NeuGc,p@270)--4b1D-GalNAc,p$").to_iupac(slim=True))

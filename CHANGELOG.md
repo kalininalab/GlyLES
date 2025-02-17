@@ -1,5 +1,10 @@
 # Change Log
 
+## v1.2.1 - 2025-02-15
+
+- Internal improvements
+- Extension of GWB support to positioning via @NUM operator in GWB structures
+
 ## v1.2.0 - 2025-02-15
 
 ### Added
