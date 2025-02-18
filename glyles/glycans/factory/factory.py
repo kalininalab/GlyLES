@@ -4,9 +4,11 @@ from glyles.glycans.factory.factory_p import PyranoseFactory
 from glyles.glycans.mono.monomer import Monomer
 from glyles.glycans.utils import Config, Enantiomer, Lactole, UnreachableError
 from glyles.grammar.GlycanLexer import GlycanLexer
+from glyles.gwb import GWBLexer
 
 if not hasattr(GlycanLexer, "MOD"):
     GlycanLexer.MOD = GlycanLexer.QMARK + 1
+    GWBLexer.MOD = GWBLexer.QMARK + 1
 
 
 class MonomerFactory:

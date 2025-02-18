@@ -8,7 +8,7 @@ branch:
     | con deriv (LPAR branch RPAR)? branch;
 deriv:
     (HEADD DASH)? modi* saci+ modi* (COMMA RING)? (COMMA? AT NUM)? 
-    | modi* (COMMA? AT NUM);
+    | modi* (COMMA? AT NUM)?;
 saci: 
     COUNT | SAC;
 con: 
@@ -40,6 +40,13 @@ ct:
 bos: 
     FREEEND | REDEND;
 
+
+
+
+
+
+
+// Tokens
 FREEEND:
     'freeEnd';
 REDEND:
@@ -86,14 +93,14 @@ NUM:
     ('1'..'9') ('0'..'9')*;
 AT:
     '@';
+COMMA:
+	',';
 SEMICOLON: 
     ';';
-COMMA: 
-    ',';
-DASH: 
-    '-';
 DOUBLEDASH: 
     '--';
+DASH: 
+    '-';
 LPAR: 
     '(';
 RPAR: 
@@ -124,7 +131,13 @@ I:
 	'i';
 SLASH:
     '/';
-QMARK: 
-    '?';
 DOLLAR:
     '$';
+HASH:
+    '#';
+SPACE:
+    ' ';
+QMARK: 
+    '?';
+
+// antlr -Dlanguage=Python3 GWB.g4

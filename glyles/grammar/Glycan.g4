@@ -1,10 +1,10 @@
 grammar Glycan;
 start:
-    '#' (LBRACK branch RBRACK)* begin '#';
+    HASH (LBRACK branch RBRACK)* begin HASH;
 begin:
-    branch deriv ' ' TYPE
+    branch deriv SPACE TYPE
     | branch deriv
-    | deriv ' ' TYPE
+    | deriv SPACE TYPE
     | deriv;
 branch:
     deriv con
@@ -46,6 +46,11 @@ bridge:
 ct:
     C | T;
 
+// Tokens
+FREEEND:
+    'freeEnd';
+REDEND:
+    'redEnd';
 SAC:
     'Glc' | 'Man' | 'Gal' | 'Gul' | 'Alt' | 'All' | 'Tal' | 'Ido' | 'Qui' | 'Rha' | 'Fuc' | 'Oli' | 'Tyv'
     | 'Abe' | 'Par' | 'Dig' | 'Col' | 'Ara' | 'Lyx' | 'Xyl' | 'Rib' | 'Kdn' | 'Neu' | 'Sia' | 'Pse' | 'Leg' | 'Aci'
@@ -86,8 +91,14 @@ RING:
     'p' | 'f';
 NUM:
     ('1'..'9') ('0'..'9')*;
+AT:
+    '@';
 COMMA:
 	',';
+SEMICOLON: 
+    ';';
+DOUBLEDASH: 
+    '--';
 DASH:
 	'-';
 LPAR:
@@ -120,6 +131,12 @@ I:
 	'i';
 SLASH:
     '/';
+DOLLAR:
+    '$';
+HASH:
+    '#';
+SPACE:
+    ' ';
 QMARK:
 	'?';
 
