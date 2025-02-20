@@ -3,13 +3,9 @@ from antlr4 import ErrorNode, TerminalNode
 
 from glyles.glycans.poly.walker import TreeWalker
 from glyles.glycans.utils import UnreachableError
-from glyles.grammar.GlycanLexer import GlycanLexer
+from glyles.iupac.IUPACLexer import IUPACLexer
 from glyles.gwb.GWBLexer import GWBLexer
 from glyles.gwb.GWBParser import GWBParser
-
-
-if not hasattr(GWBLexer, "MOD"):
-    GWBLexer.MOD = GWBLexer.REDEND + 1
 
 
 class GWBTreeWalker(TreeWalker):
@@ -18,10 +14,14 @@ class GWBTreeWalker(TreeWalker):
     
     def parse(self, t):
         floating = False
-        for c in filter(lambda x: not isinstance(x, (TerminalNode, ErrorNode)), t.getChildren()):
+        children = list(t.getChildren())
+        for c in filter(lambda x: not isinstance(x, (TerminalNode, ErrorNode)), children):
             if isinstance(c, GWBParser.BranchContext):
                 self.walk(c, -1, floating=floating)
                 floating = True
+        
+        if isinstance(children[0], GWBParser.BosContext) and children[0].children[0].symbol.type == GWBLexer.FREEEND:
+            self.update_recipe(0, [("-", GWBLexer.DASH), ("ol", GWBLexer.END)])
         
         for node in self.g.nodes:
             if "update" in self.g.nodes[node]:
@@ -67,7 +67,7 @@ class GWBTreeWalker(TreeWalker):
         if parent != -1:
             if parent == child:  # special case for branches with sulfate modification or similar
                 if cs[0] != "?":
-                    self.g.nodes[parent]["update"] = [(cs[0], GlycanLexer.NUM)] + self.g.nodes[parent]["update"]
+                    self.g.nodes[parent]["update"] = [(cs[0], IUPACLexer.NUM)] + self.g.nodes[parent]["update"]
                 return True
             self.g.add_edge(parent, child, type=con)
             return "?" not in con and "/" not in con
@@ -81,12 +81,18 @@ class GWBTreeWalker(TreeWalker):
         self.full &= full
         del self.g.nodes[node_id]["update"]
     
+    def update_recipe(self, parent, recipe):
+        if "update" in self.g.nodes[parent]:
+            self.g.nodes[parent]["update"] += recipe
+        else:
+            self.g.nodes[parent]["update"] = recipe
+    
     def add_node(self, node, parent, config=""):
         """
         Add a new node to the network based on the name of the represented glycan.
 
         Args:
-            node (GlycanParser.GlycanContext): Node of the parsed tree to be parsed into a monomer
+            node (IUPACParser.GlycanContext): Node of the parsed tree to be parsed into a monomer
             config (str): configuration to be applied to the monomer
 
         Returns:
@@ -98,8 +104,8 @@ class GWBTreeWalker(TreeWalker):
 
         # add the node to the network and store the enum of the glycan as attribute
         recipe = self.build_recipe(node)
-        if len(set.intersection({GlycanLexer.SAC, GlycanLexer.COUNT}, set(x for _, x in recipe))) == 0:
-            self.g.nodes[parent]["update"] = recipe
+        if len(set.intersection({IUPACLexer.SAC, IUPACLexer.COUNT}, set(x for _, x in recipe))) == 0:
+            self.update_node(parent, recipe)
             return parent
         elif len(recipe) > 2 and recipe[-2][0] == ",":
             recipe = recipe[:-2] + [recipe[-1]]

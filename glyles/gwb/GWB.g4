@@ -25,7 +25,7 @@ modi:
     | NUM DASH bridge DASH fgi DASH
     | DASH? NUM? bridge* fgi
     | QMARK NUM FG
-    | NUM ((COMMA NUM)? D | E | carb)
+    | NUM ((COMMA NUM)? D | E | U | carb)
     | HEAD
     | HEADD DASH
     | DASH END;
@@ -129,6 +129,8 @@ EQ:
 	'=';
 I:
 	'i';
+U:
+    'u';
 SLASH:
     '/';
 DOLLAR:

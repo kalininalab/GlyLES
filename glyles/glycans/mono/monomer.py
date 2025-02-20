@@ -7,11 +7,7 @@ from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
 from glyles.glycans.mono.enum_c import enumerate_carbon
 from glyles.glycans.mono.reactor import SMILESReaktor
 from glyles.glycans.utils import Config, find_isomorphism_nx
-from glyles.grammar.GlycanLexer import GlycanLexer
-from glyles.gwb.GWBLexer import GWBLexer
-
-if not hasattr(GlycanLexer, "MOD"):
-    GlycanLexer.MOD = GlycanLexer.QMARK + 1
+from glyles.iupac.IUPACLexer import IUPACLexer
 
 
 def shift(d, offset):
@@ -85,10 +81,10 @@ class Monomer:
         if mode in {"slim", "full"}:
             core, mods = [], []
             for v, t in self.recipe:
-                if t in {GlycanLexer.MOD, GlycanLexer.COUNT, GWBLexer.MOD, GWBLexer.COUNT}:
+                if t in {IUPACLexer.MOD, IUPACLexer.COUNT}:
                     core.append(v)
                 else:
-                    if mode == "slim" and t in {GlycanLexer.RING, GWBLexer.RING}:
+                    if mode == "slim" and t == IUPACLexer.RING:
                         continue
                     mods.append(v)
             name = "".join(core) + "".join(mods)
@@ -129,8 +125,8 @@ class Monomer:
         Returns:
             Monomer in alpha conformation
         """
-        recipe = [(v, t) for v, t in self.recipe if t != GlycanLexer.TYPE]
-        recipe.append(('a', GlycanLexer.TYPE))
+        recipe = [(v, t) for v, t in self.recipe if t != IUPACLexer.TYPE]
+        recipe.append(('a', IUPACLexer.TYPE))
         return Monomer(factory.create(recipe))
 
     def beta(self, factory):
@@ -143,8 +139,8 @@ class Monomer:
         Returns:
             Monomer in beta conformation
         """
-        recipe = [(v, t) for v, t in self.recipe if t != GlycanLexer.TYPE]
-        recipe.append(('b', GlycanLexer.TYPE))
+        recipe = [(v, t) for v, t in self.recipe if t != IUPACLexer.TYPE]
+        recipe.append(('b', IUPACLexer.TYPE))
         return Monomer(factory.create(recipe))
 
     def undefined(self, factory):
@@ -158,7 +154,7 @@ class Monomer:
         Returns:
             Monomer in undefined conformation
         """
-        recipe = [(v, t) for v, t in self.recipe if t != GlycanLexer.TYPE]
+        recipe = [(v, t) for v, t in self.recipe if t != IUPACLexer.TYPE]
         return Monomer(factory.create(recipe))
 
     def to_chirality(self, chirality, factory):
@@ -388,7 +384,7 @@ class Monomer:
 
         Args:
             names (List[str]): name (string representation) of the modification
-            types (List[int]): Type of the parsed stings based on GlycanLexer.TYPE
+            types (List[int]): Type of the parsed stings based on IUPACLexer.TYPE
 
         Returns:
             New monomer with the altered structure

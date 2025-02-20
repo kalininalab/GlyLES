@@ -4,15 +4,11 @@ import re
 
 import numpy as np
 from rdkit import Chem
-from rdkit.Chem.rdchem import ChiralType
 from rdkit.Chem.rdmolops import AddHs, RemoveHs
 
 from glyles.glycans.mono.reactor_basic import change_base_monomer
 from glyles.glycans.utils import Enantiomer, ketoses2, opposite_chirality
-from glyles.grammar.GlycanLexer import GlycanLexer
-
-if not hasattr(GlycanLexer, "MOD"):
-    GlycanLexer.MOD = GlycanLexer.QMARK + 1
+from glyles.iupac.IUPACLexer import IUPACLexer
 
 O, C = 0, 1
 
@@ -321,7 +317,7 @@ class SMILESReaktor:
             # parse remaining modifications
             for n, t in zip(names, types):
                 # if it's not a modification or already parsed, continue
-                if t != GlycanLexer.MOD or \
+                if t != IUPACLexer.MOD or \
                         n.count("L") + n.count("D") == len(n) or \
                         n in ['?', '-', '-ol', '-onic', '-aric', '-ulosonic', '-ulosaric'] or \
                         "Anhydro" in n:
@@ -494,9 +490,9 @@ class SMILESReaktor:
             return True
 
         # in case of a carbon chain
-        elif (name[1] == "C" and name[2:4].isnumeric()) or \
-                (name[1:3] in "aCiC" and name[3:5].isnumeric()) or \
-                (name[1:4] == "aiC" and name[4:6].isnumeric()):
+        elif (len(name) >= 5 and name[1] == "C" and name[2:4].isnumeric()) or \
+                (len(name) >= 6 and name[1:3] in "aCiC" and name[3:5].isnumeric()) or \
+                (len(name) >= 7 and name[1:4] == "aiC" and name[4:6].isnumeric()):
             if bond_elem == "P":
                 bond_elem = "OP(=O)(O)"
             self.side_chains[pos][c_or_o] += bond_elem + self.parse_poly_carbon(name)
@@ -519,7 +515,7 @@ class SMILESReaktor:
             Nothing
         """
         for n, t in zip(names, types):
-            if t == GlycanLexer.MOD and "Anhydro" in n:
+            if t == IUPACLexer.MOD and "Anhydro" in n:
                 nums = [int(x) for x in re.findall(r'\d+', n)]
                 if len(nums) != 2:
                     raise ValueError("Anhydro functional groups should have exactly two numbers: X,Y-Anhydro-...")

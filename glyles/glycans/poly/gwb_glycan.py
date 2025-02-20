@@ -3,12 +3,13 @@ import logging
 from antlr4 import CommonTokenStream, InputStream
 import networkx as nx
 
-from glyles.glycans.poly.glycan import Glycan
 from glyles.glycans.poly.gwb_walker import GWBTreeWalker
 from glyles.glycans.poly.merger import Merger
 from glyles.glycans.utils import ParseError
 from glyles.gwb.GWBLexer import GWBLexer
+print(GWBLexer.QMARK)
 from glyles.gwb.GWBParser import GWBParser
+from glyles.glycans.poly.glycan import Glycan
 
 
 def graph_to_string_int(graph: nx.DiGraph, node2label: callable) -> str:
@@ -108,4 +109,4 @@ class GWBGlycan(Glycan):
 
 
 if __name__ == "__main__":
-    print(GWBGlycan("redEnd--??1D-Glc,p--4b1D-Gal,p(--3a2D-NeuGc,p@270)--4b1D-GalNAc,p$").to_iupac(slim=True))
+    print(GWBGlycan("freeEnd--?b1D-GlcNAc,p(--6a1L-Fuc,p)--4b1D-GlcNAc,p--4b1D-Man,p(--3a1D-Man,p(--??1D-GlcNAc,p--??1D-Gal,p--??2D-NeuAc,p)--??1D-GlcNAc,p--??1D-Gal,p--??2D-NeuAc,p--??2D-NeuAc,p)--6a1D-Man,p(--??1D-Man,p)--??1D-Man,p$MONO,Und,-2H,0,freeEnd").to_iupac(slim=True))

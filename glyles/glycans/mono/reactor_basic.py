@@ -6,23 +6,20 @@ from rdkit.Chem import GetAdjacencyMatrix, AddHs, RemoveHs
 from rdkit.Chem.rdchem import ChiralType
 
 from glyles.glycans.factory.factory_o import OpenFactory, c1_finder
-from glyles.glycans.utils import UnreachableError, find_longest_c_chain, opposite_chirality
-from glyles.grammar.GlycanLexer import GlycanLexer
-
-if not hasattr(GlycanLexer, "MOD"):
-    GlycanLexer.MOD = GlycanLexer.QMARK + 1
+from glyles.glycans.utils import UnreachableError, find_longest_c_chain
+from glyles.iupac.IUPACLexer import IUPACLexer
 
 
 def get_indices(names, types):
-    if GlycanLexer.SAC in types:
-        sac_index = types.index(GlycanLexer.SAC)
-    elif GlycanLexer.COUNT in types:
-        sac_index = types.index(GlycanLexer.COUNT)
+    if IUPACLexer.SAC in types:
+        sac_index = types.index(IUPACLexer.SAC)
+    elif IUPACLexer.COUNT in types:
+        sac_index = types.index(IUPACLexer.COUNT)
     else:
         raise UnreachableError("No saccharide found in the monomer")
 
     # if there's nothing to do, return
-    if len(types) == sac_index + 1 or (len(types) > sac_index + 1 and types[sac_index + 1] != GlycanLexer.SAC):
+    if len(types) == sac_index + 1 or (len(types) > sac_index + 1 and types[sac_index + 1] != IUPACLexer.SAC):
         return sac_index, None
 
     # identify the root and the new size of the monomer by identifying the indices of their descriptions

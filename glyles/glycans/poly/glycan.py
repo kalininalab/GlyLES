@@ -1,10 +1,8 @@
 import logging
 from collections import Counter
-from typing import Union, List
 
 import networkx as nx
-from PIL import ImageDraw, Image
-from glyles.grammar.GlycanParser import GlycanParser
+from glyles.iupac.IUPACParser import IUPACParser
 from networkx.algorithms.isomorphism import DiGraphMatcher
 import pydot
 from antlr4 import InputStream, CommonTokenStream
@@ -16,13 +14,14 @@ from glyles.glycans.mono.reactor import functional_groups
 from glyles.glycans.mono.monomer import Monomer
 from glyles.glycans.poly.anltr_error_listener import GlyLESErrorListener
 from glyles.glycans.poly.merger import Merger
-from glyles.glycans.poly.viz import Tree
 from glyles.glycans.poly.walker import TreeWalker
 from glyles.glycans.utils import ParseError
-from glyles.grammar.GlycanLexer import GlycanLexer
+from glyles.gwb.GWBLexer import GWBLexer
+from glyles.iupac.IUPACLexer import IUPACLexer
 
-if not hasattr(GlycanLexer, "MOD"):
-    GlycanLexer.MOD = GlycanLexer.QMARK + 1
+if not hasattr(IUPACLexer, "MOD"):
+    IUPACLexer.MOD = IUPACLexer.QMARK + 1
+    GWBLexer.MOD = GWBLexer.QMARK + 1
 
 
 def compare_smiles(
@@ -78,14 +77,14 @@ def recipe_equality(
     if no:
         # if functional groups should not be considered for isomorphism, just check the root monomer of both nodes
         recipe_glycan, recipe_query = glycan.get_recipe(), query.get_recipe()
-        return recipe_glycan[list(zip(*recipe_glycan))[1].index(GlycanLexer.SAC)] == \
-               recipe_query[list(zip(*recipe_query))[1].index(GlycanLexer.SAC)]
+        return recipe_glycan[list(zip(*recipe_glycan))[1].index(IUPACLexer.SAC)] == \
+               recipe_query[list(zip(*recipe_query))[1].index(IUPACLexer.SAC)]
     if some:
         # raise NotImplementedError("Matching to a subset of functional groups is not yet implemented. Coming soon.")
         """# if query's fgs have to be a subset of glycan's fgs, do some magic
         recipe_glycan, recipe_query = glycan.get_recipe(), query.get_recipe()
-        if recipe_glycan[list(zip(*recipe_glycan))[1].index(GlycanLexer.SAC)] != \
-                recipe_query[list(zip(*recipe_query))[1].index(GlycanLexer.SAC)]:
+        if recipe_glycan[list(zip(*recipe_glycan))[1].index(IUPACLexer.SAC)] != \
+                recipe_query[list(zip(*recipe_query))[1].index(IUPACLexer.SAC)]:
             return False
         iso = find_isomorphism_nx(glycan, query, query.name, query.c1_find)
         inv = dict([(v, k) for k, v in iso])
@@ -373,9 +372,9 @@ class Glycan:
                 raise ParseError("Only string input can be parsed: " + str(self.iupac))
 
             stream = InputStream(data='#' + self.iupac + '#')
-            lexer = GlycanLexer(stream)
+            lexer = IUPACLexer(stream)
             token = CommonTokenStream(lexer)
-            parser = GlycanParser(token)
+            parser = IUPACParser(token)
 
             lexer.removeErrorListeners()
             lexer.addErrorListener(GlyLESErrorListener())

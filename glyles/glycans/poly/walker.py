@@ -2,12 +2,9 @@ import networkx as nx
 from antlr4 import ErrorNode, TerminalNode
 
 from glyles.glycans.utils import UnreachableError, ketoses2
-from glyles.grammar.GlycanLexer import GlycanLexer
-from glyles.grammar.GlycanParser import GlycanParser
+from glyles.iupac.IUPACLexer import IUPACLexer
+from glyles.iupac.IUPACParser import IUPACParser
 from glyles.gwb.GWBLexer import GWBLexer
-
-if not hasattr(GlycanLexer, "MOD"):
-    GlycanLexer.MOD = GlycanLexer.QMARK + 1
 
 
 class TreeWalker:
@@ -27,9 +24,9 @@ class TreeWalker:
 
     def parse(self, t):
         for c in filter(lambda x: not isinstance(x, (TerminalNode, ErrorNode)), t.getChildren()):
-            if isinstance(c, GlycanParser.BranchContext):
+            if isinstance(c, IUPACParser.BranchContext):
                 self.walk(c, self.node_id)
-            elif isinstance(c, GlycanParser.BeginContext):
+            elif isinstance(c, IUPACParser.BeginContext):
                 self.parse_int(c)
         return self.g, self.full and len(list(nx.connected_components(self.g.to_undirected()))) == 1
 
@@ -38,7 +35,7 @@ class TreeWalker:
         Parse a parsed tree (AST) from ANTLR into this networkx graph.
 
         Args:
-            t (GlycanParser.BeginContext): result of the parsing step from ANTLR
+            t (IUPACParser.BeginContext): result of the parsing step from ANTLR
 
         Returns:
             Tree of parsed glycan with monomers in nodes
@@ -67,7 +64,7 @@ class TreeWalker:
         connections in the input IUPAC.
 
         Args:
-            t (GlycanParser.BranchContext): subtree to parse in this recursive step.
+            t (IUPACParser.BranchContext): subtree to parse in this recursive step.
             parent (int): ID of the parent node for this (subtree)
 
         Returns:
@@ -86,14 +83,14 @@ class TreeWalker:
             self.full &= self.add_edge(parent, node_id, children[1])
             return node_id
 
-        elif len(children) == 3 and isinstance(children[2], GlycanParser.BranchContext):  # {glycan con branch}
+        elif len(children) == 3 and isinstance(children[2], IUPACParser.BranchContext):  # {glycan con branch}
             # chain without branching, the parent is the parent of the parsing of the back part
             parent = self.walk(children[2], parent)
             node_id = self.add_node(children[0])
             self.full &= self.add_edge(parent, node_id, children[1])
             return node_id
 
-        elif len(children) == 3 and isinstance(children[1], GlycanParser.BranchContext):  # {'[' branch ']'}
+        elif len(children) == 3 and isinstance(children[1], IUPACParser.BranchContext):  # {'[' branch ']'}
             # branching, hand the parent on to the next level
             self.walk(children[1], parent)
             return parent
@@ -168,13 +165,13 @@ class TreeWalker:
         recipe = []
         for c in node.getChildren():
             if isinstance(c, TerminalNode):
-                recipe.append((str(c), GlycanLexer.SAC if isinstance(node, GlycanParser.SaciContext) else c.symbol.type))
+                recipe.append((str(c), IUPACLexer.SAC if isinstance(node, IUPACParser.SaciContext) else c.symbol.type))
             else:
                 tmp = self.build_recipe(c)
-                if isinstance(c, GlycanParser.ModiContext):
-                    recipe.append(("".join([x[0] for x in tmp]), GlycanLexer.MOD))
-                elif isinstance(c, GlycanParser.SaciContext):
-                    recipe += [(x[0], GlycanLexer.SAC) for x in tmp]
+                if isinstance(c, IUPACParser.ModiContext):
+                    recipe.append(("".join([x[0] for x in tmp]), IUPACLexer.MOD))
+                elif isinstance(c, IUPACParser.SaciContext):
+                    recipe += [(x[0], IUPACLexer.SAC) for x in tmp]
                 else:
                     recipe += tmp
         if GWBLexer.AT in [x[1] for x in recipe]:
@@ -188,7 +185,7 @@ class TreeWalker:
         Add a new node to the network based on the name of the represented glycan.
 
         Args:
-            node (GlycanParser.GlycanContext): Node of the parsed tree to be parsed into a monomer
+            node (IUPACParser.GlycanContext): Node of the parsed tree to be parsed into a monomer
             config (str): configuration to be applied to the monomer
 
         Returns:

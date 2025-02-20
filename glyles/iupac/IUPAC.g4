@@ -1,4 +1,4 @@
-grammar Glycan;
+grammar IUPAC;
 start:
     HASH (LBRACK branch RBRACK)* begin HASH;
 begin:
@@ -33,7 +33,7 @@ modi:
     (NUM COMMA)? NUM DASH ANHYDRO DASH
     | NUM DASH bridge DASH fgi DASH
     | DASH? NUM? bridge* fgi
-    | NUM ((COMMA NUM)? D | E | carb)
+    | NUM ((COMMA NUM)? D | E | U | carb)
     | HEAD
     | HEADD DASH
     | DASH END;
@@ -129,6 +129,8 @@ EQ:
 	'=';
 I:
 	'i';
+U:
+    'u';
 SLASH:
     '/';
 DOLLAR:
@@ -140,4 +142,4 @@ SPACE:
 QMARK:
 	'?';
 
-// antlr -Dlanguage=Python3 Glycan.g4
+// antlr -Dlanguage=Python3 IUPAC.g4

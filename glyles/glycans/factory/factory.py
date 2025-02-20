@@ -3,12 +3,7 @@ from glyles.glycans.factory.factory_o import c1_finder, OpenFactory
 from glyles.glycans.factory.factory_p import PyranoseFactory
 from glyles.glycans.mono.monomer import Monomer
 from glyles.glycans.utils import Config, Enantiomer, Lactole, UnreachableError
-from glyles.grammar.GlycanLexer import GlycanLexer
-from glyles.gwb import GWBLexer
-
-if not hasattr(GlycanLexer, "MOD"):
-    GlycanLexer.MOD = GlycanLexer.QMARK + 1
-    GWBLexer.MOD = GWBLexer.QMARK + 1
+from glyles.iupac.IUPACLexer import IUPACLexer
 
 
 class MonomerFactory:
@@ -183,23 +178,23 @@ class MonomerFactory:
 
         # extract key information from the input, i.e. the type, the configuration and pyranose/furanose
         tmp = list(zip(*recipe))
-        if GlycanLexer.SAC in tmp[1]:
-            name = recipe[tmp[1].index(GlycanLexer.SAC)][0]
-        elif GlycanLexer.COUNT in tmp[1]:
-            name = recipe[tmp[1].index(GlycanLexer.COUNT)][0]
+        if IUPACLexer.SAC in tmp[1]:
+            name = recipe[tmp[1].index(IUPACLexer.SAC)][0]
+        elif IUPACLexer.COUNT in tmp[1]:
+            name = recipe[tmp[1].index(IUPACLexer.COUNT)][0]
         else:
             raise UnreachableError("No monomer name found in the recipe.")
         if name == "Sug":
             name = "Oct"
         name = name[0].upper() + name[1:].lower()
 
-        config_index = tmp[1].index(GlycanLexer.TYPE) if GlycanLexer.TYPE in tmp[1] else None
-        ring_index = tmp[1].index(GlycanLexer.RING) if GlycanLexer.RING in tmp[1] else None
+        config_index = tmp[1].index(IUPACLexer.TYPE) if IUPACLexer.TYPE in tmp[1] else None
+        ring_index = tmp[1].index(IUPACLexer.RING) if IUPACLexer.RING in tmp[1] else None
 
         # generate the full name that is looked up in the factory
         if config is not None and len(config) > 0:
             name = config + "_" + name
-            recipe.append((config, GlycanLexer.TYPE))
+            recipe.append((config, IUPACLexer.TYPE))
         elif config_index is not None:
             name = recipe[config_index][0] + "_" + name
 
