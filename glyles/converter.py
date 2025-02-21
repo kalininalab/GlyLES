@@ -5,8 +5,8 @@ import logging
 from joblib import Parallel, delayed, parallel_backend
 
 from glyles.glycans.poly.gwb_glycan import GWBGlycan
-from glyles.glycans.utils import ParseError
 from glyles.glycans.poly.glycan import Glycan
+from glyles.glycans.utils import ParseError
 
 
 def preprocess_glycans(glycan, glycan_list, glycan_file):
@@ -207,4 +207,4 @@ def generate(glycan, full):
 
 if __name__ == "__main__":
     # print(convert("GalNAc"))
-    print(Glycan("GalNAc").get_smiles())
+    print(Glycan("GalNAc").to_iupac())

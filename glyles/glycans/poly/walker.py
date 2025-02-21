@@ -2,6 +2,7 @@ import networkx as nx
 from antlr4 import ErrorNode, TerminalNode
 
 from glyles.glycans.utils import UnreachableError, ketoses2
+from glyles.gwb.GWBParser import GWBParser
 from glyles.iupac.IUPACLexer import IUPACLexer
 from glyles.iupac.IUPACParser import IUPACParser
 from glyles.gwb.GWBLexer import GWBLexer
@@ -165,12 +166,12 @@ class TreeWalker:
         recipe = []
         for c in node.getChildren():
             if isinstance(c, TerminalNode):
-                recipe.append((str(c), IUPACLexer.SAC if isinstance(node, IUPACParser.SaciContext) else c.symbol.type))
+                recipe.append((str(c), IUPACLexer.SAC if isinstance(node, (IUPACParser.SaciContext, GWBParser.SaciContext)) else c.symbol.type))
             else:
                 tmp = self.build_recipe(c)
-                if isinstance(c, IUPACParser.ModiContext):
+                if isinstance(c, (IUPACParser.ModiContext, GWBParser.ModiContext)):
                     recipe.append(("".join([x[0] for x in tmp]), IUPACLexer.MOD))
-                elif isinstance(c, IUPACParser.SaciContext):
+                elif isinstance(c, (IUPACParser.SaciContext, GWBParser.SaciContext)):
                     recipe += [(x[0], IUPACLexer.SAC) for x in tmp]
                 else:
                     recipe += tmp

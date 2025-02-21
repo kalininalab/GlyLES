@@ -71,7 +71,7 @@ class GWBTreeWalker(TreeWalker):
                 return True
             self.g.add_edge(parent, child, type=con)
             return "?" not in con and "/" not in con
-        return False
+        return True  # parent == -1 and not floating
 
     def update_node(self, node_id):
         recipe = self.g.nodes[node_id]["update"]

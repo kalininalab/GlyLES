@@ -414,7 +414,3 @@ class Glycan:
                           f"Error message: {msg}")
             self.glycan_smiles = ""
             raise e
-
-
-if __name__ == "__main__":
-    print(Glycan("dTal").get_smiles())
