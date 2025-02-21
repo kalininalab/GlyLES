@@ -78,12 +78,12 @@ def test_extreme_2(mode):
 def test_grammar_main(iupac, mode):
     assert Glycan(reduce_notation(iupac, mode), tree_only=True).get_tree() is not None
 
-def test_parse_1(self):
+def test_parse_1():
     g = Glycan("Man").get_tree()
 
     check_initial(g, "Man", 0, Config.UNDEF, lactole=Lactole.PYRANOSE)
 
-def test_parse_1_2(self):
+def test_parse_1_2():
     g = Glycan("Manpa").get_tree()
 
     check_initial(g, "Man", 0, Config.ALPHA, lactole=Lactole.PYRANOSE)
@@ -460,7 +460,7 @@ def test_parse_ternary_branching_2(mode):
     check_child(g, id_child_1, id_child_22, "Glc", "(a1-4)", 0, Lactole.PYRANOSE)
     check_child(g, id_child_1, id_child_23, "Gal", "(a1-6)", 0, Lactole.PYRANOSE)
 
-def test_parsing_error(self, caplog):
+def test_parsing_error(caplog):
     iupac = "Alt(a1-2)[Glc(a1-4)][Gal(a1-6)]Gul(a1-4)M*#$s'\\d ;«]as;an"  # Invalid IUPAC string!
     g = Glycan(iupac).get_tree()
     assert g is None

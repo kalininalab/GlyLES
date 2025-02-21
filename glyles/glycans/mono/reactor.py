@@ -490,9 +490,9 @@ class SMILESReaktor:
             return True
 
         # in case of a carbon chain
-        elif (len(name) >= 5 and name[1] == "C" and name[2:4].isnumeric()) or \
-                (len(name) >= 6 and name[1:3] in "aCiC" and name[3:5].isnumeric()) or \
-                (len(name) >= 7 and name[1:4] == "aiC" and name[4:6].isnumeric()):
+        elif len(name) > 1 and (name[1] == "C" and name[2:4].isnumeric()) or \
+                (name[1:3] in "aCiC" and name[3:5].isnumeric()) or \
+                (name[1:4] == "aiC" and name[4:6].isnumeric()):
             if bond_elem == "P":
                 bond_elem = "OP(=O)(O)"
             self.side_chains[pos][c_or_o] += bond_elem + self.parse_poly_carbon(name)

@@ -8,7 +8,7 @@ from glyles.glycans.poly.merger import Merger
 from glyles.glycans.utils import ParseError
 from glyles.gwb.GWBLexer import GWBLexer
 from glyles.gwb.GWBParser import GWBParser
-from glyles.glycans.poly.glycan import Glycan
+from glyles.glycans.poly.glycan import Glycan, prepare
 
 
 def graph_to_string_int(graph: nx.DiGraph, node2label: callable) -> str:
@@ -78,6 +78,7 @@ class GWBGlycan(Glycan):
             if "$" in self.iupac:
                 self.iupac = self.iupac[:self.iupac.index("$")]
             self.iupac += "$"
+            prepare(self.iupac)
             stream = InputStream(data=self.iupac)
             lexer = GWBLexer(stream)
             token = CommonTokenStream(lexer)

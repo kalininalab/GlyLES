@@ -1,5 +1,6 @@
 import logging
 from collections import Counter
+import re
 
 import networkx as nx
 from glyles.iupac.IUPACParser import IUPACParser
@@ -96,6 +97,10 @@ def recipe_equality(
         # if all functional groups have to be matched, compare the smiles strings of both
         return compare_smiles(glycan.get_structure(), query.get_structure())
     return False
+
+
+def prepare(iupac):
+    return re.sub(r'(?<!\d)dTal', '6dTal', iupac)
 
 
 class Glycan:
@@ -370,8 +375,9 @@ class Glycan:
             # parse the remaining structure description following the grammar, also add the dummy characters
             if not isinstance(self.iupac, str):
                 raise ParseError("Only string input can be parsed: " + str(self.iupac))
+            self.iupac = prepare('#' + self.iupac + '#')
 
-            stream = InputStream(data='#' + self.iupac + '#')
+            stream = InputStream(data=self.iupac)
             lexer = IUPACLexer(stream)
             token = CommonTokenStream(lexer)
             parser = IUPACParser(token)
@@ -411,4 +417,4 @@ class Glycan:
 
 
 if __name__ == "__main__":
-    print(Glycan("Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-6)]Gal(b1-3)[GlcNAc(a1-4)Gal(b1-4)GlcNAc6S(b1-6)]GalNAc", tree_only=True).summary())
+    print(Glycan("dTal").get_smiles())

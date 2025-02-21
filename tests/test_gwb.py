@@ -33,7 +33,7 @@ def test_gwb_iupac(data):
 @pytest.mark.fuzzy
 @pytest.mark.parametrize("gwb", fuzzy_data)
 def test_gwb_fuzzy(gwb):
-    if any(x in gwb for x in {"dTal", "End--??1P$", "End--??1S$", "[", "]"}):  # skip specific stuff and repeats
+    if any(x in gwb for x in {"[", "]"}):  # skip repeats
         pytest.skip()
     iupac = GWBGlycan(gwb).to_iupac()
     assert iupac is not None
