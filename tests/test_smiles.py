@@ -25,117 +25,116 @@ def compare_smiles(computed, solution, equal=True):
         assert c_rdkit != s_rdkit
 
 
-class TestSMILES:
-    def test_sanity(self):
-        compare_smiles("OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O",
-                       equal=False)
+def test_sanity():
+    compare_smiles("OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O",
+                    equal=False)
 
-    def test_1_1_bond(self):
-        smiles = Glycan("Gal(a1-1)Gal").get_smiles()
-        assert smiles is not None
-        assert smiles != ""
+def test_1_1_bond():
+    smiles = Glycan("Gal(a1-1)Gal").get_smiles()
+    assert smiles is not None
+    assert smiles != ""
 
-    @pytest.mark.parametrize("data", [
-        ("3,6-Anhydro-L-Gal a", "C1[C@H]2[C@H]([C@@H](O1)[C@@H]([C@@H](O2)O)O)O"),
-        ("1,6-Anhydro-D-Gal a", "C1[C@@H]2[C@@H]([C@@H]([C@H]([C@@H](O1)O2)O)O)O")
-    ])
-    def test_smiles_anh(self, data):
-        iupac, sol = data
-        computed = Glycan(iupac, start=100).get_smiles()
+@pytest.mark.parametrize("data", [
+    ("3,6-Anhydro-L-Gal a", "C1[C@H]2[C@H]([C@@H](O1)[C@@H]([C@@H](O2)O)O)O"),
+    ("1,6-Anhydro-D-Gal a", "C1[C@@H]2[C@@H]([C@@H]([C@H]([C@@H](O1)O2)O)O)O")
+])
+def test_smiles_anh(data):
+    iupac, sol = data
+    computed = Glycan(iupac, start=100).get_smiles()
 
-        compare_smiles(computed, sol)
+    compare_smiles(computed, sol)
 
-    @pytest.mark.parametrize("data", [
-        ("Glc", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"),
-        ("Man", "OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O"),
-        ("Gal", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O"),
-        ("Tal", "OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@H]1O"),
-        ("3,6-Anhydro-L-Gal a", "C1[C@H]2[C@H]([C@@H](O1)[C@@H]([C@@H](O2)O)O)O"),
-    ])
-    def test_smiles_mono(self, data):
-        iupac, sol = data
-        computed = Glycan(iupac, start=100).get_smiles()
+@pytest.mark.parametrize("data", [
+    ("Glc", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@@H]1O"),
+    ("Man", "OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@@H]1O"),
+    ("Gal", "OC[C@H]1OC(O)[C@H](O)[C@@H](O)[C@H]1O"),
+    ("Tal", "OC[C@H]1OC(O)[C@@H](O)[C@@H](O)[C@H]1O"),
+    ("3,6-Anhydro-L-Gal a", "C1[C@H]2[C@H]([C@@H](O1)[C@@H]([C@@H](O2)O)O)O"),
+])
+def test_smiles_mono(data):
+    iupac, sol = data
+    computed = Glycan(iupac, start=100).get_smiles()
 
-        compare_smiles(computed, sol)
+    compare_smiles(computed, sol)
 
-    @pytest.mark.parametrize("root_orientation", ["n", "a", "b"])
-    @pytest.mark.parametrize("data", smiles_samples_simple)
-    def test_smiles_poly(self, data, root_orientation):
-        iupac, plain, alpha, beta = data
-        computed = Glycan(iupac, root_orientation=root_orientation).get_smiles()
+@pytest.mark.parametrize("root_orientation", ["n", "a", "b"])
+@pytest.mark.parametrize("data", smiles_samples_simple)
+def test_smiles_poly(data, root_orientation):
+    iupac, plain, alpha, beta = data
+    computed = Glycan(iupac, root_orientation=root_orientation).get_smiles()
 
-        if root_orientation == "a":
-            smiles = alpha
-        elif root_orientation == "b":
-            smiles = beta
-        else:
-            smiles = plain
+    if root_orientation == "a":
+        smiles = alpha
+    elif root_orientation == "b":
+        smiles = beta
+    else:
+        smiles = plain
 
-        compare_smiles(computed, smiles)
+    compare_smiles(computed, smiles)
 
-    @pytest.mark.slow
-    @pytest.mark.parametrize("names", list(combinations([x + "p" for x in MonomerFactory().pyranoses() if x != "Api"] +
-                                                        [x + "f" for x in MonomerFactory().furanoses()], 2)))
-    @pytest.mark.parametrize("config1", [Config.ALPHA, Config.BETA, Config.UNDEF])
-    @pytest.mark.parametrize("config2", [Config.ALPHA, Config.BETA, Config.UNDEF])
-    def test_check_different_smiles(self, names, config1, config2):
-        name1, name2 = names
-        if config1 == Config.ALPHA:
-            name1 += " a"
-        elif config1 == Config.BETA:
-            name1 += " b"
+@pytest.mark.slow
+@pytest.mark.parametrize("names", list(combinations([x + "p" for x in MonomerFactory().pyranoses() if x != "Api"] +
+                                                    [x + "f" for x in MonomerFactory().furanoses()], 2)))
+@pytest.mark.parametrize("config1", [Config.ALPHA, Config.BETA, Config.UNDEF])
+@pytest.mark.parametrize("config2", [Config.ALPHA, Config.BETA, Config.UNDEF])
+def test_check_different_smiles(names, config1, config2):
+    name1, name2 = names
+    if config1 == Config.ALPHA:
+        name1 += " a"
+    elif config1 == Config.BETA:
+        name1 += " b"
 
-        if config2 == Config.ALPHA:
-            name2 += " a"
-        elif config2 == Config.BETA:
-            name2 += " b"
+    if config2 == Config.ALPHA:
+        name2 += " a"
+    elif config2 == Config.BETA:
+        name2 += " b"
 
-        compare_smiles(Glycan(name1).get_smiles(), Glycan(name2).get_smiles(), equal=False)
+    compare_smiles(Glycan(name1).get_smiles(), Glycan(name2).get_smiles(), equal=False)
 
-    @pytest.mark.parametrize("structure", ["X?", "XX?", "?(a1-2)[X]?", "?(a1-2)[Y]?(a1-4)?", "Y?(a1-2)[X]?",
-                                           "Z?(a1-2)[Y]X?"])
-    def test_length(self, structure):
-        arm = "?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)"
-        structure = structure.replace("X", arm).replace("Y", arm[:-7]).replace("Z", arm[:-14])
+@pytest.mark.parametrize("structure", ["X?", "XX?", "?(a1-2)[X]?", "?(a1-2)[Y]?(a1-4)?", "Y?(a1-2)[X]?",
+                                        "Z?(a1-2)[Y]X?"])
+def test_length(structure):
+    arm = "?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)?(a1-4)"
+    structure = structure.replace("X", arm).replace("Y", arm[:-7]).replace("Z", arm[:-14])
 
-        smiles = Glycan(structure.replace("?", "Gal")).get_smiles()
-        mol = Chem.MolFromSmiles(smiles)
-        rings = mol.GetRingInfo().AtomRings()
+    smiles = Glycan(structure.replace("?", "Gal")).get_smiles()
+    mol = Chem.MolFromSmiles(smiles)
+    rings = mol.GetRingInfo().AtomRings()
 
-        assert len(rings) == structure.count("?")
-        for ring in rings:
-            assert len(ring) == 6
-        assert smiles.count('%') > 0
-        assert smiles.count('%') % 2 == 0
+    assert len(rings) == structure.count("?")
+    for ring in rings:
+        assert len(ring) == 6
+    assert smiles.count('%') > 0
+    assert smiles.count('%') % 2 == 0
 
-        compare_smiles(smiles, Chem.MolToSmiles(mol))
+    compare_smiles(smiles, Chem.MolToSmiles(mol))
 
-    def test_dot(self):
-        glycan = Glycan("Man(a1-2)[Glc(a1-3)Gul(b1-4)]Gal(b1-3)Tal", tree_only=True)
-        glycan.save_dot("test.dot")
+def test_dot():
+    glycan = Glycan("Man(a1-2)[Glc(a1-3)Gul(b1-4)]Gal(b1-3)Tal", tree_only=True)
+    glycan.save_dot("test.dot")
 
-        with open("test.dot", "r") as dot:
-            dot_lines = [x.strip() for x in dot.readlines()]
+    with open("test.dot", "r") as dot:
+        dot_lines = [x.strip() for x in dot.readlines()]
 
-        monos = {}
-        assert len([x for x in dot_lines if len(x.strip()) > 0]) == 11
-        for i in range(5):
-            assert dot_lines[i + 1][0].isdigit()
-            assert "[label=" in dot_lines[i + 1]
-            monos[dot_lines[i + 1][-5:-2]] = int(dot_lines[i + 1][0])
+    monos = {}
+    assert len([x for x in dot_lines if len(x.strip()) > 0]) == 11
+    for i in range(5):
+        assert dot_lines[i + 1][0].isdigit()
+        assert "[label=" in dot_lines[i + 1]
+        monos[dot_lines[i + 1][-5:-2]] = int(dot_lines[i + 1][0])
 
-        assert list(sorted(monos.keys())) == ["Gal", "Glc", "Gul", "Man", "Tal"]
+    assert list(sorted(monos.keys())) == ["Gal", "Glc", "Gul", "Man", "Tal"]
 
-        edges = {
-            (monos["Gal"], monos["Tal"]): "(b1-3)",
-            (monos["Gul"], monos["Gal"]): "(b1-4)",
-            (monos["Man"], monos["Gal"]): "(a1-2)",
-            (monos["Glc"], monos["Gul"]): "(a1-3)",
-        }
-        for i in range(6, 10):
-            assert dot_lines[i][-9:-3] == edges[(int(dot_lines[i][0]), int(dot_lines[i][5]))]
+    edges = {
+        (monos["Gal"], monos["Tal"]): "(b1-3)",
+        (monos["Gul"], monos["Gal"]): "(b1-4)",
+        (monos["Man"], monos["Gal"]): "(a1-2)",
+        (monos["Glc"], monos["Gul"]): "(a1-3)",
+    }
+    for i in range(6, 10):
+        assert dot_lines[i][-9:-3] == edges[(int(dot_lines[i][0]), int(dot_lines[i][5]))]
 
-        os.remove("test.dot")
+    os.remove("test.dot")
 
-        smiles = glycan.get_smiles()
-        assert smiles != ""
+    smiles = glycan.get_smiles()
+    assert smiles != ""

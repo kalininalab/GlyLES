@@ -7,7 +7,6 @@ from glyles.glycans.poly.gwb_walker import GWBTreeWalker
 from glyles.glycans.poly.merger import Merger
 from glyles.glycans.utils import ParseError
 from glyles.gwb.GWBLexer import GWBLexer
-print(GWBLexer.QMARK)
 from glyles.gwb.GWBParser import GWBParser
 from glyles.glycans.poly.glycan import Glycan
 

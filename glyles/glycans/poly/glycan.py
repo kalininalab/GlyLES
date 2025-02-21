@@ -408,3 +408,7 @@ class Glycan:
                           f"Error message: {msg}")
             self.glycan_smiles = ""
             raise e
+
+
+if __name__ == "__main__":
+    print(Glycan("Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-3)[Fuc(a1-2)[GalNAc(a1-3)]Gal(b1-4)GlcNAc(b1-6)]Gal(b1-3)[GlcNAc(a1-4)Gal(b1-4)GlcNAc6S(b1-6)]GalNAc", tree_only=True).summary())

@@ -81,12 +81,12 @@ class Monomer:
         if mode in {"slim", "full"}:
             core, mods = [], []
             for v, t in self.recipe:
-                if t in {IUPACLexer.MOD, IUPACLexer.COUNT}:
-                    core.append(v)
+                if t in {IUPACLexer.MOD}:  # , IUPACLexer.COUNT}:
+                    mods.append(v)
                 else:
                     if mode == "slim" and t == IUPACLexer.RING:
                         continue
-                    mods.append(v)
+                    core.append(v)
             name = "".join(core) + "".join(mods)
             if mode == "slim":
                 name = name.replace("L-", "").replace("D-", "")

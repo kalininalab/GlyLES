@@ -105,7 +105,7 @@ class GWBTreeWalker(TreeWalker):
         # add the node to the network and store the enum of the glycan as attribute
         recipe = self.build_recipe(node)
         if len(set.intersection({IUPACLexer.SAC, IUPACLexer.COUNT}, set(x for _, x in recipe))) == 0:
-            self.update_node(parent, recipe)
+            self.update_recipe(parent, recipe)
             return parent
         elif len(recipe) > 2 and recipe[-2][0] == ",":
             recipe = recipe[:-2] + [recipe[-1]]
