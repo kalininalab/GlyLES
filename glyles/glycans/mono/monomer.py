@@ -87,7 +87,10 @@ class Monomer:
                     if mode == "slim" and t == IUPACLexer.RING:
                         continue
                     core.append(v)
-            name = "".join(core) + "".join(mods)
+            name = "".join(core) + \
+                "".join(sorted(filter(lambda x: x[0].isalpha(), mods))) + \
+                "".join(sorted(filter(lambda x: x[0].isdigit(), mods))) + \
+                "".join(sorted(filter(lambda x: not x[0].isalnum(), mods)))
             if mode == "slim":
                 name = name.replace("L-", "").replace("D-", "")
             name = name.replace("?", "-")

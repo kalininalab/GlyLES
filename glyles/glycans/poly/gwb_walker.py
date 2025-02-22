@@ -21,7 +21,7 @@ class GWBTreeWalker(TreeWalker):
                 floating = True
         
         if isinstance(children[0], GWBParser.BosContext) and children[0].children[0].symbol.type == GWBLexer.FREEEND:
-            self.update_recipe(0, [("-", GWBLexer.DASH), ("ol", GWBLexer.END)])
+            self.update_recipe(0, [("-ol", GWBLexer.MOD)])
         
         for node in self.g.nodes:
             if "update" in self.g.nodes[node]:
@@ -75,8 +75,18 @@ class GWBTreeWalker(TreeWalker):
 
     def update_node(self, node_id):
         recipe = self.g.nodes[node_id]["update"]
+        num = None
+        new_recipe = []
+        for tok, type_ in recipe:
+            if type_ == GWBLexer.NUM:
+                num = tok
+            else:
+                if num is not None:
+                    tok = num + tok
+                    num = None
+                new_recipe.append((tok, type_))
         p = self.g.nodes[node_id]["type"]
-        monomer, full = self.factory.create(p.get_recipe() + recipe, p.get_config().to_string(), tree_only=self.tree_only)
+        monomer, full = self.factory.create(p.get_recipe() + new_recipe, p.get_config().to_string(), tree_only=self.tree_only)
         self.g.nodes[node_id]["type"] = monomer
         self.full &= full
         del self.g.nodes[node_id]["update"]

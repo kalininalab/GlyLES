@@ -27,7 +27,7 @@ def test_gwb_positioning(gwb):
 @pytest.mark.parametrize("data", iupac_data)
 def test_gwb_iupac(data):
     gwb, iupac = data
-    assert GWBGlycan(gwb).to_iupac(slim=True) == iupac
+    assert GWBGlycan(gwb, tree_only=True).to_iupac(slim=True) == iupac
 
 
 @pytest.mark.fuzzy
@@ -35,6 +35,6 @@ def test_gwb_iupac(data):
 def test_gwb_fuzzy(gwb):
     if any(x in gwb for x in {"[", "]"}):  # skip repeats
         pytest.skip()
-    iupac = GWBGlycan(gwb).to_iupac()
+    iupac = GWBGlycan(gwb, tree_only=True).to_iupac()
     assert iupac is not None
     assert len(iupac) >= 3

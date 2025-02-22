@@ -1,3 +1,4 @@
+import re
 import networkx as nx
 from antlr4 import ErrorNode, TerminalNode
 
@@ -166,11 +167,14 @@ class TreeWalker:
         recipe = []
         for c in node.getChildren():
             if isinstance(c, TerminalNode):
-                recipe.append((str(c), IUPACLexer.SAC if isinstance(node, (IUPACParser.SaciContext, GWBParser.SaciContext)) else c.symbol.type))
+                if c.symbol.type != IUPACLexer.QMARK:
+                    recipe.append((str(c), IUPACLexer.SAC if isinstance(node, (IUPACParser.SaciContext, GWBParser.SaciContext)) else c.symbol.type))
             else:
                 tmp = self.build_recipe(c)
                 if isinstance(c, (IUPACParser.ModiContext, GWBParser.ModiContext)):
-                    recipe.append(("".join([x[0] for x in tmp]), IUPACLexer.MOD))
+                    mod = "".join([x[0] for x in tmp])
+                    mod = re.sub(r"\?\d*", "", mod)
+                    recipe.append((mod, IUPACLexer.MOD))
                 elif isinstance(c, (IUPACParser.SaciContext, GWBParser.SaciContext)):
                     recipe += [(x[0], IUPACLexer.SAC) for x in tmp]
                 else:
