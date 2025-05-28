@@ -1,6 +1,7 @@
 import os
 import sys
 import logging
+from typing import Union
 
 from joblib import Parallel, delayed, parallel_backend
 
@@ -44,7 +45,7 @@ def convert(
         glycan_generator=None,
         output_file=None,
         returning=True,
-        verbose=logging.INFO,
+        verbose: Union[int, None] = logging.WARNING,
         cpu_count=1,
         full=True,
 ):
@@ -72,10 +73,8 @@ def convert(
     """
 
     if verbose is None:
-        logger = logging.getLogger()
-        logger.disabled = True
-    else:
-        logging.basicConfig(level=verbose)
+        verbose = logging.CRITICAL
+    logging.basicConfig(level=verbose)
 
     # collect all data and return if no data were provided
     glycans = preprocess_glycans(glycan, glycan_list, glycan_file)

@@ -1,5 +1,9 @@
 # Change Log
 
+## v1.2.2 - 2025-08-28
+
+- Improvement of logging and verbosity
+
 ## v1.2.1 - 2025-02-15
 
 - Internal improvements
