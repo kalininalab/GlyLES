@@ -4,13 +4,13 @@ from collections import defaultdict
 
 import networkx as nx
 import numpy as np
-from rdkit import Chem
 
 from glyles.glycans.utils import sanitize_smiles
+from glyles.utils import smiles2mol
 
 
 def masked2nx(smiles: str, mask: list[int]) -> nx.Graph:
-    mol = Chem.MolFromSmiles(smiles)
+    mol = smiles2mol(smiles)
     tmp1, i, read_atom, read_atom_index = defaultdict(list), 0, "", -1
     for i in range(len(smiles)):
         # check for uppercase, i.e., atoms

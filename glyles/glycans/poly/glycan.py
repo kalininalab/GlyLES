@@ -19,6 +19,7 @@ from glyles.glycans.poly.walker import TreeWalker
 from glyles.glycans.utils import ParseError
 from glyles.gwb.GWBLexer import GWBLexer
 from glyles.iupac.IUPACLexer import IUPACLexer
+from glyles.utils import smiles2mol
 
 if not hasattr(IUPACLexer, "MOD"):
     IUPACLexer.MOD = IUPACLexer.QMARK + 1
@@ -154,7 +155,7 @@ class Glycan:
             raise ValueError("SMILES string for this glycan is empty, check if the IUPAC is convertable.")
 
         # generate molecule with RDKit and check it's not None
-        mol = Chem.MolFromSmiles(smiles)
+        mol = smiles2mol(smiles)
         if mol is None:
             raise ValueError("Generated SMILES is invalid, rdkit couldn't read it in.")
 
@@ -240,7 +241,7 @@ class Glycan:
             raise ValueError("SMILES string for this glycan is empty, check if the IUPAC is convertable.")
 
         # generate molecule with RDKit and check it's not None
-        mol = Chem.MolFromSmiles(smiles)
+        mol = smiles2mol(smiles)
         if mol is None:
             raise ValueError("Generated SMILES is invalid, rdkit couldn't read it in.")
 
@@ -254,7 +255,7 @@ class Glycan:
             matched_atoms = set()
             for g, val in group:
                 # compute the matches against this glycan
-                matches = mol.GetSubstructMatches(Chem.MolFromSmiles(g))
+                matches = mol.GetSubstructMatches(smiles2mol(g))
                 for match in matches:
                     for aid in match:
                         # find the core atom of each match, add it to the list of  covered atoms and increase the count
@@ -285,7 +286,7 @@ class Glycan:
             raise ValueError("SMILES string for this glycan is empty, check if the IUPAC is convertable.")
 
         # generate molecule with RDKit and check it's not None
-        mol = Chem.MolFromSmiles(smiles)
+        mol = smiles2mol(smiles)
         if mol is None:
             raise ValueError("Generated SMILES is invalid, rdkit couldn't read it in.")
 
@@ -293,9 +294,9 @@ class Glycan:
         for group in groups:
             # convert the functional group into a RDKit molecule
             if group in functional_groups:
-                tmp = Chem.MolFromSmiles(functional_groups[group])
+                tmp = smiles2mol(functional_groups[group])
             else:
-                tmp = Chem.MolFromSmiles(group, sanitize=False)
+                tmp = smiles2mol(group, sanitize=False)
 
             # check the functional groups for validity
             if tmp is None:

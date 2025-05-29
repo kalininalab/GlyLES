@@ -2,12 +2,13 @@ import re
 from typing import Literal
 
 import numpy as np
-from rdkit.Chem import MolFromSmiles, MolToSmiles, GetAdjacencyMatrix
+from rdkit.Chem import MolToSmiles, GetAdjacencyMatrix
 
 from glyles.glycans.mono.enum_c import enumerate_carbon
 from glyles.glycans.mono.reactor import SMILESReaktor
 from glyles.glycans.utils import Config, find_isomorphism_nx
 from glyles.iupac.IUPACLexer import IUPACLexer
+from glyles.utils import smiles2mol
 
 
 def shift(d, offset):
@@ -403,7 +404,7 @@ class Monomer:
         """
         if self.structure is None:
             # read the structure from the SMILES string
-            self.structure = MolFromSmiles(self.smiles)
+            self.structure = smiles2mol(self.smiles)
 
             # extract some further information from the molecule to not operate always on the molecule
             self.adjacency = GetAdjacencyMatrix(self.structure, useBO=True)

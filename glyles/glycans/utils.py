@@ -5,11 +5,12 @@ from enum import Enum
 import networkx as nx
 import numpy as np
 from networkx.algorithms import isomorphism
-from rdkit.Chem import MolFromSmiles
 
 from itertools import permutations
 
 from rdkit.Chem.rdchem import ChiralType
+
+from glyles.utils import smiles2mol
 
 
 class Verbosity(Enum):
@@ -386,11 +387,11 @@ def find_isomorphism_nx(mol1, mol2, name, c1_find=None):
     """
     # generate the RDKit molecules from the SMILES strings
     if isinstance(mol1, str):
-        mol1_rd = MolFromSmiles(mol1)
+        mol1_rd = smiles2mol(mol1)
     else:
         mol1_rd = mol1
     if isinstance(mol2, str):
-        mol2_rd = MolFromSmiles(mol2)
+        mol2_rd = smiles2mol(mol2)
     else:
         mol2_rd = mol2
 

@@ -14,12 +14,3 @@ class GlyLESErrorListener(ErrorListener):
         # Maybe not a good idea for a library to pollute the stderr when the exceptions are handled?
         # print(error_msg, file=sys.stderr)
         raise ParseError(f"Glycan cannot be parsed:\n{error_msg}")
-    
-    def reportAmbiguity(self, recognizer, dfa, startIndex, stopIndex, exact, ambigAlts, configs):
-        print("Ambiguity")
-
-    def reportAttemptingFullContext(self, recognizer, dfa, startIndex, stopIndex, conflictingAlts, configs):
-        print("AttemptingFullContext")
-
-    def reportContextSensitivity(self, recognizer, dfa, startIndex, stopIndex, prediction, configs):
-        print("ContextSensitivity")

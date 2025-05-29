@@ -4,6 +4,7 @@ from rdkit.Chem import GetAdjacencyMatrix, rdDepictor
 from rdkit.Chem.rdchem import BondType
 
 from glyles.glycans.utils import Config, Enantiomer, Lactole, Tree, find_longest_c_chain
+from glyles.utils import smiles2mol
 
 
 class OpenFactory:
@@ -180,7 +181,7 @@ def c1_finder(structure, base_smiles):
     if end_double_oxy and not start_double_oxy:
         return list(reversed(longest_c_chain))
 
-    base = Chem.MolFromSmiles(base_smiles)
+    base = smiles2mol(base_smiles)
     if not base.GetNumConformers():
         rdDepictor.Compute2DCoords(base)
     if not structure.GetNumConformers():
