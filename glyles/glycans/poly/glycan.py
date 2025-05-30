@@ -19,7 +19,7 @@ from glyles.glycans.poly.walker import TreeWalker
 from glyles.glycans.utils import ParseError
 from glyles.gwb.GWBLexer import GWBLexer
 from glyles.iupac.IUPACLexer import IUPACLexer
-from glyles.utils import smiles2mol
+from glyles.glycans.utils import smiles2mol
 
 if not hasattr(IUPACLexer, "MOD"):
     IUPACLexer.MOD = IUPACLexer.QMARK + 1

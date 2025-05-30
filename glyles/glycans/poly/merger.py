@@ -6,7 +6,7 @@ import networkx as nx
 import numpy as np
 
 from glyles.glycans.utils import sanitize_smiles
-from glyles.utils import smiles2mol
+from glyles.glycans.utils import smiles2mol
 
 
 def masked2nx(smiles: str, mask: list[int]) -> nx.Graph:

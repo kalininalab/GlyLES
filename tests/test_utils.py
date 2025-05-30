@@ -4,7 +4,7 @@ from rdkit import Chem
 from rdkit.Chem import MolFromSmiles
 from rdkit.Chem.rdchem import ChiralType
 
-from glyles.glycans.utils import find_isomorphism_nx as iso
+from glyles.glycans.utils import find_isomorphism_nx
 
 CHIRALITY = [ChiralType.CHI_TETRAHEDRAL_CW, ChiralType.CHI_TETRAHEDRAL_CCW]
 
@@ -41,7 +41,7 @@ def compare_smiles(computed, solution):
 ])
 def test_isomorphism(data):
     smiles1, smiles2, size, name = data
-    mapping = iso(smiles1, smiles2, name)
+    mapping = find_isomorphism_nx(smiles1, smiles2, name)
 
     assert len(mapping) == size
     check_map(smiles1, smiles2, mapping)

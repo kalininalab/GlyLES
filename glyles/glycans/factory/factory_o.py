@@ -4,7 +4,7 @@ from rdkit.Chem import GetAdjacencyMatrix, rdDepictor
 from rdkit.Chem.rdchem import BondType
 
 from glyles.glycans.utils import Config, Enantiomer, Lactole, Tree, find_longest_c_chain
-from glyles.utils import smiles2mol
+from glyles.glycans.utils import smiles2mol
 
 
 class OpenFactory:

@@ -1,16 +1,13 @@
 import re
-from collections import deque
 from enum import Enum
-
-import networkx as nx
-import numpy as np
-from networkx.algorithms import isomorphism
-
+from collections import deque
 from itertools import permutations
 
+import numpy as np
+import networkx as nx
+from networkx.algorithms import isomorphism
+from rdkit import Chem
 from rdkit.Chem.rdchem import ChiralType
-
-from glyles.utils import smiles2mol
 
 
 class Verbosity(Enum):
@@ -93,6 +90,11 @@ ketoses2 = {
     ("Leg", Lactole.PYRANOSE), ("Aci", Lactole.PYRANOSE), ("Kdo", Lactole.PYRANOSE), ("Dha", Lactole.PYRANOSE),
     ("Fru", Lactole.PYRANOSE), ("Sor", Lactole.PYRANOSE), ("Tag", Lactole.PYRANOSE), ("Psi", Lactole.PYRANOSE),
 }
+
+
+def smiles2mol(smiles: str):
+    smiles = re.sub("\[CH[0-9]\]", "C", smiles)
+    return Chem.MolFromSmiles(smiles)
 
 
 def sanitize_smiles(smiles, mask=None):
