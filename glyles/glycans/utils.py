@@ -92,9 +92,9 @@ ketoses2 = {
 }
 
 
-def smiles2mol(smiles: str):
+def smiles2mol(smiles: str, **kwargs) -> Chem.Mol:
     smiles = re.sub("\[CH[0-9]\]", "C", smiles)
-    return Chem.MolFromSmiles(smiles)
+    return Chem.MolFromSmiles(smiles, **kwargs)
 
 
 def sanitize_smiles(smiles, mask=None):
