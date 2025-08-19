@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "glyles"
-version = "1.2.2"
+version = "1.2.333"
 repository = "https://github.com/kalininalab/GlyLES"
 readme = "README.md"
 description = "A tool to convert IUPAC representation of glycans into SMILES strings"
@@ -19,7 +19,7 @@ rdkit = ">=2021.9.2"
 antlr4-tools = ">=0.2.1"
 antlr4-python3-runtime = "==4.13.2"
 networkx = ">=2.6.3"
-pydot = "^1.4.2"
+pydot = ">=4.0.1"
 joblib = "^1.2.0"
 
 [tool.poetry.dev-dependencies]

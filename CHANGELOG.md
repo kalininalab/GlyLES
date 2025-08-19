@@ -1,5 +1,9 @@
 # Change Log
 
+## v1.2.3 - 2025-08-19
+
+- Updating version requirements for pydot to avoid clashes with glycowork
+
 ## v1.2.2 - 2025-08-28
 
 - Improvement of logging and verbosity
